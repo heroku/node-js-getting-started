@@ -1,6 +1,6 @@
 {
   "name": "node-js-sample",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "a sample node.js app for heroku",
   "main": "web.js",
   "scripts": {
