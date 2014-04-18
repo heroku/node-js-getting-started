@@ -18,9 +18,12 @@
   },
   "keywords": [
     "node",
-    "heroku"
+    "heroku",
+    "express"
   ],
   "author": "Mark Pundsack",
-  "license": "BSD",
-  "gitHead": "90fd58e343c29e54fc1d4e19036595500b2bdc21"
+  "contributors": [
+    "Zeke Sikelianos <zeke@sikelianos.com> (http://zeke.sikelianos.com)"
+  ],
+  "license": "MIT"
 }
