@@ -1,0 +1,7 @@
+{
+  "name": "Node.js  Slideshow",
+  "description": "A barebones Node.js app using Express 4",
+  "repository": "https://github.com/heroku/node-js-sample",
+  "logo": "https://github.com/heroku/node-js-sample/node.svg",
+  "keywords": ["node", "express", "static"]
+}
