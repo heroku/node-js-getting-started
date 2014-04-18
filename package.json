@@ -1,17 +1,16 @@
 {
   "name": "node-js-sample",
-  "version": "0.0.3",
-  "description": "a sample node.js app for heroku",
-  "main": "web.js",
+  "version": "0.1.0",
+  "description": "A sample node.js app for heroku",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "dependencies": {
-    "express": "~3.4.x"
+    "express": "^4.0.0"
   },
   "engines": {
-    "node": "0.10.x",
-    "npm": "1.3.x"
+    "node": "0.10.x"
   },
   "repository": {
     "type": "git",
