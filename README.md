@@ -1,6 +1,6 @@
 # node-js-sample
 
-This is a barebones Node.js app using the [Express](http://expressjs.com/) framework.
+A barebones Node.js app using [Express 4](http://expressjs.com/).
 
 ## Running Locally
 
