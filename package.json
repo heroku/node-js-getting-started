@@ -1,13 +1,13 @@
 {
   "name": "node-js-getting-started",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "A sample Node.js app using Express 4",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
   "dependencies": {
-    "express": "~3.4.x"
+    "express": "~4.9.x"
   },
   "engines": {
     "node": "0.10.x"
@@ -20,10 +20,6 @@
     "node",
     "heroku",
     "express"
-  ],
-  "author": "Mark Pundsack",
-  "contributors": [
-    "Zeke Sikelianos <zeke@sikelianos.com> (http://zeke.sikelianos.com)"
   ],
   "license": "MIT"
 }
