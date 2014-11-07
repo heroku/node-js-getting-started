@@ -7,20 +7,33 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "cool-ascii-faces": "^1.3.3",
-    "express": "~4.9.x"
+    "body-parser": "^1.9.2",
+    "express": "~4.9.x",
+    "mongoose": "^3.8.18"
   },
   "engines": {
     "node": "0.10.x"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/heroku/node-js-getting-started"
+    "url": "https://github.com/HIROSN/node-js-getting-started.git"
   },
   "keywords": [
     "node",
     "heroku",
     "express"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^1.9.2",
+    "chai-http": "^1.0.0",
+    "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-jscs": "^0.8.1",
+    "grunt-simple-mocha": "^0.4.0"
+  },
+  "scripts": {
+    "test": "node_modules/grunt-cli/bin/grunt"
+  }
 }
