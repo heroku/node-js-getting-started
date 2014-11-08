@@ -1,15 +1,14 @@
 'use strict';
 
 var express = require('express');
-var app = express();
+var mongoose = require('mongoose');
+var bodyparser = require('body-parser');
 
-app.set('port', (process.env.PORT || 5000));
+var app = express();
+app.set('port', (process.env.PORT || 3000));
+app.use(bodyparser.json());
 app.use(express.static(__dirname + '/public'));
 
-app.get('/', function(request, response) {
-  response.send('hello world');
-});
-
-app.listen(app.get('port'), function() {
-  console.log('Node app is running at localhost:', app.get('port'));
-});
+mongoose.connect(process.env.MONGO_URL || 'mongodb://localhost/test');
+require('./routes/notes_routes')(app);
+app.listen(app.get('port'));
