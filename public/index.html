@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="/stylesheet.css" rel="stylesheet">
+  <title>Notes</title>
+
+  <script id="notes-template" type="text/x-handlebars-template">
+    {{#each Notes}}
+    <p>{{noteBody}}</p>
+    {{/each}}
+  </script>
+</head>
+
+<body>
+  <h1>Notes</h1>
+
+  <div id="notes"></div>
+
+  <footer>
+    <p>
+      <a href="/">Home</a>
+    </p>
+  </footer>
+
+  <script
+    src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js">
+  </script>
+  <script
+    src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js">
+  </script>
+  <script src="/script.js"></script>
+</body>
+</html>

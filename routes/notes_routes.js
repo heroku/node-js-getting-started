@@ -15,7 +15,7 @@ module.exports = function(app) {
   app.get('/api/notes', function(req, res) {
     Note.find({}, function(err, data) {
       if (err) return res.status(500).end();
-      res.json(data);
+      res.json({'Notes': data});
     });
   });
 

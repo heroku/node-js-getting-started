@@ -36,7 +36,9 @@ describe('Basic notes CRUD', function() {
       expect(err).equals(null);
       expect(res).to.be.a('object');
       expect(res).to.have.status(200);
-      expect(Array.isArray(res.body)).equals(true);
+      expect(res.body).to.be.a('object');
+      expect(res.body).to.have.property('Notes');
+      expect(Array.isArray(res.body.Notes)).equals(true);
       done();
     });
   });
