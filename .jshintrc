@@ -14,7 +14,6 @@
     "document"          : false,
     "window"            : false,
     "navigator"         : false,
-    "MutationObserver"  : false,
     "Handlebars"        : false
   },
 
