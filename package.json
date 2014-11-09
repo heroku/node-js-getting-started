@@ -10,7 +10,8 @@
   "dependencies": {
     "body-parser": "^1.9.2",
     "express": "~4.9.x",
-    "mongoose": "^3.8.18"
+    "mongoose": "^3.8.18",
+    "wordfilter": "^0.1.7"
   },
   "engines": {
     "node": "0.10.x"

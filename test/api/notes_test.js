@@ -91,4 +91,16 @@ describe('Basic notes CRUD', function() {
       done();
     });
   });
+
+  it('should reject creating a note with invalid words', function(done) {
+    chai.request(server).
+    post(api).
+    send({noteBody: 'jap'}).
+    end(function(err, res) {
+      expect(err).equals(null);
+      expect(res).to.be.a('object');
+      expect(res).to.have.status(500);
+      done();
+    });
+  });
 });
