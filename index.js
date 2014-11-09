@@ -9,6 +9,6 @@ app.set('port', (process.env.PORT || 3000));
 app.use(bodyparser.json());
 app.use(express.static(__dirname + '/public'));
 
-mongoose.connect(process.env.MONGO_URL || 'mongodb://localhost/test');
+mongoose.connect(process.env.MONGOHQ_URL || 'mongodb://localhost/test');
 require('./routes/notes_routes')(app);
 app.listen(app.get('port'));
