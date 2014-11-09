@@ -76,6 +76,15 @@ $ superagent https://hirosn-node-js-getting-started.herokuapp.com/api/notes GET
 </script>
 ```
 
+## Self buddy build
+
+```
+$ rm -rf node_modules/
+$ npm install
+$ mongod --smallfiles --dbpath ./data/db
+$ npm test
+```
+
 ## Documentation
 
 For more information about using Node.js on Heroku, see these Dev Center articles:
