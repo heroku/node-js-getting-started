@@ -103,4 +103,31 @@ describe('Basic notes CRUD', function() {
       done();
     });
   });
+
+  it('should reject a note longer than 140 characters', function(done) {
+    chai.request(server).
+    post(api).
+    send({noteBody:
+      '12345678901234567890123456789012345678901234567890' +
+      '12345678901234567890123456789012345678901234567890' +
+      '12345678901234567890123456789012345678901234567890'}).
+    end(function(err, res) {
+      expect(err).equals(null);
+      expect(res).to.be.a('object');
+      expect(res).to.have.status(500);
+      done();
+    });
+  });
+
+  it('should reject an empty note', function(done) {
+    chai.request(server).
+    post(api).
+    send({noteBody: ''}).
+    end(function(err, res) {
+      expect(err).equals(null);
+      expect(res).to.be.a('object');
+      expect(res).to.have.status(500);
+      done();
+    });
+  });
 });
