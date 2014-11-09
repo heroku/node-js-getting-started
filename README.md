@@ -28,6 +28,54 @@ $ git push heroku master
 $ heroku open
 ```
 
+## Running MongoDB in Travis CI
+
+```
+$ cat .travis.yml
+language: node_js
+node_js:
+  - "0.10"
+services:
+  - mongodb
+```
+
+## MongoDB URL environment variable for Heroku
+
+```
+$ heroku config
+=== hirosn-node-js-getting-started Config Vars
+MONGOHQ_URL: mongodb://heroku:_w0aAOeuYx8hW0Kb...
+```
+
+## Handlebars and GET API
+
+```
+$ superagent https://hirosn-node-js-getting-started.herokuapp.com/api/notes GET
+{ Notes:
+   [ { noteBody: 'hello world',
+       _id: '545efd6ca6d75d02004aec51',
+       __v: 0 } ] }
+```
+
+```
+<script id="notes-template" type="text/x-handlebars-template">
+  {{#each Notes}}
+  <p id="{{_id}}" class="note">{{noteBody}}</p>
+  {{/each}}
+</script>
+```
+
+## Use HTTPS to load libraries from CDN
+
+```
+<script
+  src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js">
+</script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js">
+</script>
+```
+
 ## Documentation
 
 For more information about using Node.js on Heroku, see these Dev Center articles:
