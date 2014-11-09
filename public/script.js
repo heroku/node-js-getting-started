@@ -33,6 +33,20 @@ $(function() {
     });
   };
 
+  var fixEditorWidth = function() {
+    var $editors = $('.editor');
+    var cs = window.getComputedStyle(document.body, null);
+
+    var bodyWidth = $(document.body).width() -
+      parseInt(cs.marginLeft) - parseInt(cs.marginRight);
+
+    $editors.removeAttr('style');
+
+    if ($('#editor').width() >= bodyWidth) {
+      $editors.width(bodyWidth);
+    }
+  };
+
   showNotes();
 
   $(document.body).on('keydown', '.editor', function(event) {
@@ -64,6 +78,7 @@ $(function() {
       addClass('editor');
 
     $cmds.insertAfter($this).slideDown('fast');
+    fixEditorWidth();
   });
 
   $('#delete').on('click', function() {
@@ -94,4 +109,10 @@ $(function() {
       });
     }
   });
+
+  $(window).on('resize', function() {
+    fixEditorWidth();
+  });
+
+  fixEditorWidth();
 });
