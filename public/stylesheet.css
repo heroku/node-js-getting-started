@@ -1,3 +1,63 @@
 * {
   font-family: Helvetica, Arial;
 }
+
+body {
+  margin-top: 0;
+}
+
+#fixedtop {
+  position: fixed;
+  background-color: white;
+  width: 100%;
+}
+
+#cmds {
+  display: none;
+}
+
+.button {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  margin-right: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  height: 1.5em;
+  width: 100px;
+  border: solid 1px darkgray;
+  text-align: center;
+  padding-top: 0.5em;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.button:hover {
+  background-color: cyan;
+}
+
+#notes {
+  padding-top: 11em;
+}
+
+.note {
+  width: 40em;
+}
+
+.editor {
+  width: 40em;
+  padding: 0.5em;
+  border: solid 1px darkgray;
+}
+
+.note:hover {
+  color: blue;
+}
+
+.editor:hover {
+  color: black;
+}

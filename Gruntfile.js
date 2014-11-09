@@ -2,7 +2,13 @@
 
 module.exports = function(grunt) {
   var testFiles = ['test/**/*.js'];
-  var srcFiles = ['*.js'].concat(testFiles);
+
+  var srcFiles = [
+    '*.js',
+    'models/**/*.js',
+    'public/**/*.js',
+    'routes/**/*.js'
+  ].concat(testFiles);
 
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-jscs');
@@ -28,6 +34,7 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('test', ['jshint', 'jscs', 'simplemocha']);
+  grunt.registerTask('style', ['jshint', 'jscs']);
+  grunt.registerTask('test', ['style', 'simplemocha']);
   grunt.registerTask('default',  ['test']);
 };

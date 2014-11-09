@@ -1,20 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="/stylesheet.css" rel="stylesheet">
   <title>Notes</title>
 
   <script id="notes-template" type="text/x-handlebars-template">
     {{#each Notes}}
-    <p>{{noteBody}}</p>
+    <p id="{{_id}}" class="note">{{noteBody}}</p>
     {{/each}}
   </script>
 </head>
 
 <body>
-  <h1>Notes</h1>
+  <header>
+    <div id="fixedtop">
+      <h1>Notes</h1>
+      <p id="editor" class="editor" contenteditable></p>
+      <div id="post" class="button">Post</div>
+    </div>
+  </header>
 
-  <div id="notes"></div>
+  <div id="notes">
+    <div id="cmds">
+      <div id="delete" class="button">Delete</div>
+      <div id="update" class="button">Update</div>
+    </div>
+  </div>
 
   <footer>
     <p>
@@ -28,6 +41,6 @@
   <script
     src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js">
   </script>
-  <script src="/script.js"></script>
+  <script async src="/script.js"></script>
 </body>
 </html>
