@@ -84,14 +84,12 @@ $(function() {
   $('#delete').on('click', function() {
     var $note = $('#notes .editor');
 
-    apiNote('DELETE', null, $note.attr('id')).always(function(results) {
-      if (200 === results.status) {
-        $cmds.slideUp('fast', function() {
-          $note.slideUp('fast', function() {
-            $note.remove();
-          });
+    apiNote('DELETE', null, $note.attr('id')).then(function() {
+      $cmds.slideUp('fast', function() {
+        $note.slideUp('fast', function() {
+          $note.remove();
         });
-      }
+      });
     });
   });
 

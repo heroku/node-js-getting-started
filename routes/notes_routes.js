@@ -39,7 +39,7 @@ module.exports = function(app) {
   app.delete('/api/notes/:id', function(req, res) {
     Note.remove({'_id': req.params.id}, function(err) {
       if (err) { return res.status(500).end(); }
-      res.end();
+      res.json({});
     });
   });
 };
