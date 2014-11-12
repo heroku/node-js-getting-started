@@ -8,9 +8,14 @@
     "test": "node_modules/grunt-cli/bin/grunt"
   },
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.9.2",
     "express": "~4.9.x",
+    "jwt-simple": "^0.2.0",
+    "moment": "^2.8.3",
     "mongoose": "^3.8.18",
+    "passport": "^0.2.1",
+    "passport-http": "^0.2.2",
     "wordfilter": "^0.1.7"
   },
   "engines": {

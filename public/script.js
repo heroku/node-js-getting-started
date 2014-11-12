@@ -2,16 +2,38 @@
 
 $(function() {
   var $cmds = $('#cmds');
+  var jwt = null;
 
-  var apiNote = function(type, note, id) {
+  var apiUser = function(type, email, password) {
     var dfd = $.Deferred();
-    var url = '/api/notes' + (id ? '/' + id : '');
-    var data = note ? {noteBody: note} : null;
+    var url = '/api/users';
+    var data = email && password && {email: email, password: password};
 
     $.ajax({
       type: type,
       data: data && JSON.stringify(data),
       contentType: data && 'application/json; charset=utf-8',
+      url: url,
+      dataType: 'json',
+      success: dfd.resolve,
+      error: dfd.reject
+    });
+
+    return dfd.promise();
+  };
+
+  var apiNote = function(type, note, id) {
+    var dfd = $.Deferred();
+    var data = {noteBody: note, jwt: jwt};
+    var url = '/api/notes';
+    url += (type ? '' : '/get');
+    url += (id ? '/' + id : '');
+    type = type || 'POST';
+
+    $.ajax({
+      type: type,
+      data: JSON.stringify(data),
+      contentType: 'application/json; charset=utf-8',
       url: url,
       dataType: 'json',
       success: dfd.resolve,
@@ -31,6 +53,13 @@ $(function() {
         appendTo($('#notes')).
         slideDown('fast');
     });
+
+    if (jwt) {
+      $('#post').removeClass('disabled');
+    }
+    else {
+      $('#post').addClass('disabled');
+    }
   };
 
   var fixEditorWidth = function() {
@@ -47,7 +76,15 @@ $(function() {
     }
   };
 
-  showNotes();
+  apiUser('GET').then(function(results) {
+    jwt = results.jwt;
+  }).fail(function() {
+    $('#login').slideDown('fast', function() {
+      $('#email').focus();
+    });
+  }).always(function() {
+    showNotes();
+  });
 
   $(document.body).on('keydown', '.editor', function(event) {
     if ($(this).text().length >= 140 && event.which !== 8) {
@@ -56,12 +93,14 @@ $(function() {
   });
 
   $('#post').on('click', function() {
-    var $editor = $('#editor');
-    var note = $editor.text();
+    if (jwt) {
+      var $editor = $('#editor');
+      var note = $editor.text();
 
-    if (note) {
-      showNotes('POST', note);
-      $editor.text('');
+      if (note) {
+        showNotes('POST', note);
+        $editor.text('');
+      }
     }
   });
 
@@ -110,6 +149,19 @@ $(function() {
 
   $(window).on('resize', function() {
     fixEditorWidth();
+  });
+
+  $('.input').on('keydown', function(event) {
+    if (13 === event.which) {
+      apiUser('POST', $('#email').val(), $('#password').val()).
+        then(function(results) {
+          jwt = results.jwt;
+
+          $('#login').slideUp('fast', function() {
+            showNotes();
+          });
+        });
+    }
   });
 
   fixEditorWidth();

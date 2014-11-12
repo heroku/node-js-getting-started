@@ -40,6 +40,14 @@ body {
   background-color: cyan;
 }
 
+.button.disabled {
+  color: lightgray;
+}
+
+.button.disabled:hover {
+  background-color: white;
+}
+
 #notes {
   padding-top: 11em;
 }
@@ -60,4 +68,23 @@ body {
 
 .editor:hover {
   color: black;
+}
+
+#nojwt {
+  display: none;
+}
+
+#login {
+  display: none;
+}
+
+.input {
+  font-size: 12pt;
+  vertical-align: middle;
+}
+
+.inputblock {
+  display: inline-block;
+  margin-right: 5px;
+  margin-bottom: 10px;
 }
