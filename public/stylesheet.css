@@ -70,10 +70,6 @@ body {
   color: black;
 }
 
-#nojwt {
-  display: none;
-}
-
 #login {
   display: none;
 }
