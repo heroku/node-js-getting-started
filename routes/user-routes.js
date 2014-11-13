@@ -9,7 +9,7 @@ module.exports = function(app, passport) {
       var newUser = new User();
       newUser.basic.email = req.body.email;
       newUser.basic.password = newUser.generateHash(req.body.password);
-      newUser.isAdmin = !!req.body.isAdmin;
+      newUser.isAdmin = false;
 
       newUser.save(function(err, resUser) {
         if (err) { return res.status(500).json({}); }
