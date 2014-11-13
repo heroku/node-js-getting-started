@@ -4,7 +4,9 @@ var mongoose = require('mongoose');
 var wordfilter = require('wordfilter');
 
 var noteSchema = mongoose.Schema({
-  noteBody: 'String'
+  noteBody: 'String',
+  email: 'String',
+  time: 'Number'
 });
 
 var Note = mongoose.model('Note', noteSchema);

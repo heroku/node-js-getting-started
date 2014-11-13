@@ -22,4 +22,11 @@ module.exports = function(app, passport) {
   }), function(req, res) {
     res.json({'jwt': req.user.createToken(app.get('jwtTokenSecret'))});
   });
+
+  app.delete('/api/users', function(req, res) {
+    User.remove({'basic.email': req.body.email}, function(err) {
+      if (err) { return res.status(500).json({}); }
+      res.json({});
+    });
+  });
 };

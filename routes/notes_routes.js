@@ -3,8 +3,10 @@
 var Note = require('../models/note');
 
 module.exports = function(app, jwtauth) {
-  app.post('/api/notes', function(req, res) {
+  app.post('/api/notes', jwtauth, function(req, res) {
     var note = new Note(req.body);
+    note.email = req.user.basic.email;
+    note.time = new Date().getTime();
 
     note.save(function(err, data) {
       if (err) { return res.status(500).json({}); }
@@ -13,21 +15,23 @@ module.exports = function(app, jwtauth) {
   });
 
   app.post('/api/notes/get', jwtauth, function(req, res) {
-    Note.find({}, function(err, data) {
+    Note.find({email: req.user.basic.email}, function(err, data) {
       if (err) { return res.status(500).json({}); }
       res.json({'Notes': data});
     });
   });
 
-  app.post('/api/notes/get/:id', function(req, res) {
+  app.post('/api/notes/get/:id', jwtauth, function(req, res) {
     Note.findOne({'_id': req.params.id}, function(err, data) {
       if (err) { return res.status(500).json({}); }
       res.json({'Notes': [data]});
     });
   });
 
-  app.put('/api/notes/:id', function(req, res) {
+  app.put('/api/notes/:id', jwtauth, function(req, res) {
     var note = req.body;
+    note.email = req.user.basic.email;
+    note.time = new Date().getTime();
     delete note._id;
 
     Note.findOneAndUpdate({'_id': req.params.id}, note, function(err, data) {
@@ -36,7 +40,7 @@ module.exports = function(app, jwtauth) {
     });
   });
 
-  app.delete('/api/notes/:id', function(req, res) {
+  app.delete('/api/notes/:id', jwtauth, function(req, res) {
     Note.remove({'_id': req.params.id}, function(err) {
       if (err) { return res.status(500).json({}); }
       res.json({});
