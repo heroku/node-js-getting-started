@@ -17,8 +17,13 @@ userSchema.methods.generateHash = function(password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
 
-userSchema.methods.validPassword = function(password) {
+userSchema.methods.confirmPassword = function(password) {
   return bcrypt.compareSync(password, this.basic.password);
+};
+
+userSchema.methods.validatePassword = function(password) {
+  var regExp  = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+  return regExp.test(password);
 };
 
 userSchema.methods.createToken = function(secret) {

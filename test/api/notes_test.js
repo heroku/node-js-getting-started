@@ -14,11 +14,57 @@ require('../../index');
 chai.use(chaihttp);
 
 describe('Basic notes CRUD', function() {
+  it('should not create a user without a password', function(done) {
+    chai.request(server).
+    post('/api/users').
+    send({
+      email: 'user@test.com'
+    }).end(function(err, res) {
+      expect(err).equals(null);
+      expect(res).to.be.a('object');
+      expect(res).to.have.status(500);
+      done();
+    });
+  });
+
+  it('should not create a user with a weak password', function(done) {
+    chai.request(server).
+    post('/api/users').
+    send({
+      email: 'user@test.com',
+      password: 'Abc123',
+      confirm: 'Abc123'
+    }).end(function(err, res) {
+      expect(err).equals(null);
+      expect(res).to.be.a('object');
+      expect(res).to.have.status(500);
+      done();
+    });
+  });
+
+  it('should not create user when password is not confirmed', function(done) {
+    chai.request(server).
+    post('/api/users').
+    send({
+      email: 'user@test.com',
+      password: 'passWord1',
+      confirm: 'passWord2'
+    }).end(function(err, res) {
+      expect(err).equals(null);
+      expect(res).to.be.a('object');
+      expect(res).to.have.status(500);
+      done();
+    });
+  });
+
   it('should be able to create a user', function(done) {
     chai.request(server).
     post('/api/users').
-    send({email: 'user@test.com', password: 'password'}).
-    end(function(err, res) {
+    send({
+      email: 'user@test.com',
+      password: 'passWord1',
+      confirm: 'passWord1'
+    }).end(function(err, res) {
       expect(err).equals(null);
       expect(res).to.be.a('object');
       expect(res).to.have.status(200);
@@ -32,8 +78,11 @@ describe('Basic notes CRUD', function() {
   it('should not create a duplicate user', function(done) {
     chai.request(server).
     post('/api/users').
-    send({email: 'user@test.com', password: 'password'}).
-    end(function(err, res) {
+    send({
+      email: 'user@test.com',
+      password: 'passWord1',
+      confirm: 'passWord1'
+    }).end(function(err, res) {
       expect(err).equals(null);
       expect(res).to.be.a('object');
       expect(res).to.have.status(500);
@@ -44,8 +93,11 @@ describe('Basic notes CRUD', function() {
   it('should be able to create another user', function(done) {
     chai.request(server).
     post('/api/users').
-    send({email: 'user2@test.com', password: 'password'}).
-    end(function(err, res) {
+    send({
+      email: 'user2@test.com',
+      password: 'passWord1',
+      confirm: 'passWord1'
+    }).end(function(err, res) {
       expect(err).equals(null);
       expect(res).to.be.a('object');
       expect(res).to.have.status(200);
@@ -96,7 +148,7 @@ describe('Basic notes CRUD', function() {
     });
   });
 
-  it('is not authorized to get an index', function(done) {
+  it('is not authorized to get an index without JWT', function(done) {
     chai.request('http://localhost:3000').
     post('/api/notes/get').
     end(function(err, res) {
@@ -107,7 +159,7 @@ describe('Basic notes CRUD', function() {
     });
   });
 
-  it('is authorized with JWT to get an index', function(done) {
+  it('is authorized to get an index with JWT', function(done) {
     chai.request('http://localhost:3000').
     post('/api/notes/get').
     send({jwt: jwt1}).
@@ -225,8 +277,10 @@ describe('Basic notes CRUD', function() {
   it('should be able to delete a user', function(done) {
     chai.request(server).
     delete('/api/users').
-    send({email: 'user@test.com'}).
-    end(function(err, res) {
+    send({
+      email: 'user@test.com',
+      password: 'passWord1'
+    }).end(function(err, res) {
       expect(err).equals(null);
       expect(res).to.be.a('object');
       expect(res).to.have.status(200);
@@ -237,8 +291,10 @@ describe('Basic notes CRUD', function() {
   it('should be able to delete the 2nd user', function(done) {
     chai.request(server).
     delete('/api/users').
-    send({email: 'user2@test.com'}).
-    end(function(err, res) {
+    send({
+      email: 'user2@test.com',
+      password: 'passWord1'
+    }).end(function(err, res) {
       expect(err).equals(null);
       expect(res).to.be.a('object');
       expect(res).to.have.status(200);

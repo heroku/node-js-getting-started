@@ -4,10 +4,15 @@ $(function() {
   var $cmds = $('#cmds');
   var jwt = null;
 
-  var apiUser = function(type, email, password) {
+  var apiUser = function(type, email, password, confirm) {
     var dfd = $.Deferred();
     var url = '/api/users';
-    var data = email && password && {email: email, password: password};
+
+    var data = email && password && confirm && {
+      email: email,
+      password: password,
+      confirm: confirm
+    };
 
     $.ajax({
       type: type,
@@ -158,8 +163,8 @@ $(function() {
 
   $('.input').on('keydown', function(event) {
     if (13 === event.which) {
-      apiUser('POST', $('#email').val(), $('#password').val()).
-        then(function(results) {
+      apiUser('POST', $('#email').val(), $('#password').val(),
+        $('#confirm').val()).then(function(results) {
           jwt = results.jwt;
 
           $('#login').slideUp('fast', function() {
