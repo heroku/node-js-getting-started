@@ -2,8 +2,8 @@
 
 var Note = require('../models/note');
 
-module.exports = function(app, jwtauth) {
-  app.post('/api/notes', jwtauth, function(req, res) {
+module.exports = function(app, jwtauth, expired) {
+  app.post('/api/notes', [jwtauth, expired], function(req, res) {
     var note = new Note(req.body);
     note.email = req.user.basic.email;
     note.time = new Date().getTime();

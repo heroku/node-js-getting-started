@@ -43,7 +43,7 @@ $(function() {
     return dfd.promise();
   };
 
-  var showNotes = function(type, note) {
+  var showNotes = function(type, note, $editor) {
     apiNote(type, note).then(function(results) {
       var template = Handlebars.compile(
         $('#notes-template').html());
@@ -52,6 +52,12 @@ $(function() {
         hide().
         appendTo($('#notes')).
         slideDown('fast');
+
+      if ($editor) { $editor.text(''); }
+    }).fail(function() {
+      $('#login').slideDown('fast', function() {
+        $('#email').focus();
+      });
     });
 
     if (jwt) {
@@ -98,8 +104,7 @@ $(function() {
       var note = $editor.text();
 
       if (note) {
-        showNotes('POST', note);
-        $editor.text('');
+        showNotes('POST', note, $editor);
       }
     }
   });
