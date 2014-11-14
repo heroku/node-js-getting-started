@@ -5,7 +5,13 @@ var User = require('../models/user');
 module.exports = function(app, passport) {
   app.post('/api/users', function(req, res) {
     User.findOne({'basic.email': req.body.email}, function(err, user) {
-      if (err || user) { return res.status(500).json({}); }
+      if (err) { return res.status(500).json({}); }
+
+      if (user) {
+        return res.json({'jwt':
+          user.createToken(app.get('jwtTokenSecret'))});
+      }
+
       var newUser = new User();
 
       if (!newUser.validatePassword(req.body.password)) {

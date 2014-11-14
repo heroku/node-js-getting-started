@@ -48,6 +48,12 @@ $(function() {
     return dfd.promise();
   };
 
+  var showSignIn = function() {
+    $('#login').slideDown('fast', function() {
+      $('#email').focus();
+    });
+  };
+
   var showNotes = function(type, note, $editor) {
     apiNote(type, note).then(function(results) {
       var template = Handlebars.compile(
@@ -60,9 +66,7 @@ $(function() {
 
       if ($editor) { $editor.text(''); }
     }).fail(function() {
-      $('#login').slideDown('fast', function() {
-        $('#email').focus();
-      });
+      showSignIn();
     });
 
     if (jwt) {
@@ -71,6 +75,13 @@ $(function() {
     else {
       $('#post').addClass('disabled');
     }
+  };
+
+  var hideNotes = function() {
+    var $notes = $('#notes .note');
+    $notes.slideUp('fast', function() {
+      $notes.remove();
+    });
   };
 
   var fixEditorWidth = function() {
@@ -87,15 +98,40 @@ $(function() {
     }
   };
 
-  apiUser('GET').then(function(results) {
-    jwt = results.jwt;
-  }).fail(function() {
-    $('#login').slideDown('fast', function() {
-      $('#email').focus();
+  var setSignedIn = function(signedIn) {
+    var expires = new Date();
+    expires.setFullYear(expires.getFullYear() + 1);
+
+    document.cookie = 'SignedIn=' + signedIn +
+      '; path=/; expires=' + expires.toGMTString();
+
+    document.cookie = '';
+  };
+
+  var getSignedIn = function() {
+    var cookies = document.cookie.split(';');
+
+    for (var i = 0; i < cookies.length; i++) {
+      if (cookies[i] === 'SignedIn=true') {
+        return true;
+      }
+    }
+
+    return false;
+  };
+
+  if (getSignedIn()) {
+    apiUser('GET').then(function(results) {
+      jwt = results.jwt;
+    }).fail(function() {
+      showSignIn();
+    }).always(function() {
+      showNotes();
     });
-  }).always(function() {
-    showNotes();
-  });
+  }
+  else {
+    showSignIn();
+  }
 
   $(document.body).on('keydown', '.editor', function(event) {
     if ($(this).text().length >= 140 && event.which !== 8) {
@@ -169,9 +205,17 @@ $(function() {
 
           $('#login').slideUp('fast', function() {
             showNotes();
+            setSignedIn(true);
           });
         });
     }
+  });
+
+  $('#signout').on('click', function(event) {
+    setSignedIn(false);
+    showSignIn();
+    hideNotes();
+    event.preventDefault();
   });
 
   fixEditorWidth();

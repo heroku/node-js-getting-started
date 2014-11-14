@@ -6,6 +6,14 @@ body {
   margin-top: 0;
 }
 
+a:link {
+  color: blue;
+}
+
+a:visited {
+  color: blue;
+}
+
 #fixedtop {
   position: fixed;
   background-color: white;

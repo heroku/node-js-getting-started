@@ -75,21 +75,6 @@ describe('Basic notes CRUD', function() {
     });
   });
 
-  it('should not create a duplicate user', function(done) {
-    chai.request(server).
-    post('/api/users').
-    send({
-      email: 'user@test.com',
-      password: 'passWord1',
-      confirm: 'passWord1'
-    }).end(function(err, res) {
-      expect(err).equals(null);
-      expect(res).to.be.a('object');
-      expect(res).to.have.status(500);
-      done();
-    });
-  });
-
   it('should be able to create another user', function(done) {
     chai.request(server).
     post('/api/users').
