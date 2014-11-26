@@ -1,13 +1,24 @@
-var express = require('express')
+'use strict';
+
+var express = require('express');
+var mongoose = require('mongoose');
+var bodyparser = require('body-parser');
+var passport = require('passport');
+
+mongoose.connect(process.env.MONGOHQ_URL || 'mongodb://localhost/test');
+
 var app = express();
+app.set('port', (process.env.PORT || 3000));
+app.set('jwtTokenSecret', process.env.JWT_SECRET || 'developmentsecret');
 
-app.set('port', (process.env.PORT || 5000))
-app.use(express.static(__dirname + '/public'))
+app.use(passport.initialize());
+require('./lib/passport')(passport);
 
-app.get('/', function(request, response) {
-  response.send('Hello World!')
-})
+var jwtauth = require('./lib/jwtauth')(app);
+var expired = require('./lib/expired')(app);
+app.use(bodyparser.json());
+require('./routes/user-routes')(app, passport);
+require('./routes/notes_routes')(app, jwtauth.auth, expired);
 
-app.listen(app.get('port'), function() {
-  console.log("Node app is running at localhost:" + app.get('port'))
-})
+app.use(express.static(__dirname + '/public'));
+app.listen(app.get('port'));
