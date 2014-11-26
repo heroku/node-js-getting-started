@@ -6,13 +6,16 @@ module.exports = function(grunt) {
   var srcFiles = [
     '*.js',
     'models/**/*.js',
-    'public/**/*.js',
+    'app/**/*.js',
     'routes/**/*.js'
   ].concat(testFiles);
 
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-jscs');
   grunt.loadNpmTasks('grunt-simple-mocha');
+  grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-browserify');
 
   grunt.initConfig({
     simplemocha: {
@@ -31,10 +34,36 @@ module.exports = function(grunt) {
       options: {
         preset: 'google'
       }
+    },
+
+    clean: {
+      dev: {
+        src: ['public/']
+      }
+    },
+
+    copy: {
+      dev: {
+        cwd: 'app/',
+        src: ['**/*.html', '**/*.css'],
+        expand: true,
+        dest: 'public/'
+      }
+    },
+
+    browserify: {
+      dev: {
+        src: ['app/js/**/*.js'],
+        dest: 'public/script.js',
+        options: {
+          transform: ['debowerify']
+        }
+      }
     }
   });
 
   grunt.registerTask('style', ['jshint', 'jscs']);
   grunt.registerTask('test', ['style', 'simplemocha']);
-  grunt.registerTask('default',  ['test']);
+  grunt.registerTask('public', ['clean:dev', 'copy:dev', 'browserify:dev']);
+  grunt.registerTask('default',  ['test', 'public']);
 };

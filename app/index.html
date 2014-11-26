@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/stylesheet.css" rel="stylesheet">
+  <title>Notes</title>
+
+  <script id="notes-template" type="text/x-handlebars-template">
+    {{#each Notes}}
+    <p id="{{_id}}" class="note">{{noteBody}}</p>
+    {{/each}}
+  </script>
+</head>
+
+<body>
+  <header>
+    <div id="fixedtop">
+      <h1>Notes</h1>
+      <div id="login">
+        <div class="inputblock">[Sign In] Email:
+          <input id="email" type="text" class="input"></div>
+        <div class="inputblock">Password:
+          <input id="password" type="password" class="input"></div>
+        <div class="inputblock">Confirm:
+          <input id="confirm" type="password" class="input"></div>
+      </div>
+      <p id="editor" class="editor" contenteditable></p>
+      <div id="post" class="button">Post</div>
+    </div>
+  </header>
+
+  <div id="notes">
+    <div id="cmds">
+      <div id="delete" class="button">Delete</div>
+      <div id="update" class="button">Update</div>
+    </div>
+  </div>
+
+  <footer>
+    <p>
+      <a href="/">Home</a> - <a href="#" id="signout">Sign Out</a>
+    </p>
+  </footer>
+
+  <script
+    src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js">
+  </script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js">
+  </script>
+  <script async src="/script.js"></script>
+</body>
+</html>
