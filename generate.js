@@ -49,7 +49,7 @@ module.exports = {
                             teams: teams,
                             fourFactors: getFourFactors(fourFactors, team),
                             teamStats: getTeamStats(teams),
-                            player: getPlayers(fourFactors.playerStats, teams.us)
+                            players: getPlayers(fourFactors.playerStats, teams.us)
                         });
                         callback(pageHtml);
                     });
