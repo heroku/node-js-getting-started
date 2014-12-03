@@ -1,0 +1,31 @@
+<table id="fourFactors">
+    <thead>
+    <tr>
+        <th>Factor</th>
+        <th>{{teamName}}</th>
+        <th>{{opponentName}}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Shooting (eFG%)</td>
+        <th>{{formatPercent efgPct}}</th>
+        <th>{{formatPercent oppEfgPct}}</th>
+    </tr>
+    <tr>
+        <td>Ball Handling (TO%)</td>
+        <th>{{formatPercent tmTovPct}}</th>
+        <th>{{formatPercent oppTovPct}}</th>
+    </tr>
+    <tr>
+        <td>Off Rebounding (OR%)</td>
+        <th>{{formatPercent orebPct}}</th>
+        <th>{{formatPercent oppOrebPct}}</th>
+    </tr>
+    <tr>
+        <td>Shooting FTs (FT Rate)</td>
+        <th>{{formatPercent ftaRate}}</th>
+        <th>{{formatPercent oppFtaRate}}</th>
+    </tr>
+    </tbody>
+</table>

@@ -1,0 +1,28 @@
+<table border="1" class="sbn-data-table">
+    <tbody>
+    <tr class="ui-state-odd">
+        <td style="text-align: center;"><b>Player<br></b></td>
+        <td style="text-align: center;"><b>AdjGS</b></td>
+        <td style="text-align: center;"><b>GmSc/Min</b></td>
+        <td style="text-align: center;"><b>Line</b></td>
+    </tr>
+    {{#each players}}
+    <tr class="{{#if isOdd}}ui-state-odd{{else}}ui-state-even{{/if}}">
+        <td>{{playerName}}</td>
+        <td align="right">{{formatNumber adjGS 1}}</td>
+        <td align="right">{{formatNumber adjGSMin 2}}</td>
+        <td>{{formatMinutes mIN}} Min,
+            {{pTS}} Pts
+            ({{#if fGA}}{{fGM}}-{{fGA}} FG,{{/if}}
+            {{#if fG3A}}{{fG3M}}-{{fG3A}} 3PT,{{/if}}
+            {{#if fTA}}{{fTM}}-{{fTA}} FT,{{/if}})
+            {{#if REB}}{{REB}} Reb ({{oREB}} Off){{/if}},
+            {{#if aST}}{{aST}} Ast,{{/if}}
+            {{#if sTL}}{{sTL}} Stl,{{/if}}
+            {{#if tO}}{{tO}} TO,{{/if}}
+            {{#if pF}}{{pF}} PF{{/if}}
+        </td>
+    </tr>
+    {{/each}}
+    </tbody>
+</table>
