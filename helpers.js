@@ -1,6 +1,9 @@
 var Handlebars = require('handlebars');
 var accounting = require('accounting');
 var _ = require('underscore');
+var moment = require('moment');
+
+var DATE_FORMAT = "MMM D, 'YY";
 
 var formatNumber = function(val, precision) {
     if (_.isNumber(val) ) {
@@ -32,4 +35,14 @@ Handlebars.registerHelper('formatMinutes', function(val, includeSeconds) {
             }
         }
     }
+});
+
+Handlebars.registerHelper('formatDate', function(date, format) {
+    if (typeof date == "string" || _.isNumber(date) || _.isDate(date)) {
+        if (!format || !_.isString(format)) {
+            format = DATE_FORMAT;
+        }
+        return moment.utc(date).format(format);
+    }
+    return '';
 });

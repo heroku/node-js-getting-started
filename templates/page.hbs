@@ -1,0 +1,20 @@
+<html>
+<head>
+    <title>{{teams.us.teamName}} vs. {{teams.them.teamName}} {{formatDate game.gameDateEst}}</title>
+</head>
+<body>
+<h1>Stats for {{teams.us.teamName}} vs. {{teams.them.teamName}} {{formatDate game.gameDateEst}}</h1>
+
+<h1>Result: {{teams.us.teamName}}: {{teams.us.pTS}} - {{teams.them.teamName}}: {{teams.them.pTS}}</h1>
+
+<h1>Four Factors</h1>
+<section class="stats">{{{fourFactors}}}</section>
+
+<h1>Team Stats</h1>
+<section class="stats">{{{teamStats}}}</section>
+
+<h1>Players</h1>
+<section class="stats">{{{players}}}</section>
+
+</body>
+</html>
