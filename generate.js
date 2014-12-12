@@ -199,9 +199,6 @@ function addAdvancedStats(team, opp) {
     team.tSA = team.fGA + 0.44 * team.fTA;
     team.tSPct = team.pTS / (2 * team.tSA);
 
-
-    //TODO possessions: see http://www.basketball-reference.com/about/glossary.html "Poss" - formula is rather complicated it would seem.
-
     team.pPP = (team.pTS) / team.pACE;
     team.pPS = (team.pTS) / (team.fGA);
     team.bCI = (team.aST + team.sTL) / team.tO;
@@ -210,6 +207,7 @@ function addAdvancedStats(team, opp) {
     team.expectedOREB = LEAGUE_AVERAGE_ORR * (team.oREB + opp.dREB);
     team.oREBDiff = team.oREB - team.expectedOREB;
 
+    team.uncontestedFGAPerPossession = team.uFGA / team.pACE
     team.percentOfFGAUncontested = team.uFGA / team.fGA;
     team.percentOfFGAContested = team.cFGA / team.fGA;
     team.uFGPct = team.uFGM / team.uFGA;
