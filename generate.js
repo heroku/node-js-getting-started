@@ -49,7 +49,7 @@ module.exports = {
                             teams: teams,
                             fourFactors: getFourFactors(fourFactors, team),
                             teamStats: getTeamStats(teams),
-                            players: getPlayers(fourFactors.playerStats, teams.us)
+                            players: getPlayers(fourFactors.playerStats, boxScoreUsage.sqlPlayersUsage, teams.us)
                         });
                         callback(pageHtml);
                     });
@@ -108,7 +108,12 @@ function getTeamStats(teams) {
     return html;
 }
 
-function getPlayers(players, team) {
+function getPlayers(players, sqlPlayersUsage, team) {
+    _.each(players, function (player) {
+        var playerUsage = _.findWhere(sqlPlayersUsage, {playerId: player.playerId});
+        _.extend(player, playerUsage);
+    });
+
     players = _.where(players, {teamId: global.team.teamId});
     _.each(players, function(player){
         player.REB = player.oREB + player.dREB;
@@ -125,10 +130,11 @@ function getPlayers(players, team) {
     var totalGameScore = _.reduce(players, function(memo, player) {
         return _.isNumber(player.gS) ? memo + player.gS : memo;
     }, 0);
+
     _.each(players, function(player) {
-        player.adjGS = (player.gS / totalGameScore) * team.pTS;
-        player.adjGSMin = player.minutes > 0 ? player.adjGS / player.minutes : 0;
-    });
+
+    })
+    addPlayerAdvancedStats(players, team, totalGameScore);
 
     players = _.sortBy(players, function(player){return -player.gS});
     var count = 1;
@@ -143,6 +149,45 @@ function getPlayers(players, team) {
         fs.writeFile(getDirectoryName() + 'players.html', html);
     });
     return html;
+}
+
+function addPlayerAdvancedStats(players, team, totalGameScore) {
+    _.each(players, function(player) {
+        player.adjGS = (player.gS / totalGameScore) * team.pTS;
+        player.adjGSMin = player.minutes > 0 ? player.adjGS / player.minutes : 0;
+        player.floorPercentage = getFloorPercentage(player, team);
+    });
+}
+
+
+//taken from http://www.rawbw.com/~deano/hoopla/floorpct.html
+function getFloorPercentage(player, team) {
+    var Q = getQValue(player, team);
+    var R = getRValue(player, team);
+    var offensiveReboundPercent = team.oREB / ( team.fGA - team.fGM);
+    if ( R == 0 ) {
+        return null;
+    } else {
+        var scoringPossessions = player.fGM - 0.37 * player.fGM * (Q / R) + 0.37 * player.aST   + 0.5 * player.fTM;
+        var possessions = player.fGA - (player.fGA - player.fGM) * offensiveReboundPercent + 0.37 * player.aST - 0.37 * player.fGM * Q / R + player.tO + 0.4 * player.fTA;
+        var floorPercentage = scoringPossessions / possessions;
+        console.log(player.playerName, scoringPossessions, possessions, floorPercentage);
+        if (!_.isNumber(floorPercentage) || floorPercentage < 0 || floorPercentage > 1) {
+            console.log("ERROR!!!!!!!!!!!!!");
+        }
+        return floorPercentage;
+    }
+}
+
+function getQValue(player, team) {
+    var teamMinutes = 48 * 5
+    var Q = team.aST / teamMinutes * 5 * player.minutes - player.aST;
+    return Q;
+}
+function getRValue(player, team) {
+    var teamMinutes = 48 * 5
+    var R = team.fGM / teamMinutes * 5 * player.minutes - player.aST;
+    return R;
 }
 
 function addAdvancedStats(team, opp) {

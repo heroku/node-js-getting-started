@@ -9,9 +9,12 @@
     {{#each players}}
     <tr class="{{#if isOdd}}ui-state-odd{{else}}ui-state-even{{/if}}">
         <td>{{playerName}}</td>
+        {{#if minutes}}
         <td align="right">{{formatNumber adjGS 1}}</td>
         <td align="right">{{formatNumber adjGSMin 2}}</td>
-        <td>{{formatMinutes mIN}} Min,
+        <td>
+
+            {{formatMinutes mIN}} Min,
             {{pTS}} Pts
             ({{#if fGA}}{{fGM}}-{{fGA}} FG,{{/if}}
             {{#if fG3A}}{{fG3M}}-{{fG3A}} 3PT,{{/if}}
@@ -22,7 +25,40 @@
             {{#if tO}}{{tO}} TO,{{/if}}
             {{#if pF}}{{pF}} PF{{/if}}
         </td>
+        {{else}}
+        <td colspan="4">DNP</td>
+        {{/if}}
     </tr>
+    {{/each}}
+    </tbody>
+</table>
+
+
+<table border="1" class="sbn-data-table">
+    <tbody>
+    <tr class="ui-state-even">
+        <td style="text-align: center;"><b>Player</b></td>
+        <td style="text-align: center;"><b>Usage%</b></td>
+        <td style="text-align: center;"><b>Floor%</b></td>
+        <td style="text-align: center;"><b>Plus Minus</b></td>
+        <td style="text-align: center;"><b>% T/O</b></td>
+    </tr>
+    {{#each players}}
+    {{#if floorPercentage}}
+    <tr class="ui-state-odd">
+        <td>{{playerName}}</td>
+        <td align="right">{{#ifCond usgPct '>=' 0.3}}
+            <strong>{{formatPercent usgPct}}</strong>
+            {{else}}
+            {{formatPercent usgPct}}
+            {{/ifCond}}
+        </td>
+        <td align="right">{{#ifCond floorPercentage '>=' 0.75}}<strong>{{formatPercent floorPercentage}}</strong>{{else}}{{formatPercent floorPercentage}}{{/ifCond}}</td>
+        <td align="right">{{#ifCond plusMinus '>=' 10}}<strong>{{formatNumber plusMinus}}</strong>{{else}}{{formatNumber plusMinus}}{{/ifCond}}</td>
+        <td align="right">{{#ifCond pctTov '>=' 0.25}}<strong>{{formatPercent pctTov}}</strong>{{else}}{{formatPercent pctTov}}{{/ifCond}}</td>
+    </tr>
+    {{/if}}
+
     {{/each}}
     </tbody>
 </table>
