@@ -22,22 +22,32 @@ module.exports = {
             global.team = team;
 
             if (date) {
-                date =moment(date).toDate()
+                date = moment(date).toDate()
             } else {
                 date = new Date();
             }
             getLastGameForTeam(team.teamId, date, function(game) {
+                console.log("Retrieving " + game.gAMECODE + "...");
                 var options = {gameId: game.gameId};
-                Promise.all([nba.api.boxScoreFourFactors(options), nba.api.boxScoreScoring(options), nba.api.boxScoreAdvanced(options), nba.api.boxScoreUsage(options)])
-                    .then(function(results){ //fourFactors, teamStats, boxScoreAdvanced, boxScoreUsage) {
+                Promise.all([nba.api.boxScoreFourFactors(options), nba.api.boxScoreAdvanced(options), nba.api.boxScoreUsage(options)])
+                    .then(function(results) {
+                        console.log("Stats retrieved - generating page for " + game.gAMECODE);
                         var fourFactors = results[0];
-                        var boxScoreScoring = results[1];
-                        var boxScoreAdvanced = results[2];
-                        var boxScoreUsage = results[3];
+                        var boxScoreAdvanced = results[1];
+                        var boxScoreUsage = results[2];
 
                         var teams = getTeamsObj(fourFactors.teamStats, team);
                         var playerTrackTeams = getTeamsObj(boxScoreUsage.playerTrackTeam, team);
                         var sqlTeamsAdvanced = getTeamsObj(boxScoreAdvanced.sqlTeamsAdvanced, team);
+
+                        var players = fourFactors.playerStats;
+                        var playersUsage = boxScoreUsage.sqlPlayersUsage;
+                        //merge player ojbects with player usage objects
+                        _.each(players, function (player) {
+                            var playerUsage = _.findWhere(playersUsage, {playerId: player.playerId});
+                            _.extend(player, playerUsage);
+                        });
+
                         //merge all 3 into a single team stats object
                         teams.us = _.defaults(teams.us, playerTrackTeams.us, sqlTeamsAdvanced.us);
                         teams.them = _.defaults(teams.them, playerTrackTeams.them, sqlTeamsAdvanced.them);
@@ -49,7 +59,7 @@ module.exports = {
                             teams: teams,
                             fourFactors: getFourFactors(fourFactors, team),
                             teamStats: getTeamStats(teams),
-                            players: getPlayers(fourFactors.playerStats, boxScoreUsage.sqlPlayersUsage, teams.us)
+                            players: getPlayers(players, teams.us)
                         });
                         callback(pageHtml);
                     });
@@ -108,12 +118,7 @@ function getTeamStats(teams) {
     return html;
 }
 
-function getPlayers(players, sqlPlayersUsage, team) {
-    _.each(players, function (player) {
-        var playerUsage = _.findWhere(sqlPlayersUsage, {playerId: player.playerId});
-        _.extend(player, playerUsage);
-    });
-
+function getPlayers(players, team) {
     players = _.where(players, {teamId: global.team.teamId});
     _.each(players, function(player){
         player.REB = player.oREB + player.dREB;
@@ -171,10 +176,6 @@ function getFloorPercentage(player, team) {
         var scoringPossessions = player.fGM - 0.37 * player.fGM * (Q / R) + 0.37 * player.aST   + 0.5 * player.fTM;
         var possessions = player.fGA - (player.fGA - player.fGM) * offensiveReboundPercent + 0.37 * player.aST - 0.37 * player.fGM * Q / R + player.tO + 0.4 * player.fTA;
         var floorPercentage = scoringPossessions / possessions;
-        console.log(player.playerName, scoringPossessions, possessions, floorPercentage);
-        if (!_.isNumber(floorPercentage) || floorPercentage < 0 || floorPercentage > 1) {
-            console.log("ERROR!!!!!!!!!!!!!");
-        }
         return floorPercentage;
     }
 }

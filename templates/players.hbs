@@ -41,23 +41,16 @@
         <td style="text-align: center;"><b>Usage%</b></td>
         <td style="text-align: center;"><b>Floor%</b></td>
         <td style="text-align: center;"><b>Plus Minus</b></td>
-        <td style="text-align: center;"><b>% T/O</b></td>
     </tr>
     {{#each players}}
-    {{#if floorPercentage}}
-    <tr class="ui-state-odd">
-        <td>{{playerName}}</td>
-        <td align="right">{{#ifCond usgPct '>=' 0.3}}
-            <strong>{{formatPercent usgPct}}</strong>
-            {{else}}
-            {{formatPercent usgPct}}
-            {{/ifCond}}
-        </td>
-        <td align="right">{{#ifCond floorPercentage '>=' 0.667}}<strong>{{formatPercent floorPercentage}}</strong>{{else}}{{formatPercent floorPercentage}}{{/ifCond}}</td>
-        <td align="right">{{#ifCond plusMinus '>=' 8}}<strong>{{formatNumber plusMinus}}</strong>{{else}}{{formatNumber plusMinus}}{{/ifCond}}</td>
-        <td align="right">{{#ifCond pctTov '>=' 0.25}}<strong>{{formatPercent pctTov}}</strong>{{else}}{{formatPercent pctTov}}{{/ifCond}}</td>
-    </tr>
-    {{/if}}
+        {{#if floorPercentage}}
+            <tr class="ui-state-odd">
+                <td>{{playerName}}</td>
+                <td align="right">{{#ifCond usgPct '>=' 0.3}}<strong>{{formatPercent usgPct}}</strong>{{else}}{{formatPercent usgPct}}{{/ifCond}}</td>
+                <td align="right">{{#ifCond floorPercentage '>=' 0.667}}<strong>{{formatPercent floorPercentage}}</strong>{{else}}{{formatPercent floorPercentage}}{{/ifCond}}</td>
+                <td align="right">{{#ifCond plusMinus '>=' 8}}<strong>{{formatNumber plusMinus}}</strong>{{else}}{{formatNumber plusMinus}}{{/ifCond}}</td>
+            </tr>
+        {{/if}}
 
     {{/each}}
     </tbody>
