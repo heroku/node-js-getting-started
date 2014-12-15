@@ -59,7 +59,8 @@ module.exports = {
                             teams: teams,
                             fourFactors: getFourFactors(fourFactors, team),
                             teamStats: getTeamStats(teams),
-                            players: getPlayers(players, teams.us)
+                            players: getPlayers(players, teams.us),
+                            spursIndex: getSpursIndex(teams.us)
                         });
                         callback(pageHtml);
                     });
@@ -218,6 +219,65 @@ function addGameScore(player) {
     player.gS = player.pTS + 0.4 * player.fGM - 0.7 * player.fGA - 0.4*(player.fTA - player.fTM) + 0.7 * player.oREB + 0.3 * player.dREB + player.sTL + 0.7 * player.aST + 0.7 * player.bLK - 0.4 * player.pF - player.tO;
 }
 
+
+function getSpursIndex(team) {
+    //averages come from 2013-2014 season averages
+    var factors = {
+        efgPct: {
+            name: "Shooting (eFG%)",
+            title: "Effective Field Goal Percentage - Effective Field Goal Percentage is a field goal percentage that is adjusted for made 3 pointers being 1.5 times more valuable than a 2 point shot.",
+            weight: 0.20,
+            average: 0.537
+        },
+        astPct: {
+            name: "Passing (AST%)",
+            title: "Assist Percentage - Assist Percentage is the percent of team's field goals made that were assisted.",
+            weight: 0.30,
+            average: 0.621
+        },
+        drebPct: {
+            name: "Rebounding - Defense (DREB%)",
+            title: "Defensive Rebound Percentage - The percentage of defensive rebounds a team obtains.",
+            weight: 0.15,
+            average: 0.764
+        },
+        orebPct: {
+            name: "Rebounding - Offense (OREB%)",
+            title: "Offensive Rebound Percentage - The percentage of offensive rebounds a team obtains.  NOTE: for the Spurs Index, this value is actually expected to be low, given Pop's emphasis on transition defense over offensive rebounding.  So a game in which the Spurs corralled a ton of offensive boards would actually score *lower* on the Spurs Index",
+            weight: 0.10,
+            average: 0.227,
+            inverse: true
+        },
+        defRating: {
+            name: "Defense (DefRtg)",
+            title: "Defensive Rating - The number of points allowed per 100 possessions by a team. For a player, it is the number of points per 100 possessions that the team allows while that individual player is on the court.",
+            weight: 0.25,
+            average: 100.1,
+            inverse: true
+        }
+    };
+
+    var totalScore = 0;
+    _.each(factors, function(factor, id) {
+        var expected = factor.average;
+        var actual = team[id];
+        if ( factor.inverse ) {
+            var score = 100 * factor.weight * (expected / actual);
+        } else {
+            score = 100 * factor.weight * (actual / expected);
+        }
+
+        console.log(id, expected, actual, score);
+        totalScore+= score;
+        factor.score = score;
+    });
+    team.spursIndex = totalScore;
+
+    var template = getTemplate('spursIndex');
+    var html = template({factors: factors, score: totalScore});
+
+    return html;
+}
 
 function getTemplate(name) {
     return Handlebars.compile(fs.readFileSync('./templates/' + name + '.hbs', "utf8"));

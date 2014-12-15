@@ -1,0 +1,22 @@
+<table border="1" class="sbn-data-table" id="spursIndex">
+    <thead>
+    <tr>
+        <th></th>
+        <th>Weight</th>
+        <th>Score</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each factors}}
+        <tr>
+            <td align="left" title="{{title}}">{{name}}</td>
+            <td align="right" title="This factor accounts for {{formatPercent weight}} of the Spurs Index score">{{formatPercent weight}}</td>
+            <td align="right" title="Average: {{expected}}. Actual: {{actual}}.">{{formatNumber score 1}}</td>
+        </tr>
+    {{/each}}
+    <tr>
+        <th align="left">Total</th>
+        <td colspan="2" align="right">{{formatNumber score 1}}</td>
+    </tr>
+    </tbody>
+</table>
