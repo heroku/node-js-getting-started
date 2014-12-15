@@ -1,7 +1,7 @@
 <table id="fourFactors">
     <thead>
     <tr>
-        <th>Factor</th>
+        <th></th>
         <th>{{teamName}}</th>
         <th>{{opponentName}}</th>
     </tr>
@@ -10,43 +10,43 @@
     <tr>
         <td>Shooting (eFG%)</td>
         {{#ifCond efgPct '>' oppEfgPct}}
-        <td><strong>{{formatPercent efgPct}}</strong></td>
-        <td>{{formatPercent oppEfgPct}}</td>
+        <td align="right"><strong>{{formatPercent efgPct}}</strong></td>
+        <td align="right">{{formatPercent oppEfgPct}}</td>
         {{else}}
-        <td>{{formatPercent efgPct}}</td>
-        <td><strong>{{formatPercent oppEfgPct}}</strong></td>
+        <td align="right">{{formatPercent efgPct}}</td>
+        <td align="right"><strong>{{formatPercent oppEfgPct}}</strong></td>
         {{/ifCond}}
     </tr>
     <tr>
         <td>Ball Handling (TO%)</td>
         {{#ifCond tmTovPct '>' oppTovPct}}
-        <td><strong>{{formatPercent tmTovPct}}</strong></td>
-        <td>{{formatPercent oppTovPct}}</td>
+        <td align="right"><strong>{{formatPercent tmTovPct}}</strong></td>
+        <td align="right">{{formatPercent oppTovPct}}</td>
         {{else}}
-        <td>{{formatPercent tmTovPct}}</td>
-        <td><strong>{{formatPercent oppTovPct}}</strong></td>
+        <td align="right">{{formatPercent tmTovPct}}</td>
+        <td align="right"><strong>{{formatPercent oppTovPct}}</strong></td>
         {{/ifCond}}
     </tr>
     <tr>
         <td>Off Rebounding (OR%)</td>
 
         {{#ifCond orebPct '>' oppOrebPct}}
-        <td><strong>{{formatPercent orebPct}}</strong></td>
-        <td>{{formatPercent oppOrebPct}}</td>
+        <td align="right"><strong>{{formatPercent orebPct}}</strong></td>
+        <td align="right">{{formatPercent oppOrebPct}}</td>
         {{else}}
-        <td>{{formatPercent orebPct}}</td>
-        <td><strong>{{formatPercent oppOrebPct}}</strong></td>
+        <td align="right">{{formatPercent orebPct}}</td>
+        <td align="right"><strong>{{formatPercent oppOrebPct}}</strong></td>
         {{/ifCond}}
     </tr>
     <tr>
         <td>Shooting FTs (FT Rate)</td>
         {{#ifCond ftaRate '>' oppFtaRate}}
-        <td><strong>{{formatPercent ftaRate}}</strong></td>
-        <td>{{formatPercent oppFtaRate}}</td>
+        <td align="right"><strong>{{formatPercent ftaRate}}</strong></td>
+        <td align="right">{{formatPercent oppFtaRate}}</td>
         {{else}}
-        <td>{{formatPercent ftaRate}}</td>
-        <td><strong>{{formatPercent oppFtaRate}}</strong></td>
-        {{/ifCond}}hl
+        <td align="right">{{formatPercent ftaRate}}</td>
+        <td align="right"><strong>{{formatPercent oppFtaRate}}</strong></td>
+        {{/ifCond}}
     </tr>
     </tbody>
 </table>
