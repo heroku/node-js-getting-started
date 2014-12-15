@@ -234,7 +234,7 @@ function getSpursIndex(team) {
             name: "Passing (AST%)",
             title: "Assist Percentage - Assist Percentage is the percent of team's field goals made that were assisted.",
             weight: 0.35,
-            average: 0.621 ,
+            average: 0.621,
             percent: true
         },
         drebPct: {
@@ -263,8 +263,14 @@ function getSpursIndex(team) {
         } else {
             score = 100 * factor.weight * (actual / expected);
         }
+        //was it good?
+        if (score / (factor.weight*100) > 1.1) {
+            factor.good = true;
+        } else if ( score / (factor.weight*100) < .9 ) {
+            factor.bad = true;
+        }
 
-        console.log(id, expected, actual, score);
+        console.log(expected, actual, score);
         totalScore+= score;
         factor.score = score;
         factor.actual = actual;
