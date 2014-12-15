@@ -1,17 +1,21 @@
 <table border="1" class="sbn-data-table" id="spursIndex">
     <thead>
     <tr>
-        <th></th>
-        <th>Weight</th>
+        <th>Factor</th>
+        <th>Value</th>
         <th>Score</th>
     </tr>
     </thead>
     <tbody>
     {{#each factors}}
-        <tr>
+        <tr {{#if inverse}}
+                {{#ifCond actual '<' average }}class="good" {{else}}class="bad"{{/ifCond}}
+            {{else}}
+                {{#ifCond actual '>' average }}class="good" {{else}}class="bad"{{/ifCond}}
+            {{/if}}>
             <td align="left" title="{{title}}">{{name}}</td>
-            <td align="right" title="This factor accounts for {{formatPercent weight}} of the Spurs Index score">{{formatPercent weight}}</td>
-            <td align="right" title="Average: {{expected}}. Actual: {{actual}}.">{{formatNumber score 1}}</td>
+            <td align="right" title="Expected: {{#if percent}}{{formatPercent average 1}}{{else}}{{formatNumber average 1}}{{/if}} (based on 2013-2014 regular season averages)">{{#if percent}}{{formatPercent actual 1}}{{else}}{{formatNumber actual 1}}{{/if}}</td>
+            <td align="right" title="This factor accounts for {{formatPercent weight}} of the Spurs Index score">{{formatNumber score 1}}</td>
         </tr>
     {{/each}}
     <tr>
