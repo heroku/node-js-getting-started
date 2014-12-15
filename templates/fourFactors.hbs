@@ -9,23 +9,44 @@
     <tbody>
     <tr>
         <td>Shooting (eFG%)</td>
-        <th>{{formatPercent efgPct}}</th>
-        <th>{{formatPercent oppEfgPct}}</th>
+        {{#ifCond efgPct '>' oppEfgPct}}
+        <td><strong>{{formatPercent efgPct}}</strong></td>
+        <td>{{formatPercent oppEfgPct}}</td>
+        {{else}}
+        <td>{{formatPercent efgPct}}</td>
+        <td><strong>{{formatPercent oppEfgPct}}</strong></td>
+        {{/ifCond}}
     </tr>
     <tr>
         <td>Ball Handling (TO%)</td>
-        <th>{{formatPercent tmTovPct}}</th>
-        <th>{{formatPercent oppTovPct}}</th>
+        {{#ifCond tmTovPct '>' oppTovPct}}
+        <td><strong>{{formatPercent tmTovPct}}</strong></td>
+        <td>{{formatPercent oppTovPct}}</td>
+        {{else}}
+        <td>{{formatPercent tmTovPct}}</td>
+        <td><strong>{{formatPercent oppTovPct}}</strong></td>
+        {{/ifCond}}
     </tr>
     <tr>
         <td>Off Rebounding (OR%)</td>
-        <th>{{formatPercent orebPct}}</th>
-        <th>{{formatPercent oppOrebPct}}</th>
+
+        {{#ifCond orebPct '>' oppOrebPct}}
+        <td><strong>{{formatPercent orebPct}}</strong></td>
+        <td>{{formatPercent oppOrebPct}}</td>
+        {{else}}
+        <td>{{formatPercent orebPct}}</td>
+        <td><strong>{{formatPercent oppOrebPct}}</strong></td>
+        {{/ifCond}}
     </tr>
     <tr>
         <td>Shooting FTs (FT Rate)</td>
-        <th>{{formatPercent ftaRate}}</th>
-        <th>{{formatPercent oppFtaRate}}</th>
+        {{#ifCond ftaRate '>' oppFtaRate}}
+        <td><strong>{{formatPercent ftaRate}}</strong></td>
+        <td>{{formatPercent oppFtaRate}}</td>
+        {{else}}
+        <td>{{formatPercent ftaRate}}</td>
+        <td><strong>{{formatPercent oppFtaRate}}</strong></td>
+        {{/ifCond}}
     </tr>
     </tbody>
 </table>
