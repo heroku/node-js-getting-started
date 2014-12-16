@@ -1,12 +1,10 @@
 <table border="1" class="sbn-data-table" id="spursIndex">
-    <thead>
-    <tr>
-        <th>Factor</th>
-        <th>Value</th>
-        <th>Score</th>
-    </tr>
-    </thead>
     <tbody>
+    <tr>
+        <td style="text-align: center;"><b>Factor</b></td>
+        <td style="text-align: center;"><b>Value</b></td>
+        <td style="text-align: center;"><b>Score</b></td>
+    </tr>
     {{#each factors}}
         <tr>
             <td align="left" title="{{title}}">{{name}}</td>
@@ -19,8 +17,8 @@
         </tr>
     {{/each}}
     <tr>
-        <th align="left">Total</th>
-        <td colspan="2" align="right">{{formatNumber score 1}}</td>
+        <td align="left"><b>Total</b></td>
+        <td colspan="2" align="right"><strong>{{formatNumber score 1}}</strong></td>
     </tr>
     </tbody>
 </table>

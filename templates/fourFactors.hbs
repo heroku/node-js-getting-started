@@ -1,12 +1,10 @@
-<table id="fourFactors">
-    <thead>
-    <tr>
-        <th></th>
-        <th>{{teamName}}</th>
-        <th>{{opponentName}}</th>
-    </tr>
-    </thead>
+<table id="fourFactors" class="sbn-data-table" border="1">
     <tbody>
+    <tr>
+        <td></td>
+        <td style="text-align: center;"><b>{{teamName}}</b></td>
+        <td style="text-align: center;"><b>{{opponentName}}</b></td>
+    </tr>
     <tr>
         <td>Shooting (eFG%)</td>
         {{#ifCond efgPct '>' oppEfgPct}}

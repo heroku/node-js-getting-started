@@ -1,25 +1,49 @@
 <html>
 <head>
     <title>{{teams.us.teamName}} vs. {{teams.them.teamName}} {{formatDate game.gameDateEst}}</title>
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script>$(document).ready(function(){
+        $('button#copy').click(function(e) {
+            e.preventDefault();
+            var html = $('#content').html();
+            console.log(html);
+            $('textarea.copy').remove();
+            $('<textarea class="copy"></textarea>').appendTo('body');
+            $('textarea.copy').val(html).focus();
+            //window.prompt("Copy to clipboard: Ctrl+C", html);
+        });
+    })
+    </script>
 </head>
 <body>
-<h1>Stats for {{teams.us.teamName}} vs. {{teams.them.teamName}} {{formatDate game.gameDateEst}}</h1>
+<div id="content">
+    <h1>{{teams.us.teamName}} vs. {{teams.them.teamName}} {{formatDate game.gameDateEst}}</h1>
 
-<h1>Result: {{teams.us.teamName}}: {{teams.us.pTS}} - {{teams.them.teamName}}: {{teams.them.pTS}}</h1>
+    <h2>Result: {{teams.us.teamName}}: {{teams.us.pTS}} - {{teams.them.teamName}}: {{teams.them.pTS}}</h2>
 
-<h1>Spurs Index:  {{formatNumber teams.us.spursIndex 1}}</h1>
-<section class="stats">
-    {{{spursIndex}}}
-</section>
+    <h2>Four Factors</h2>
+    <section class="stats">{{{fourFactors}}}</section>
 
-<h1>Four Factors</h1>
-<section class="stats">{{{fourFactors}}}</section>
+    <h2>Team Stats</h2>
+    <section class="stats">{{{teamStats}}}</section>
 
-<h1>Team Stats</h1>
-<section class="stats">{{{teamStats}}}</section>
+    <h2>Players</h2>
+    <section class="stats">{{{players}}}</section>
 
-<h1>Players</h1>
-<section class="stats">{{{players}}}</section>
+    <h2 title='The Spurs Index is a just-for-fun formula that attempts to quantify just how "Spursy" a particular game is.'>Spurs Index:  {{formatNumber teams.us.spursIndex 1}}</h2>
+    <section class="stats">
+        {{{spursIndex}}}
+    </section>
+
+
+    <script type="text/javascript">(function($){
+        $('table.sbn-data-table tbody tr:odd').addClass('ui-state-odd');
+        $('table.sbn-data-table tbody tr:even').addClass('ui-state-even');
+    })(jQuery)</script>
+</div>
+
+
+<button id="copy">Copy HTML</button>
 
 </body>
 </html>

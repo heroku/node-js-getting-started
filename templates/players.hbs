@@ -1,24 +1,26 @@
 <table border="1" class="sbn-data-table">
     <tbody>
-    <tr class="ui-state-odd">
+    <tr>
         <td style="text-align: center;"><b>Player<br></b></td>
         <td style="text-align: center;"><b>AdjGS</b></td>
         <td style="text-align: center;"><b>GmSc/Min</b></td>
         <td style="text-align: center;"><b>Line</b></td>
     </tr>
     {{#each players}}
-    <tr class="{{#if isOdd}}ui-state-odd{{else}}ui-state-even{{/if}}">
+    <tr>
         <td>{{playerName}}</td>
         {{#if minutes}}
         <td align="right">{{formatNumber adjGS 1}}</td>
         <td align="right">{{formatNumber adjGSMin 2}}</td>
         <td>
-
             {{formatMinutes mIN}} Min,
             {{pTS}} Pts
-            ({{#if fGA}}{{fGM}}-{{fGA}} FG,{{/if}}
-            {{#if fG3A}}{{fG3M}}-{{fG3A}} 3PT,{{/if}}
-            {{#if fTA}}{{fTM}}-{{fTA}} FT,{{/if}})
+            {{#if pTS}}
+                ({{#if fGA}}{{fGM}}-{{fGA}} FG,{{/if}}
+                {{#if fG3A}}{{fG3M}}-{{fG3A}} 3PT,{{/if}}
+                {{#if fTA}}{{fTM}}-{{fTA}} FT,{{/if}})
+            {{/if}}
+
             {{#if REB}}{{REB}} Reb ({{oREB}} Off){{/if}},
             {{#if aST}}{{aST}} Ast,{{/if}}
             {{#if bLK}}{{bLK}} Blk,{{/if}}
@@ -27,7 +29,7 @@
             {{#if pF}}{{pF}} PF{{/if}}
         </td>
         {{else}}
-        <td colspan="4">DNP</td>
+        <td colspan="3">DNP</td>
         {{/if}}
     </tr>
     {{/each}}
@@ -37,7 +39,7 @@
 
 <table border="1" class="sbn-data-table">
     <tbody>
-    <tr class="ui-state-even">
+    <tr>
         <td style="text-align: center;"><b>Player</b></td>
         <td style="text-align: center;"><b>Usage%</b></td>
         <td style="text-align: center;"><b>Floor%</b></td>
@@ -45,7 +47,7 @@
     </tr>
     {{#each players}}
         {{#if floorPercentage}}
-            <tr class="ui-state-odd">
+            <tr>
                 <td>{{playerName}}</td>
                 <td align="right">{{#ifCond usgPct '>=' 0.3}}<strong>{{formatPercent usgPct}}</strong>{{else}}{{formatPercent usgPct}}{{/ifCond}}</td>
                 <td align="right">{{#ifCond floorPercentage '>=' 0.667}}<strong>{{formatPercent floorPercentage}}</strong>{{else}}{{formatPercent floorPercentage}}{{/ifCond}}</td>

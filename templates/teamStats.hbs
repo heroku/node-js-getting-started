@@ -1,104 +1,102 @@
 <table border="1" class="sbn-data-table">
     <tbody>
-    <tr class="ui-state-even">
+    <tr>
         <td></td>
         <td width="70" style="text-align: center;"><b>{{us.teamName}}<br></b></td>
         <td width="70" style="text-align: center;"><b>{{them.teamName}}</b></td>
     </tr>
-    <tr class="ui-state-odd">
+    <tr>
         <td>Pace (No. of Possessions)</td>
         <td colspan="2" align="center">{{formatNumber us.pACE 1}}</td>
     </tr>
-    <tr class="ui-state-even">
+    <tr>
         <td>Points Per Possession (PPP)</td>
         <td align="right">{{formatNumber us.pPP 2}}</td>
         <td align="right">{{formatNumber them.pPP 2}}</td>
     </tr>
-    <tr class="ui-state-odd">
+    <tr>
         <td>Points Per Shot (PPS)</td>
         <td align="right">{{formatNumber us.pPS 2}}</td>
         <td align="right">{{formatNumber them.pPS 2}}</td>
     </tr>
-    <tr class="ui-state-even">
-        <td></td>
-        <td align="right"></td>
-        <td align="right"></td>
-    </tr>
-    <tr class="ui-state-odd">
-        <td>Offensive Rating</td>
-        <td align="right">{{formatNumber us.offRating 1}}</td>
-        <td align="right">{{formatNumber them.offRating 1}}</td>
-    </tr>
-    <tr class="ui-state-even">
-        <td>Defensive Rating</td>
-        <td align="right">{{formatNumber us.defRating 1}}</td>
-        <td align="right">{{formatNumber them.defRating 1}}</td>
-    </tr>
-    <tr class="ui-state-odd">
-        <td>Net Rating</td>
-        <td align="right">{{formatNumber us.netRating 1}}</td>
-        <td align="right">{{formatNumber them.netRating 1}}</td>
-    </tr>
-    <tr class="ui-state-even">
-        <td></td>
-        <td align="right"></td>
-        <td align="right"></td>
-    </tr>
-
-    <tr class="ui-state-odd">
-        <td></td>
-        <td style="text-align: center;"><b>{{us.teamName}}</b></td>
-        <td style="text-align: center;"><b>{{them.teamName}}</b></td>
-    </tr>
-    <tr class="ui-state-even">
+    <tr>
         <td>2-PT FG%</td>
         <td align="right">{{formatPercent us.fg2Pct 1}}</td>
         <td align="right">{{formatPercent them.fg2Pct 1}}</td>
     </tr>
-    <tr class="ui-state-odd">
+    <tr>
         <td>3-PT FG%</td>
         <td align="right">{{formatPercent us.fg3Pct 1}}</td>
         <td align="right">{{formatPercent them.fg3Pct 1}}</td>
     </tr>
-    <tr class="ui-state-even">
+    <tr>
         <td>FT%</td>
         <td align="right">{{formatPercent us.ftPct 1}}</td>
         <td align="right">{{formatPercent them.ftPct 1}}</td>
     </tr>
-    <tr class="ui-state-odd">
+    <tr>
         <td><a target="_blank" href="http://www.ehow.com/how_2092829_calculate-true-shooting-percentage-basketball.html">True Shooting %</a></td>
         <td align="right">{{formatPercent us.tSPct 1}}</td>
         <td align="right">{{formatPercent them.tSPct 1}}</td>
     </tr>
 
-    <tr class="ui-state-even">
+    <tr><td colspan="3"></td></tr>
+    <tr>
+        <td></td>
+        <td width="70" style="text-align: center;"><b>{{us.teamName}}<br></b></td>
+        <td width="70" style="text-align: center;"><b>{{them.teamName}}</b></td>
+    </tr>
+
+    <tr>
         <td>Uncontested FGA / Poss.</td>
         <td align="right">{{formatPercent us.uncontestedFGAPerPossession 1}}</td>
         <td align="right">{{formatPercent them.uncontestedFGAPerPossession 1}}</td>
     </tr>
-    <tr class="ui-state-odd">
+
+    <tr>
+        <td>Offensive Rating</td>
+        <td align="right">{{formatNumber us.offRating 1}}</td>
+        <td align="right">{{formatNumber them.offRating 1}}</td>
+    </tr>
+    <tr>
+        <td>Defensive Rating</td>
+        <td align="right">{{formatNumber us.defRating 1}}</td>
+        <td align="right">{{formatNumber them.defRating 1}}</td>
+    </tr>
+    <tr>
+        <td>Net Rating</td>
+        <td align="right">{{formatNumber us.netRating 1}}</td>
+        <td align="right">{{formatNumber them.netRating 1}}</td>
+    </tr>
+
+    <tr>
         <td></td>
         <td align="right"></td>
         <td align="right"></td>
     </tr>
 
+    <tr>
+        <td></td>
+        <td style="text-align: center;"><b>{{us.teamName}}</b></td>
+        <td style="text-align: center;"><b>{{them.teamName}}</b></td>
+    </tr>
 
-    <tr class="ui-state-even">
+    <tr>
         <td>Assists</td>
         <td align="right">{{us.aST}}</td>
         <td align="right">{{them.aST}}</td>
     </tr>
-    <tr class="ui-state-odd">
+    <tr>
         <td>Steals</td>
         <td align="right">{{us.sTL}}</td>
         <td align="right">{{them.sTL}}</td>
     </tr>
-    <tr class="ui-state-even">
+    <tr>
         <td>Turnovers</td>
         <td align="right">{{us.tO}}</td>
         <td align="right">{{them.tO}}</td>
     </tr>
-    <tr class="ui-state-odd">
+    <tr>
         <td>
             <u>B</u>all <u>C</u>ontrol <u>I</u>ndex (BCI)<br><i>(Assists + Steals) / TO</i>
         </td>
@@ -106,28 +104,28 @@
         <td align="right">{{formatNumber them.bCI 2}}</td>
     </tr>
 
-    <tr class="ui-state-even">
+    <tr>
         <td></td>
         <td align="right"></td>
         <td align="right"></td>
     </tr>
 
-    <tr class="ui-state-odd">
+    <tr>
         <td></td>
         <td style="text-align: center;"><b>{{us.teamName}}</b></td>
         <td style="text-align: center;"><b>{{them.teamName}}</b></td>
     </tr>
-    <tr class="ui-state-even">
+    <tr>
         <td>Expected Offensive Rebounds</td>
         <td align="right">{{formatNumber us.expectedOREB 1}}</td>
         <td align="right">{{formatNumber them.expectedOREB 1}}</td>
     </tr>
-    <tr class="ui-state-odd">
+    <tr>
         <td>Offensive Rebounds</td>
         <td align="right">{{formatNumber us.oREB}}</td>
         <td align="right">{{formatNumber them.oREB}}</td>
     </tr>
-    <tr class="ui-state-even">
+    <tr>
         <td>Difference</td>
         <td align="right">{{formatNumber us.oREBDiff 1}}</td>
         <td align="right">{{formatNumber them.oREBDiff}}</td>
