@@ -275,7 +275,6 @@ function getSpursIndex(team) {
             factor.bad = true;
         }
 
-        console.log(expected, actual, score);
         totalScore+= score;
         factor.score = score;
         factor.actual = actual;

@@ -17,7 +17,7 @@
     </tr>
     <tr>
         <td>Ball Handling (TO%)</td>
-        {{#ifCond tmTovPct '>' oppTovPct}}
+        {{#ifCond tmTovPct '<' oppTovPct}}
         <td align="right"><strong>{{formatPercent tmTovPct}}</strong></td>
         <td align="right">{{formatPercent oppTovPct}}</td>
         {{else}}
