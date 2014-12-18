@@ -50,7 +50,9 @@ module.exports = {
 
                         //merge all 3 into a single team stats object
                         teams.us = _.defaults(teams.us, playerTrackTeams.us, sqlTeamsAdvanced.us);
+                        teams.us.minutes = getMinutes(teams.us.mIN);
                         teams.them = _.defaults(teams.them, playerTrackTeams.them, sqlTeamsAdvanced.them);
+                        teams.them.minutes = getMinutes(teams.them.mIN);
 
                         var pageTemplate = getTemplate('page');
 
@@ -119,17 +121,22 @@ function getTeamStats(teams) {
     return html;
 }
 
+function getMinutes(min) {
+    if (_.isString(min) && min.length > 0 ) {
+        var array = min.split(':');
+        if ( array && array.length == 2) {
+            return parseInt(array[0],10) + parseInt(array[1],10) / 60;
+        }
+    }
+    return 0;
+}
+
 function getPlayers(players, team) {
     players = _.where(players, {teamId: global.team.teamId});
     _.each(players, function(player){
         player.REB = player.oREB + player.dREB;
         var min = player.mIN;
-        if (_.isString(min) && min.length > 0 ) {
-            var array = min.split(':');
-            if ( array && array.length == 2) {
-                player.minutes = parseInt(array[0],10) + parseInt(array[1],10) / 60;
-            }
-        }
+        player.minutes = getMinutes(min);
     });
     _.each(players, addGameScore);
     //calculate adjusted game score to redistribute points actually scored
@@ -182,13 +189,11 @@ function getFloorPercentage(player, team) {
 }
 
 function getQValue(player, team) {
-    var teamMinutes = 48 * 5
-    var Q = team.aST / teamMinutes * 5 * player.minutes - player.aST;
+    var Q = team.aST / team.minutes * 5 * player.minutes - player.aST;
     return Q;
 }
 function getRValue(player, team) {
-    var teamMinutes = 48 * 5
-    var R = team.fGM / teamMinutes * 5 * player.minutes - player.aST;
+    var R = team.fGM / team.minutes * 5 * player.minutes - player.aST;
     return R;
 }
 
