@@ -218,7 +218,7 @@
             var periodMinutes = Math.floor(periodTime);
             var periodSeconds = Math.round(60 * (periodTime - periodMinutes));
 
-            var prettyTime = period + ' ' + periodMinutes + ':' + periodSeconds;
+            var prettyTime = period + ' ' + periodMinutes + ':' + (periodSeconds < 10 ? '0' + periodSeconds : periodSeconds);
             if ( gameTime == finalMinute ) {
                 prettyTime = "FINAL";
             }
