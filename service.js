@@ -25,11 +25,11 @@ module.exports = {
 };
 
 function getGameStatsFromApi(game, team, date, callback, error) {
-    console.log("Calling NBA stats for game " + game.gAMECODE + "...");
+    console.log("Calling NBA stats for game " + game.gameId + "...");
     var options = {gameId: game.gameId};
     Promise.all([nba.api.boxScoreFourFactors(options), nba.api.boxScoreAdvanced(options), nba.api.boxScoreUsage(options), nba.api.playByPlay(options)])
         .then(function(results) {
-            console.log("Stats retrieved for " + game.gAMECODE);
+            console.log("Stats retrieved for " + game.gameId);
             var fourFactors = results[0];
             var boxScoreAdvanced = results[1];
             var boxScoreUsage = results[2];
@@ -54,10 +54,7 @@ function getGameStatsFromApi(game, team, date, callback, error) {
                 gameFlowData: getGameFlowChartData(playbyplay.playByPlay, teams, game)
             };
 
-            dao.saveGame(data, function(data) {
-                console.log("save game callback");
-                callback(data);
-            }, error);
+            dao.saveGame(data, callback, error);
         }).catch(function(e) {
             console.log("error: " + e, e);
             error(e);
