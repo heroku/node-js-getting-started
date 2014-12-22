@@ -14,9 +14,9 @@ var LEAGUE_AVERAGE_DRR = .7494666666666669;
 
 module.exports = {
     generateStats: function(teamName, date, callback) {
-        nba.ready(function() {
+
             var team = _.find(nba.teamsInfo, function(team) {
-                return team.simpleName.toUpperCase() == teamName.toUpperCase()
+                return team.simpleName.toUpperCase().indexOf(teamName.toUpperCase()) >= 0
             });
             console.log("Looking up last game for ", team.teamName);
             global.team = team;
@@ -67,7 +67,7 @@ module.exports = {
                         callback(pageHtml);
                     });
             });
-        });
+
 
     }
 };
