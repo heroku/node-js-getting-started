@@ -308,9 +308,9 @@ function getGameFlowChartData(playByPlay, teams, game) {
     var gameTime = ['gameTime'];
     var us = [teams.us.teamName];
     var them = [teams.them.teamName];
+    var playDesc = ["Play"];
     _.each(playByPlay, function(play) {
         if ( play.sCORE ) {
-            console.log(play.sCORE);
             var scores = play.sCORE.split(' - ');
             var usHomeTeam = game.homeTeamId == teams.us.teamId;
             var usIndex = usHomeTeam ? 1 : 0;
@@ -318,12 +318,14 @@ function getGameFlowChartData(playByPlay, teams, game) {
             us.push(scores[usIndex]);
             them.push(scores[themIndex]);
             gameTime.push(getGameMinute(play.pERIOD, play.pCTIMESTRING))
+            playDesc.push(play.vISITORDESCRIPTION || play.hOMEDESCRIPTION);
         }
     });
     var columns = [
         gameTime,
         us,
-        them
+        them,
+        playDesc
     ];
     console.log(columns);
     return columns;
