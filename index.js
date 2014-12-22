@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var generate = require('./generate');
 var nba = require('nba');
-var controller = require('./routes/gameStatsController');
+var controller = require('./controller');
 
 nba.ready(function() {
 

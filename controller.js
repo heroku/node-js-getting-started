@@ -4,8 +4,8 @@ var _ = require('underscore');
 var Handlebars = require('handlebars');
 var moment = require('moment');
 var Promise = require( "es6-promise" ).Promise;
-var dao = require('../dao/nbaStatsDao');
-require('../helpers');
+var service = require('./service');
+require('./helpers');
 
 var GAME_STATUS_FINAL = 3;
 
@@ -23,10 +23,8 @@ module.exports = {
             date = new Date();
         }
         getLastGameForTeam(team.teamId, date, function(game) {
-            dao.getGameStats(game, team, function(data) {
-                console.log("got data", data);
+            service.getGameStats(game, team, function(data) {
                 var html = getTemplate('page')(data);
-                console.log('html', html);
                 callback(html);
             }, error);
         }, error);

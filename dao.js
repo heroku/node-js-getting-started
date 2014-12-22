@@ -1,9 +1,6 @@
 var nba = require('nba');
 var _ = require('underscore');
-var moment = require('moment');
 var Promise = require( "es6-promise" ).Promise;
-
-var GAME_STATUS_FINAL = 3;
 
 var LEAGUE_AVERAGE_ORR = .25016666666666662;
 var LEAGUE_AVERAGE_DRR = .7494666666666669;
@@ -74,26 +71,6 @@ function getPlayers(players, playersUsage, us) {
     players = adornPlayerStats(players, us)
 
     return players;
-}
-
-
-function getLastGameForTeam(teamId, date, callback) {
-    if (!date) {
-        date = new Date();
-    }
-
-    nba.api.scoreboard({ GameDate: moment(date).format('MM/DD/YYYY') }).then(function(resp) {
-        var teamGame = _.find(resp.gameHeader, function(game){
-            return game.homeTeamId == teamId || game.visitorTeamId == teamId
-        });
-        if ( !teamGame || teamGame.gameStatusId != GAME_STATUS_FINAL ) {
-            date = moment(date).subtract(1, 'days').toDate();
-            getLastGameForTeam(teamId, date, callback);
-        } else {
-            global.date = date;
-            callback(teamGame);
-        }
-    });
 }
 
 function getMinutes(min) {
