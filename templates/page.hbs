@@ -40,10 +40,12 @@
     <h2>Players <i style="font-size: 0.7em; font-weight:normal;">(Definitions at bottom of post)</i></h2>
     <section class="stats">{{> players}}</section>
 
+    {{#if includeSpursIndex}}
     <h2 title='The Spurs Index is a just-for-fun formula that attempts to quantify just how "Spursy" a particular game is.'>Spurs Index:  {{formatNumber us.spursIndexScore 1}} <a style="font-size: 0.7em; font-style:italic;" href="#spursIndex">(def.)</a></h2>
     <section class="stats">
         {{> spursIndex}}
     </section>
+    {{/if}}
 
 
     <section id="definitions" style="font-style: italic;">

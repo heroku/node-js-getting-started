@@ -22,15 +22,9 @@ mongoose.connect(uristring, function (err, res) {
 // This is the schema.  Note the types, validation and trim
 // statements.  They enforce useful constraints on the data.
 var gameSchema = new mongoose.Schema({
-    date: {
-        type: Date
-    },
-    gameId: {
-        type: String
-    },
-    teamId: {
-        type: String
-    },
+    date: {type: Date},
+    gameId: {type: String},
+    teamId: {type: String},
 
     game: {type:Schema.Types.Mixed},
     homeGame: {type:Schema.Types.Mixed},
@@ -85,25 +79,3 @@ module.exports = {
     }
 
 };
-
-
-/*
-GameModel.find({}).exec(function(err, result) {
-    if (!err) {
-        res.write(html1 + JSON.stringify(result, undefined, 2) +  html2 + result.length + html3);
-        // Let's see if there are any senior citizens (older than 64) with the last name Doe using the query constructor
-        var query = GameModel.find({'name.last': 'Doe'}); // (ok in this example, it's all entries)
-        query.where('age').gt(64);
-        query.exec(function(err, result) {
-            if (!err) {
-                res.end(html4 + JSON.stringify(result, undefined, 2) + html5 + result.length + html6);
-            } else {
-                res.end('Error in second query. ' + err)
-            }
-        });
-    } else {
-        res.end('Error in first query. ' + err)
-    }
-});
-
-*/

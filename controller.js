@@ -11,23 +11,34 @@ var GAME_STATUS_FINAL = 3;
 
 
 module.exports = {
-    getGameStats: function(teamName, date, callback, error) {
-        var team = _.find(nba.teamsInfo, function(team) {
-            return team.simpleName.toUpperCase().indexOf(teamName.toUpperCase()) >= 0
-        });
-        console.log("Looking up last game for ", team.teamName);
+    getGameStats: function(req,res,next) {
+        var name = req.param('name');
+        var date = req.param('date');
+        var includeSpursIndex = req.param('spurs');
 
-        if (date) {
-            date = moment(date).toDate()
-        } else {
-            date = new Date();
+        try {
+            var team = _.find(nba.teamsInfo, function(team) {
+                return team.simpleName.toUpperCase().indexOf(name.toUpperCase()) >= 0
+            });
+            console.log("Looking up last game for ", team.teamName);
+
+            if (date) {
+                date = moment(date).toDate()
+            } else {
+                date = new Date();
+            }
+
+            getLastGameForTeam(team.teamId, date, function(game) {
+                service.getGameStats(game, team, date, function(data) {
+                    data.includeSpursIndex = includeSpursIndex || false;
+                    var html = getTemplate('page')(data);
+                    res.send(html);
+                }, onError);
+            }, onError);
+
+        } catch(e) {
+            onError(e, res);
         }
-        getLastGameForTeam(team.teamId, date, function(game) {
-            service.getGameStats(game, team, date, function(data) {
-                var html = getTemplate('page')(data);
-                callback(html);
-            }, error);
-        }, error);
     }
 };
 
@@ -54,4 +65,9 @@ function getLastGameForTeam(teamId, date, callback, error) {
 
 function getTemplate(name) {
     return Handlebars.compile(fs.readFileSync('./templates/' + name + '.hbs', "utf8"));
+}
+
+function onError(e, res) {
+    console.log("Error", e);
+    res.send('Error generating stats: ' + e);
 }

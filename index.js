@@ -13,29 +13,8 @@ nba.ready(function() {
         response.send('Hello World!');
     });
 
-    app.get('/team/:name/:date', generateDataForTeam);
-    app.get('/team/:name', generateDataForTeam);
-
-    function generateDataForTeam(req,res,next) {
-        var name = req.param('name');
-        var date = req.param('date');
-
-        try {
-            //generate.generateStats(name, date, function(pageHtml) {
-            controller.getGameStats(name, date, function(pageHtml) {
-                res.send(pageHtml);
-            }, function(e){
-                onError(e, res);
-            });
-        } catch(e) {
-            onError(e, res);
-        }
-    }
-
-    function onError(e, res) {
-        console.log("Error", e);
-        res.send('Error generating stats: ' + e);
-    }
+    app.get('/team/:name/:date', controller.getGameStats);
+    app.get('/team/:name', controller.getGameStats);
 
     app.listen(app.get('port'), function() {
         console.log("Node app is running at localhost:" + app.get('port'));
