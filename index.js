@@ -23,6 +23,7 @@ nba.ready(function() {
         try {
             //generate.generateStats(name, date, function(pageHtml) {
             controller.getGameStats(name, date, function(pageHtml) {
+                console.log("OK, got the html, now send this shit");
                 res.send(pageHtml);
                 next();
             }, function(e){

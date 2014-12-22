@@ -55,7 +55,7 @@ function getGameStatsFromApi(game, team, date, callback, error) {
             };
 
             dao.saveGame(data, function(data) {
-                console.log("Here", data);
+                console.log("save game callback");
                 callback(data);
             }, error);
         }).catch(function(e) {
