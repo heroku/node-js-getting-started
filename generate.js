@@ -75,25 +75,7 @@ module.exports = {
                     throw e;
                 });
         });
-    },
-    getUncontestedStats: function(teamName, callback) {
-        var team = _.find(nba.teamsInfo, function(team) {
-            return team.simpleName.toUpperCase().indexOf(teamName.toUpperCase()) >= 0
-        });
-        console.log("Looking up stats for ", team.teamName);
-
-
-
-        //var options = {teamId: team.teamId, season: '2013-2014'};
-        nba.api.shots().then(function(results) {
-            console.log(results);
-            callback(results);
-        }).catch(function(e) {
-                console.log("error: " + e, e);
-                res.send(e);
-            });
     }
-
 };
 
 

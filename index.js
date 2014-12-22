@@ -15,14 +15,6 @@ nba.ready(function() {
     app.get('/team/:name/:date', generateDataForTeam);
     app.get('/team/:name', generateDataForTeam);
 
-    app.get('/stats/:name/', function(req, res, next) {
-        var name = req.param('name');
-        generate.getUncontestedStats(name, function(html) {
-
-            res.send(html);
-        });
-    });
-
     function generateDataForTeam(req,res,next) {
         var name = req.param('name');
         var date = req.param('date');
