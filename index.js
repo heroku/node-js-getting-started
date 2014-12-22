@@ -23,11 +23,17 @@ nba.ready(function() {
             generate.generateStats(name, date, function(pageHtml) {
                 res.send(pageHtml);
                 next();
+            }, function(e){
+                onError(e, res);
             });
         } catch(e) {
-            console.log("Error", e);
-            res.send('Error generating stats: ' + e);
+            onError(e, res);
         }
+    }
+
+    function onError(e, res) {
+        console.log("Error", e);
+        res.send('Error generating stats: ' + e);
     }
 
     app.listen(app.get('port'), function() {

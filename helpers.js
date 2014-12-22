@@ -51,6 +51,10 @@ Handlebars.registerHelper('formatPercent', function(val, precision) {
     return formatNumber(val, precision) + '%';
 });
 
+Handlebars.registerHelper('toJSON', function(obj) {
+    return obj ? new Handlebars.SafeString(JSON.stringify(obj)) : null;
+});
+
 Handlebars.registerHelper('formatMinutes', function(val, includeSeconds) {
     if (_.isString(val) ) {
         var array = val.split(":");

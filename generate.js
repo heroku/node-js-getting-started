@@ -13,11 +13,10 @@ var LEAGUE_AVERAGE_ORR = .25016666666666662;
 var LEAGUE_AVERAGE_DRR = .7494666666666669;
 
 module.exports = {
-    generateStats: function(teamName, date, callback) {
+    generateStats: function(teamName, date, callback, error) {
         var team = _.find(nba.teamsInfo, function(team) {
             return team.simpleName.toUpperCase().indexOf(teamName.toUpperCase()) >= 0
         });
-        team = undefined;
         console.log("Looking up last game for ", team.teamName);
         global.team = team;
 
@@ -29,12 +28,13 @@ module.exports = {
         getLastGameForTeam(team.teamId, date, function(game) {
             console.log("Retrieving " + game.gAMECODE + "...");
             var options = {gameId: game.gameId};
-            Promise.all([nba.api.boxScoreFourFactors(options), nba.api.boxScoreAdvanced(options), nba.api.boxScoreUsage(options)])
+            Promise.all([nba.api.boxScoreFourFactors(options), nba.api.boxScoreAdvanced(options), nba.api.boxScoreUsage(options), nba.api.playByPlay(options)])
                 .then(function(results) {
                     console.log("Stats retrieved - generating page for " + game.gAMECODE);
                     var fourFactors = results[0];
                     var boxScoreAdvanced = results[1];
                     var boxScoreUsage = results[2];
+                    var playbyplay = results[3];
 
                     var teams = getTeamsObj(fourFactors.teamStats, team);
                     var playerTrackTeams = getTeamsObj(boxScoreUsage.playerTrackTeam, team);
@@ -62,9 +62,14 @@ module.exports = {
                         fourFactors: getFourFactors(fourFactors, team),
                         teamStats: getTeamStats(teams),
                         players: getPlayers(players, teams.us),
-                        spursIndex: getSpursIndex(teams.us)
+                        spursIndex: getSpursIndex(teams.us),
+                        gameFlowData: getGameFlowChartData(playbyplay.playByPlay, teams, game)
                     });
                     callback(pageHtml);
+                }).catch(function(e) {
+                    console.log("error: " + e, e);
+                    error(e);
+                    throw e;
                 });
         });
     }
@@ -283,6 +288,45 @@ function getSpursIndex(team) {
     var html = template({factors: factors, score: totalScore});
 
     return html;
+}
+
+function getGameMinute(period, time) {
+    var periodLength = period <= 4 ? 12 : 5;
+    var gameMinute = 12 * (period - 1);
+    if ( period > 4 ){
+        gameMinute = 48 + 5 * (period - 5);
+    }
+    var minutesSeconds = time.split(':');
+    var minute = parseInt(minutesSeconds[0], 10);
+    var seconds = parseInt(minutesSeconds[1], 10);
+    var periodMinutes = minute + seconds / 60;
+    gameMinute = gameMinute + periodLength - periodMinutes;
+    return gameMinute
+}
+
+function getGameFlowChartData(playByPlay, teams, game) {
+    var gameTime = ['gameTime'];
+    var us = [teams.us.teamName];
+    var them = [teams.them.teamName];
+    _.each(playByPlay, function(play) {
+        if ( play.sCORE ) {
+            console.log(play.sCORE);
+            var scores = play.sCORE.split(' - ');
+            var usHomeTeam = game.homeTeamId == teams.us.teamId;
+            var usIndex = usHomeTeam ? 1 : 0;
+            var themIndex = usHomeTeam ? 0 : 1;
+            us.push(scores[usIndex]);
+            them.push(scores[themIndex]);
+            gameTime.push(getGameMinute(play.pERIOD, play.pCTIMESTRING))
+        }
+    });
+    var columns = [
+        gameTime,
+        us,
+        them
+    ];
+    console.log(columns);
+    return columns;
 }
 
 function getTemplate(name) {
