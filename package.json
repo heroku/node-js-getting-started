@@ -14,7 +14,8 @@
     "mkdirp": "0.5.0",
     "moment": "2.8.4",
     "nba": "~0.2.0",
-    "underscore": "1.7.0"
+    "underscore": "1.7.0",
+    "mongoose": "3.8.15"
   },
   "engines": {
     "node": "0.10.x"

@@ -23,7 +23,7 @@ module.exports = {
             date = new Date();
         }
         getLastGameForTeam(team.teamId, date, function(game) {
-            service.getGameStats(game, team, function(data) {
+            service.getGameStats(game, team, date, function(data) {
                 var html = getTemplate('page')(data);
                 callback(html);
             }, error);

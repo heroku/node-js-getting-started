@@ -1,46 +1,67 @@
 var nba = require('nba');
 var _ = require('underscore');
 var Promise = require( "es6-promise" ).Promise;
+var dao = require('./dao');
 
 var LEAGUE_AVERAGE_ORR = .25016666666666662;
 var LEAGUE_AVERAGE_DRR = .7494666666666669;
 
 module.exports = {
-    getGameStats: function(game, team, callback, error) {
-        console.log("Retrieving " + game.gAMECODE + "...");
-        var options = {gameId: game.gameId};
-        Promise.all([nba.api.boxScoreFourFactors(options), nba.api.boxScoreAdvanced(options), nba.api.boxScoreUsage(options), nba.api.playByPlay(options)])
-            .then(function(results) {
-                console.log("Stats retrieved for " + game.gAMECODE);
-                var fourFactors = results[0];
-                var boxScoreAdvanced = results[1];
-                var boxScoreUsage = results[2];
-                var playbyplay = results[3];
-
-
-                var teams = getTeams([fourFactors.teamStats, fourFactors.sqlTeamsFourFactors, boxScoreUsage.playerTrackTeam, boxScoreAdvanced.sqlTeamsAdvanced], team);
-                var players = getPlayers(fourFactors.playerStats, boxScoreUsage.sqlPlayersUsage, teams.us);
-
-                var data = {
-                    game: game,
-                    homeGame: game.homeTeamId == teams.us.teamId,
-                    teams: teams,
-                    us: teams.us,
-                    them: teams.them,
-                    fourFactors: teams.us,
-                    players: players,
-                    spursIndex: getSpursIndex(teams.us),
-                    gameFlowData: getGameFlowChartData(playbyplay.playByPlay, teams, game)
-                };
-
-                callback(data);
-            }).catch(function(e) {
-                console.log("error: " + e, e);
-                error(e);
-                throw e;
-            });
+    getGameStats: function(game, team, date, callback, error) {
+        console.log("Searching MongoDB for game " + game.gameId);
+        dao.getGame({gameId: game.gameId, teamId: team.teamId}, function(results) {
+            if ( results.length ) {
+                console.log("Found game " + game.gameId + "in DB");
+                callback(results[0]);
+            } else {
+                getGameStatsFromApi(game, team, date, callback, error)
+            }
+        }, function(err) {
+            if ( err ) {
+                error(err);
+            }
+        });
     }
 };
+
+function getGameStatsFromApi(game, team, date, callback, error) {
+    console.log("Calling NBA stats for game " + game.gAMECODE + "...");
+    var options = {gameId: game.gameId};
+    Promise.all([nba.api.boxScoreFourFactors(options), nba.api.boxScoreAdvanced(options), nba.api.boxScoreUsage(options), nba.api.playByPlay(options)])
+        .then(function(results) {
+            console.log("Stats retrieved for " + game.gAMECODE);
+            var fourFactors = results[0];
+            var boxScoreAdvanced = results[1];
+            var boxScoreUsage = results[2];
+            var playbyplay = results[3];
+
+
+            var teams = getTeams([fourFactors.teamStats, fourFactors.sqlTeamsFourFactors, boxScoreUsage.playerTrackTeam, boxScoreAdvanced.sqlTeamsAdvanced], team);
+            var players = getPlayers(fourFactors.playerStats, boxScoreUsage.sqlPlayersUsage, teams.us);
+
+            var data = {
+                game: game,
+                date: date,
+                gameId: game.gameId,
+                teamId: team.teamId,
+                homeGame: game.homeTeamId == teams.us.teamId,
+                teams: teams,
+                us: teams.us,
+                them: teams.them,
+                fourFactors: teams.us,
+                players: players,
+                spursIndex: getSpursIndex(teams.us),
+                gameFlowData: getGameFlowChartData(playbyplay.playByPlay, teams, game)
+            };
+
+            dao.saveGame(data);
+            callback(data);
+        }).catch(function(e) {
+            console.log("error: " + e, e);
+            error(e);
+            throw e;
+        });
+}
 
 function getTeams(statsArrays, usTeam) {
     var us = {};
