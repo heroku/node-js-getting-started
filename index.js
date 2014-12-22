@@ -26,7 +26,7 @@ nba.ready(function() {
             });
         } catch(e) {
             console.log("Error", e);
-            res.send('Error generating', e);
+            res.send('Error generating stats: ' + e);
         }
     }
 

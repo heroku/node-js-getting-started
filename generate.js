@@ -14,61 +14,59 @@ var LEAGUE_AVERAGE_DRR = .7494666666666669;
 
 module.exports = {
     generateStats: function(teamName, date, callback) {
+        var team = _.find(nba.teamsInfo, function(team) {
+            return team.simpleName.toUpperCase().indexOf(teamName.toUpperCase()) >= 0
+        });
+        team = undefined;
+        console.log("Looking up last game for ", team.teamName);
+        global.team = team;
 
-            var team = _.find(nba.teamsInfo, function(team) {
-                return team.simpleName.toUpperCase().indexOf(teamName.toUpperCase()) >= 0
-            });
-            console.log("Looking up last game for ", team.teamName);
-            global.team = team;
+        if (date) {
+            date = moment(date).toDate()
+        } else {
+            date = new Date();
+        }
+        getLastGameForTeam(team.teamId, date, function(game) {
+            console.log("Retrieving " + game.gAMECODE + "...");
+            var options = {gameId: game.gameId};
+            Promise.all([nba.api.boxScoreFourFactors(options), nba.api.boxScoreAdvanced(options), nba.api.boxScoreUsage(options)])
+                .then(function(results) {
+                    console.log("Stats retrieved - generating page for " + game.gAMECODE);
+                    var fourFactors = results[0];
+                    var boxScoreAdvanced = results[1];
+                    var boxScoreUsage = results[2];
 
-            if (date) {
-                date = moment(date).toDate()
-            } else {
-                date = new Date();
-            }
-            getLastGameForTeam(team.teamId, date, function(game) {
-                console.log("Retrieving " + game.gAMECODE + "...");
-                var options = {gameId: game.gameId};
-                Promise.all([nba.api.boxScoreFourFactors(options), nba.api.boxScoreAdvanced(options), nba.api.boxScoreUsage(options)])
-                    .then(function(results) {
-                        console.log("Stats retrieved - generating page for " + game.gAMECODE);
-                        var fourFactors = results[0];
-                        var boxScoreAdvanced = results[1];
-                        var boxScoreUsage = results[2];
+                    var teams = getTeamsObj(fourFactors.teamStats, team);
+                    var playerTrackTeams = getTeamsObj(boxScoreUsage.playerTrackTeam, team);
+                    var sqlTeamsAdvanced = getTeamsObj(boxScoreAdvanced.sqlTeamsAdvanced, team);
 
-                        var teams = getTeamsObj(fourFactors.teamStats, team);
-                        var playerTrackTeams = getTeamsObj(boxScoreUsage.playerTrackTeam, team);
-                        var sqlTeamsAdvanced = getTeamsObj(boxScoreAdvanced.sqlTeamsAdvanced, team);
-
-                        var players = fourFactors.playerStats;
-                        var playersUsage = boxScoreUsage.sqlPlayersUsage;
-                        //merge player ojbects with player usage objects
-                        _.each(players, function (player) {
-                            var playerUsage = _.findWhere(playersUsage, {playerId: player.playerId});
-                            _.extend(player, playerUsage);
-                        });
-
-                        //merge all 3 into a single team stats object
-                        teams.us = _.defaults(teams.us, playerTrackTeams.us, sqlTeamsAdvanced.us);
-                        teams.us.minutes = getMinutes(teams.us.mIN);
-                        teams.them = _.defaults(teams.them, playerTrackTeams.them, sqlTeamsAdvanced.them);
-                        teams.them.minutes = getMinutes(teams.them.mIN);
-
-                        var pageTemplate = getTemplate('page');
-
-                        var pageHtml = pageTemplate({
-                            game: game,
-                            teams: teams,
-                            fourFactors: getFourFactors(fourFactors, team),
-                            teamStats: getTeamStats(teams),
-                            players: getPlayers(players, teams.us),
-                            spursIndex: getSpursIndex(teams.us)
-                        });
-                        callback(pageHtml);
+                    var players = fourFactors.playerStats;
+                    var playersUsage = boxScoreUsage.sqlPlayersUsage;
+                    //merge player ojbects with player usage objects
+                    _.each(players, function (player) {
+                        var playerUsage = _.findWhere(playersUsage, {playerId: player.playerId});
+                        _.extend(player, playerUsage);
                     });
-            });
 
+                    //merge all 3 into a single team stats object
+                    teams.us = _.defaults(teams.us, playerTrackTeams.us, sqlTeamsAdvanced.us);
+                    teams.us.minutes = getMinutes(teams.us.mIN);
+                    teams.them = _.defaults(teams.them, playerTrackTeams.them, sqlTeamsAdvanced.them);
+                    teams.them.minutes = getMinutes(teams.them.mIN);
 
+                    var pageTemplate = getTemplate('page');
+
+                    var pageHtml = pageTemplate({
+                        game: game,
+                        teams: teams,
+                        fourFactors: getFourFactors(fourFactors, team),
+                        teamStats: getTeamStats(teams),
+                        players: getPlayers(players, teams.us),
+                        spursIndex: getSpursIndex(teams.us)
+                    });
+                    callback(pageHtml);
+                });
+        });
     }
 };
 
