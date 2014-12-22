@@ -53,11 +53,14 @@ var gameSchema = new mongoose.Schema({
 // nonexistent) the 'PowerUsers' collection in the MongoDB database
 var GameModel = mongoose.model('Game', gameSchema);
 
-GameModel.remove({}).exec(function(err) {
+/* clear existing game data
+GameModel.remove().exec(function(err, results) {
     if (err) {
         console.log(err);
+    } else {
+        console.log("Deleted", results);
     }
-});
+});*/
 
 module.exports = {
     getGame: function(options, callback, error) {
