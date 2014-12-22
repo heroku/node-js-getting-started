@@ -2,48 +2,48 @@
     <tbody>
     <tr>
         <td></td>
-        <td style="text-align: center;"><b>{{teamName}}</b></td>
-        <td style="text-align: center;"><b>{{opponentName}}</b></td>
+        <td style="text-align: center;"><b>{{us.teamName}}</b></td>
+        <td style="text-align: center;"><b>{{them.teamName}}</b></td>
     </tr>
     <tr>
         <td>Shooting (eFG%)</td>
-        {{#ifCond efgPct '>' oppEfgPct}}
-        <td align="right"><strong>{{formatPercent efgPct}}</strong></td>
-        <td align="right">{{formatPercent oppEfgPct}}</td>
+        {{#ifCond fourFactors.efgPct '>' fourFactors.oppEfgPct}}
+        <td align="right"><strong>{{formatPercent fourFactors.efgPct}}</strong></td>
+        <td align="right">{{formatPercent fourFactors.oppEfgPct}}</td>
         {{else}}
-        <td align="right">{{formatPercent efgPct}}</td>
-        <td align="right"><strong>{{formatPercent oppEfgPct}}</strong></td>
+        <td align="right">{{formatPercent fourFactors.efgPct}}</td>
+        <td align="right"><strong>{{formatPercent fourFactors.oppEfgPct}}</strong></td>
         {{/ifCond}}
     </tr>
     <tr>
         <td>Ball Handling (TO%)</td>
-        {{#ifCond tmTovPct '<' oppTovPct}}
-        <td align="right"><strong>{{formatPercent tmTovPct}}</strong></td>
-        <td align="right">{{formatPercent oppTovPct}}</td>
+        {{#ifCond fourFactors.tmTovPct '>' fourFactors.oppTovPct}}
+        <td align="right"><strong>{{formatPercent fourFactors.tmTovPct}}</strong></td>
+        <td align="right">{{formatPercent fourFactors.oppTovPct}}</td>
         {{else}}
-        <td align="right">{{formatPercent tmTovPct}}</td>
-        <td align="right"><strong>{{formatPercent oppTovPct}}</strong></td>
+        <td align="right">{{formatPercent fourFactors.tmTovPct}}</td>
+        <td align="right"><strong>{{formatPercent fourFactors.oppTovPct}}</strong></td>
         {{/ifCond}}
     </tr>
     <tr>
         <td>Off Rebounding (OR%)</td>
 
-        {{#ifCond orebPct '>' oppOrebPct}}
-        <td align="right"><strong>{{formatPercent orebPct}}</strong></td>
-        <td align="right">{{formatPercent oppOrebPct}}</td>
+        {{#ifCond fourFactors.orebPct '>' fourFactors.oppOrebPct}}
+        <td align="right"><strong>{{formatPercent fourFactors.orebPct}}</strong></td>
+        <td align="right">{{formatPercent fourFactors.oppOrebPct}}</td>
         {{else}}
-        <td align="right">{{formatPercent orebPct}}</td>
-        <td align="right"><strong>{{formatPercent oppOrebPct}}</strong></td>
+        <td align="right">{{formatPercent fourFactors.orebPct}}</td>
+        <td align="right"><strong>{{formatPercent fourFactors.oppOrebPct}}</strong></td>
         {{/ifCond}}
     </tr>
     <tr>
         <td>Shooting FTs (FT Rate)</td>
-        {{#ifCond ftaRate '>' oppFtaRate}}
-        <td align="right"><strong>{{formatPercent ftaRate}}</strong></td>
-        <td align="right">{{formatPercent oppFtaRate}}</td>
+        {{#ifCond fourFactors.ftaRate '>' fourFactors.oppFtaRate}}
+        <td align="right"><strong>{{formatPercent fourFactors.ftaRate}}</strong></td>
+        <td align="right">{{formatPercent fourFactors.oppFtaRate}}</td>
         {{else}}
-        <td align="right">{{formatPercent ftaRate}}</td>
-        <td align="right"><strong>{{formatPercent oppFtaRate}}</strong></td>
+        <td align="right">{{formatPercent fourFactors.ftaRate}}</td>
+        <td align="right"><strong>{{formatPercent fourFactors.oppFtaRate}}</strong></td>
         {{/ifCond}}
     </tr>
     </tbody>

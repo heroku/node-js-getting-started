@@ -5,7 +5,7 @@
         <td style="text-align: center;"><b>Value</b></td>
         <td style="text-align: center;"><b>Score</b></td>
     </tr>
-    {{#each factors}}
+    {{#each teams.us.spursIndexFactors}}
         <tr>
             <td align="left" title="{{title}}">{{name}}</td>
             <td {{#if good}} style="color: #5cb85c"{{/if}}
@@ -18,7 +18,7 @@
     {{/each}}
     <tr>
         <td align="left"><b>Total</b></td>
-        <td colspan="2" align="right"><strong>{{formatNumber score 1}}</strong></td>
+        <td colspan="2" align="right"><strong>{{formatNumber teams.us.spursIndexScore 1}}</strong></td>
     </tr>
     </tbody>
 </table>

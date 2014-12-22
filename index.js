@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var generate = require('./generate');
 var nba = require('nba');
+var controller = require('./routes/gameStatsController');
 
 nba.ready(function() {
 
@@ -20,7 +21,8 @@ nba.ready(function() {
         var date = req.param('date');
 
         try {
-            generate.generateStats(name, date, function(pageHtml) {
+            //generate.generateStats(name, date, function(pageHtml) {
+            controller.getGameStats(name, date, function(pageHtml) {
                 res.send(pageHtml);
                 next();
             }, function(e){

@@ -1,3 +1,4 @@
+var fs = require('fs');
 var Handlebars = require('handlebars');
 var accounting = require('accounting');
 var _ = require('underscore');
@@ -79,3 +80,14 @@ Handlebars.registerHelper('formatDate', function(date, format) {
     }
     return '';
 });
+
+registerPartial('definitions');
+registerPartial('fourFactors');
+registerPartial('gameChart');
+registerPartial('players');
+registerPartial('spursIndex');
+registerPartial('teamStats');
+
+function registerPartial(name) {
+    Handlebars.registerPartial(name, fs.readFileSync('./templates/' + name + '.hbs', "utf8"));
+}

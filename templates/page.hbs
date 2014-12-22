@@ -25,207 +25,34 @@
 <div id="content">
     <h2>{{teams.us.teamName}} {{#if homeGame}}vs.{{else}}at{{/if}} {{teams.them.teamName}} {{formatDate game.gameDateEst}}</h2>
     <h2>{{teams.us.teamName}}: {{teams.us.pTS}} - {{teams.them.teamName}}: {{teams.them.pTS}} </h2>
-    <section class="gameFlow">
 
-    </section>
+    <section class="gameFlow"></section>
+
 
     <h2>Four Factors <a title='The "Four Factors" are a measure of how teams win games, as identified by Dean Oliver. Click here to read more.' style="font-size: 0.6em; font-weight:normal;" href="http://www.basketball-reference.com/about/factors.html">(def.)</a></h2>
-    <section class="stats">{{{fourFactors}}}</section>
+    <section class="stats">{{> fourFactors}}</section>
+
 
     <h2>Team Stats <i style="font-size: 0.7em; font-weight:normal;">(Definitions at bottom of post)</i></h2>
-    <section class="stats">{{{teamStats}}}</section>
+    <section class="stats">{{> teamStats}}</section>
+
 
     <h2>Players <i style="font-size: 0.7em; font-weight:normal;">(Definitions at bottom of post)</i></h2>
-
-    <section class="stats">{{{players}}}</section>
+    <section class="stats">{{> players}}</section>
 
     <h2 title='The Spurs Index is a just-for-fun formula that attempts to quantify just how "Spursy" a particular game is.'>Spurs Index:  {{formatNumber teams.us.spursIndex 1}} <a style="font-size: 0.7em; font-style:italic;" href="#spursIndex">(def.)</a></h2>
     <section class="stats">
-        {{{spursIndex}}}
+        {{> spursIndex}}
     </section>
 
 
     <section id="definitions" style="font-style: italic;">
-        <p>---</p>
-        <p><b>Definitions</b> (with major credit to <a href="http://www.sbnation.com/users/Bill%20C.">Bill Connelly</a> over at our sister blog <a href="http://rockmnation.com">Rock M Nation</a>)</p>
-        <p><b>AdjGS</b>: a take-off of the Game Score metric (definition <a href="http://www.basketball-reference.com/about/glossary.html">here</a>) accepted by a lot of basketball stat nerds. It takes points, assists, rebounds (offensive & defensive), steals, blocks, turnovers and fouls into account to determine an individual's "score" for a given game. The "adjustment" in Adjusted Game Score is simply matching the total game scores to the total points scored in the game, thereby redistributing the game's points scored to those who had the biggest impact on the game itself, instead of just how many balls a player put through a basket.</p>
-
-        <p><b>Usage%</b>: This "estimates the % of team possessions a player consumes while on the floor" (<a href="http://www.basketball-reference.com/blog/?p=1120">via</a>). The usage of those possessions is determined via a formula using field goal and free throw attempts, offensive rebounds, assists and turnovers. The higher the number, the more prevalent a player is (good or bad) in a team's offensive outcome.</p>
-
-        <p><b>Floor%</b>: Via <a href="http://www.basketball-reference.com/blog/?p=1120">Basketball-Reference.com</a>: Floor % answers the question, "when Player X uses a possession, what is the probability that his team scores at least 1 point?". The higher the Floor%, the more frequently the team probably scores when the given player is involved.</p>
-        <p id="spursIndex"><b>Spurs Index</b>: The Spurs Index &copy is a just-for-fun formula that attempts to quantify just how "Spursy" a particular game is, based off averages for the 2013-2014 regular season.  A perfectly average game would have a Spurs Index of 100.  The formula consists of four factors which the Spurs are known for and lead or nearly lead the league in: Shooting (effective Field Goal %), Passing (Assist percentage), Defensive Rebounding Rate, and Defensive Rating.  These metrics are weighted as follows:
-        <table class="sbn-data-table" border="1">
-            <tbody>
-            <tr style="font-weight: bold;"><td>Factor</td><td>Weight</td><td>Average</td></tr>
-            {{#each teams.us.spursIndexFactors}}
-            <tr><td>{{name}}</td><td>{{formatPercent weight 0}}</td><td>{{#if percent}}{{formatPercent average 1}}{{else}}{{formatNumber average 1}}{{/if}}</td></tr>
-            {{/each}}
-            </tbody>
-        </table>
-
-        The values for each metric are determined based on how a particular game's performance compares to the Spurs 2013-2014 regular season average for that metric.  For instance, the average effective Field Goal percentage for 2013-2014 was 53.7%.  So if the Spurs shot 60% in a given game, the score for eFG% would be calculated by: (0.6 / 0.537) * 20, which would yield a "score" for that factor of 22.3.
-
-        </p>
-
-
-
+        {{> definitions}}
     </section>
 
 
-    <!-- Load c3.css -->
-    <link href="https://cdn0.vox-cdn.com/uploads/chorus_asset/file/2862202/c3.min.0.css" rel="stylesheet" type="text/css">
+    {{> gameChart}}
 
-    <!-- Load d3.js and c3.js -->
-    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-    <script src="https://cdn0.vox-cdn.com/uploads/chorus_asset/file/2862214/c3.min.0.js"></script>
-    <script type="text/javascript">(function($){
-        $('table.sbn-data-table tbody tr:odd').addClass('ui-state-odd');
-        $('table.sbn-data-table tbody tr:even').addClass('ui-state-even');
-
-        var columns = {{toJSON gameFlowData}};
-        var teams = {{toJSON teams}};
-
-        var playDescriptions = columns[3];
-        columns.pop();
-
-        var x = columns[0];
-        var finalMinute = x[x.length - 1];
-
-        window.drawGameFlowChart = function() {
-            var chart = c3.generate({
-                bindTo: '#gameFlow',
-                /*size: {
-                    width: 640,
-                    height: 400
-                },*/
-                data: {
-                    x: 'gameTime',
-                    columns: columns
-                },
-                color: {
-                    pattern: ['#000000', '#d9534f', '#ffffff']
-                },
-
-                axis: {
-                    x: {
-                        tick: {
-                            values: [0, 12, 24, 36, 48, 53, 58, 63, 68,73,78],
-                            format: function(x) {
-                                if ( x == 0 ) {
-                                    return 'Q1';
-                                } else if ( x == 12 ) {
-                                    return x == finalMinute ? 'Final' : 'Q2';
-                                } else if ( x == 24 ) {
-                                    return x == finalMinute ? 'Final' : 'Q3';
-                                } else if ( x == 36 ) {
-                                    return x == finalMinute ? 'Final' : 'Q4';
-                                } else if ( x == 48 ) {
-                                    return x == finalMinute ? 'Final' : 'OT';
-                                } else if ( x == 53 ) {
-                                    return x == finalMinute ? 'Final' : '2OT';
-                                } else if ( x == 58 ) {
-                                    return x == finalMinute ? 'Final' : '3OT';
-                                } else if ( x == 63 ) {
-                                    return x == finalMinute ? 'Final' : '4OT';
-                                } else if ( x == 68 ) {
-                                    return x == finalMinute ? 'Final' : '5OT';
-                                } else if ( x == 73 ) {
-                                    return x == finalMinute ? 'Final' : '6OT';
-                                } else if ( x == 78 ) {
-                                    return x == finalMinute ? 'Final' : '7OT';
-                                }
-                            }
-                        }
-                    }
-                },
-
-                tooltip: {
-                    contents: function (d, defaultTitleFormat, defaultValueFormat, color) {
-                        var prettyTime = getPrettyGameTime(d[0].x);
-                        var playDesc = playDescriptions[d[0].index];
-                        if (d.length == 1) {
-                            var score = d[0].value;
-                            var teamName = d[0].name;
-                            return '<table class="c3-tooltip"><tbody>' +
-                                    '<tr><th colspan="2">' + prettyTime + '</th></tr>' +
-                                    '<tr class="c3-tooltip-name-us"><td class="name"><span style="background-color:#000000"></span>' + teamName + '</td><td class="value">' + score + '</td></tr>' +
-                                    (playDesc ? '<tr class="c3-tooltip-name-them"><td colspan="2" class="value">' + playDesc + '</td></tr>' : '') +
-                                    '</tbody></table>'
-
-                        }
-
-                        var usScore = d[0].value;
-                        var themScore = d[1].value;
-
-                        return '<table class="c3-tooltip"><tbody>' +
-                               '<tr><th colspan="2">' + prettyTime + '</th></tr>' +
-                               '<tr class="c3-tooltip-name-us"><td class="name"><span style="background-color:#000000"></span>{{teams.us.teamName}}</td><td class="value">' + (usScore > themScore ? '<b>' + usScore + '</b>' : usScore) + '</td></tr>' +
-                               '<tr class="c3-tooltip-name-them"><td class="name"><span style="background-color:#d9534f"></span>{{teams.them.teamName}}</td><td class="value">' + (themScore > usScore ? '<b>' + themScore + '</b>' : themScore) + '</td></tr>' +
-                               '<tr class="c3-tooltip-name-them" style="color:' + (usScore > themScore ? '#5cb85c': (themScore > usScore ? '#d9534f' : '#000000' ) ) + '"><td class="name">Margin:</td><td class="value">' + (usScore - themScore) + '</td></tr>' +
-                               (playDesc ? '<tr class="c3-tooltip-name-them"><td colspan="2" class="value"><i>' + playDesc + '</i></td></tr>' : '') +
-                               '</tbody></table>';
-                    }
-                }
-            });
-            $('.gameFlow').append(chart.element);
-        }
-
-        function getPrettyGameTime(gameTime) {
-            var gameMinutes = Math.floor(gameTime);
-            var period = 1 + Math.floor(gameTime / 12);
-            var start = 0;
-
-            if ( period <= 4 ) {
-                var periodLength = 12;
-                if ( period == 1 ) {
-                    period = "Q1";
-                    start = 0;
-                } else if ( period == 2 ) {
-                    period = "Q2";
-                    start = 12;
-                } else if ( period == 3 ) {
-                    period = "Q3";
-                    start = 24;
-                } else if ( period == 4 ) {
-                    period = "Q4";
-                    start = 36;
-                }
-            } else {
-                period = 1 + Math.floor((gameTime - 48) / 5);
-                periodLength = 5;
-                if ( period == 1 ) {
-                    period = "OT";
-                    start = 48;
-                } else if ( period == 2 ) {
-                    period = "2OT";
-                    start = 53;
-                } else if ( period == 3 ) {
-                    period = "3OT";
-                    start = 58;
-                } else if ( period == 4 ) {
-                    period = "4OT";
-                    start = 63;
-                } else if ( period == 5 ) {
-                    period = "5OT";
-                    start = 68;
-                } else if ( period == 6 ) {
-                    period = "6OT";
-                    start = 73;
-                }
-            }
-
-            var periodTime = periodLength - ( gameTime - start );
-            var periodMinutes = Math.floor(periodTime);
-            var periodSeconds = Math.round(60 * (periodTime - periodMinutes));
-
-            var prettyTime = period + ' ' + periodMinutes + ':' + (periodSeconds < 10 ? '0' + periodSeconds : periodSeconds);
-            if ( gameTime == finalMinute ) {
-                prettyTime = "FINAL";
-            }
-            return prettyTime;
-        }
-        drawGameFlowChart();
-    })(jQuery)</script>
 </div>
 
 

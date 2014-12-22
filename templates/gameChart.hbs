@@ -1,0 +1,154 @@
+<!-- Load c3.css -->
+<link href="https://cdn0.vox-cdn.com/uploads/chorus_asset/file/2862202/c3.min.0.css" rel="stylesheet" type="text/css">
+
+<!-- Load d3.js and c3.js -->
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="https://cdn0.vox-cdn.com/uploads/chorus_asset/file/2862214/c3.min.0.js"></script>
+<script type="text/javascript">(function($){
+    $('table.sbn-data-table tbody tr:odd').addClass('ui-state-odd');
+    $('table.sbn-data-table tbody tr:even').addClass('ui-state-even');
+
+    var columns = {{toJSON gameFlowData}};
+var teams = {{toJSON teams}};
+
+var playDescriptions = columns[3];
+columns.pop();
+
+var x = columns[0];
+var finalMinute = x[x.length - 1];
+
+window.drawGameFlowChart = function() {
+    var chart = c3.generate({
+        bindTo: '#gameFlow',
+        /*size: {
+         width: 640,
+         height: 400
+         },*/
+        data: {
+            x: 'gameTime',
+            columns: columns
+        },
+        color: {
+            pattern: ['#000000', '#d9534f', '#ffffff']
+        },
+
+        axis: {
+            x: {
+                tick: {
+                    values: [0, 12, 24, 36, 48, 53, 58, 63, 68,73,78],
+                    format: function(x) {
+                        if ( x == 0 ) {
+                            return 'Q1';
+                        } else if ( x == 12 ) {
+                            return x == finalMinute ? 'Final' : 'Q2';
+                        } else if ( x == 24 ) {
+                            return x == finalMinute ? 'Final' : 'Q3';
+                        } else if ( x == 36 ) {
+                            return x == finalMinute ? 'Final' : 'Q4';
+                        } else if ( x == 48 ) {
+                            return x == finalMinute ? 'Final' : 'OT';
+                        } else if ( x == 53 ) {
+                            return x == finalMinute ? 'Final' : '2OT';
+                        } else if ( x == 58 ) {
+                            return x == finalMinute ? 'Final' : '3OT';
+                        } else if ( x == 63 ) {
+                            return x == finalMinute ? 'Final' : '4OT';
+                        } else if ( x == 68 ) {
+                            return x == finalMinute ? 'Final' : '5OT';
+                        } else if ( x == 73 ) {
+                            return x == finalMinute ? 'Final' : '6OT';
+                        } else if ( x == 78 ) {
+                            return x == finalMinute ? 'Final' : '7OT';
+                        }
+                    }
+                }
+            }
+        },
+
+        tooltip: {
+            contents: function (d, defaultTitleFormat, defaultValueFormat, color) {
+                var prettyTime = getPrettyGameTime(d[0].x);
+                var playDesc = playDescriptions[d[0].index];
+                if (d.length == 1) {
+                    var score = d[0].value;
+                    var teamName = d[0].name;
+                    return '<table class="c3-tooltip"><tbody>' +
+                            '<tr><th colspan="2">' + prettyTime + '</th></tr>' +
+                            '<tr class="c3-tooltip-name-us"><td class="name"><span style="background-color:#000000"></span>' + teamName + '</td><td class="value">' + score + '</td></tr>' +
+                            (playDesc ? '<tr class="c3-tooltip-name-them"><td colspan="2" class="value">' + playDesc + '</td></tr>' : '') +
+                            '</tbody></table>'
+
+                }
+
+                var usScore = d[0].value;
+                var themScore = d[1].value;
+
+                return '<table class="c3-tooltip"><tbody>' +
+                        '<tr><th colspan="2">' + prettyTime + '</th></tr>' +
+                        '<tr class="c3-tooltip-name-us"><td class="name"><span style="background-color:#000000"></span>{{teams.us.teamName}}</td><td class="value">' + (usScore > themScore ? '<b>' + usScore + '</b>' : usScore) + '</td></tr>' +
+                        '<tr class="c3-tooltip-name-them"><td class="name"><span style="background-color:#d9534f"></span>{{teams.them.teamName}}</td><td class="value">' + (themScore > usScore ? '<b>' + themScore + '</b>' : themScore) + '</td></tr>' +
+                        '<tr class="c3-tooltip-name-them" style="color:' + (usScore > themScore ? '#5cb85c': (themScore > usScore ? '#d9534f' : '#000000' ) ) + '"><td class="name">Margin:</td><td class="value">' + (usScore - themScore) + '</td></tr>' +
+                        (playDesc ? '<tr class="c3-tooltip-name-them"><td colspan="2" class="value"><i>' + playDesc + '</i></td></tr>' : '') +
+                        '</tbody></table>';
+            }
+        }
+    });
+    $('.gameFlow').append(chart.element);
+}
+
+function getPrettyGameTime(gameTime) {
+    var gameMinutes = Math.floor(gameTime);
+    var period = 1 + Math.floor(gameTime / 12);
+    var start = 0;
+
+    if ( period <= 4 ) {
+        var periodLength = 12;
+        if ( period == 1 ) {
+            period = "Q1";
+            start = 0;
+        } else if ( period == 2 ) {
+            period = "Q2";
+            start = 12;
+        } else if ( period == 3 ) {
+            period = "Q3";
+            start = 24;
+        } else if ( period == 4 ) {
+            period = "Q4";
+            start = 36;
+        }
+    } else {
+        period = 1 + Math.floor((gameTime - 48) / 5);
+        periodLength = 5;
+        if ( period == 1 ) {
+            period = "OT";
+            start = 48;
+        } else if ( period == 2 ) {
+            period = "2OT";
+            start = 53;
+        } else if ( period == 3 ) {
+            period = "3OT";
+            start = 58;
+        } else if ( period == 4 ) {
+            period = "4OT";
+            start = 63;
+        } else if ( period == 5 ) {
+            period = "5OT";
+            start = 68;
+        } else if ( period == 6 ) {
+            period = "6OT";
+            start = 73;
+        }
+    }
+
+    var periodTime = periodLength - ( gameTime - start );
+    var periodMinutes = Math.floor(periodTime);
+    var periodSeconds = Math.round(60 * (periodTime - periodMinutes));
+
+    var prettyTime = period + ' ' + periodMinutes + ':' + (periodSeconds < 10 ? '0' + periodSeconds : periodSeconds);
+    if ( gameTime == finalMinute ) {
+        prettyTime = "FINAL";
+    }
+    return prettyTime;
+}
+drawGameFlowChart();
+})(jQuery)</script>
