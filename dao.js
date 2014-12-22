@@ -57,7 +57,7 @@ GameModel.remove({}).exec(function(err) {
     if (err) {
         console.log(err);
     }
-})
+});
 
 module.exports = {
     getGame: function(options, callback, error) {
@@ -72,6 +72,7 @@ module.exports = {
     saveGame: function (data, callback, error) {
         var game = new GameModel(data);
         game.save(function(err) {
+            console.log("Saved game data", data);
             if ( err ) {
                 error(err);
             } else {

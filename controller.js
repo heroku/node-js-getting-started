@@ -24,6 +24,7 @@ module.exports = {
         }
         getLastGameForTeam(team.teamId, date, function(game) {
             service.getGameStats(game, team, date, function(data) {
+                console.log("generate the html", data);
                 var html = getTemplate('page')(data);
                 callback(html);
             }, error);
