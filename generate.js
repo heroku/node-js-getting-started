@@ -18,6 +18,8 @@ module.exports = {
             return team.simpleName.toUpperCase().indexOf(teamName.toUpperCase()) >= 0
         });
         console.log("Looking up last game for ", team.teamName);
+
+        //TODO kill this
         global.team = team;
 
         if (date) {
@@ -73,7 +75,25 @@ module.exports = {
                     throw e;
                 });
         });
+    },
+    getUncontestedStats: function(teamName, callback) {
+        var team = _.find(nba.teamsInfo, function(team) {
+            return team.simpleName.toUpperCase().indexOf(teamName.toUpperCase()) >= 0
+        });
+        console.log("Looking up stats for ", team.teamName);
+
+
+
+        //var options = {teamId: team.teamId, season: '2013-2014'};
+        nba.api.shots().then(function(results) {
+            console.log(results);
+            callback(results);
+        }).catch(function(e) {
+                console.log("error: " + e, e);
+                res.send(e);
+            });
     }
+
 };
 
 
@@ -237,6 +257,8 @@ function getSpursIndex(team) {
             title: "Effective Field Goal Percentage - Effective Field Goal Percentage is a field goal percentage that is adjusted for made 3 pointers being 1.5 times more valuable than a 2 point shot.",
             weight: 0.20,
             average: 0.537,
+            goodThreshold: 0.57,
+            badThreshold: 0.48,
             percent: true
         },
         astPct: {
@@ -244,6 +266,8 @@ function getSpursIndex(team) {
             title: "Assist Percentage - Assist Percentage is the percent of team's field goals made that were assisted.",
             weight: 0.35,
             average: 0.621,
+            goodThreshold: 0.68,
+            badThreshold: 0.55,
             percent: true
         },
         drebPct: {
@@ -251,6 +275,8 @@ function getSpursIndex(team) {
             title: "Defensive Rebound Percentage - The percentage of defensive rebounds a team obtains.",
             weight: 0.15,
             average: 0.764,
+            goodThreshold: 0.81,
+            badThreshold: 0.705,
             percent: true
         },
         defRating: {
@@ -258,6 +284,8 @@ function getSpursIndex(team) {
             title: "Defensive Rating - The number of points allowed per 100 possessions by a team. For a player, it is the number of points per 100 possessions that the team allows while that individual player is on the court.",
             weight: 0.15,
             average: 100.1,
+            goodThreshold: 94,
+            badThreshold: 106,
             percent: false,
             inverse: true
         },
@@ -265,7 +293,9 @@ function getSpursIndex(team) {
             name: "Uncontested FGA/Poss allowed",
             title: "Uncontested Field Goal Attempts allowed per opponent possession.  A measure of how many open looks an opponent is afforded per possession.",
             weight: 0.15,
-            average:0.40,
+            average:0.365, //see comment at bottom of file
+            goodThreshold: 0.32,
+            badThreshold: 0.41,
             percent: true,
             inverse: true
         }
@@ -277,13 +307,17 @@ function getSpursIndex(team) {
         var actual = team[id];
         if ( factor.inverse ) {
             var score = 100 * factor.weight * (expected / actual);
+            var good = 100 * factor.weight * (expected / factor.goodThreshold);
+            var bad = 100 * factor.weight * (expected / factor.badThreshold);
         } else {
             score = 100 * factor.weight * (actual / expected);
+            good = 100 * factor.weight * (factor.goodThreshold / expected);
+            bad = 100 * factor.weight * (factor.badThreshold / expected);
         }
         //was it good?
-        if (score / (factor.weight*100) > 1.1) {
+        if (score >= good) {
             factor.good = true;
-        } else if ( score / (factor.weight*100) < .9 ) {
+        } else if ( score <= bad ) {
             factor.bad = true;
         }
 
@@ -353,3 +387,25 @@ function getTeamsObj(array, homeTeam) {
 function getDirectoryName() {
     return './output/' + global.team.teamName + '/' + moment(global.date).format('MM-DD-YYYY') + '/';
 }
+
+
+/*
+
+2013-2014 unconteste FGA/possession calculation
+
+
+ 2013-2014 opp FGA/game: 85.1 (http://stats.nba.com/team/#!/1610612759/stats/opponent/?Season=2013-14)
+
+ possessions: 95.03 (http://stats.nba.com/team/#!/1610612759/stats/advanced/)
+
+ contested FGA/poss = .53 (http://bigleagueinsights.com/contested-field-goal-data-finding-open-shot)
+
+
+ .53 = cFGA/95.03
+
+ cFGA = .53 * 95.03 = 50.37
+
+ uFGA = 85.1 - 50.37 = 34.73
+
+ uFGA/poss = 34.73 / 95.03 = .365
+ */

@@ -58,7 +58,7 @@
             <tbody>
             <tr style="font-weight: bold;"><td>Factor</td><td>Weight</td><td>Average</td></tr>
             {{#each teams.us.spursIndexFactors}}
-            <tr><td>{{name}}</td><td>{{formatPercent weight 0}}</td><td>{{average}}</td></tr>
+            <tr><td>{{name}}</td><td>{{formatPercent weight 0}}</td><td>{{#if percent}}{{formatPercent average 1}}{{else}}{{formatNumber average 1}}{{/if}}</td></tr>
             {{/each}}
             </tbody>
         </table>
