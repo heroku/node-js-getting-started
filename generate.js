@@ -58,6 +58,7 @@ module.exports = {
 
                     var pageHtml = pageTemplate({
                         game: game,
+                        homeGame: game.homeTeamId == teams.us.teamId,
                         teams: teams,
                         fourFactors: getFourFactors(fourFactors, team),
                         teamStats: getTeamStats(teams),
@@ -248,16 +249,24 @@ function getSpursIndex(team) {
         drebPct: {
             name: "Defensive Rebounding (DReb%)",
             title: "Defensive Rebound Percentage - The percentage of defensive rebounds a team obtains.",
-            weight: 0.20,
+            weight: 0.15,
             average: 0.764,
             percent: true
         },
         defRating: {
             name: "Defense (DefRtg)",
             title: "Defensive Rating - The number of points allowed per 100 possessions by a team. For a player, it is the number of points per 100 possessions that the team allows while that individual player is on the court.",
-            weight: 0.25,
+            weight: 0.15,
             average: 100.1,
             percent: false,
+            inverse: true
+        },
+        uncontestedFGAPerPossession: {
+            name: "Uncontested FGA/Poss allowed",
+            title: "Uncontested Field Goal Attempts allowed per opponent possession.  A measure of how many open looks an opponent is afforded per possession.",
+            weight: 0.15,
+            average:0.40,
+            percent: true,
             inverse: true
         }
     };
@@ -283,6 +292,7 @@ function getSpursIndex(team) {
         factor.actual = actual;
     });
     team.spursIndex = totalScore;
+    team.spursIndexFactors = factors;
 
     var template = getTemplate('spursIndex');
     var html = template({factors: factors, score: totalScore});
@@ -309,12 +319,12 @@ function getGameFlowChartData(playByPlay, teams, game) {
     var us = [teams.us.teamName];
     var them = [teams.them.teamName];
     var playDesc = ["Play"];
+    var usHomeTeam = game.homeTeamId == teams.us.teamId;
+    var usIndex = usHomeTeam ? 1 : 0;
+    var themIndex = usHomeTeam ? 0 : 1;
     _.each(playByPlay, function(play) {
         if ( play.sCORE ) {
             var scores = play.sCORE.split(' - ');
-            var usHomeTeam = game.homeTeamId == teams.us.teamId;
-            var usIndex = usHomeTeam ? 1 : 0;
-            var themIndex = usHomeTeam ? 0 : 1;
             us.push(scores[usIndex]);
             them.push(scores[themIndex]);
             gameTime.push(getGameMinute(play.pERIOD, play.pCTIMESTRING))
@@ -327,7 +337,6 @@ function getGameFlowChartData(playByPlay, teams, game) {
         them,
         playDesc
     ];
-    console.log(columns);
     return columns;
 }
 

@@ -7,9 +7,9 @@
         <td style="text-align: center;"><b>Line</b></td>
     </tr>
     {{#each players}}
+    {{#if minutes}}
     <tr>
         <td>{{playerName}}</td>
-        {{#if minutes}}
         <td align="right">{{formatNumber adjGS 1}}</td>
         <td align="right">{{formatNumber adjGSMin 2}}</td>
         <td>
@@ -28,10 +28,8 @@
             {{#if tO}}{{tO}} TO,{{/if}}
             {{#if pF}}{{pF}} PF{{/if}}
         </td>
-        {{else}}
-        <td colspan="3">DNP</td>
-        {{/if}}
     </tr>
+    {{/if}}
     {{/each}}
     </tbody>
 </table>

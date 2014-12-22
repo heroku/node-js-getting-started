@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>{{teams.us.teamName}} vs. {{teams.them.teamName}} {{formatDate game.gameDateEst}}</title>
+    <title>Study Hall: {{teams.us.teamName}} {{#if homeGame}}vs.{{else}}at{{/if}} {{teams.them.teamName}} {{formatDate game.gameDateEst}}</title>
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 
     <script>$(document).ready(function(){
@@ -23,23 +23,52 @@
 </head>
 <body>
 <div id="content">
-    <h2>{{teams.us.teamName}}: {{teams.us.pTS}} - {{teams.them.teamName}}: {{teams.them.pTS}} {{formatDate game.gameDateEst}}</h2>
+    <h2>{{teams.us.teamName}} {{#if homeGame}}vs.{{else}}at{{/if}} {{teams.them.teamName}} {{formatDate game.gameDateEst}}</h2>
+    <h2>{{teams.us.teamName}}: {{teams.us.pTS}} - {{teams.them.teamName}}: {{teams.them.pTS}} </h2>
     <section class="gameFlow">
 
     </section>
 
-    <h2>Four Factors</h2>
+    <h2>Four Factors <a title='The "Four Factors" are a measure of how teams win games, as identified by Dean Oliver. Click here to read more.' style="font-size: 0.6em; font-weight:normal;" href="http://www.basketball-reference.com/about/factors.html">(def.)</a></h2>
     <section class="stats">{{{fourFactors}}}</section>
 
-    <h2>Team Stats</h2>
+    <h2>Team Stats <i style="font-size: 0.7em; font-weight:normal;">(Definitions at bottom of post)</i></h2>
     <section class="stats">{{{teamStats}}}</section>
 
-    <h2>Players</h2>
+    <h2>Players <i style="font-size: 0.7em; font-weight:normal;">(Definitions at bottom of post)</i></h2>
+
     <section class="stats">{{{players}}}</section>
 
-    <h2 title='The Spurs Index is a just-for-fun formula that attempts to quantify just how "Spursy" a particular game is.'>Spurs Index:  {{formatNumber teams.us.spursIndex 1}}</h2>
+    <h2 title='The Spurs Index is a just-for-fun formula that attempts to quantify just how "Spursy" a particular game is.'>Spurs Index:  {{formatNumber teams.us.spursIndex 1}} <a style="font-size: 0.7em; font-style:italic;" href="#spursIndex">(def.)</a></h2>
     <section class="stats">
         {{{spursIndex}}}
+    </section>
+
+
+    <section id="definitions" style="font-style: italic;">
+        <p>---</p>
+        <p><b>Definitions</b> (with major credit to <a href="http://www.sbnation.com/users/Bill%20C.">Bill Connelly</a> over at our sister blog <a href="http://rockmnation.com">Rock M Nation</a>)</p>
+        <p><b>AdjGS</b>: a take-off of the Game Score metric (definition <a href="http://www.basketball-reference.com/about/glossary.html">here</a>) accepted by a lot of basketball stat nerds. It takes points, assists, rebounds (offensive & defensive), steals, blocks, turnovers and fouls into account to determine an individual's "score" for a given game. The "adjustment" in Adjusted Game Score is simply matching the total game scores to the total points scored in the game, thereby redistributing the game's points scored to those who had the biggest impact on the game itself, instead of just how many balls a player put through a basket.</p>
+
+        <p><b>Usage%</b>: This "estimates the % of team possessions a player consumes while on the floor" (<a href="http://www.basketball-reference.com/blog/?p=1120">via</a>). The usage of those possessions is determined via a formula using field goal and free throw attempts, offensive rebounds, assists and turnovers. The higher the number, the more prevalent a player is (good or bad) in a team's offensive outcome.</p>
+
+        <p><b>Floor%</b>: Via <a href="http://www.basketball-reference.com/blog/?p=1120">Basketball-Reference.com</a>: Floor % answers the question, "when Player X uses a possession, what is the probability that his team scores at least 1 point?". The higher the Floor%, the more frequently the team probably scores when the given player is involved.</p>
+        <p id="spursIndex"><b>Spurs Index</b>: The Spurs Index &copy is a just-for-fun formula that attempts to quantify just how "Spursy" a particular game is, based off averages for the 2013-2014 regular season.  A perfectly average game would have a Spurs Index of 100.  The formula consists of four factors which the Spurs are known for and lead or nearly lead the league in: Shooting (effective Field Goal %), Passing (Assist percentage), Defensive Rebounding Rate, and Defensive Rating.  These metrics are weighted as follows:
+        <table class="sbn-data-table" border="1">
+            <tbody>
+            <tr style="font-weight: bold;"><td>Factor</td><td>Weight</td><td>Average</td></tr>
+            {{#each teams.us.spursIndexFactors}}
+            <tr><td>{{name}}</td><td>{{formatPercent weight 0}}</td><td>{{average}}</td></tr>
+            {{/each}}
+            </tbody>
+        </table>
+
+        The values for each metric are determined based on how a particular game's performance compares to the Spurs 2013-2014 regular season average for that metric.  For instance, the average effective Field Goal percentage for 2013-2014 was 53.7%.  So if the Spurs shot 60% in a given game, the score for eFG% would be calculated by: (0.6 / 0.537) * 20, which would yield a "score" for that factor of 22.3.
+
+        </p>
+
+
+
     </section>
 
 
