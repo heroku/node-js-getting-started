@@ -54,8 +54,9 @@ function getGameStatsFromApi(game, team, date, callback, error) {
                 gameFlowData: getGameFlowChartData(playbyplay.playByPlay, teams, game)
             };
 
-            dao.saveGame(data);
-            callback(data);
+            dao.saveGame(data, function() {
+                callback(data);
+            }, error);
         }).catch(function(e) {
             console.log("error: " + e, e);
             error(e);

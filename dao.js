@@ -69,11 +69,13 @@ module.exports = {
             }
         })
     },
-    saveGame: function (data) {
+    saveGame: function (data, callback, error) {
         var game = new GameModel(data);
         game.save(function(err) {
             if ( err ) {
-                console.log("MONGO: Error saving game", data);
+                error(err);
+            } else {
+                callback(data);
             }
         });
     }
