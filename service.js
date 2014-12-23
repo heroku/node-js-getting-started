@@ -50,7 +50,7 @@ function getGameStatsFromApi(game, team, date, callback, error) {
                 them: teams.them,
                 fourFactors: teams.us,
                 players: players,
-                spursIndex: getSpursIndex(teams.us),
+                spursIndex: getSpursIndex(teams.us, teams.them),
                 gameFlowData: getGameFlowChartData(playbyplay.playByPlay, teams, game)
             };
 
@@ -169,7 +169,7 @@ function addAdvancedStats(team, opp) {
     team.expectedOREB = LEAGUE_AVERAGE_ORR * (team.oREB + opp.dREB);
     team.oREBDiff = team.oREB - team.expectedOREB;
 
-    team.uncontestedFGAPerPossession = team.uFGA / team.pACE
+    team.uncontestedFGAPerPossession = team.uFGA / team.pACE;
     team.percentOfFGAUncontested = team.uFGA / team.fGA;
     team.percentOfFGAContested = team.cFGA / team.fGA;
     team.uFGPct = team.uFGM / team.uFGA;
@@ -181,7 +181,7 @@ function addGameScore(player) {
 }
 
 
-function getSpursIndex(team) {
+function getSpursIndex(team, opp) {
     //averages come from 2013-2014 season averages
     var factors = [
         {
@@ -234,14 +234,15 @@ function getSpursIndex(team) {
             goodThreshold: 0.32,
             badThreshold: 0.41,
             percent: true,
-            inverse: true
+            inverse: true,
+            opponentValue: true //get it from the opponent's stats - i.e. a defensive measure
         }
     ];
 
     var totalScore = 0;
     _.each(factors, function(factor) {
         var expected = factor.average;
-        var actual = team[factor.id];
+        var actual = factor.opponentValue ? opp[factor.id] : team[factor.id];
         if ( factor.inverse ) {
             var score = 100 * factor.weight * (expected / actual);
             var good = 100 * factor.weight * (expected / factor.goodThreshold);
