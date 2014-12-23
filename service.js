@@ -7,20 +7,24 @@ var LEAGUE_AVERAGE_ORR = .25016666666666662;
 var LEAGUE_AVERAGE_DRR = .7494666666666669;
 
 module.exports = {
-    getGameStats: function(game, team, date, callback, error) {
+    getGameStats: function(game, team, date, refresh, callback, error) {
         console.log("Searching MongoDB for game " + game.gameId);
-        dao.getGame({gameId: game.gameId, teamId: team.teamId}, function(results) {
-            if ( results.length ) {
-                console.log("Found game " + game.gameId + "in DB");
-                callback(results[0]);
-            } else {
-                getGameStatsFromApi(game, team, date, callback, error)
-            }
-        }, function(err) {
-            if ( err ) {
-                error(err);
-            }
-        });
+        if ( refresh ) {
+            getGameStatsFromApi(game, team, date, callback, error)
+        } else {
+            dao.getGame({gameId: game.gameId, teamId: team.teamId}, function(results) {
+                if ( results.length ) {
+                    console.log("Found game " + game.gameId + "in DB");
+                    callback(results[0]);
+                } else {
+                    getGameStatsFromApi(game, team, date, callback, error)
+                }
+            }, function(err) {
+                if ( err ) {
+                    error(err);
+                }
+            });
+        }
     }
 };
 
