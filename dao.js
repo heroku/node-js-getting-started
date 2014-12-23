@@ -69,7 +69,7 @@ module.exports = {
     saveGame: function (data, callback, error) {
         var game = new GameModel(data);
         game.save(function(err) {
-            console.log("Saved game data", data);
+            console.log("Saved game data for game " + data.gameId);
             if ( err ) {
                 error(err);
             } else {
