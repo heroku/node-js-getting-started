@@ -4,10 +4,16 @@
 <!-- Load d3.js and c3.js -->
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script src="https://cdn0.vox-cdn.com/uploads/chorus_asset/file/2862214/c3.min.0.js"></script>
-<script type="text/javascript">(function($){
-    $('table.sbn-data-table tbody tr:odd').addClass('ui-state-odd');
-    $('table.sbn-data-table tbody tr:even').addClass('ui-state-even');
+<script type="text/javascript">
+    function stripeTables() {
+        var $ = jQuery;
+        console.log('stripe');
+        $('table.sbn-data-table tbody tr:odd').removeClass('ui-state-even').addClass('ui-state-odd');
+        $('table.sbn-data-table tbody tr:even').removeClass('ui-state-odd').addClass('ui-state-even');
+    }
 
+    (function($){
+        stripeTables($);
     var columns = {{toJSON gameFlowData}};
 var teams = {{toJSON teams}};
 

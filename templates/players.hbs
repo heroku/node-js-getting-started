@@ -1,11 +1,13 @@
-<table border="1" class="sbn-data-table">
-    <tbody>
-    <tr>
+<table id="players1" border="1" class="sbn-data-table">
+    <thead>
+    <tr class="ui-state-even">
         <td style="text-align: center;"><b>Player<br></b></td>
         <td style="text-align: center;" title="AdjGS: a take-off of the Game Score metric from basketball-reference.com accepted by a lot of basketball stat nerds. It takes points, assists, rebounds (offensive & defensive), steals, blocks, turnovers and fouls into account to determine an individual's 'score' for a given game. The 'adjustment' in Adjusted Game Score is simply matching the total game scores to the total points scored in the game, thereby redistributing the game's points scored to those who had the biggest impact on the game itself, instead of just how many balls a player put through a basket."><b>AdjGS</b></td>
-        <td style="text-align: center;""><b>GmSc/Min</b></td>
+        <td style="text-align: center;"><b>GmSc/Min</b></td>
         <td style="text-align: center;"><b>Line</b></td>
     </tr>
+    </thead>
+    <tbody>
     {{#each players}}
     {{#if minutes}}
     <tr>
@@ -35,14 +37,16 @@
 </table>
 
 
-<table border="1" class="sbn-data-table">
-    <tbody>
-    <tr>
+<table id="players2" border="1" class="sbn-data-table">
+    <thead>
+    <tr class="ui-state-even">
         <td style="text-align: center;"><b>Player</b></td>
         <td style="text-align: center;" title="This estimates the % of team possessions a player consumes while on the floor (via basketball-reference.com). The usage of those possessions is determined via a formula using field goal and free throw attempts, offensive rebounds, assists and turnovers. The higher the number, the more prevalent a player is (good or bad) in a team's offensive outcome."><b>Usage%</b></td>
         <td style="text-align: center;" title='Floor % answers the question, "when Player X uses a possession, what is the probability that his team scores at least 1 point?". The higher the Floor%, the more frequently the team probably scores when the given player is involved.'><b>Floor%</b></td>
         <td style="text-align: center;"title='A metric that looks at how teams perform with a certain player on the court, how they perform with a certain player off the court, and calculates the overall impact that player has on team success.'><b>Plus Minus</b></td>
     </tr>
+    </thead>
+    <tbody>
     {{#each players}}
         {{#if floorPercentage}}
             <tr>
@@ -56,3 +60,9 @@
     {{/each}}
     </tbody>
 </table>
+
+<script src="https://cdn1.vox-cdn.com/uploads/chorus_asset/file/2878066/jquery.tablesorter.min.0.js"></script>
+<script>(function($) {
+    $('#players1, #players2').tablesorter().find('thead tr td').click(function(){setTimeout(stripeTables, 1)});
+})(jQuery);
+</script>
