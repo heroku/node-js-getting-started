@@ -14,7 +14,6 @@ module.exports = {
     getGameStats: function(req,res,next) {
         var name = req.param('name');
         var date = req.param('date');
-        var includeSpursIndex = req.param('spurs');
 
         try {
             var team = _.find(nba.teamsInfo, function(team) {
@@ -30,7 +29,7 @@ module.exports = {
 
             getLastGameForTeam(team.teamId, date, function(game) {
                 service.getGameStats(game, team, date, function(data) {
-                    data.includeSpursIndex = includeSpursIndex || false;
+                    data.includeSpursIndex = team.simpleName.toUpperCase() == "SPURS";
                     var html = getTemplate('page')(data);
                     res.send(html);
                 }, onError);
