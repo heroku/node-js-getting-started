@@ -46,9 +46,7 @@ Handlebars.registerHelper('ifCond', function(v1, operator, v2, options) {
 
 
 Handlebars.registerHelper('formatPercent', function(val, precision) {
-    if ( val <= 1 ) {
-        val = val * 100;
-    }
+    val = val * 100;
     return formatNumber(val, precision) + '%';
 });
 
