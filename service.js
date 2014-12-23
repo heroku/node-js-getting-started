@@ -183,8 +183,9 @@ function addGameScore(player) {
 
 function getSpursIndex(team) {
     //averages come from 2013-2014 season averages
-    var factors = {
-        efgPct: {
+    var factors = [
+        {
+            id: "efgPct",
             name: "Shooting (eFG%)",
             title: "Effective Field Goal Percentage - Effective Field Goal Percentage is a field goal percentage that is adjusted for made 3 pointers being 1.5 times more valuable than a 2 point shot.",
             weight: 0.20,
@@ -193,7 +194,8 @@ function getSpursIndex(team) {
             badThreshold: 0.48,
             percent: true
         },
-        astPct: {
+        {
+            id: "astPct",
             name: "Passing (AST%)",
             title: "Assist Percentage - Assist Percentage is the percent of team's field goals made that were assisted.",
             weight: 0.35,
@@ -202,7 +204,8 @@ function getSpursIndex(team) {
             badThreshold: 0.55,
             percent: true
         },
-        drebPct: {
+        {
+            id: "drebPct",
             name: "Defensive Rebounding (DReb%)",
             title: "Defensive Rebound Percentage - The percentage of defensive rebounds a team obtains.",
             weight: 0.15,
@@ -211,7 +214,8 @@ function getSpursIndex(team) {
             badThreshold: 0.705,
             percent: true
         },
-        defRating: {
+        {
+            id: "defRating",
             name: "Defense (DefRtg)",
             title: "Defensive Rating - The number of points allowed per 100 possessions by a team. For a player, it is the number of points per 100 possessions that the team allows while that individual player is on the court.",
             weight: 0.15,
@@ -221,7 +225,8 @@ function getSpursIndex(team) {
             percent: false,
             inverse: true
         },
-        uncontestedFGAPerPossession: {
+        {
+            id: "uncontestedFGAPerPossession",
             name: "Uncontested FGA/Poss allowed",
             title: "Uncontested Field Goal Attempts allowed per opponent possession.  A measure of how many open looks an opponent is afforded per possession.",
             weight: 0.15,
@@ -231,12 +236,12 @@ function getSpursIndex(team) {
             percent: true,
             inverse: true
         }
-    };
+    ];
 
     var totalScore = 0;
-    _.each(factors, function(factor, id) {
+    _.each(factors, function(factor) {
         var expected = factor.average;
-        var actual = team[id];
+        var actual = team[factor.id];
         if ( factor.inverse ) {
             var score = 100 * factor.weight * (expected / actual);
             var good = 100 * factor.weight * (expected / factor.goodThreshold);
@@ -257,6 +262,8 @@ function getSpursIndex(team) {
         factor.score = score;
         factor.actual = actual;
     });
+
+    factors = _.sortBy(factors, function(factor){return -factor.weight});
 
     return {spursIndexFactors: factors, spursIndexScore: totalScore};
 }
