@@ -81,8 +81,8 @@ function getTeams(statsArrays, usTeam) {
     addAdvancedStats(us, them);
     addAdvancedStats(them, us);
 
-    _.extend(us, getSpursIndex(us));
-    _.extend(them, getSpursIndex(them));
+    _.extend(us, getSpursIndex(us, them));
+    _.extend(them, getSpursIndex(them, us));
 
     return {us: us, them: them};
 }
