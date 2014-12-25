@@ -15,6 +15,7 @@ nba.ready(function() {
 
     app.get('/team/:name/:date', controller.getGameStats);
     app.get('/team/:name', controller.getGameStats);
+    app.get('/generate', controller.generate);
 
     app.listen(app.get('port'), function() {
         console.log("Node app is running at localhost:" + app.get('port'));

@@ -30,7 +30,6 @@ module.exports = {
 
             getLastGameForTeam(team.teamId, date, function(game) {
                 service.getGameStats(game, team, date, refresh, function(data) {
-                    data.includeSpursIndex = team.simpleName.toUpperCase() == "SPURS";
                     var html = getTemplate('page')(data);
                     res.send(html);
                 }, onError);
@@ -39,8 +38,34 @@ module.exports = {
         } catch(e) {
             onError(e, res);
         }
+    },
+    generate: function(req, res, next) {
+        var start = req.param("start");
+        var end = req.param("end");
+        start = moment(start);
+        end = moment(end);
+        var date = moment(start);
+
+        getGamesForDate(start.toDate(), function(games) {
+            _.each(games, function(game) {
+
+                var homeTeam = _.findWhere(nba.teamsInfo, {teamId: game.homeTeamId});
+                console.log("Home team", homeTeam);
+                var visitorTeam = _.findWhere(nba.teamsInfo, {teamId: game.visitorTeamId});
+                console.log("Visiting team", visitorTeam);
+
+                service.getGameStatsFromApi(game, homeTeam, date, callback, error);
+            });
+        })
+
     }
 };
+
+function getGamesForDate(date, callback, error) {
+    nba.api.scoreboard({ GameDate: moment(date).format('MM/DD/YYYY') }).then(function(resp) {
+        callback(resp.gameHeader);
+    }).catch(error);
+}
 
 
 function getLastGameForTeam(teamId, date, callback, error) {

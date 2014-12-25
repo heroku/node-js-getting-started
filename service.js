@@ -10,14 +10,14 @@ module.exports = {
     getGameStats: function(game, team, date, refresh, callback, error) {
         console.log("Searching MongoDB for game " + game.gameId);
         if ( refresh ) {
-            getGameStatsFromApi(game, team, date, callback, error)
+            this.getGameStatsFromApi(game, team, date, callback, error)
         } else {
             dao.getGame({gameId: game.gameId, teamId: team.teamId}, function(results) {
                 if ( results.length ) {
                     console.log("Found game " + game.gameId + "in DB");
                     callback(results[0]);
                 } else {
-                    getGameStatsFromApi(game, team, date, callback, error)
+                    this.getGameStatsFromApi(game, team, date, callback, error)
                 }
             }, function(err) {
                 if ( err ) {
@@ -25,46 +25,48 @@ module.exports = {
                 }
             });
         }
+    },
+    getGameStatsFromApi: function(game, team, date, callback, error) {
+        console.log("Calling NBA stats for game " + game.gameId + "...");
+        var options = {gameId: game.gameId};
+
+        Promise.all([nba.api.boxScoreFourFactors(options), nba.api.boxScoreAdvanced(options), nba.api.boxScoreUsage(options), nba.api.playByPlay(options)])
+            .then(function(results) {
+                console.log("Stats retrieved for " + game.gameId);
+                var fourFactors = results[0];
+                var boxScoreAdvanced = results[1];
+                var boxScoreUsage = results[2];
+                var playbyplay = results[3];
+
+
+                var teams = getTeams([fourFactors.teamStats, fourFactors.sqlTeamsFourFactors, boxScoreUsage.playerTrackTeam, boxScoreAdvanced.sqlTeamsAdvanced], team);
+                var players = getPlayers(fourFactors.playerStats, boxScoreUsage.sqlPlayersUsage, teams.us);
+
+                var data = {
+                    game: game,
+                    date: date,
+                    gameId: game.gameId,
+                    teamId: team.teamId,
+                    homeGame: game.homeTeamId == teams.us.teamId,
+                    teams: teams,
+                    us: teams.us,
+                    them: teams.them,
+                    fourFactors: teams.us,
+                    players: players,
+                    spursIndex: getSpursIndex(teams.us, teams.them),
+                    gameFlowData: getGameFlowChartData(playbyplay.playByPlay, teams, game)
+                };
+
+                dao.saveGame(data, callback, error);
+
+            }).catch(function(e) {
+                console.log("error: " + e, e);
+                error(e);
+                throw e;
+            });
     }
+
 };
-
-function getGameStatsFromApi(game, team, date, callback, error) {
-    console.log("Calling NBA stats for game " + game.gameId + "...");
-    var options = {gameId: game.gameId};
-    Promise.all([nba.api.boxScoreFourFactors(options), nba.api.boxScoreAdvanced(options), nba.api.boxScoreUsage(options), nba.api.playByPlay(options)])
-        .then(function(results) {
-            console.log("Stats retrieved for " + game.gameId);
-            var fourFactors = results[0];
-            var boxScoreAdvanced = results[1];
-            var boxScoreUsage = results[2];
-            var playbyplay = results[3];
-
-
-            var teams = getTeams([fourFactors.teamStats, fourFactors.sqlTeamsFourFactors, boxScoreUsage.playerTrackTeam, boxScoreAdvanced.sqlTeamsAdvanced], team);
-            var players = getPlayers(fourFactors.playerStats, boxScoreUsage.sqlPlayersUsage, teams.us);
-
-            var data = {
-                game: game,
-                date: date,
-                gameId: game.gameId,
-                teamId: team.teamId,
-                homeGame: game.homeTeamId == teams.us.teamId,
-                teams: teams,
-                us: teams.us,
-                them: teams.them,
-                fourFactors: teams.us,
-                players: players,
-                spursIndex: getSpursIndex(teams.us, teams.them),
-                gameFlowData: getGameFlowChartData(playbyplay.playByPlay, teams, game)
-            };
-
-            dao.saveGame(data, callback, error);
-        }).catch(function(e) {
-            console.log("error: " + e, e);
-            error(e);
-            throw e;
-        });
-}
 
 function getTeams(statsArrays, usTeam) {
     var us = {};
