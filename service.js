@@ -179,6 +179,8 @@ function addAdvancedStats(team, opp) {
     team.oRR = team.oREB / (team.oREB + opp.dREB);
     team.expectedOREB = LEAGUE_AVERAGE_ORR * (team.oREB + opp.dREB);
     team.oREBDiff = team.oREB - team.expectedOREB;
+    team.oREBDiffAbs = Math.abs(team.oREBDiff);
+
 
     team.uncontestedFGAPerPossession = team.uFGA / team.pACE;
     team.percentOfFGAUncontested = team.uFGA / team.fGA;
@@ -209,7 +211,7 @@ function getSpursIndex(team, opp) {
             id: "astPct",
             name: "Passing (AST%)",
             title: "Assist Percentage - Assist Percentage is the percent of team's field goals made that were assisted.",
-            weight: 0.35,
+            weight: 0.30,
             average: 0.621,
             goodThreshold: 0.68,
             badThreshold: 0.55,
@@ -219,7 +221,7 @@ function getSpursIndex(team, opp) {
             id: "drebPct",
             name: "Defensive Rebounding (DReb%)",
             title: "Defensive Rebound Percentage - The percentage of defensive rebounds a team obtains.",
-            weight: 0.15,
+            weight: 0.20,
             average: 0.764,
             goodThreshold: 0.81,
             badThreshold: 0.705,
@@ -229,7 +231,7 @@ function getSpursIndex(team, opp) {
             id: "defRating",
             name: "Defense (DefRtg)",
             title: "Defensive Rating - The number of points allowed per 100 possessions by a team. For a player, it is the number of points per 100 possessions that the team allows while that individual player is on the court.",
-            weight: 0.15,
+            weight: 0.20,
             average: 100.1,
             goodThreshold: 94,
             badThreshold: 106,
@@ -237,13 +239,13 @@ function getSpursIndex(team, opp) {
             inverse: true
         },
         {
-            id: "uncontestedFGAPerPossession",
-            name: "Uncontested FGA/Poss allowed",
-            title: "Uncontested Field Goal Attempts allowed per opponent possession.  A measure of how many open looks an opponent is afforded per possession.",
-            weight: 0.15,
-            average:0.365, //see comment at bottom of file
-            goodThreshold: 0.32,
-            badThreshold: 0.41,
+            id: "percentOfFGAUncontested",
+            name: "% of FGA Uncontested",
+            title: "The percentage of opponent's Field Goal Attempts which are uncontested.  A measure of how many open looks an opponent is afforded per possession.  A contested shot is one in which a defender is within 4 feet of the shooter",
+            weight: 0.11,
+            average:0.4081, //see comment at bottom of file
+            goodThreshold: 0.35,
+            badThreshold: 0.45,
             percent: true,
             inverse: true,
             opponentValue: true //get it from the opponent's stats - i.e. a defensive measure
@@ -321,9 +323,6 @@ function getGameFlowChartData(playByPlay, teams, game) {
 
 /*
 
- 2013-2014 unconteste FGA/possession calculation
-
-
  2013-2014 opp FGA/game: 85.1 (http://stats.nba.com/team/#!/1610612759/stats/opponent/?Season=2013-14)
 
  possessions: 95.03 (http://stats.nba.com/team/#!/1610612759/stats/advanced/)
@@ -338,4 +337,7 @@ function getGameFlowChartData(playByPlay, teams, game) {
  uFGA = 85.1 - 50.37 = 34.73
 
  uFGA/poss = 34.73 / 95.03 = .365
+
+ uFGA/FGA = 34.73 /85.1
+
  */

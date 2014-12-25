@@ -100,8 +100,28 @@
         <td>
             <u>B</u>all <u>C</u>ontrol <u>I</u>ndex (BCI)<br><i>(Assists + Steals) / TO</i>
         </td>
-        <td align="right">{{formatNumber us.bCI 2}}</td>
-        <td align="right">{{formatNumber them.bCI 2}}</td>
+        <td align="right">
+            {{#ifCond us.bCI '>' 3.5}}
+            <strong>{{formatNumber us.bCI 2}}</strong>
+            {{else}}
+                {{#ifCond us.bCI '<' 1.7}}
+                    <strong>{{formatNumber us.bCI 2}}</strong>
+                {{else}}
+                    {{formatNumber us.bCI 2}}
+                {{/ifCond}}
+            {{/ifCond}}
+        </td>
+        <td align="right">
+            {{#ifCond them.bCI '>' 3.5}}
+                <strong>{{formatNumber them.bCI 2}}</strong>
+            {{else}}
+                {{#ifCond them.bCI '<' 1.7}}
+                    <strong>{{formatNumber them.bCI 2}}</strong>
+                {{else}}
+                    {{formatNumber them.bCI 2}}
+                {{/ifCond}}
+            {{/ifCond}}
+        </td>
     </tr>
 
     <tr>
@@ -127,8 +147,19 @@
     </tr>
     <tr>
         <td>Difference</td>
-        <td align="right">{{formatNumber us.oREBDiff 1}}</td>
-        <td align="right">{{formatNumber them.oREBDiff}}</td>
+        <td align="right">
+            {{#ifCond us.oREBDiffAbs '>' 4}}
+                <strong>{{formatNumber us.oREBDiff 1}}</strong>
+            {{else}}
+                {{formatNumber us.oREBDiff 1}}
+            {{/ifCond}}
+        </td>
+        <td align="right">
+            {{#ifCond them.oREBDiffAbs '>' 4}}
+                <strong>{{formatNumber them.oREBDiff 1}}</strong>
+            {{else}}
+                {{formatNumber them.oREBDiff 1}}
+            {{/ifCond}}</td>
     </tr>
     </tbody>
 </table>
