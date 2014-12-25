@@ -48,12 +48,6 @@
     </tr>
 
     <tr>
-        <td>Uncontested FGA / Poss.</td>
-        <td align="right">{{formatPercent us.uncontestedFGAPerPossession 1}}</td>
-        <td align="right">{{formatPercent them.uncontestedFGAPerPossession 1}}</td>
-    </tr>
-
-    <tr>
         <td title="Points per 100 possessions">Offensive Rating</td>
         <td align="right">{{formatNumber us.offRating 1}}</td>
         <td align="right">{{formatNumber them.offRating 1}}</td>
@@ -67,6 +61,38 @@
         <td>Net Rating</td>
         <td align="right">{{formatNumber us.netRating 1}}</td>
         <td align="right">{{formatNumber them.netRating 1}}</td>
+    </tr>
+
+    <tr>
+        <td></td>
+        <td align="right"></td>
+        <td align="right"></td>
+    </tr>
+
+    <tr>
+        <td></td>
+        <td style="text-align: center;"><b>{{us.teamName}}</b></td>
+        <td style="text-align: center;"><b>{{them.teamName}}</b></td>
+    </tr>
+    <tr>
+        <td title="What percentage of a team's field goal attempts are uncontested: contested FGA / total FGA">% of FGA uncontested</td>
+        <td align="right">{{formatPercent us.percentOfFGAUncontested 1}}</td>
+        <td align="right">{{formatPercent them.percentOfFGAUncontested 1}}</td>
+    </tr>
+    <tr>
+        <td>Points in the paint</td>
+        <td align="right">{{formatNumber us.ptsPaint}}</td>
+        <td align="right">{{formatNumber them.ptsPaint}}</td>
+    </tr>
+    <tr>
+        <td>Second chance points</td>
+        <td align="right">{{formatNumber us.pts2ndChance}}</td>
+        <td align="right">{{formatNumber them.pts2ndChance}}</td>
+    </tr>
+    <tr>
+        <td>Fast break points</td>
+        <td align="right">{{formatNumber us.ptsFb}}</td>
+        <td align="right">{{formatNumber them.ptsFb}}</td>
     </tr>
 
     <tr>
