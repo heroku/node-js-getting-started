@@ -10,60 +10,65 @@ module.exports = {
     getGameStats: function(game, team, date, refresh, callback, error) {
         console.log("Searching MongoDB for game " + game.gameId);
         if ( refresh ) {
-            this.getGameStatsFromApi(game, team, date, callback, error)
+            this.getGameStatsFromApi(game, team, date).then(callback, error);
         } else {
-            dao.getGame({gameId: game.gameId, teamId: team.teamId}, function(results) {
+            dao.getGame({gameId: game.gameId, teamId: team.teamId}, _.bind(function(results) {
                 if ( results.length ) {
                     console.log("Found game " + game.gameId + "in DB");
                     callback(results[0]);
                 } else {
-                    this.getGameStatsFromApi(game, team, date, callback, error)
+                    this.getGameStatsFromApi(game, team, date).then(callback, error);
                 }
-            }, function(err) {
+            }, this), function(err) {
                 if ( err ) {
                     error(err);
                 }
             });
         }
     },
-    getGameStatsFromApi: function(game, team, date, callback, error) {
+    getGameStatsFromApi: function(game, team, date) {
         console.log("Calling NBA stats for game " + game.gameId + "...");
         var options = {gameId: game.gameId};
+        var promise = new Promise(function(resolve, reject) {
+            Promise.all([nba.api.boxScoreFourFactors(options), nba.api.boxScoreAdvanced(options), nba.api.boxScoreUsage(options), nba.api.playByPlay(options)])
+                .then(function(results) {
+                    console.log("Stats retrieved for " + game.gameId);
+                    var fourFactors = results[0];
+                    var boxScoreAdvanced = results[1];
+                    var boxScoreUsage = results[2];
+                    var playbyplay = results[3];
 
-        Promise.all([nba.api.boxScoreFourFactors(options), nba.api.boxScoreAdvanced(options), nba.api.boxScoreUsage(options), nba.api.playByPlay(options)])
-            .then(function(results) {
-                console.log("Stats retrieved for " + game.gameId);
-                var fourFactors = results[0];
-                var boxScoreAdvanced = results[1];
-                var boxScoreUsage = results[2];
-                var playbyplay = results[3];
 
+                    var teams = getTeams([fourFactors.teamStats, fourFactors.sqlTeamsFourFactors, boxScoreUsage.playerTrackTeam, boxScoreAdvanced.sqlTeamsAdvanced], team);
+                    var players = getPlayers(fourFactors.playerStats, boxScoreUsage.sqlPlayersUsage, teams.us);
 
-                var teams = getTeams([fourFactors.teamStats, fourFactors.sqlTeamsFourFactors, boxScoreUsage.playerTrackTeam, boxScoreAdvanced.sqlTeamsAdvanced], team);
-                var players = getPlayers(fourFactors.playerStats, boxScoreUsage.sqlPlayersUsage, teams.us);
+                    if ( !teams.us.pTS ) {
+                        reject("Game stats not available yet");
+                        return;
+                    }
+                    var data = {
+                        game: game,
+                        date: date,
+                        gameId: game.gameId,
+                        teamId: team.teamId,
+                        homeGame: game.homeTeamId == teams.us.teamId,
+                        teams: teams,
+                        us: teams.us,
+                        them: teams.them,
+                        fourFactors: teams.us,
+                        players: players,
+                        spursIndex: getSpursIndex(teams.us, teams.them),
+                        gameFlowData: getGameFlowChartData(playbyplay.playByPlay, teams, game)
+                    };
 
-                var data = {
-                    game: game,
-                    date: date,
-                    gameId: game.gameId,
-                    teamId: team.teamId,
-                    homeGame: game.homeTeamId == teams.us.teamId,
-                    teams: teams,
-                    us: teams.us,
-                    them: teams.them,
-                    fourFactors: teams.us,
-                    players: players,
-                    spursIndex: getSpursIndex(teams.us, teams.them),
-                    gameFlowData: getGameFlowChartData(playbyplay.playByPlay, teams, game)
-                };
-
-                dao.saveGame(data, callback, error);
-
-            }).catch(function(e) {
-                console.log("error: " + e, e);
-                error(e);
-                throw e;
-            });
+                    dao.remove({gameId: game.gameId, teamId: team.teamId}).then(function() {
+                        dao.saveGame(data, function() {resolve(data);}, reject);
+                    })
+                }).catch(function(e) {
+                    reject(e);
+                });
+        });
+        return promise;
     }
 
 };

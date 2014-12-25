@@ -76,6 +76,9 @@ module.exports = {
                 callback(data);
             }
         });
+    },
+    remove: function(options) {
+        return GameModel.remove(options).exec();
     }
 
 };
