@@ -243,7 +243,7 @@ function getSpursIndex(team, opp) {
             id: "percentOfFGAUncontested",
             name: "% of FGA Uncontested",
             title: "The percentage of opponent's Field Goal Attempts which are uncontested.  A measure of how many open looks an opponent is afforded per possession.  A contested shot is one in which a defender is within 4 feet of the shooter",
-            weight: 0.11,
+            weight: 0.10,
             average:0.4081, //see comment at bottom of file
             goodThreshold: 0.35,
             badThreshold: 0.45,
