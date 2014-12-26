@@ -46,32 +46,36 @@ module.exports = {
         end = moment(end);
         var date = moment(start);
 
-        getGamesDataForDate(date, function() {
-            date = moment(date).subtract(1, 'days');
-            if (moment(date).isAfter(end)) {
-                console.log("Complete", start, end);
+        function callback() {
+            date = moment(date).add(1, 'days');
+            if (moment(date).isAfter(end) || moment(date).isAfter(moment())) {
+                console.log("Complete", start.format("MM/DD/YYYY"), end.format("MM/DD/YYYY"));
                 res.send("Generated data for all games between " + moment(start).format("MM/DD/YYYY") + ' and ' + moment(end).format('MM/DD/YYYY'));
             } else {
                 getGamesDataForDate(date)
-
             }
-        }, function(e) {console.log(e); res.send("Error: " + e)});
+        }
+
+        getGamesDataForDate(date, callback, function(e) {console.log(e); callback();});
     }
 };
 
 function getGamesDataForDate(date, callback, error) {
-    var promisesForGames = [];
-    getGamesForDate(start.toDate(), function(games) {
-        _.each(games, function(game) {
+    getGamesForDate(date.toDate(), function(games) {
+        if( games && games.length ) {
+            var promisesForGames = [];
+            _.each(games, function(game) {
 
-            var homeTeam = _.findWhere(nba.teamsInfo, {teamId: game.homeTeamId});
-            console.log("Home team", homeTeam);
-            var visitorTeam = _.findWhere(nba.teamsInfo, {teamId: game.visitorTeamId});
-            console.log("Visiting team", visitorTeam);
+                var homeTeam = _.findWhere(nba.teamsInfo, {teamId: game.homeTeamId});
+                var visitorTeam = _.findWhere(nba.teamsInfo, {teamId: game.visitorTeamId});
 
-            promisesForGames.push(service.getGameStatsFromApi(game, homeTeam, date));
-        });
-        Promise.all(promisesForGames).then(callback).catch(error);
+                promisesForGames.push(service.getGameStatsFromApi(game, homeTeam, date));
+                promisesForGames.push(service.getGameStatsFromApi(game, visitorTeam, date));
+            });
+            Promise.all(promisesForGames).then(callback, error);
+        } else {
+            callback();
+        }
     })
 }
 
@@ -92,7 +96,7 @@ function getLastGameForTeam(teamId, date, callback, error) {
             return game.homeTeamId == teamId || game.visitorTeamId == teamId
         });
         if ( !teamGame || teamGame.gameStatusId != GAME_STATUS_FINAL ) {
-            date = moment(date).subtract(1, 'days').toDate();
+            date = moment(date).add(1, 'days').toDate();
             getLastGameForTeam(teamId, date, callback);
         } else {
             global.date = date;

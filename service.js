@@ -27,7 +27,7 @@ module.exports = {
         }
     },
     getGameStatsFromApi: function(game, team, date) {
-        console.log("Calling NBA stats for game " + game.gameId + "...");
+        console.log("Calling NBA stats for game " + game.gameId + " " + game.gAMECODE);
         var options = {gameId: game.gameId};
         var promise = new Promise(function(resolve, reject) {
             Promise.all([nba.api.boxScoreFourFactors(options), nba.api.boxScoreAdvanced(options), nba.api.boxScoreUsage(options), nba.api.playByPlay(options)])
@@ -43,21 +43,20 @@ module.exports = {
                     var players = getPlayers(fourFactors.playerStats, boxScoreUsage.sqlPlayersUsage, teams.us);
 
                     if ( !teams.us.pTS ) {
+                        console.log("Game stats not available yet")
                         reject("Game stats not available yet");
                         return;
                     }
                     var data = {
-                        game: game,
-                        date: date,
                         gameId: game.gameId,
                         teamId: team.teamId,
+                        date: date,
+                        game: game,
                         homeGame: game.homeTeamId == teams.us.teamId,
-                        teams: teams,
                         us: teams.us,
                         them: teams.them,
                         fourFactors: teams.us,
                         players: players,
-                        spursIndex: getSpursIndex(teams.us, teams.them),
                         gameFlowData: getGameFlowChartData(playbyplay.playByPlay, teams, game)
                     };
 
@@ -187,6 +186,8 @@ function addAdvancedStats(team, opp) {
     team.percentOfFGAContested = team.cFGA / team.fGA;
     team.uFGPct = team.uFGM / team.uFGA;
     team.cFGPct = team.cFGM / team.cFGA;
+
+    team.passesPerPoss = team.pASS / team.pACE;
 }
 
 function addGameScore(player) {

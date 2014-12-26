@@ -15,7 +15,6 @@
     (function($){
         stripeTables($);
     var columns = {{toJSON gameFlowData}};
-var teams = {{toJSON teams}};
 
 var playDescriptions = columns[3];
 columns.pop();
@@ -91,8 +90,8 @@ window.drawGameFlowChart = function() {
 
                 return '<table class="c3-tooltip"><tbody>' +
                         '<tr><th colspan="2">' + prettyTime + '</th></tr>' +
-                        '<tr class="c3-tooltip-name-us"><td class="name"><span style="background-color:#000000"></span>{{teams.us.teamName}}</td><td class="value">' + (usScore > themScore ? '<b>' + usScore + '</b>' : usScore) + '</td></tr>' +
-                        '<tr class="c3-tooltip-name-them"><td class="name"><span style="background-color:#d9534f"></span>{{teams.them.teamName}}</td><td class="value">' + (themScore > usScore ? '<b>' + themScore + '</b>' : themScore) + '</td></tr>' +
+                        '<tr class="c3-tooltip-name-us"><td class="name"><span style="background-color:#000000"></span>{{us.teamName}}</td><td class="value">' + (usScore > themScore ? '<b>' + usScore + '</b>' : usScore) + '</td></tr>' +
+                        '<tr class="c3-tooltip-name-them"><td class="name"><span style="background-color:#d9534f"></span>{{them.teamName}}</td><td class="value">' + (themScore > usScore ? '<b>' + themScore + '</b>' : themScore) + '</td></tr>' +
                         '<tr class="c3-tooltip-name-them" style="color:' + (usScore > themScore ? '#5cb85c': (themScore > usScore ? '#d9534f' : '#000000' ) ) + '"><td class="name">Margin:</td><td class="value">' + (usScore - themScore) + '</td></tr>' +
                         (playDesc ? '<tr class="c3-tooltip-name-them"><td colspan="2" class="value"><i>' + playDesc + '</i></td></tr>' : '') +
                         '</tbody></table>';

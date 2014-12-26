@@ -75,6 +75,11 @@
         <td style="text-align: center;"><b>{{them.teamName}}</b></td>
     </tr>
     <tr>
+        <td>Passes / poss.</td>
+        <td align="right">{{formatNumber us.passesPerPoss 1}}</td>
+        <td align="right">{{formatNumber them.passesPerPoss 1}}</td>
+    </tr>
+    <tr>
         <td title="What percentage of a team's field goal attempts are uncontested: contested FGA / total FGA">% of FGA uncontested</td>
         <td align="right">{{formatPercent us.percentOfFGAUncontested 1}}</td>
         <td align="right">{{formatPercent them.percentOfFGAUncontested 1}}</td>
