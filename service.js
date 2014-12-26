@@ -212,7 +212,7 @@ function getSpursIndex(team, opp) {
             id: "astPct",
             name: "Passing (AST%)",
             title: "Assist Percentage - Assist Percentage is the percent of team's field goals made that were assisted.",
-            weight: 0.30,
+            weight: 0.25,
             average: 0.621,
             goodThreshold: 0.68,
             badThreshold: 0.55,
@@ -232,7 +232,7 @@ function getSpursIndex(team, opp) {
             id: "defRating",
             name: "Defense (DefRtg)",
             title: "Defensive Rating - The number of points allowed per 100 possessions by a team. For a player, it is the number of points per 100 possessions that the team allows while that individual player is on the court.",
-            weight: 0.20,
+            weight: 0.25,
             average: 100.1,
             goodThreshold: 94,
             badThreshold: 106,
@@ -241,7 +241,7 @@ function getSpursIndex(team, opp) {
         },
         {
             id: "percentOfFGAUncontested",
-            name: "% of FGA Uncontested",
+            name: "Opponent % of FGA Uncontested",
             title: "The percentage of opponent's Field Goal Attempts which are uncontested.  A measure of how many open looks an opponent is afforded per possession.  A contested shot is one in which a defender is within 4 feet of the shooter",
             weight: 0.10,
             average:0.4081, //see comment at bottom of file
