@@ -3,6 +3,8 @@ var _ = require('underscore');
 var Promise = require( "es6-promise" ).Promise;
 var dao = require('./dao');
 
+global.GAME_STATUS_FINAL = 3;
+
 var LEAGUE_AVERAGE_ORR = .25016666666666662;
 var LEAGUE_AVERAGE_DRR = .7494666666666669;
 
@@ -40,11 +42,12 @@ module.exports = {
 
 
                     var teams = getTeams([fourFactors.teamStats, fourFactors.sqlTeamsFourFactors, boxScoreUsage.playerTrackTeam, boxScoreAdvanced.sqlTeamsAdvanced, boxScoreUsage.otherStats], team);
-                    var players = getPlayers(fourFactors.playerStats, boxScoreUsage.sqlPlayersUsage, teams.us);
+                    teams.us.players = getPlayers(fourFactors.playerStats, boxScoreUsage.sqlPlayersUsage, teams.us);
+                    teams.them.players = getPlayers(fourFactors.playerStats, boxScoreUsage.sqlPlayersUsage, teams.them);
 
                     if ( !teams.us.pTS ) {
-                        console.log("Game stats not available yet")
-                        reject("Game stats not available yet");
+                        console.log("Game stats not available yet");
+                        resolve("Game stats not available yet");
                         return;
                     }
                     var data = {
@@ -56,7 +59,6 @@ module.exports = {
                         us: teams.us,
                         them: teams.them,
                         fourFactors: teams.us,
-                        players: players,
                         gameFlowData: getGameFlowChartData(playbyplay.playByPlay, teams, game)
                     };
 

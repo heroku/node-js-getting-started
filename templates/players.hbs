@@ -8,30 +8,8 @@
     </tr>
     </thead>
     <tbody>
-    {{#each players}}
-    {{#if minutes}}
-    <tr>
-        <td>{{playerName}}</td>
-        <td align="right">{{formatNumber adjGS 1}}</td>
-        <td align="right">{{formatNumber adjGSMin 2}}</td>
-        <td>
-            {{formatMinutes mIN}} Min,
-            {{pTS}} Pts
-            {{#if fGA}}
-                ({{#if fGA}}{{fGM}}-{{fGA}} FG,{{/if}}
-                {{#if fG3A}}{{fG3M}}-{{fG3A}} 3PT,{{/if}}
-                {{#if fTA}}{{fTM}}-{{fTA}} FT,{{/if}})
-            {{/if}}
-
-            {{#if REB}}{{REB}} Reb ({{oREB}} Off){{/if}},
-            {{#if aST}}{{aST}} Ast,{{/if}}
-            {{#if bLK}}{{bLK}} Blk,{{/if}}
-            {{#if sTL}}{{sTL}} Stl,{{/if}}
-            {{#if tO}}{{tO}} TO,{{/if}}
-            {{#if pF}}{{pF}} PF{{/if}}
-        </td>
-    </tr>
-    {{/if}}
+    {{#each us.players}}
+        {{> player}}
     {{/each}}
     </tbody>
 </table>

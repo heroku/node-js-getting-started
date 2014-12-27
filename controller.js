@@ -30,7 +30,11 @@ module.exports = {
 
             getLastGameForTeam(team.teamId, date, function(game) {
                 service.getGameStats(game, team, date, refresh, function(data) {
-                    var html = getTemplate('page')(data);
+                    if (_.isObject(data) ){
+                        var html = getTemplate('page')(data);
+                    } else {
+                        html = data;
+                    }
                     res.send(html);
                 }, onError);
             }, onError);

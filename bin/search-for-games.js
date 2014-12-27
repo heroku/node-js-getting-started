@@ -3,81 +3,60 @@ var nba = require('nba');
 var _ = require('underscore');
 var moment = require('moment');
 var Promise = require( "es6-promise" ).Promise;
-var service = require('./service');
+var service = require('../service');
+var dao = require('../dao');
 
+nba.ready(function() {
+    getGames(function() {
+        console.log("games retrieved")
+        process.exit(0);
+    });
+});
 
-function generate(start, end) {
-    start = moment(start);
-    end = moment(end);
-    var date = moment(start);
-
-    function callback() {
-        date = moment(date).add(1, 'days');
-        if (moment(date).isAfter(end) || moment(date).isAfter(moment())) {
-            console.log("Complete", start.format("MM/DD/YYYY"), end.format("MM/DD/YYYY"));
-            res.send("Generated data for all games between " + moment(start).format("MM/DD/YYYY") + ' and ' + moment(end).format('MM/DD/YYYY'));
-        } else {
-            getGamesDataForDate(date)
-        }
-    }
-
-    getGamesDataForDate(date, callback, function(e) {console.log(e); callback();});
-}
-
-
-
-function getGamesDataForDate(date, callback, error) {
-    getGamesForDate(date.toDate(), function(games) {
+function getGames(callback) {
+    var date = new Date();
+    nba.api.scoreboard({ GameDate: moment(date).format('MM/DD/YYYY') }).then(function(resp) {
+        var games = resp.gameHeader;
         if( games && games.length ) {
             var promisesForGames = [];
             _.each(games, function(game) {
+                if ( game.gameStatusId == global.GAME_STATUS_FINAL) {
+                    var homeTeam = _.findWhere(nba.teamsInfo, {teamId: game.homeTeamId});
+                    var visitorTeam = _.findWhere(nba.teamsInfo, {teamId: game.visitorTeamId});
 
-                var homeTeam = _.findWhere(nba.teamsInfo, {teamId: game.homeTeamId});
-                var visitorTeam = _.findWhere(nba.teamsInfo, {teamId: game.visitorTeamId});
-
-                promisesForGames.push(service.getGameStatsFromApi(game, homeTeam, date));
-                promisesForGames.push(service.getGameStatsFromApi(game, visitorTeam, date));
+                    promisesForGames.push(getGameIfNotInDao(game, homeTeam, date));
+                    promisesForGames.push(getGameIfNotInDao(game, visitorTeam, date));
+                }
             });
             Promise.all(promisesForGames).then(callback, error);
         } else {
             callback();
         }
-    })
-}
-
-function getGamesForDate(date, callback, error) {
-    nba.api.scoreboard({ GameDate: moment(date).format('MM/DD/YYYY') }).then(function(resp) {
-        callback(resp.gameHeader);
     }).catch(error);
 }
 
+function getGameIfNotInDao(game, team, date) {
+    var promise = new Promise(function(resolve, reject) {
+        dao.getGame({gameId: game.gameId, teamId: team.teamId}, function(results, err) {
+            if ( err ) {
+                console.log("Error", err);
+            } else if ( results && results.length ) {
+                resolve();
+            } else {
+                service.getGameStatsFromApi(game, team, date).then(resolve, function(e) {
+                    console.log(e);
+                    resolve();
+                });
+            }
+        })
 
-var argLength = process.argv.length;
-if ( argLength == 4 ) {
-    var start = process.argv[2];
-    var end = process.argv[3];
-    start = moment(start);
-    end = moment(end);
-    var date = moment(start);
-
-
-}
-if (argLength < 4 ) {
-    console.log("Please pass a start and end datename.  For instance 'Spurs'");
-    throw "error";
-}
-var teamName = process.argv[2];
-if ( !teamName ) {
-    console.log("Please pass a team name");
-    throw new Exception("Please pass a team name");
+    });
+    return promise;
 }
 
-var date = null;
-if ( process.argv.length > 3 ) {
-    date = process.argv[3];
+function error(e) {
+    console.log(e);
+    process.exit(1);
 }
 
-
-generate();
-
-exit();
+process.on('uncaughtException', error);
