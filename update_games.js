@@ -2,8 +2,8 @@ var nba = require('nba');
 var _ = require('underscore');
 var moment = require('moment');
 var Promise = require( "es6-promise" ).Promise;
-var service = require('../service');
-var dao = require('../dao');
+var service = require('./service');
+var dao = require('./dao');
 
 nba.ready(function() {
     getGames(function() {
