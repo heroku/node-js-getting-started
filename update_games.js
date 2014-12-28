@@ -43,6 +43,7 @@ function getGameIfNotInDao(game, team, date) {
             if ( err ) {
                 console.log("Error", err);
             } else if ( results && results.length ) {
+                console.log("Game " + game.gAMECODE + " already present in DB");
                 resolve();
             } else {
                 service.getGameStatsFromApi(game, team, date).then(resolve, function(e) {
