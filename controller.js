@@ -11,28 +11,34 @@ var GAME_STATUS_FINAL = 3;
 
 
 module.exports = {
+    getSeasonAverages: function(req,res,next) {
+        var name = req.param('name');
+        var refresh = req.param('refresh');
+
+        try {
+            var team = getTeam(name);
+            console.log("Looking up last game for ", team.teamName);
+            var options = {
+                team: team,
+                season: req.param("season") ? true : false,
+                playoffs: req.param("playoffs") ? true : false
+            };
+
+            service.getTeamAverages(options).then(function(averages) {
+                res.send(JSON.stringify(averages));
+            }, onError);
+
+        } catch(e) {
+            onError(e, res);
+        }
+    },
     getGameStats: function(req,res,next) {
         var name = req.param('name');
         var date = req.param('date');
         var refresh = req.param('refresh');
 
         try {
-
-            if ( name.toUpperCase() == 'HORNETS' || name.toUpperCase() == 'BOBCATS') {
-                var hornets = _.findWhere(nba.teamsInfo, {simpleName: 'Hornets'});
-                if ( hornets ){
-                    name = 'hornets'
-                } else {
-                    name = 'bobcats';
-                }
-            }
-            var team = _.find(nba.teamsInfo, function(team) {
-                return team.simpleName.toUpperCase().indexOf(name.toUpperCase()) >= 0
-            });
-            if ( !team ) {
-                throw new Error("No team found for name " + name);
-                return;
-            }
+            var team = getTeam(name);
             console.log("Looking up last game for ", team.teamName);
 
             if (date) {
@@ -57,6 +63,24 @@ module.exports = {
         }
     }
 };
+
+function getTeam(name) {
+    if ( name.toUpperCase() == 'HORNETS' || name.toUpperCase() == 'BOBCATS') {
+        var hornets = _.findWhere(nba.teamsInfo, {simpleName: 'Hornets'});
+        if ( hornets ){
+            name = 'hornets'
+        } else {
+            name = 'bobcats';
+        }
+    }
+    var team = _.find(nba.teamsInfo, function(team) {
+        return team.simpleName.toUpperCase().indexOf(name.toUpperCase()) >= 0
+    });
+    if ( !team ) {
+        throw new Error("No team found for name " + name);
+    }
+    return team;
+}
 
 function getLastGameForTeam(teamId, date, callback, error) {
     if (!date) {

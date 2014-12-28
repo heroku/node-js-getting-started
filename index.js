@@ -13,6 +13,7 @@ nba.ready(function() {
         response.send('Hello World!');
     });
 
+    app.get('/team/averages/:name', controller.getSeasonAverages);
     app.get('/team/:name/:date', controller.getGameStats);
     app.get('/team/:name', controller.getGameStats);
 

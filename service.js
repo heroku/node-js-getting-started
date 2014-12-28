@@ -2,11 +2,17 @@ var nba = require('nba');
 var _ = require('underscore');
 var Promise = require( "es6-promise" ).Promise;
 var dao = require('./dao');
+var moment = require('moment-timezone');
 
 global.GAME_STATUS_FINAL = 3;
 
 var LEAGUE_AVERAGE_ORR = .25016666666666662;
 var LEAGUE_AVERAGE_DRR = .7494666666666669;
+
+var SEASON_START_2014_2015 = moment("10-28-2014");
+var SEASON_END_2014_2015 = moment("04-15-2015");
+var PLAYOFFS_START_2014_2015 = moment("04-16-2015");
+var PLAYOFFS_END_2014_2015 = moment("07-01-2015"); //play it safe
 
 module.exports = {
     getGameStats: function(game, team, date, refresh, callback, error) {
@@ -14,7 +20,7 @@ module.exports = {
         if ( refresh ) {
             this.getGameStatsFromApi(game, team, date).then(callback, error);
         } else {
-            dao.getGame({gameId: game.gameId, teamId: team.teamId}, _.bind(function(results) {
+            dao.getGames({gameId: game.gameId, teamId: team.teamId}, _.bind(function(results) {
                 if ( results.length ) {
                     console.log("Found game " + game.gameId + "in DB");
                     callback(results[0]);
@@ -27,6 +33,41 @@ module.exports = {
                 }
             });
         }
+    },
+    getTeamAverages: function(options) {
+        var team = options.team;
+
+        var now = moment();
+
+        var start = SEASON_START_2014_2015;
+        var end = PLAYOFFS_END_2014_2015;
+        if ( options.season ) {
+            end = SEASON_END_2014_2015;
+        } else if ( options.playoffs ) {
+            start = PLAYOFFS_START_2014_2015;
+            end = PLAYOFFS_END_2014_2015;
+        }
+
+        var promise = new Promise(function(resolve, reject) {
+            dao.getGames({
+                teamId:team.teamId,
+                date: {
+                    $gte: start.toDate(),
+                    $lte: end.toDate()
+                }
+            }, function(results, err) {
+                if ( err ) {
+                    reject(err);
+                } else if ( results && results.length ) {
+                    var averages = getAverages(results);
+                    resolve(averages);
+                } else {
+                    console.log("No games found for options ", options);
+                    resolve();
+                }
+            });
+        });
+        return promise
     },
     getGameStatsFromApi: function(game, team, date) {
         console.log("Calling NBA stats for game " + game.gameId + " " + game.gAMECODE);
@@ -75,7 +116,7 @@ module.exports = {
     getGameIfNotInDao: function(game, team, date) {
         var service = this;
         var promise = new Promise(function(resolve, reject) {
-            dao.getGame({gameId: game.gameId, teamId: team.teamId}, function(results, err) {
+            dao.getGames({gameId: game.gameId, teamId: team.teamId}, function(results, err) {
                 if ( err ) {
                     console.trace(err);
                 } else if ( results && results.length ) {
@@ -83,7 +124,7 @@ module.exports = {
                     resolve();
                 } else {
                     service.getGameStatsFromApi(game, team, date).then(resolve, function(e) {
-                        console.trace(e)
+                        console.trace(e);
                         resolve();
                     });
                 }
@@ -92,9 +133,14 @@ module.exports = {
         });
         return promise;
     }
-
-
 };
+
+
+function getAverages(games) {
+    _.each(games, function(game) {
+        console.log("game " + game.gAMECODE);
+    });
+}
 
 function getTeams(statsArrays, usTeam) {
     var us = {};

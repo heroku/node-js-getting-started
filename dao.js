@@ -62,7 +62,7 @@ GameModel.remove().exec(function(err, results) {
 var connectCallbacks = [];
 
 module.exports = {
-    getGame: function(options, callback, error) {
+    getGames: function(options, callback, error) {
         GameModel.find(options).exec(function(err, result) {
             if ( err )  {
                 error(err);

@@ -39,7 +39,7 @@ function getGames(callback) {
 
 function getGameIfNotInDao(game, team, date) {
     var promise = new Promise(function(resolve, reject) {
-        dao.getGame({gameId: game.gameId, teamId: team.teamId}, function(results, err) {
+        dao.getGames({gameId: game.gameId, teamId: team.teamId}, function(results, err) {
             if ( err ) {
                 console.log("Error", err, err.stack);
             } else if ( results && results.length ) {
