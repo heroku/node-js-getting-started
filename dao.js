@@ -15,6 +15,9 @@ mongoose.connect(uristring, function (err, res) {
         console.log ('ERROR connecting to: ' + uristring + '. ' + err);
     } else {
         console.log ('Succeeded connected to: ' + uristring);
+        _.each(connectCallbacks, function(callback) {
+            callback();
+        });
     }
 });
 
@@ -56,6 +59,8 @@ GameModel.remove().exec(function(err, results) {
     }
 });*/
 
+var connectCallbacks = [];
+
 module.exports = {
     getGame: function(options, callback, error) {
         GameModel.find(options).exec(function(err, result) {
@@ -79,6 +84,8 @@ module.exports = {
     },
     remove: function(options) {
         return GameModel.remove(options).exec();
+    },
+    onConnect: function(callback) {
+        connectCallbacks.push(callback);
     }
-
 };

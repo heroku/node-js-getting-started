@@ -68,8 +68,11 @@ var argLength = process.argv.length;
 if ( argLength == 4 ) {
     var start = process.argv[2];
     var end = process.argv[3];
-    nba.ready(function() {
-        generate(start, end);
+    dao.onConnect(function() {
+        console.log("Connected to DB");
+        nba.ready(function() {
+            generate(start, end);
+        });
     });
 
 } else {

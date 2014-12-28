@@ -8,10 +8,13 @@ var dao = require('./dao');
 console.log("Starting up...");
 
 
-nba.ready(function() {
-    getGames(function() {
-        console.log("games retrieved")
-        process.exit(0);
+dao.onConnect(function() {
+    console.log("Connected");
+    nba.ready(function() {
+        getGames(function() {
+            console.log("games retrieved")
+            process.exit(0);
+        });
     });
 });
 
@@ -25,9 +28,11 @@ function getGames(callback) {
             var promisesForGames = [];
             _.each(games, function(game) {
                 if ( game.gameStatusId == global.GAME_STATUS_FINAL) {
+                    console.log("Get game " + game.gAMECODE);
                     var homeTeam = _.findWhere(nba.teamsInfo, {teamId: game.homeTeamId});
                     var visitorTeam = _.findWhere(nba.teamsInfo, {teamId: game.visitorTeamId});
 
+                    console.log("let's get it, this is weird");
                     promisesForGames.push(getGameIfNotInDao(game, homeTeam, date));
                     promisesForGames.push(getGameIfNotInDao(game, visitorTeam, date));
                 }
@@ -41,6 +46,7 @@ function getGames(callback) {
 
 function getGameIfNotInDao(game, team, date) {
     var promise = new Promise(function(resolve, reject) {
+        console.log("Inside the promise");
         dao.getGame({gameId: game.gameId, teamId: team.teamId}, function(results, err) {
             if ( err ) {
                 console.log("Error", err);
