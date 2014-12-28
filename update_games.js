@@ -5,6 +5,9 @@ var Promise = require( "es6-promise" ).Promise;
 var service = require('./service');
 var dao = require('./dao');
 
+console.log("Starting up...");
+
+
 nba.ready(function() {
     getGames(function() {
         console.log("games retrieved")
@@ -14,8 +17,10 @@ nba.ready(function() {
 
 function getGames(callback) {
     var date = new Date();
+    console.log("Get games for date " + moment(date).format('MM/DD/YYYY'));
     nba.api.scoreboard({ GameDate: moment(date).format('MM/DD/YYYY') }).then(function(resp) {
         var games = resp.gameHeader;
+        console.log("Games", games);
         if( games && games.length ) {
             var promisesForGames = [];
             _.each(games, function(game) {
