@@ -25,6 +25,7 @@ function getGames(callback) {
         var games = resp.gameHeader;
         console.log("Games", games);
         if( games && games.length ) {
+            console.log("Okay, I'm here now?");
             var promisesForGames = [];
             _.each(games, function(game) {
                 if ( game.gameStatusId == global.GAME_STATUS_FINAL) {
@@ -35,6 +36,8 @@ function getGames(callback) {
                     console.log("let's get it, this is weird");
                     promisesForGames.push(getGameIfNotInDao(game, homeTeam, date));
                     promisesForGames.push(getGameIfNotInDao(game, visitorTeam, date));
+                } else {
+                    console.log("WTF???");
                 }
             });
             Promise.all(promisesForGames).then(callback, error);
