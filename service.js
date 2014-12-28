@@ -70,7 +70,29 @@ module.exports = {
                 });
         });
         return promise;
+    },
+
+    getGameIfNotInDao: function(game, team, date) {
+        var service = this;
+        var promise = new Promise(function(resolve, reject) {
+            dao.getGame({gameId: game.gameId, teamId: team.teamId}, function(results, err) {
+                if ( err ) {
+                    console.trace(err);
+                } else if ( results && results.length ) {
+                    console.log("Game " + game.gAMECODE + " already present in DB");
+                    resolve();
+                } else {
+                    service.getGameStatsFromApi(game, team, date).then(resolve, function(e) {
+                        console.trace(e)
+                        resolve();
+                    });
+                }
+            })
+
+        });
+        return promise;
     }
+
 
 };
 

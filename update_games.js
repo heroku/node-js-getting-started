@@ -41,13 +41,13 @@ function getGameIfNotInDao(game, team, date) {
     var promise = new Promise(function(resolve, reject) {
         dao.getGame({gameId: game.gameId, teamId: team.teamId}, function(results, err) {
             if ( err ) {
-                console.log("Error", err);
+                console.log("Error", err, err.stack);
             } else if ( results && results.length ) {
                 console.log("Game " + game.gAMECODE + " already present in DB");
                 resolve();
             } else {
                 service.getGameStatsFromApi(game, team, date).then(resolve, function(e) {
-                    console.log(e);
+                    console.log(e, e.stack);
                     resolve();
                 });
             }
@@ -58,7 +58,7 @@ function getGameIfNotInDao(game, team, date) {
 }
 
 function error(e) {
-    console.log(e);
+    console.log(e, e.stack);
     process.exit(1);
 }
 

@@ -17,9 +17,22 @@ module.exports = {
         var refresh = req.param('refresh');
 
         try {
+
+            if ( name.toUpperCase() == 'HORNETS' || name.toUpperCase() == 'BOBCATS') {
+                var hornets = _.findWhere(nba.teamsInfo, {simpleName: 'Hornets'});
+                if ( hornets ){
+                    name = 'hornets'
+                } else {
+                    name = 'bobcats';
+                }
+            }
             var team = _.find(nba.teamsInfo, function(team) {
                 return team.simpleName.toUpperCase().indexOf(name.toUpperCase()) >= 0
             });
+            if ( !team ) {
+                throw new Error("No team found for name " + name);
+                return;
+            }
             console.log("Looking up last game for ", team.teamName);
 
             if (date) {

@@ -8,7 +8,7 @@ var dao = require('./dao');
 var sleep = require('sleep');
 
 
-function generate(start, end) {
+function generate(start, end, overwrite) {
     start = moment(start);
     end = moment(end);
     if (!start.isValid() || !end.isValid() || start.isAfter(end)) {
@@ -24,16 +24,16 @@ function generate(start, end) {
             console.log("Generated data for all games between " + moment(start).format("MM/DD/YYYY") + ' and ' + moment(end).format('MM/DD/YYYY'));
             process.exit(0);
         } else {
-            getGamesDataForDate(date)
+            getGamesDataForDate(date, overwrite, callback, console.log);
         }
     }
 
-    getGamesDataForDate(date, callback, function(e) {console.log(e);});
+    getGamesDataForDate(date, overwrite, callback, console.log);
 }
 
 
 
-function getGamesDataForDate(date, callback, error) {
+function getGamesDataForDate(date, overwrite, callback, error) {
     getGamesForDate(date.toDate(), function(games) {
         if( games && games.length ) {
             var promisesForGames = [];
@@ -43,14 +43,22 @@ function getGamesDataForDate(date, callback, error) {
                     var homeTeam = _.findWhere(nba.teamsInfo, {teamId: game.homeTeamId});
                     var visitorTeam = _.findWhere(nba.teamsInfo, {teamId: game.visitorTeamId});
 
-                    promisesForGames.push(service.getGameStatsFromApi(game, homeTeam, date));
-                    promisesForGames.push(service.getGameStatsFromApi(game, visitorTeam, date));
+                    if ( overwrite ) {
+                        promisesForGames.push(service.getGameStatsFromApi(game, homeTeam, date));
+                        promisesForGames.push(service.getGameStatsFromApi(game, visitorTeam, date));
+                    } else {
+                        promisesForGames.push(service.getGameIfNotInDao(game, homeTeam, date));
+                        promisesForGames.push(service.getGameIfNotInDao(game, visitorTeam, date));
+                    }
                 }
             });
             Promise.all(promisesForGames).then(callback, error);
         } else {
             callback();
         }
+    }, function(e) {
+        console.trace(e)
+        callback()
     })
 }
 
@@ -60,19 +68,24 @@ function getGamesForDate(date, callback, error) {
     }).catch(error);
 }
 
-process.on('uncaughtException', function (error) {
-    console.log(error);
+process.on('uncaughtException', function (e) {
+    console.log(e, e.stack)
 });
 
 
 var argLength = process.argv.length;
-if ( argLength == 4 ) {
+if ( argLength >= 4 ) {
     var start = process.argv[2];
     var end = process.argv[3];
+
+    if ( argLength == 5 ) {
+        var overwrite = process.argv[4];
+    }
+
     dao.onConnect(function() {
         console.log("Connected to DB");
         nba.ready(function() {
-            generate(start, end);
+            generate(start, end, overwrite);
         });
     });
 
