@@ -1,6 +1,6 @@
 var nba = require('nba');
 var _ = require('underscore');
-var moment = require('moment');
+var moment = require('moment-timezone');
 var Promise = require( "es6-promise" ).Promise;
 var service = require('./service');
 var dao = require('./dao');
@@ -19,9 +19,9 @@ dao.onConnect(function() {
 });
 
 function getGames(callback) {
-    var date = new Date();
-    console.log("Get games for date " + moment(date).format('MM/DD/YYYY'));
-    nba.api.scoreboard({ GameDate: moment(date).format('MM/DD/YYYY') }).then(function(resp) {
+    var date = moment().tz("America/New_York");
+    console.log("Get games for date " + date.format('MM/DD/YYYY'));
+    nba.api.scoreboard({ GameDate: date.format('MM/DD/YYYY') }).then(function(resp) {
         var games = resp.gameHeader;
         console.log("Games", games);
         if( games && games.length ) {
@@ -34,8 +34,8 @@ function getGames(callback) {
                     var visitorTeam = _.findWhere(nba.teamsInfo, {teamId: game.visitorTeamId});
 
                     console.log("let's get it, this is weird");
-                    promisesForGames.push(getGameIfNotInDao(game, homeTeam, date));
-                    promisesForGames.push(getGameIfNotInDao(game, visitorTeam, date));
+                    promisesForGames.push(getGameIfNotInDao(game, homeTeam, date.toDate()));
+                    promisesForGames.push(getGameIfNotInDao(game, visitorTeam, date.toDate()));
                 } else {
                     console.log("WTF???");
                 }

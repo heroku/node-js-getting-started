@@ -1,7 +1,7 @@
 #! /app/bin/node
 var nba = require('nba');
 var _ = require('underscore');
-var moment = require('moment');
+var moment = require('moment-timezone');
 var Promise = require( "es6-promise" ).Promise;
 var service = require('./service');
 var dao = require('./dao');
