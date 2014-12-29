@@ -44,10 +44,7 @@
     <section class="stats players-container">{{> players}}</section>
 
     <p>[Content]</p>
-    <h2 title='The Spurs Index is a just-for-fun formula that attempts to quantify just how "Spursy" a particular game is.'>Spurs Index:  {{formatNumber us.spursIndexScore 1}} <a style="font-size: 0.7em; font-style:italic;" href="#spursIndexDef">(def.)</a></h2>
-    <section class="stats">
-        {{> spursIndex}}
-    </section>
+    {{> spursIndex}}
 
     <p>[Content]</p>
 
@@ -57,6 +54,22 @@
 
 
     {{> gameChart}}
+    <script>
+        function enableToggle(link, element, showMessage, hideMessage) {
+            element = $(element);
+            link = $(link);
+            link.click(function(e) {
+                e && e.preventDefault();
+                if ( element.is(':visible') ) {
+                    element.hide();
+                    link.html(showMessage);
+                } else {
+                    element.show();
+                    link.html(hideMessage);
+                }
+            })
+        }
+    </script>
 
 </div>
 

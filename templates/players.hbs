@@ -8,8 +8,8 @@
     </tbody>
 </table>
 
-<h3>{{them.teamName}}</h3>
-<table id="players-them" border="1" class="sbn-data-table players">
+<h3><a id="showOpponentPlayers" href="#" style="font-size: 0.8em;">Show {{them.teamName}} Players</a></h3>
+<table id="players-them" border="1" class="sbn-data-table players" style="display:none;">
     {{> playersHeader}}
     <tbody>
     {{#each them.players}}
@@ -22,7 +22,11 @@
 <script src="https://cdn1.vox-cdn.com/uploads/chorus_asset/file/2878066/jquery.tablesorter.min.0.js"></script>
 <script>(function($) {
     $('table.players').tablesorter().find('thead tr td').click(function(){setTimeout(stripeTables, 1)});
+    $(function() {
+        enableToggle('#showOpponentPlayers', '#players-them', 'Show {{them.teamName}} Players', 'Hide {{them.teamName}} Players');
+    });
 })(jQuery);
+
 </script>
 <style>
     .l-main table.players {

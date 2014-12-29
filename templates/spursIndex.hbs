@@ -1,11 +1,13 @@
-<table border="1" class="sbn-data-table" id="spursIndex">
-    <tbody>
-    <tr>
-        <td style="text-align: center;"><b>Factor</b></td>
-        <td style="text-align: center;"><b>Value</b></td>
-        <td style="text-align: center;"><b>Score</b></td>
-    </tr>
-    {{#each us.spursIndexFactors}}
+<h2 title='The Spurs Index is a just-for-fun formula that attempts to quantify just how "Spursy" a particular game is.'>Spurs Index:  {{formatNumber us.spursIndexScore 1}} <a style="font-size: 0.7em; font-style:italic;" href="#spursIndexDef">(def.)</a></h2>
+<section class="stats">
+    <table border="1" class="sbn-data-table spursIndex" id="spursIndex">
+        <tbody>
+        <tr>
+            <td style="text-align: center;"><b>Factor</b></td>
+            <td style="text-align: center;"><b>Value</b></td>
+            <td style="text-align: center;"><b>Score</b></td>
+        </tr>
+        {{#each us.spursIndexFactors}}
         <tr>
             <td align="left" title="{{title}}">{{name}}</td>
             <td {{#if good}} style="color: #5cb85c"{{/if}}
@@ -15,10 +17,48 @@
             </td>
             <td align="right" title="This factor accounts for {{formatPercent weight}} of the Spurs Index score">{{formatNumber score 1}}</td>
         </tr>
-    {{/each}}
-    <tr>
-        <td colspan="2" align="left"><b>Total</b></td>
-        <td align="right"><strong>{{formatNumber us.spursIndexScore 1}}</strong></td>
-    </tr>
-    </tbody>
-</table>
+        {{/each}}
+        <tr>
+            <td colspan="2" align="left"><b>Total</b></td>
+            <td align="right"><strong>{{formatNumber us.spursIndexScore 1}}</strong></td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+
+
+<h3>{{them.teamName}} Spurs Index:  {{formatNumber them.spursIndexScore 1}} <a id="showOpponentSpursIndex" href="#" style="font-size: 0.8em;">Show Breakdown</a></h3>
+<section class="stats">
+    <table border="1" class="sbn-data-table spursIndex" id="spursIndexThem" style="display:none;">
+        <tbody>
+        <tr>
+            <td style="text-align: center;"><b>Factor</b></td>
+            <td style="text-align: center;"><b>Value</b></td>
+            <td style="text-align: center;"><b>Score</b></td>
+        </tr>
+        {{#each them.spursIndexFactors}}
+        <tr>
+            <td align="left" title="{{title}}">{{name}}</td>
+            <td {{#if good}} style="color: #5cb85c"{{/if}}
+            {{#if bad}} style="color: #d9534f" {{/if}}
+            align="right" title="2013-2014 Average: {{#if percent}}{{formatPercent average 1}}{{else}}{{formatNumber average 1}}{{/if}}">
+            {{#if percent}}{{formatPercent actual 1}}{{else}}{{formatNumber actual 1}}{{/if}}
+            </td>
+            <td align="right" title="This factor accounts for {{formatPercent weight}} of the Spurs Index score">{{formatNumber score 1}}</td>
+        </tr>
+        {{/each}}
+        <tr>
+            <td colspan="2" align="left"><b>Total</b></td>
+            <td align="right"><strong>{{formatNumber them.spursIndexScore 1}}</strong></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <script>
+        (function($) {
+            $(function() {
+                enableToggle('#showOpponentSpursIndex', '#spursIndexThem', 'Show Breakdown', 'Hide Breakdown');
+            });
+        })(jQuery);
+    </script>
+</section>
