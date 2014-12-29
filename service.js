@@ -84,7 +84,6 @@ module.exports = {
                     teams.us.players = getPlayers(fourFactors.playerStats, boxScoreUsage.sqlPlayersUsage, teams.us);
                     teams.them.players = getPlayers(fourFactors.playerStats, boxScoreUsage.sqlPlayersUsage, teams.them);
 
-                    console.log(boxScoreUsage.sqlPlayersUsage)
                     if ( !teams.us.pTS) {
                         console.log("Game stats not available yet");
                         resolve("Game stats not available yet");
