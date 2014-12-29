@@ -37,8 +37,6 @@ module.exports = {
     getTeamAverages: function(options) {
         var team = options.team;
 
-        var now = moment();
-
         var start = SEASON_START_2014_2015;
         var end = PLAYOFFS_END_2014_2015;
         if ( options.season ) {
@@ -86,7 +84,8 @@ module.exports = {
                     teams.us.players = getPlayers(fourFactors.playerStats, boxScoreUsage.sqlPlayersUsage, teams.us);
                     teams.them.players = getPlayers(fourFactors.playerStats, boxScoreUsage.sqlPlayersUsage, teams.them);
 
-                    if ( !teams.us.pTS ) {
+                    console.log(boxScoreUsage.sqlPlayersUsage)
+                    if ( !teams.us.pTS) {
                         console.log("Game stats not available yet");
                         resolve("Game stats not available yet");
                         return;
@@ -136,10 +135,23 @@ module.exports = {
 };
 
 
-function getAverages(games) {
-    _.each(games, function(game) {
-        console.log("game " + game.gAMECODE);
+function getAverages(results) {
+    var teamTotals = {
+
+    };
+
+    //get all players
+    var allPlayers = [];
+    _.each(results, function(result) {
+        var players = result.players;
     });
+
+    var playerTotals = [];
+
+    _.each(results, function(result) {
+
+    });
+    return results;
 }
 
 function getTeams(statsArrays, usTeam) {
