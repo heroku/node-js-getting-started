@@ -7,9 +7,11 @@
     <td align="left">
         <span class="player-points">{{pTS}} Pts
         {{#if fGA}}
-        ({{#if fGA}}{{fGM}}-{{fGA}} FG,{{/if}}
-        {{#if fG3A}}{{fG3M}}-{{fG3A}} 3PT{{#if fTA}}, {{/if}}{{/if}}
-        {{#if fTA}}{{fTM}}-{{fTA}} FT{{/if}})
+            {{> shootingLine}}
+        {{else}}
+            {{#if fTA}}
+                {{> shootingLine}}
+            {{/if}}
         {{/if}}
         </span>
         {{#if REB}}{{REB}} Reb ({{oREB}} Off){{/if}},

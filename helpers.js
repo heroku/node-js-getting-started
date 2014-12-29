@@ -85,6 +85,7 @@ registerPartial('gameChart');
 registerPartial('players');
 registerPartial('playersHeader');
 registerPartial('player');
+registerPartial('shootingLine');
 registerPartial('spursIndex');
 registerPartial('teamStats');
 
