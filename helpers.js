@@ -83,6 +83,7 @@ registerPartial('definitions');
 registerPartial('fourFactors');
 registerPartial('gameChart');
 registerPartial('players');
+registerPartial('playersHeader');
 registerPartial('player');
 registerPartial('spursIndex');
 registerPartial('teamStats');

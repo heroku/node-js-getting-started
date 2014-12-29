@@ -1,23 +1,28 @@
 {{#if minutes}}
 <tr>
     <td>{{playerName}}</td>
+    <td align="right">{{formatNumber minutes}}</td>
     <td align="right">{{formatNumber adjGS 1}}</td>
     <td align="right">{{formatNumber adjGSMin 2}}</td>
-    <td>
-        {{formatMinutes mIN}} Min,
-        {{pTS}} Pts
+    <td align="left">
+        <span class="player-points">{{pTS}} Pts
         {{#if fGA}}
         ({{#if fGA}}{{fGM}}-{{fGA}} FG,{{/if}}
-        {{#if fG3A}}{{fG3M}}-{{fG3A}} 3PT,{{/if}}
-        {{#if fTA}}{{fTM}}-{{fTA}} FT,{{/if}})
+        {{#if fG3A}}{{fG3M}}-{{fG3A}} 3PT{{#if fTA}}, {{/if}}{{/if}}
+        {{#if fTA}}{{fTM}}-{{fTA}} FT{{/if}})
         {{/if}}
-
+        </span>
         {{#if REB}}{{REB}} Reb ({{oREB}} Off){{/if}},
         {{#if aST}}{{aST}} Ast,{{/if}}
         {{#if bLK}}{{bLK}} Blk,{{/if}}
         {{#if sTL}}{{sTL}} Stl,{{/if}}
-        {{#if tO}}{{tO}} TO,{{/if}}
+        {{#if tO}}{{tO}} TO{{#if pF}}, {{/if}}{{/if}}
         {{#if pF}}{{pF}} PF{{/if}}
     </td>
+    <td align="right">{{#ifCond usgPct '>=' 0.3}}<strong>{{formatPercent usgPct}}</strong>{{else}}{{formatPercent usgPct}}{{/ifCond}}</td>
+    <td align="right">{{#ifCond floorPercentage '>=' 0.667}}<strong>{{formatPercent floorPercentage}}</strong>{{else}}{{formatPercent floorPercentage}}{{/ifCond}}</td>
+    <td align="right">{{#ifCond offRating '>' 120}}<strong>{{formatNumber offRating 1}}</strong>{{else}}{{formatNumber offRating 1}}{{/ifCond}}</td>
+    <td align="right">{{#ifCond defRating '<' 90}}<strong>{{formatNumber defRating 1}}</strong>{{else}}{{formatNumber defRating 1}}{{/ifCond}}</td>
+    <td align="right">{{#ifCond netRating '>' 25}}<strong>{{formatNumber netRating 1}}</strong>{{else}}{{formatNumber netRating 1}}{{/ifCond}}</td>
 </tr>
 {{/if}}
