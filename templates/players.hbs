@@ -22,6 +22,7 @@
         <td style="text-align: center;" title="This estimates the % of team possessions a player consumes while on the floor (via basketball-reference.com). The usage of those possessions is determined via a formula using field goal and free throw attempts, offensive rebounds, assists and turnovers. The higher the number, the more prevalent a player is (good or bad) in a team's offensive outcome."><b>Usage%</b></td>
         <td style="text-align: center;" title='Floor % answers the question, "when Player X uses a possession, what is the probability that his team scores at least 1 point?". The higher the Floor%, the more frequently the team probably scores when the given player is involved.'><b>Floor%</b></td>
         <td style="text-align: center;"title='A metric that looks at how teams perform with a certain player on the court, how they perform with a certain player off the court, and calculates the overall impact that player has on team success.'><b>Plus Minus</b></td>
+        <td style="text-align: center;" title="Points allowed per 100 possessions while player is on floor"><b>DefRtg</b></td>
     </tr>
     </thead>
     <tbody>
@@ -32,6 +33,7 @@
                 <td align="right">{{#ifCond usgPct '>=' 0.3}}<strong>{{formatPercent usgPct}}</strong>{{else}}{{formatPercent usgPct}}{{/ifCond}}</td>
                 <td align="right">{{#ifCond floorPercentage '>=' 0.667}}<strong>{{formatPercent floorPercentage}}</strong>{{else}}{{formatPercent floorPercentage}}{{/ifCond}}</td>
                 <td align="right">{{#ifCond plusMinus '>=' 8}}<strong>{{formatNumber plusMinus}}</strong>{{else}}{{formatNumber plusMinus}}{{/ifCond}}</td>
+                <td align="right">{{formatNumber defRating 1}}</td>
             </tr>
         {{/if}}
 

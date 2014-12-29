@@ -81,8 +81,8 @@ module.exports = {
 
 
                     var teams = getTeams([fourFactors.teamStats, fourFactors.sqlTeamsFourFactors, boxScoreUsage.playerTrackTeam, boxScoreAdvanced.sqlTeamsAdvanced, boxScoreUsage.otherStats], team);
-                    teams.us.players = getPlayers(fourFactors.playerStats, boxScoreUsage.sqlPlayersUsage, teams.us);
-                    teams.them.players = getPlayers(fourFactors.playerStats, boxScoreUsage.sqlPlayersUsage, teams.them);
+                    teams.us.players = getPlayers([fourFactors.playerStats, boxScoreUsage.sqlPlayersUsage, boxScoreAdvanced.sqlPlayersAdvanced], teams.us);
+                    teams.them.players = getPlayers([fourFactors.playerStats, boxScoreUsage.sqlPlayersUsage, boxScoreAdvanced.sqlPlayersAdvanced], teams.them);
 
                     if ( !teams.us.pTS) {
                         console.log("Game stats not available yet");
@@ -174,12 +174,15 @@ function getTeams(statsArrays, usTeam) {
     return {us: us, them: them};
 }
 
-function getPlayers(players, playersUsage, us) {
-    _.each(players, function (player) {
-        var playerUsage = _.findWhere(playersUsage, {playerId: player.playerId});
-        _.extend(player, playerUsage);
+function getPlayers(playersArray, us) {
+    var players = playersArray[0];
+    _.each(players, function(player) {
+        _.each(playersArray, function(playersStats) {
+            var playerOtherStats = _.findWhere(playersStats, {playerId: player.playerId});
+            _.extend(player, playerOtherStats);
+        });
     });
-    players = adornPlayerStats(players, us)
+    players = adornPlayerStats(players, us);
 
     return players;
 }

@@ -1,14 +1,11 @@
-var fs = require('fs');
 var nba = require('nba');
 var _ = require('underscore');
-var Handlebars = require('handlebars');
 var moment = require('moment');
 var Promise = require( "es6-promise" ).Promise;
 var service = require('./service');
-require('./helpers');
+var templates = require('./templates');
 
 var GAME_STATUS_FINAL = 3;
-
 
 module.exports = {
     getSeasonAverages: function(req,res,next) {
@@ -50,7 +47,7 @@ module.exports = {
             getLastGameForTeam(team.teamId, date, function(game) {
                 service.getGameStats(game, team, date, refresh, function(data) {
                     if (_.isObject(data) ){
-                        var html = getTemplate('page')(data);
+                        var html = templates.get('page')(data);
                     } else {
                         html = data;
                     }
@@ -99,11 +96,6 @@ function getLastGameForTeam(teamId, date, callback, error) {
             callback(teamGame);
         }
     }).catch(error);
-}
-
-
-function getTemplate(name) {
-    return Handlebars.compile(fs.readFileSync('./templates/' + name + '.hbs', "utf8"));
 }
 
 function onError(e, res) {

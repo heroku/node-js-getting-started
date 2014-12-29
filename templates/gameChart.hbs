@@ -73,7 +73,7 @@ window.drawGameFlowChart = function() {
         tooltip: {
             contents: function (d, defaultTitleFormat, defaultValueFormat, color) {
                 var prettyTime = getPrettyGameTime(d[0].x);
-                var playDesc = playDescriptions[d[0].index];
+                var playDesc = playDescriptions[d[0].index + 1];
                 if (d.length == 1) {
                     var score = d[0].value;
                     var teamName = d[0].name;
