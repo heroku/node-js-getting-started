@@ -8,7 +8,7 @@ var templates = require('./templates');
 var GAME_STATUS_FINAL = 3;
 
 module.exports = {
-    getSeasonAverages: function(req,res,next) {
+    getSeasonAverages: function(req,res) {
         var name = req.param('name');
 
         try {
@@ -19,7 +19,9 @@ module.exports = {
                 with: req.param("with"),
                 without: req.param("without"),
                 season: req.param("season") ? true : false,
-                playoffs: req.param("playoffs") ? true : false
+                playoffs: req.param("playoffs") ? true : false,
+                win: req.param("win"),
+                loss: req.param("loss")
             };
 
             service.getTeamAverages(options).then(function(data) {

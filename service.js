@@ -163,6 +163,12 @@ module.exports = {
                         games = filterGamesByPlayersWithout(games, options.without);
                     }
 
+                    if ( options.win ) {
+                        games = _.filter(games, function(game) {return game.us.pTS > game.them.pTS})
+                    } else if ( options.loss ) {
+                        games = _.reject(games, function(game) {return game.us.pTS > game.them.pTS})
+                    }
+
                     var averages = getAverages(games);
                     var ratingsColumns = getRatingData(games);
 
