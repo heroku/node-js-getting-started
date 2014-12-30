@@ -10,7 +10,6 @@ var GAME_STATUS_FINAL = 3;
 module.exports = {
     getSeasonAverages: function(req,res,next) {
         var name = req.param('name');
-        var refresh = req.param('refresh');
 
         try {
             var team = getTeam(name);
@@ -22,7 +21,6 @@ module.exports = {
                 season: req.param("season") ? true : false,
                 playoffs: req.param("playoffs") ? true : false
             };
-            console.log(options);
 
             service.getTeamAverages(options).then(function(data) {
                 var html = templates.get('teamAverages')(data);
@@ -33,6 +31,35 @@ module.exports = {
             onError(e, res);
         }
     },
+    /*getPlayerImpact: function(req,res) {
+        var name = req.param('name');
+        var playerName = req.param('playerName');
+        var player = nba.playerIdFromName(playerName);
+        if ( !player ) {
+            var msg = "Could not find player " + playerName;
+            console.log(msg);
+            res.send(msg);
+        }
+        try {
+            var team = getTeam(name);
+            console.log("Looking up player impact for " + playerName);
+
+            var options = {
+                team: team,
+                player: player,
+                season: req.param("season") ? true : false,
+                playoffs: req.param("playoffs") ? true : false
+            };
+
+            Øservice.getTeamAverages(options).then(function(data) {
+                var html = templates.get('teamAverages')(data);
+                res.send(html);
+            }, onError);
+
+        } catch(e) {
+            onError(e, res);
+        }
+    },*/
     getGameStats: function(req,res,next) {
         var name = req.param('name');
         var date = req.param('date');

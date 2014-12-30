@@ -14,6 +14,104 @@ var SEASON_END_2014_2015 = moment("04-15-2015");
 var PLAYOFFS_START_2014_2015 = moment("04-16-2015");
 var PLAYOFFS_END_2014_2015 = moment("07-01-2015"); //play it safe
 
+var spursIndexFactors = [
+    {
+        id: "efgPct",
+        name: "Shooting (eFG%)",
+        title: "Effective Field Goal Percentage - Effective Field Goal Percentage is a field goal percentage that is adjusted for made 3 pointers being 1.5 times more valuable than a 2 point shot.",
+        weight: 0.20,
+        average: 0.537,
+        goodThreshold: 0.57,
+        badThreshold: 0.48,
+        percent: true
+    },
+    {
+        id: "astPct",
+        name: "Passing (AST%)",
+        title: "Assist Percentage - Assist Percentage is the percent of team's field goals made that were assisted.",
+        weight: 0.30,
+        average: 0.621,
+        goodThreshold: 0.68,
+        badThreshold: 0.55,
+        percent: true
+    },
+    {
+        id: "drebPct",
+        name: "Defensive Rebounding (DReb%)",
+        title: "Defensive Rebound Percentage - The percentage of defensive rebounds a team obtains.",
+        weight: 0.20,
+        average: 0.764,
+        goodThreshold: 0.81,
+        badThreshold: 0.705,
+        percent: true
+    },
+    {
+        id: "defRating",
+        name: "Defense (DefRtg)",
+        title: "Defensive Rating - The number of points allowed per 100 possessions by a team. For a player, it is the number of points per 100 possessions that the team allows while that individual player is on the court.",
+        weight: 0.20,
+        average: 100.1,
+        goodThreshold: 94,
+        badThreshold: 106,
+        percent: false,
+        inverse: true
+    },
+    {
+        id: "percentOfFGAUncontested",
+        name: "Opponent % of FGA Uncontested",
+        title: "The percentage of opponent's Field Goal Attempts which are uncontested.  A measure of how many open looks an opponent is afforded per possession.  A contested shot is one in which a defender is within 4 feet of the shooter",
+        weight: 0.10,
+        average:0.4081, //see comment at bottom of file
+        goodThreshold: 0.35,
+        badThreshold: 0.45,
+        percent: true,
+        inverse: true,
+        opponentValue: true //get it from the opponent's stats - i.e. a defensive measure
+    }
+];
+
+
+function getRatingData(games) {
+    var columns = [];
+    columns.push(getValues(games, "offRating", "Off Rating"));
+    columns.push(getValues(games, "defRating", "Def Rating"));
+    return columns
+}
+
+function getShootingData(games) {
+    var columns = [];
+    columns.push(getValues(games, "efgPct", "eFG%"));
+    columns.push(getValues(games, "ftPct", "FT%"));
+    columns.push(getValues(games, "fg2Pct", "2Pt FG%"));
+    columns.push(getValues(games, "fg3Pct", "3Pt FG%"));
+    return columns
+}
+function getBallhandlingData(games) {
+    var columns = [];
+    columns.push(getValues(games, "bCI", "BCI"));
+    columns.push(getValues(games, "aST", "Ast"));
+    columns.push(getValues(games, "tO", "TO"));
+    columns.push(getValues(games, "sTL", "Steals"));
+    return columns;
+}
+function getSpursIndexData(games) {
+    var columns = [];
+    columns.push(getValues(games, "spursIndexScore", "Spurs Index"));
+    _.each(spursIndexFactors, function(factor) {
+        columns.push(getValues(games, factor.id, factor.name));
+    });
+    return columns;
+}
+
+function getValues(games, attr, name) {
+    return [name].concat(_.map(games, function(game) {return game.us[attr];}));
+}
+
+function getGameTicks(games) {
+    return _.map(games, function(game) {
+        return (game.homeGame ? "vs " : "@ ") + game.them.teamName;
+    });
+}
 module.exports = {
     getGameStats: function(game, team, date, refresh, callback, error) {
         console.log("Searching MongoDB for game " + game.gameId);
@@ -66,11 +164,18 @@ module.exports = {
                     }
 
                     var averages = getAverages(games);
+                    var ratingsColumns = getRatingData(games);
+
                     resolve({
                         team: team,
                         averages: averages,
+                        ratings: ratingsColumns,
+                        shooting: getShootingData(games),
+                        ballhandling: getBallhandlingData(games),
+                        spursIndex: getSpursIndexData(games),
                         options: options,
                         record: getRecord(games),
+                        gameTicks: getGameTicks(games),
                         games: getGamesLine(games)
                     });
                 } else {
@@ -180,8 +285,10 @@ function getGamesLine(games) {
         var prefix = game.homeGame ? "vs " : "@ ";
         return {
             name: prefix + game.them.teamName,
-            date: game.date,
-            result: game.us.pTS > game.them.pTS ? "W" : "L"
+            date: moment(game.date).format('M/D'),
+            result: game.us.pTS > game.them.pTS ? "W" : "L",
+            usPts: game.us.pTS,
+            themPts: game.them.pTS
         };
     });
 }
@@ -360,62 +467,7 @@ function addGameScore(player) {
 
 function getSpursIndex(team, opp) {
     //averages come from 2013-2014 season averages
-    var factors = [
-        {
-            id: "efgPct",
-            name: "Shooting (eFG%)",
-            title: "Effective Field Goal Percentage - Effective Field Goal Percentage is a field goal percentage that is adjusted for made 3 pointers being 1.5 times more valuable than a 2 point shot.",
-            weight: 0.20,
-            average: 0.537,
-            goodThreshold: 0.57,
-            badThreshold: 0.48,
-            percent: true
-        },
-        {
-            id: "astPct",
-            name: "Passing (AST%)",
-            title: "Assist Percentage - Assist Percentage is the percent of team's field goals made that were assisted.",
-            weight: 0.30,
-            average: 0.621,
-            goodThreshold: 0.68,
-            badThreshold: 0.55,
-            percent: true
-        },
-        {
-            id: "drebPct",
-            name: "Defensive Rebounding (DReb%)",
-            title: "Defensive Rebound Percentage - The percentage of defensive rebounds a team obtains.",
-            weight: 0.20,
-            average: 0.764,
-            goodThreshold: 0.81,
-            badThreshold: 0.705,
-            percent: true
-        },
-        {
-            id: "defRating",
-            name: "Defense (DefRtg)",
-            title: "Defensive Rating - The number of points allowed per 100 possessions by a team. For a player, it is the number of points per 100 possessions that the team allows while that individual player is on the court.",
-            weight: 0.20,
-            average: 100.1,
-            goodThreshold: 94,
-            badThreshold: 106,
-            percent: false,
-            inverse: true
-        },
-        {
-            id: "percentOfFGAUncontested",
-            name: "Opponent % of FGA Uncontested",
-            title: "The percentage of opponent's Field Goal Attempts which are uncontested.  A measure of how many open looks an opponent is afforded per possession.  A contested shot is one in which a defender is within 4 feet of the shooter",
-            weight: 0.10,
-            average:0.4081, //see comment at bottom of file
-            goodThreshold: 0.35,
-            badThreshold: 0.45,
-            percent: true,
-            inverse: true,
-            opponentValue: true //get it from the opponent's stats - i.e. a defensive measure
-        }
-    ];
-
+    var factors = _.clone(spursIndexFactors);
     var totalScore = 0;
     _.each(factors, function(factor) {
         var expected = factor.average;

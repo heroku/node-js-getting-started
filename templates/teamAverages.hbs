@@ -1,147 +1,72 @@
-<h2>{{team.teamName}} Averages</h2>
-{{#if options.with}}
-    <p>Games WITH {{#each options.with}}{{#if @index}}, {{/if}}{{this}}{{/each}}</p>
-{{/if}}
-{{#if options.without}}
-    <p>Games WITHOUT {{#each options.without}}{{#if @index}}, {{/if}}{{this}}{{/each}}</p>
-{{/if}}
-{{#if options.season}}
-    <p>Regular season only</p>
-{{/if}}
-{{#if options.playoffs}}
-    <p>Playoffs only</p>
-{{/if}}
+<html>
+<head>
+    <title>Team Averages - {{team.teamName}}</title>
+    <link href="https://cdn0.vox-cdn.com/uploads/chorus_asset/file/2862202/c3.min.0.css" rel="stylesheet" type="text/css">
 
-{{#if averages}}
-<h2>Record: {{record}}</h2>
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 
-<h3>Team Stats</h3>
-<table border="1" class="sbn-data-table">
-    <tbody>
-    <tr>
-        <td>Pace (No. of Possessions)</td>
-        <td colspan="2" align="center">{{formatNumber averages.pACE 1}}</td>
-    </tr>
-    <tr>
-        <td>Points Per Possession (PPP)</td>
-        <td align="right">{{formatNumber averages.pPP 2}}</td>
-    </tr>
-    <tr>
-        <td>Points Per Shot (PPS)</td>
-        <td align="right">{{formatNumber averages.pPS 2}}</td>
-    </tr>
-    <tr>
-        <td>2-PT FG%</td>
-        <td align="right" title="{{formatNumber averages.fG2M 1}}/{{formatNumber averages.fG2A 1}}">{{formatPercent averages.fg2Pct 1}}</td>
-    </tr>
-    <tr>
-        <td>3-PT FG%</td>
-        <td align="right" title="{{formatNumber averages.fG3M 1}}/{{formatNumber averages.fG3A1}}">{{formatPercent averages.fg3Pct 1}}</td>
-    </tr>
-    <tr>
-        <td>FT%</td>
-        <td align="right" title="{{formatNumber averages.fTM 1}}/{{formatNumber averages.fTA 1}}">{{formatPercent averages.ftPct 1}}</td>
-    </tr>
-    <tr>
-        <td><a target="_blank" href="http://www.ehow.com/how_2092829_calculate-true-shooting-percentage-basketball.html">True Shooting %</a></td>
-        <td align="right">{{formatPercent averages.tSPct 1}}</td>
-    </tr>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="https://cdn0.vox-cdn.com/uploads/chorus_asset/file/2862214/c3.min.0.js"></script>
 
-    <tr><td colspan="2"></td></tr>
+    <script>$(document).ready(function(){
+        $('button#copy').click(function(e) {
+            e.preventDefault();
+            var html = $('#content').html();
 
-    <tr>
-        <td title="Points per 100 possessions">Offensive Rating</td>
-        <td align="right">{{formatNumber averages.offRating 1}}</td>
-    </tr>
-    <tr>
-        <td title="Points allowed per 100 possessions">Defensive Rating</td>
-        <td align="right">{{formatNumber averages.defRating 1}}</td>
-    </tr>
-    <tr>
-        <td>Net Rating</td>
-        <td align="right">{{formatNumber averages.netRating 1}}</td>
-    </tr>
+            var div = $('<div></div>');
+            div.html(html);
+            div.find('div.c3').remove();
+            html = div.html();
 
-    <tr><td colspan="2"></td></tr>
-    <tr>
-        <td>Passes / poss.</td>
-        <td align="right">{{formatNumber averages.passesPerPoss 1}}</td>
-    </tr>
-    <tr>
-        <td title="What percentage of a team's field goal attempts are uncontested: contested FGA / total FGA">% of FGA uncontested</td>
-        <td align="right">{{formatPercent averages.percentOfFGAUncontested 1}}</td>
-    </tr>
-    <tr>
-        <td>Points in the paint</td>
-        <td align="right">{{formatNumber averages.ptsPaint 1}}</td>
-    </tr>
-    <tr>
-        <td>Second chance points</td>
-        <td align="right">{{formatNumber averages.pts2ndChance 1}}</td>
-    </tr>
-    <tr>
-        <td>Fast break points</td>
-        <td align="right">{{formatNumber averages.ptsFb 1}}</td>
-    </tr>
+            $('textarea.copy').remove();
+            $('<textarea class="copy"></textarea>').appendTo('body');
+            $('textarea.copy').val(html).focus();
+            //window.prompt("Copy to clipboard: Ctrl+C", html);
+        });
+    })
+    </script>
+</head>
+<body>
+<div id="content">
+    <h2>{{team.teamName}} Averages</h2>
+    {{#if options.with}}
+        <p>Games WITH {{#each options.with}}{{#if @index}}, {{/if}}{{this}}{{/each}}</p>
+    {{/if}}
+    {{#if options.without}}
+        <p>Games WITHOUT {{#each options.without}}{{#if @index}}, {{/if}}{{this}}{{/each}}</p>
+    {{/if}}
+    {{#if options.season}}
+        <p>Regular season only</p>
+    {{/if}}
+    {{#if options.playoffs}}
+        <p>Playoffs only</p>
+    {{/if}}
 
-    <tr><td colspan="2"></td></tr>
+    {{#if averages}}
+        <h2>Record: {{record}}</h2>
 
-    <tr>
-        <td>Assists</td>
-        <td align="right">{{formatNumber averages.aST 1}}</td>
-    </tr>
-    <tr>
-        <td>Steals</td>
-        <td align="right">{{formatNumber averages.sTL 1}}</td>
-    </tr>
-    <tr>
-        <td>Turnovers</td>
-        <td align="right">{{formatNumber averages.tO 1}}</td>
-    </tr>
-    <tr>
-        <td>
-            <u>B</u>all <u>C</u>ontrol <u>I</u>ndex (BCI)<br><i>(Assists + Steals) / TO</i>
-        </td>
-        <td align="right">
-            {{formatNumber averages.bCI 2}}
-        </td>
-    </tr>
+        <h3>Team Stats</h3>
+        {{> teamAverageStats}}
 
-    <tr><td colspan="2"></td></tr>
+        {{> teamCharts}}
 
-    <tr>
-        <td title="How many offensive rebounds an average rebounding team could expect to grab, based off the number of opportunities in a game">Expected Offensive Rebounds</td>
-        <td align="right">{{formatNumber averages.expectedOREB 1}}</td>
-    </tr>
-    <tr>
-        <td>Offensive Rebounds</td>
-        <td align="right">{{formatNumber averages.oREB 1}}</td>
-    </tr>
-    <tr>
-        <td>Difference</td>
-        <td align="right">
-            {{formatNumber averages.oREBDiff 1}}
-        </td>
-    </tr>
-    </tbody>
-</table>
+        <h3>Game Results</h3>
+        <table class="sbn-data-table" border="1">
+            <tbody>
+            {{#each games}}
+                <tr>
+                    <td>{{formatDate date 'M/D'}}</td>
+                    <td>{{name}}</td>
+                    <td>{{result}} {{usPts}}-{{themPts}}</td>
+                </tr>
+            {{/each}}
+            </tbody>
 
-<h3>Game Results</h3>
-<table class="sbn-data-table" border="1">
-    <tbody>
-    {{#each games}}
-    <tr>
-        <td>{{formatDate date 'M/D'}}</td>
-        <td>{{name}}</td>
-        <td>{{result}}</td>
-    </tr>
-    {{/each}}
-    </tbody>
+        </table>
 
-</table>
-
-{{else}}
-    <p><b>No results found for these filter options</b></p>
-{{/if}}
-
-
+    {{else}}
+        <p><b>No results found for these filter options</b></p>
+    {{/if}}
+</div>
+</body>
+</html>

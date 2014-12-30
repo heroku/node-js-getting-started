@@ -88,6 +88,8 @@ registerPartial('player');
 registerPartial('shootingLine');
 registerPartial('spursIndex');
 registerPartial('teamStats');
+registerPartial('teamAverageStats');
+registerPartial('teamCharts');
 
 function registerPartial(name) {
     Handlebars.registerPartial(name, fs.readFileSync('./templates/' + name + '.hbs', "utf8"));

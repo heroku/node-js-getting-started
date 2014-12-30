@@ -12,11 +12,11 @@
         $('table.sbn-data-table tbody tr:even').removeClass('ui-state-odd').addClass('ui-state-even');
     }
 
-    (function($){
-        stripeTables();
-        setTimeout(stripeTables, 500);
-        setTimeout(stripeTables, 2000);
-    var columns = {{toJSON gameFlowData}};
+(function($){
+stripeTables();
+setTimeout(stripeTables, 500);
+setTimeout(stripeTables, 2000);
+var columns = {{toJSON gameFlowData}};
 
 var playDescriptions = columns[3];
 columns.pop();

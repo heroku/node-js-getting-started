@@ -8,11 +8,11 @@
             e.preventDefault();
             var html = $('#content').html();
 
-            var div = $('<div></div>')
+            var div = $('<div></div>');
             div.html(html);
-            div.find('div.c3').remove()
+            div.find('div.c3').remove();
             html = div.html();
-            console.log(html);
+
             $('textarea.copy').remove();
             $('<textarea class="copy"></textarea>').appendTo('body');
             $('textarea.copy').val(html).focus();
