@@ -63,7 +63,7 @@ var connectCallbacks = [];
 
 module.exports = {
     getGames: function(options, callback, error) {
-        GameModel.find(options).exec(function(err, result) {
+        GameModel.find(options).sort({date: 'ascending'}).exec(function(err, result) {
             if ( err )  {
                 error(err);
             } else {

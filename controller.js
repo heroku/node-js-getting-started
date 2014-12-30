@@ -14,15 +14,19 @@ module.exports = {
 
         try {
             var team = getTeam(name);
-            console.log("Looking up last game for ", team.teamName);
+            console.log("Looking up season averages for " + team.teamName);
             var options = {
                 team: team,
+                with: req.param("with"),
+                without: req.param("without"),
                 season: req.param("season") ? true : false,
                 playoffs: req.param("playoffs") ? true : false
             };
+            console.log(options);
 
-            service.getTeamAverages(options).then(function(averages) {
-                res.send(JSON.stringify(averages));
+            service.getTeamAverages(options).then(function(data) {
+                var html = templates.get('teamAverages')(data);
+                res.send(html);
             }, onError);
 
         } catch(e) {

@@ -57,8 +57,22 @@ module.exports = {
                 if ( err ) {
                     reject(err);
                 } else if ( results && results.length ) {
-                    var averages = getAverages(results);
-                    resolve(averages);
+                    var games = results;
+                    if ( options.with && options.with.length ) {
+                        games = filterGamesByPlayersWith(games, options.with);
+                    }
+                    if ( options.without && options.without.length ) {
+                        games = filterGamesByPlayersWithout(games, options.without);
+                    }
+
+                    var averages = getAverages(games);
+                    resolve({
+                        team: team,
+                        averages: averages,
+                        options: options,
+                        record: getRecord(games),
+                        games: getGamesLine(games)
+                    });
                 } else {
                     console.log("No games found for options ", options);
                     resolve();
@@ -133,24 +147,89 @@ module.exports = {
     }
 };
 
+function filterGamesByPlayersWith(games, withPlayers) {
+    return _.filter(games, function(game) {
+        var players = game.us.players;
+        var playersPlayed = true;
+        _.each(withPlayers, function(playerName) {
+            var player = _.find(players, function(player) {
+                return (player.playerName.toUpperCase() == playerName.toUpperCase() || player.playerId == playerName);
+            });
+            if ( !player || player.minutes < 1 ) {
+                playersPlayed = false;
+            }
+        });
+        return playersPlayed;
+    });
+}
 
-function getAverages(results) {
-    var teamTotals = {
+function getRecord(games) {
+    var wins = 0;
+    var losses = 0;
+    _.each(games, function(game) {
+        if ( game.us.pTS > game.them.pTS ) {
+            wins++;
+        } else {
+            losses++;
+        }
+    });
+    return wins + "-" + losses;
+}
+function getGamesLine(games) {
+    return _.map(games, function(game) {
+        var prefix = game.homeGame ? "vs " : "@ ";
+        return {
+            name: prefix + game.them.teamName,
+            date: game.date,
+            result: game.us.pTS > game.them.pTS ? "W" : "L"
+        };
+    });
+}
 
-    };
 
-    //get all players
-    var allPlayers = [];
-    _.each(results, function(result) {
-        var players = result.players;
+function filterGamesByPlayersWithout(games, without) {
+    return _.filter(games, function(game) {
+        var players = game.us.players;
+        var playersPlayed = false;
+        _.each(without, function(playerName) {
+            var player = _.find(players, function(player) {
+                return (player.playerName.toUpperCase() == playerName.toUpperCase() || player.playerId == playerName);
+            });
+            if ( player && player.minutes > 1 ) {
+                playersPlayed = true;
+            }
+        });
+        return !playersPlayed;
+
     });
 
-    var playerTotals = [];
+}
 
-    _.each(results, function(result) {
+function getAverages(games) {
+    if ( games.length ) {
+        var totals = {};
+        var usStats = _.pluck(games, 'us');
+        _.each(usStats, function(us) {
+            _.each(us, function (val, key) {
+                if ( _.isNumber( val) ) {
+                    if ( totals[key] === undefined ) {
+                        totals[key] = val;
+                    } else {
+                        totals[key] += val;
+                    }
+                }
+            });
+        });
 
-    });
-    return results;
+        var averages = {};
+        _.each(totals, function(val, key) {
+            var average = val / games.length;
+            averages[key] = average;
+        });
+
+        return averages;
+    }
+    return undefined;
 }
 
 function getTeams(statsArrays, usTeam) {
