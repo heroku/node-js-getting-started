@@ -55,20 +55,23 @@
 
     {{> gameChart}}
     <script>
-        function enableToggle(link, element, showMessage, hideMessage) {
-            element = $(element);
-            link = $(link);
-            link.click(function(e) {
-                e && e.preventDefault();
-                if ( element.is(':visible') ) {
-                    element.hide();
-                    link.html(showMessage);
-                } else {
-                    element.show();
-                    link.html(hideMessage);
-                }
-            })
-        }
+        (function($) {
+            window.enableToggle = function(link, element, showMessage, hideMessage) {
+                element = $(element);
+                link = $(link);
+                link.click(function(e) {
+                    e && e.preventDefault();
+                    if ( element.is(':visible') ) {
+                        element.hide();
+                        link.html(showMessage);
+                    } else {
+                        element.show();
+                        link.html(hideMessage);
+                    }
+                })
+            }
+
+        })(jQuery)
     </script>
 
 </div>
