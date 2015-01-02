@@ -1,10 +1,13 @@
-<table border="1" class="sbn-data-table">
-    <tbody>
+<table class="sbn-data-table table table-striped table-bordered table-hover table-condensed" style="width:auto;">
+    <thead>
     <tr>
-        <td></td>
-        <td>{{team.teamName}}</td>
-        <td>Opponent</td>
+        <th></th>
+        <th width="100">{{team.simpleName}}</th>
+        <th width="100">Opponent</th>
     </tr>
+
+    </thead>
+    <tbody>
     <tr>
         <td>Pace (No. of Possessions)</td>
         <td colspan="2" align="center">{{formatNumber averages.us.pACE 1}}</td>

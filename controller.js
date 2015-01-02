@@ -18,19 +18,15 @@ module.exports = {
                 team: team,
                 with: req.param("with"),
                 without: req.param("without"),
-                season: req.param("season") ? true : false,
-                playoffs: req.param("playoffs") ? true : false,
-                win: req.param("win"),
-                loss: req.param("loss"),
-                home: req.param("home"),
-                away: req.param("away")
+                season: req.param("season"),
+                outcome: req.param("outcome"),
+                location: req.param("location")
             };
 
             service.getTeamAverages(options).then(function(data) {
                 var html = templates.get('teamAverages')(data);
                 res.send(html);
             }, onError);
-
         } catch(e) {
             onError(e, res);
         }

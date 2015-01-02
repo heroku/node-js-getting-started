@@ -14,6 +14,15 @@ var SEASON_END_2014_2015 = moment("04-15-2015");
 var PLAYOFFS_START_2014_2015 = moment("04-16-2015");
 var PLAYOFFS_END_2014_2015 = moment("07-01-2015"); //play it safe
 
+var SEASON_REGULAR = 'regular';
+var SEASON_PLAYOFFS = 'playoffs';
+
+var OUTCOME_WIN = 'win';
+var OUTCOME_LOSS = 'loss';
+
+var LOCATION_HOME = 'home';
+var LOCATION_AWAY = 'away';
+
 function getRatingData(games) {
     var columns = [];
     columns.push(getValues(games, "offRating", "Off Rating"));
@@ -55,6 +64,18 @@ function getGameTicks(games) {
         return (game.homeGame ? "vs " : "@ ") + game.them.teamName;
     });
 }
+
+function getRoster(games) {
+    var roster = {};
+    _.each(games, function(game) {
+        _.each(game.us.players, function(player) {
+            if ( !roster[player.playerId]) {
+                roster[player.playerId] = _.pick(player, 'playerId', 'playerName')
+            }
+        });
+    });
+    return roster;
+}
 module.exports = {
     getGameStats: function(game, team, date, refresh, callback, error) {
         console.log("Searching MongoDB for game " + game.gameId);
@@ -80,9 +101,9 @@ module.exports = {
 
         var start = SEASON_START_2014_2015;
         var end = PLAYOFFS_END_2014_2015;
-        if ( options.season ) {
+        if ( options.season == SEASON_REGULAR ) {
             end = SEASON_END_2014_2015;
-        } else if ( options.playoffs ) {
+        } else if ( options.season == SEASON_PLAYOFFS ) {
             start = PLAYOFFS_START_2014_2015;
             end = PLAYOFFS_END_2014_2015;
         }
@@ -95,9 +116,9 @@ module.exports = {
                     $lte: end.toDate()
                 }
             };
-            if ( options.home ) {
+            if ( options.location == LOCATION_HOME ) {
                 dbOptions.homeGame = true;
-            } else  if ( options.away ) {
+            } else  if ( options.location == LOCATION_AWAY ) {
                 dbOptions.homeGame = false;
             }
             dao.getGames(dbOptions, function(results, err) {
@@ -112,17 +133,19 @@ module.exports = {
                         games = filterGamesByPlayersWithout(games, options.without);
                     }
 
-                    if ( options.win ) {
+                    if ( options.outcome == OUTCOME_WIN ) {
                         games = _.filter(games, function(game) {return game.us.pTS > game.them.pTS})
-                    } else if ( options.loss ) {
+                    } else if ( options.outcome == OUTCOME_LOSS ) {
                         games = _.reject(games, function(game) {return game.us.pTS > game.them.pTS})
                     }
 
                     var averages = getAverages(games);
                     var ratingsColumns = getRatingData(games);
 
+                    console.log(options.with, options.without);
                     resolve({
                         team: team,
+                        roster: getRoster(games),
                         averages: averages,
                         ratings: ratingsColumns,
                         shooting: getShootingData(games),

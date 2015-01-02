@@ -8,6 +8,16 @@
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="https://cdn0.vox-cdn.com/uploads/chorus_asset/file/2862214/c3.min.0.js"></script>
 
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
     <script>$(document).ready(function(){
         $('button#copy').click(function(e) {
             e.preventDefault();
@@ -23,50 +33,105 @@
             $('textarea.copy').val(html).focus();
             //window.prompt("Copy to clipboard: Ctrl+C", html);
         });
+
+        $('#clearAll').click(function(e) {
+            e.preventDefault();
+            window.location = window.location.pathname;
+        })
     })
     </script>
+
 </head>
 <body>
-<div id="content">
-    <h2>{{team.teamName}} Averages</h2>
-    {{#if options.with}}
-        <p>Games WITH {{#each options.with}}{{#if @index}}, {{/if}}{{this}}{{/each}}</p>
-    {{/if}}
-    {{#if options.without}}
-        <p>Games WITHOUT {{#each options.without}}{{#if @index}}, {{/if}}{{this}}{{/each}}</p>
-    {{/if}}
-    {{#if options.season}}
-        <p>Regular season only</p>
-    {{/if}}
-    {{#if options.playoffs}}
-        <p>Playoffs only</p>
-    {{/if}}
+<div class="container-fluid" >
+    <section class="row" id="filters">
+        <h2>Filter games</h2>
+        <form id="filters" action="" method="get">
+            <div class="form-group">
+                <label for="outcome">Outcome</label>
+                <select id="outcome" name="outcome">
+                    <option value="">All</option>
+                    <option {{#ifCond options.outcome '==' 'win'}}selected="selected"{{/ifCond}}value="win">Win</option>
+                    <option {{#ifCond options.outcome '==' 'loss'}}selected="selected"{{/ifCond}}value="loss">Loss</option>
+                </select>
+            </div>
 
-    {{#if averages}}
-        <h2>Record: {{record}}</h2>
+            <div class="form-group">
+                <label for="location">Location</label>
+                <select id="location" name="location">
+                    <option value="">All</option>
+                    <option {{#ifCond options.location '==' 'home'}}selected="selected"{{/ifCond}}value="home">Home</option>
+                    <option {{#ifCond options.location '==' 'away'}}selected="selected"{{/ifCond}}value="away">Away</option>
+                </select>
+            </div>
 
-        <h4>Team Stats</h4>
-        {{> teamAverageStats}}
+            <div class="form-group">
+                <label for="season">Season</label>
+                <select id="season" name="season">
+                    <option value="">All</option>
+                    <option {{#ifCond options.season '==' 'regular'}}selected="selected"{{/ifCond}}value="regular">Regular Season</option>
+                    <option {{#ifCond options.season '==' 'playoffs'}}selected="selected"{{/ifCond}}value="playoffs">Playoffs</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group col-md-3">
+                    <label>With</label>
+                    {{#each roster}}
+                        <div class="checkbox">
+                            <label>
+                                <input {{checkedIfInArray ../options.with playerId}} type="checkbox" name="with[]" value="{{playerId}}"> {{playerName}}
+                            </label>
+                        </div>
+                    {{/each}}
+                </div>
+                <div class="form-group col-md-3">
+                    <label>Without</label>
+                    {{#each roster}}
+                        <div class="checkbox">
+                            <label>
+                                <input {{checkedIfInArray ../options.without playerId}} type="checkbox" name="without[]" value="{{playerId}}"> {{playerName}}
+                            </label>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
 
-        {{> teamCharts}}
 
-        <h4>Game Results</h4>
-        <table class="sbn-data-table" border="1">
-            <tbody>
-            {{#each games}}
-                <tr>
-                    <td>{{formatDate date 'M/D'}}</td>
-                    <td>{{name}}</td>
-                    <td>{{result}} {{usPts}}-{{themPts}}</td>
-                </tr>
-            {{/each}}
-            </tbody>
+            <div class="col-md-12">
+            <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+            <a id="clearAll" href="#" onclick="" class="">clear</a>
+            </div>
+        </form>
+    </section>
 
-        </table>
+    <div id="content" class="row">
+        {{#if averages}}
+            <h3>Record: {{record}}</h3>
 
-    {{else}}
-        <p><b>No results found for these filter options</b></p>
-    {{/if}}
+            <h4>Team Stats</h4>
+            {{> teamAverageStats}}
+
+            {{> teamCharts}}
+
+            <h4>Game Results</h4>
+            <table class="table sbn-data-table" border="1">
+                <tbody>
+                {{#each games}}
+                    <tr>
+                        <td>{{formatDate date 'M/D'}}</td>
+                        <td>{{name}}</td>
+                        <td>{{result}} {{usPts}}-{{themPts}}</td>
+                    </tr>
+                {{/each}}
+                </tbody>
+
+            </table>
+
+        {{else}}
+            <p><b>No results found for these filter options</b></p>
+        {{/if}}
+    </div>
 </div>
+
 </body>
 </html>

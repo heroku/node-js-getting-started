@@ -79,6 +79,12 @@ Handlebars.registerHelper('formatDate', function(date, format) {
     return '';
 });
 
+Handlebars.registerHelper('checkedIfInArray', function(list, value) {
+    if (_.some(list, function(val) {return val == value})) {
+        return 'checked="checked"';
+    }
+});
+
 registerPartial('definitions');
 registerPartial('fourFactors');
 registerPartial('gameChart');
