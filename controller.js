@@ -21,7 +21,9 @@ module.exports = {
                 season: req.param("season") ? true : false,
                 playoffs: req.param("playoffs") ? true : false,
                 win: req.param("win"),
-                loss: req.param("loss")
+                loss: req.param("loss"),
+                home: req.param("home"),
+                away: req.param("away")
             };
 
             service.getTeamAverages(options).then(function(data) {

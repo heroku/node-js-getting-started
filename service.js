@@ -87,16 +87,20 @@ module.exports = {
             end = PLAYOFFS_END_2014_2015;
         }
 
-        //TODO call nba.api.teamStats()
-
         var promise = new Promise(function(resolve, reject) {
-            dao.getGames({
+            var dbOptions = {
                 teamId:team.teamId,
                 date: {
                     $gte: start.toDate(),
                     $lte: end.toDate()
                 }
-            }, function(results, err) {
+            };
+            if ( options.home ) {
+                dbOptions.homeGame = true;
+            } else  if ( options.away ) {
+                dbOptions.homeGame = false;
+            }
+            dao.getGames(dbOptions, function(results, err) {
                 if ( err ) {
                     reject(err);
                 } else if ( results && results.length ) {
