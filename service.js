@@ -87,6 +87,8 @@ module.exports = {
             end = PLAYOFFS_END_2014_2015;
         }
 
+        //TODO call nba.api.teamStats()
+
         var promise = new Promise(function(resolve, reject) {
             dao.getGames({
                 teamId:team.teamId,
@@ -261,31 +263,65 @@ function filterGamesByPlayersWithout(games, without) {
 
 }
 
+function sumValues(team, totals) {
+    _.each(team, function (val, key) {
+        if ( _.isNumber( val) ) {
+            if ( totals[key] === undefined ) {
+                totals[key] = val;
+            } else {
+                totals[key] += val;
+            }
+        }
+    });
+}
+
 function getAverages(games) {
     if ( games.length ) {
-        var totals = {};
-        var usStats = _.pluck(games, 'us');
-        _.each(usStats, function(us) {
-            _.each(us, function (val, key) {
-                if ( _.isNumber( val) ) {
-                    if ( totals[key] === undefined ) {
-                        totals[key] = val;
-                    } else {
-                        totals[key] += val;
-                    }
-                }
-            });
+        var usTotals = {};
+        var themTotals = {};
+        var spursIndexFactorsTotals = {};
+
+        _.each(games, function(game) {
+            sumValues(game.us, usTotals);
+            sumValues(game.them, themTotals);
         });
 
-        var averages = {};
-        _.each(totals, function(val, key) {
-            var average = val / games.length;
-            averages[key] = average;
-        });
-
-        return averages;
+        var usAverages = getTeamAverages(usTotals, themTotals, games);
+        var themAverages = getTeamAverages(themTotals, usTotals, games);
+        return {us: usAverages, them: themAverages};
     }
     return undefined;
+}
+
+function getTeamAverages(usTotals,themTotals, games) {
+    var averages = {};
+    _.each(usTotals, function(val, key) {
+        averages[key] = val / games.length;
+    });
+    //the REAL averages for these stats are the total makes / total attempts
+    averages.fgPct = usTotals.fGM / usTotals.fGA;
+    averages.fg2Pct = usTotals.fG2M / usTotals.fG2A;
+    averages.fg3Pct = usTotals.fG3M / usTotals.fG3A;
+    averages.ftPct = usTotals.fTM / usTotals.fTA;
+
+    var trueShootingAttempts = usTotals.fGA + 0.44 * usTotals.fTA;
+    averages.tSPct = usTotals.pTS / (2 * trueShootingAttempts);
+    averages.efgPct = (usTotals.fG2M + 0.5 * usTotals.fG3A) / usTotals.fGA;
+
+    averages.passesPerPoss = usTotals.pASS / usTotals.pACE;
+    averages.percentOfFGAUncontested = usTotals.uFGA / usTotals.fGA;
+    averages.percentOfFGAContested = usTotals.cFGA / usTotals.fGA;
+    averages.uncontestedFGAPerPossession = usTotals.uFGA / usTotals.pACE;
+
+    averages.pPP = (usTotals.pTS) / usTotals.pACE;
+    averages.pPS = (usTotals.pTS) / (usTotals.fGA);
+    averages.bCI = (usTotals.aST + usTotals.sTL) / usTotals.tO;
+
+    averages.oRR = usTotals.oREB / (usTotals.oREB + themTotals.dREB);
+    averages.expectedOREB = (LEAGUE_AVERAGE_ORR * (usTotals.oREB + themTotals.dREB)) / games.length;
+    averages.oREBDiff = (usTotals.oREB - usTotals.expectedOREB) / games.length ;
+    averages.oREBDiffAbs = Math.abs(averages.oREBDiff);
+    return averages;
 }
 
 function getTeams(statsArrays, usTeam) {
