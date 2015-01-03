@@ -267,6 +267,7 @@ function getGamesLine(games) {
         return {
             name: prefix + game.them.teamName,
             date: moment(game.date).format('M/D'),
+            trueDate: game.date,
             result: game.us.pTS > game.them.pTS ? "W" : "L",
             usPts: game.us.pTS,
             themPts: game.them.pTS

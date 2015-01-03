@@ -145,7 +145,7 @@
                 {{#each games}}
                     <tr>
                         <td>{{formatDate date 'M/D'}}</td>
-                        <td>{{name}}</td>
+                        <td><a href="/team/{{../team.simpleName}}/{{formatDate trueDate 'MM-DD-YYYY'}}">{{name}}</a></td>
                         <td>{{result}} {{usPts}}-{{themPts}}</td>
                     </tr>
                 {{/each}}
