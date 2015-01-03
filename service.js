@@ -142,7 +142,9 @@ module.exports = {
                     var averages = getAverages(games);
                     var ratingsColumns = getRatingData(games);
 
-                    console.log(options.with, options.without);
+                    var hasOptions = (options.with && options.with.length) ||
+                                     (options.without && options.without.length) ||
+                                     options.location || options.outcome;
                     resolve({
                         team: team,
                         roster: getRoster(games),
@@ -152,6 +154,7 @@ module.exports = {
                         ballhandling: getBallhandlingData(games),
                         spursIndex: getSpursIndexData(games),
                         options: options,
+                        hasOptions: hasOptions,
                         record: getRecord(games),
                         gameTicks: getGameTicks(games),
                         games: getGamesLine(games)

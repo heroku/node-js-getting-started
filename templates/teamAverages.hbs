@@ -36,76 +36,102 @@
 
         $('#clearAll').click(function(e) {
             e.preventDefault();
+            $(this).click(false);
             window.location = window.location.pathname;
+        });
+
+        var filters = $('#filters');
+        var showFilters = $('#showFilters').click(function(e) {
+            e.preventDefault();
+            filters.show();
+            showFilters.hide();
+        });
+        $('#hideFilters').click(function(e) {
+            e.preventDefault();
+            filters.hide();
+            showFilters.show();
         })
+        $('form').submit(function(e) {
+            $('button, a').attr('disabled', 'disabled');
+            $('form').submit(false);
+        });
     })
     </script>
 
 </head>
 <body>
 <div class="container-fluid" >
-    <section class="row" id="filters">
-        <h2>Filter games</h2>
-        <form id="filters" action="" method="get">
-            <div class="form-group">
-                <label for="outcome">Outcome</label>
-                <select id="outcome" name="outcome">
-                    <option value="">All</option>
-                    <option {{#ifCond options.outcome '==' 'win'}}selected="selected"{{/ifCond}}value="win">Win</option>
-                    <option {{#ifCond options.outcome '==' 'loss'}}selected="selected"{{/ifCond}}value="loss">Loss</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="location">Location</label>
-                <select id="location" name="location">
-                    <option value="">All</option>
-                    <option {{#ifCond options.location '==' 'home'}}selected="selected"{{/ifCond}}value="home">Home</option>
-                    <option {{#ifCond options.location '==' 'away'}}selected="selected"{{/ifCond}}value="away">Away</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="season">Season</label>
-                <select id="season" name="season">
-                    <option value="">All</option>
-                    <option {{#ifCond options.season '==' 'regular'}}selected="selected"{{/ifCond}}value="regular">Regular Season</option>
-                    <option {{#ifCond options.season '==' 'playoffs'}}selected="selected"{{/ifCond}}value="playoffs">Playoffs</option>
-                </select>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group col-md-3">
-                    <label>With</label>
-                    {{#each roster}}
-                        <div class="checkbox">
-                            <label>
-                                <input {{checkedIfInArray ../options.with playerId}} type="checkbox" name="with[]" value="{{playerId}}"> {{playerName}}
-                            </label>
-                        </div>
-                    {{/each}}
+    <section class="row">
+        <section>
+            <button id="showFilters" type="button" class="btn btn-default" {{#if hasOptions}}style="display:none;"{{/if}}>
+                <span class="glyphicon glyphicon-filter" aria-hidden="true"></span> Filter
+            </button>
+        </section>
+        <section id="filters" {{#unless hasOptions}}style="display:none;"{{/unless}}>
+            <form action="" class="well" method="get">
+                <h3>Filter</h3>
+                <div class="form-group">
+                    <label for="outcome">Outcome</label>
+                    <select id="outcome" name="outcome">
+                        <option value="">All</option>
+                        <option {{#ifCond options.outcome '==' 'win'}}selected="selected"{{/ifCond}}value="win">Win</option>
+                        <option {{#ifCond options.outcome '==' 'loss'}}selected="selected"{{/ifCond}}value="loss">Loss</option>
+                    </select>
                 </div>
-                <div class="form-group col-md-3">
-                    <label>Without</label>
-                    {{#each roster}}
-                        <div class="checkbox">
-                            <label>
-                                <input {{checkedIfInArray ../options.without playerId}} type="checkbox" name="without[]" value="{{playerId}}"> {{playerName}}
-                            </label>
-                        </div>
-                    {{/each}}
+
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <select id="location" name="location">
+                        <option value="">All</option>
+                        <option {{#ifCond options.location '==' 'home'}}selected="selected"{{/ifCond}}value="home">Home</option>
+                        <option {{#ifCond options.location '==' 'away'}}selected="selected"{{/ifCond}}value="away">Away</option>
+                    </select>
                 </div>
-            </div>
 
+                <div class="form-group">
+                    <label for="season">Season</label>
+                    <select id="season" name="season">
+                        <option value="">All</option>
+                        <option {{#ifCond options.season '==' 'regular'}}selected="selected"{{/ifCond}}value="regular">Regular Season</option>
+                        <option {{#ifCond options.season '==' 'playoffs'}}selected="selected"{{/ifCond}}value="playoffs">Playoffs</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group col-md-3">
+                        <label>With</label>
+                        {{#each roster}}
+                            <div class="checkbox">
+                                <label>
+                                    <input {{checkedIfInArray ../options.with playerId}} type="checkbox" name="with[]" value="{{playerId}}"> {{playerName}}
+                                </label>
+                            </div>
+                        {{/each}}
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Without</label>
+                        {{#each roster}}
+                            <div class="checkbox">
+                                <label>
+                                    <input {{checkedIfInArray ../options.without playerId}} type="checkbox" name="without[]" value="{{playerId}}"> {{playerName}}
+                                </label>
+                            </div>
+                        {{/each}}
+                    </div>
+                </div>
+                <div class="clearfix"></div>
 
-            <div class="col-md-12">
-            <button type="submit" class="btn btn-primary btn-sm">Filter</button>
-            <a id="clearAll" href="#" onclick="" class="">clear</a>
-            </div>
-        </form>
+                <div>
+                    <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+                    <a id="clearAll" href="#">clear</a>
+                    <a id="hideFilters" href="#" class="">hide</a>
+                </div>
+            </form>
+        </section>
     </section>
 
     <div id="content" class="row">
         {{#if averages}}
+            <h2>{{team.teamName}}</h2>
             <h3>Record: {{record}}</h3>
 
             <h4>Team Stats</h4>
