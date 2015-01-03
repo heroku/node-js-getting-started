@@ -1,7 +1,7 @@
 <html>
 <head>
     <title>Study Hall: {{us.teamName}} {{#if homeGame}}vs.{{else}}at{{/if}} {{them.teamName}} {{formatDate game.gameDateEst}}</title>
-    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    {{> header}}
 
     <script>$(document).ready(function(){
         $('button#copy').click(function(e) {
@@ -22,9 +22,8 @@
     </script>
 </head>
 <body>
-<div id="content">
-    <h2>{{us.teamName}} {{#if homeGame}}vs.{{else}}at{{/if}} {{them.teamName}} {{formatDate game.gameDateEst}}</h2>
-    <h2>{{us.teamName}} {{us.pTS}}, {{them.teamName}} {{them.pTS}} </h2>
+<div id="content" class="container">
+    <h1>{{us.teamName}} {{us.pTS}}, {{them.teamName}} {{them.pTS}} - {{formatDate game.gameDateEst}}</h1>
 
     <section class="gameFlow"></section>
 

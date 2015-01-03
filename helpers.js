@@ -96,6 +96,7 @@ registerPartial('spursIndex');
 registerPartial('teamStats');
 registerPartial('teamAverageStats');
 registerPartial('teamCharts');
+registerPartial('header');
 
 function registerPartial(name) {
     Handlebars.registerPartial(name, fs.readFileSync('./templates/' + name + '.hbs', "utf8"));

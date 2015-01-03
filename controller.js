@@ -8,6 +8,11 @@ var templates = require('./templates');
 var GAME_STATUS_FINAL = 3;
 
 module.exports = {
+    index: function(req,res) {
+        res.send(templates.get('index')({
+            teams: nba.teamsInfo
+        }));
+    },
     getSeasonAverages: function(req,res) {
         var name = req.param('name');
 

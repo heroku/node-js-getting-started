@@ -1,22 +1,13 @@
 <html>
 <head>
     <title>Team Averages - {{team.teamName}}</title>
+    {{> header}}
+
     <link href="https://cdn0.vox-cdn.com/uploads/chorus_asset/file/2862202/c3.min.0.css" rel="stylesheet" type="text/css">
-
-    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="https://cdn0.vox-cdn.com/uploads/chorus_asset/file/2862214/c3.min.0.js"></script>
 
 
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
-
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 
     <script>$(document).ready(function(){
         $('button#copy').click(function(e) {
@@ -140,7 +131,7 @@
             {{> teamCharts}}
 
             <h4>Game Results</h4>
-            <table class="sbn-data-table table table-striped table-bordered table-hover table-condensed">
+            <table class="sbn-data-table table table-striped table-bordered table-hover table-condensed" style="width: auto;">
                 <tbody>
                 {{#each games}}
                     <tr>
