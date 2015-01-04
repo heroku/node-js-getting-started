@@ -7,12 +7,13 @@
 <script type="text/javascript">
     function stripeTables() {
         var $ = jQuery;
-        console.log('stripe');
+        console.log('stripe for sb nation');
         $('table.sbn-data-table tbody tr:odd').removeClass('ui-state-even').addClass('ui-state-odd');
         $('table.sbn-data-table tbody tr:even').removeClass('ui-state-odd').addClass('ui-state-even');
     }
 
 (function($){
+$('table.table').addClass('sbn-data-table');
 stripeTables();
 setTimeout(stripeTables, 500);
 setTimeout(stripeTables, 2000);

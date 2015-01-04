@@ -1,5 +1,5 @@
 <h4>{{us.teamName}}</h4>
-<table id="players-us" border="1" class="sbn-data-table table table-striped table-bordered table-hover table-condensed players" style="width: auto;">
+<table id="players-us"  class=" table table-striped table-bordered table-hover table-condensed players" style="width: auto;">
     {{> playersHeader}}
     <tbody>
     {{#each us.players}}
@@ -9,7 +9,7 @@
 </table>
 
 <h4><a id="showOpponentPlayers" href="#" style="font-size: 0.8em;">Show {{them.teamName}} Players</a></h4>
-<table id="players-them" border="1" class="sbn-data-table table table-striped table-bordered table-hover table-condensed players" style="width: auto; display:none;">
+<table id="players-them"  class=" table table-striped table-bordered table-hover table-condensed players" style="width: auto; display:none;">
     {{> playersHeader}}
     <tbody>
     {{#each them.players}}
