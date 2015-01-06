@@ -1,0 +1,43 @@
+<html>
+<head>
+    <title>{{player.fullName}}</title>
+    {{> header}}
+    {{> chartJs}}
+
+    <script>$(document).ready(function(){
+        $('button#copy').click(function(e) {
+            e.preventDefault();
+            var html = $('#content').html();
+
+            var div = $('<div></div>');
+            div.html(html);
+            div.find('div.c3').remove();
+            html = div.html();
+
+            $('textarea.copy').remove();
+            $('<textarea class="copy"></textarea>').appendTo('body');
+            $('textarea.copy').val(html).focus();
+            //window.prompt("Copy to clipboard: Ctrl+C", html);
+        });
+    })
+    </script>
+
+</head>
+<body>
+<div class="container-fluid" >
+    <div id="content" class="row">
+        {{#if with}}
+            <h2>{{player.fullName}} - {{team.teamName}}</h2>
+
+            <h3>Team Stats</h3>
+            {{!--{{> playerStats}}--}}
+            {{> playerTeamStats}}
+            {{!--{{> playerCharts}}--}}
+        {{else}}
+            <p><b>No results found for these filter options</b></p>
+        {{/if}}
+    </div>
+</div>
+
+</body>
+</html>

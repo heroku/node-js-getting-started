@@ -77,6 +77,31 @@ function getRoster(games) {
     return roster;
 }
 module.exports = {
+    getPlayerOnOffStats: function(options) {
+        var player = options.player;
+        var team = options.team;
+        return new Promise(function(resolve, reject) {
+            var base = nba.api.teamPlayerOnOff({teamId:team.teamId, "PerMode": "Per48"});
+            var advanced = nba.api.teamPlayerOnOff({teamId:team.teamId, "PerMode": "Per48", measureType: "Advanced"});
+            var misc = nba.api.teamPlayerOnOff({teamId:team.teamId, "PerMode": "Per48", measureType: "Misc"});
+            var fourFactors = nba.api.teamPlayerOnOff({teamId:team.teamId, "PerMode": "Per48", measureType: "Four Factors"});
+            var scoring = nba.api.teamPlayerOnOff({teamId:team.teamId, "PerMode": "Per48", measureType: "Four Factors"});
+            var opponent = nba.api.teamPlayerOnOff({teamId:team.teamId, "PerMode": "Per48", measureType: "Opponent"});
+
+            Promise.all([base, advanced, misc, fourFactors, scoring, opponent]).then(function(results) {
+                base = results[0];
+                advanced = results[1];
+                misc = results[2];
+                fourFactors = results[3];
+                scoring = results[4];
+                opponent = results[5];
+
+                console.log(results);
+                resolve(getPlayerOnOffStats(team, player, [base, advanced, misc, fourFactors, scoring], opponent));
+            });
+        });
+    },
+
     getGameStats: function(game, team, date, refresh, callback, error) {
         console.log("Searching MongoDB for game " + game.gameId);
         if ( refresh ) {
@@ -488,19 +513,25 @@ function getRValue(player, team) {
 }
 
 function addAdvancedStats(team, opp) {
+    //normalize some minor differences in naming
+    var oppDreb = opp.dREB !== undefined ? opp.dREB : opp.oppDreb;
+    var turnovers = team.tO !== undefined ? team.tO : team.tOV;
+
     team.fG2A = team.fGA - team.fG3A;
     team.fG2M = team.fGM - team.fG3M;
     team.fg2Pct = team.fG2M / team.fG2A;
 
     team.tSA = team.fGA + 0.44 * team.fTA;
     team.tSPct = team.pTS / (2 * team.tSA);
+    team.efgPct = (team.fG2M + 0.5 * team.fG3A) / team.fGA;
+
 
     team.pPP = (team.pTS) / team.pACE;
     team.pPS = (team.pTS) / (team.fGA);
-    team.bCI = (team.aST + team.sTL) / team.tO;
+    team.bCI = (team.aST + team.sTL) / turnovers;
 
-    team.oRR = team.oREB / (team.oREB + opp.dREB);
-    team.expectedOREB = LEAGUE_AVERAGE_ORR * (team.oREB + opp.dREB);
+    team.oRR = team.oREB / (team.oREB + oppDreb);
+    team.expectedOREB = LEAGUE_AVERAGE_ORR * (team.oREB + oppDreb);
     team.oREBDiff = team.oREB - team.expectedOREB;
     team.oREBDiffAbs = Math.abs(team.oREBDiff);
 
@@ -648,6 +679,40 @@ function getGameFlowChartData(playByPlay, teams, game) {
         playDesc
     ];
 }
+
+function getPlayerOnOffStats(team, player, onOffArray, opponent) {
+    var playerOnCourt = {};
+    var playerOffCourt = {};
+
+    _.each(onOffArray, function(stats) {
+        var playerOn = _.findWhere(stats.playersOnCourtTeamPlayerOnOffDetails, {vsPlayerId: player.playerId});
+        var playerOff = _.findWhere(stats.playersOffCourtTeamPlayerOnOffDetails, {vsPlayerId: player.playerId});
+        playerOnCourt = _.defaults(playerOnCourt, playerOn);
+        playerOffCourt = _.defaults(playerOffCourt, playerOff);
+    });
+
+    var playerOffOpp = _.findWhere(opponent.playersOffCourtTeamPlayerOnOffDetails, {vsPlayerId:player.playerId})
+    var playerOnOpp = _.findWhere(opponent.playersOnCourtTeamPlayerOnOffDetails, {vsPlayerId:player.playerId})
+
+    addAdvancedStats(playerOnCourt, playerOnOpp);
+    addAdvancedStats(playerOffCourt, playerOffOpp);
+
+    var deltas = {};
+    _.each(playerOnCourt, function(withVal, key) {
+        var withoutVal = playerOffCourt[key];
+        deltas[key] = withVal - withoutVal;
+    });
+
+    return {
+        player: player,
+        team: team,
+        with: playerOnCourt,
+        without: playerOffCourt,
+        deltas: deltas
+    }
+}
+
+
 
 /*
 

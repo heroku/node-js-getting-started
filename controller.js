@@ -42,6 +42,22 @@ module.exports = {
             res.send(html);
         }).catch(function(e){onError(e, res)});
     },
+
+    playerImpact: function(req,res) {
+        var teamName = req.param('team');
+        var team = getTeam(teamName);
+        var playerName = req.param('player');
+        var player = getPlayer(playerName);
+
+        var options = _.extend(req.query, {team: team, player: player});
+        service.getPlayerOnOffStats(options).then(function(data) {
+            console.log(data);
+            var html = templates.get('playerImpact')(data);
+            res.send(html);
+        }).catch(function(e){onError(e, res)});
+
+
+    },
     /*getPlayerImpact: function(req,res) {
         var name = req.param('name');
         var playerName = req.param('playerName');

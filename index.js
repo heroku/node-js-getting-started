@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-var generate = require('./generate');
+require('./apiExtensions');
 var nba = require('nba');
 var controller = require('./controller');
 var Promise = require( "es6-promise" ).Promise;
@@ -15,6 +15,7 @@ nba.ready(function() {
 
         app.get('/', controller.index);
         app.get('/team/averages/:name', controller.getSeasonAverages);
+        app.get('/playerImpact', controller.playerImpact);
         app.get('/player', controller.player);
         app.get('/team/:name/:date', controller.getGameStats);
         app.get('/team/:name', controller.getGameStats);
