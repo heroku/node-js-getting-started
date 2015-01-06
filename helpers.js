@@ -97,6 +97,9 @@ registerPartial('teamStats');
 registerPartial('teamAverageStats');
 registerPartial('teamCharts');
 registerPartial('header');
+registerPartial('chartJs');
+registerPartial('playerCharts');
+registerPartial('playerTeamStats');
 
 function registerPartial(name) {
     Handlebars.registerPartial(name, fs.readFileSync('./templates/' + name + '.hbs', "utf8"));

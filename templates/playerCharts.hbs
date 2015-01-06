@@ -1,0 +1,189 @@
+<section class="stats">
+    <h4>Offensive/Defensive Ratings</h2>
+    <section class="ratings"></section>
+</section>
+<section class="stats">
+    <h4>Shooting</h2>
+    <section class="shooting"></section>
+</section>
+<section class="stats">
+    <h4>Ballhandling</h2>
+    <section class="ballhandling"></section>
+</section>
+<section class="stats">
+    <h4>Spurs Index</h2>
+    <section class="spursIndex"></section>
+</section>
+
+<script type="text/javascript">
+    (function($){
+        function formatPercentage(val) {
+            return d3.format(".1%")(val);
+        }
+        function formatNumber(val) {
+            return d3.format(".1f")(val);
+        }
+
+        var games = {{toJSON games}};
+
+        function getGameTitle(x) {
+            var game = games[x];
+            var date = game.date;
+            return gameTicks[x] + ' ' + date + ' (' + game.result + ' ' + game.usPts + '-' + game.themPts + ')';
+        }
+        var ratings = {{toJSON ratings}};
+        var shooting = {{toJSON shooting}};
+        var ballhandling = {{toJSON ballhandling}};
+        var spursIndex = {{toJSON spursIndex}};
+
+        var gameTicks = {{toJSON gameTicks}};
+
+        function drawChart(options, $el) {
+            var defaults = {
+                bindTo: '#ratings',
+                data: {
+                    columns: ratings
+                },
+                axis: {
+                    x: {
+                        type: 'category',
+                        categories: gameTicks,
+                        tick: {
+                            culling: true
+                        }
+                    }
+                },
+                grid: {
+                    y: {
+                        lines: [{value: 100}]
+                    }
+                },
+                tooltip: {
+                    format: {
+                        title: getGameTitle,
+                        value: formatNumber
+                    }
+                }
+            };
+            var chart = c3.generate($.extend(defaults, options));
+            $el.append(chart.element);
+        }
+
+        drawChart({
+            bindTo: '#ratings',
+            data: {
+                columns: ratings
+            },
+            grid: {
+                y: {
+                    lines: [{value: 100}]
+                }
+            }
+        }, $('.ratings'));
+
+        drawChart({
+            bindTo: '#shooting',
+            data: {
+                columns: shooting
+            },
+            axis: {
+                x: {
+                    type: 'category',
+                    categories: gameTicks,
+                    tick: {
+                        culling: true
+                    }
+                },
+                y1: {
+                    tick: {
+                        format: formatPercentage
+                    }
+                }
+            },
+            tooltip: {
+                format: {
+                    title: getGameTitle,
+                    value: formatPercentage
+                }
+            }
+
+        }, $('.shooting'));
+
+        drawChart({
+            bindTo: '#ballhandling',
+            data: {
+                columns: ballhandling,
+                axes: {
+                    "Steals": 'y2',
+                    "Ast": 'y2',
+                    "TO": 'y2',
+                    "BCI": 'y'
+                }
+            },
+            axis: {
+                x: {
+                    type: 'category',
+                    categories: gameTicks,
+                    tick: {
+                        culling: true
+                    }
+                },
+                y2: {
+                    show: true
+                }
+            },
+            tooltip: {
+                format: {
+                    title: getGameTitle,
+                    value: formatNumber
+                }
+            }
+        }, $('.ballhandling'));
+        drawChart({
+            bindTo: '#spursIndex',
+            data: {
+                columns: spursIndex,
+                axes: {
+                    "Opponent % of FGA Uncontested": 'y2',
+                    "Shooting (eFG%)": 'y2',
+                    "Passing (AST%)": 'y2',
+                    "Defensive Rebounding (DReb%)": 'y2',
+                    "Defense (DefRtg)": 'y',
+                    "Spurs Index": 'y'
+                },
+                hide: ["Opponent % of FGA Uncontested", "Shooting (eFG%)", "Passing (AST%)", "Defensive Rebounding (DReb%)", "Defense (DefRtg)"] //only show spurs index
+            },
+            axis: {
+                x: {
+                    type: 'category',
+                    categories: gameTicks,
+                    tick: {
+                        culling: true
+                    }
+                },
+                y: {
+                    tick: {
+                        format: formatNumber
+                    }
+                },
+                y2: {
+                    show: true,
+                    tick: {
+                        format: formatPercentage
+                    }
+                }
+            },
+            tooltip: {
+                format: {
+                    title: getGameTitle,
+                    value: function(value, ratio, id, index) {
+                        if ( id == "Spurs Index" || id == "Defense (DefRtg)" ) {
+                            return formatNumber(value);
+                        } else {
+                            return formatPercentage(value);
+                        }
+                    }
+                }
+            }
+        }, $('.spursIndex'));
+    })(jQuery)</script>

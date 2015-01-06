@@ -2,6 +2,7 @@
 <head>
     <title>Study Hall: {{us.teamName}} {{#if homeGame}}vs.{{else}}at{{/if}} {{them.teamName}} {{formatDate game.gameDateEst}}</title>
     {{> header}}
+    {{> chartJs}}
 
     <script>$(document).ready(function(){
         $('button#copy').click(function(e) {

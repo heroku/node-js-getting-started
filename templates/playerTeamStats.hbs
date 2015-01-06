@@ -1,0 +1,206 @@
+<table class=" table table-striped table-bordered table-hover table-condensed" style="width:auto;">
+    <thead>
+    <tr>
+        <th></th>
+        <th width="120">Games With</th>
+        <th width="120">Games Without</th>
+        <th width="120">Difference</th>
+    </tr>
+
+    </thead>
+    <tbody>
+    <tr>
+        <td>Record</td>
+        <td colspan="1" align="right">{{with.record}}</td>
+        <td colspan="1" align="right">{{without.record}}</td>
+        <td colspan="1" align="right"></td>
+    </tr>
+    <tr>
+        <td>Pace (No. of Possessions)</td>
+        <td colspan="1" align="right">{{formatNumber with.averages.us.pACE 1}}</td>
+        <td colspan="1" align="right">{{formatNumber without.averages.us.pACE 1}}</td>
+        <td colspan="1" align="right">{{formatNumber deltas.us.pACE 1}}</td>
+    </tr>
+    <tr>
+        <td>Points Per Possession (PPP)</td>
+        <td align="right">{{formatNumber with.averages.us.pPP 2}}</td>
+        <td align="right">{{formatNumber without.averages.us.pPP 2}}</td>
+        <td align="right">{{formatNumber deltas.us.pPP 2}}</td>
+    </tr>
+    <tr>
+        <td>Points Per Shot (PPS)</td>
+        <td align="right">{{formatNumber with.averages.us.pPS 2}}</td>
+        <td align="right">{{formatNumber without.averages.us.pPS 2}}</td>
+        <td align="right">{{formatNumber deltas.us.pPS 2}}</td>
+    </tr>
+    <tr>
+        <td>2-PT FG%</td>
+        <td align="right" title="{{formatNumber with.averages.us.fG2M 1}}/{{formatNumber with.averages.us.fG2A 1}}">{{formatPercent with.averages.us.fg2Pct 1}}</td>
+        <td align="right" title="{{formatNumber without.averages.us.fG2M 1}}/{{formatNumber without.averages.us.fG2A 1}}">{{formatPercent without.averages.us.fg2Pct 1}}</td>
+        <td align="right">{{formatPercent deltas.us.fg2Pct 1}}</td>
+    </tr>
+    <tr>
+        <td>3-PT FG%</td>
+        <td align="right" title="{{formatNumber with.averages.us.fG3M 1}}/{{formatNumber with.averages.us.fG3A}}">{{formatPercent with.averages.us.fg3Pct 1}}</td>
+        <td align="right" title="{{formatNumber without.averages.us.fG3M 1}}/{{formatNumber without.averages.us.fG3A}}">{{formatPercent without.averages.us.fg3Pct 1}}</td>
+        <td align="right">{{formatPercent deltas.us.fg3Pct 1}}</td>
+    </tr>
+    <tr>
+        <td>FT%</td>
+        <td align="right" title="{{formatNumber with.averages.us.fTM 1}}/{{formatNumber with.averages.us.fTA 1}}">{{formatPercent with.averages.us.ftPct 1}}</td>
+        <td align="right" title="{{formatNumber without.averages.us.fTM 1}}/{{formatNumber without.averages.us.fTA 1}}">{{formatPercent without.averages.us.ftPct 1}}</td>
+        <td align="right">{{formatPercent deltas.us.ftPct 1}}</td>
+    </tr>
+    <tr>
+        <td><a target="_blank" href="http://www.ehow.com/how_2092829_calculate-true-shooting-percentage-basketball.html">True Shooting %</a></td>
+        <td align="right">{{formatPercent with.averages.us.tSPct 1}}</td>
+        <td align="right">{{formatPercent without.averages.us.tSPct 1}}</td>
+        <td align="right">{{formatPercent deltas.us.tsPct 1}}</td>
+    </tr>
+
+    <tr>
+        <td>FG%</td>
+        <td align="right">{{formatPercent with.averages.us.fgPct 1}}</td>
+        <td align="right">{{formatPercent without.averages.us.fgPct 1}}</td>
+        <td align="right">{{formatPercent deltas.us.fgPct 1}}</td>
+    </tr>
+    <tr>
+        <td title="Effective Field Goal Percentage - Effective Field Goal Percentage is a field goal percentage that is adjusted for made 3 pointers being 1.5 times more valuable than a 2 point shot.">eFG%</td>
+        <td align="right">{{formatPercent with.averages.us.efgPct 1}}</td>
+        <td align="right">{{formatPercent without.averages.us.efgPct 1}}</td>
+        <td align="right">{{formatNumber deltas.us.efgPct 1}}</td>
+    </tr>
+
+    <tr><td colspan="3"></td></tr>
+
+    <tr>
+        <td title="Points per 100 possessions">Offensive Rating</td>
+        <td align="right">{{formatNumber with.averages.us.offRating 1}}</td>
+        <td align="right">{{formatNumber without.averages.us.offRating 1}}</td>
+        <td align="right">{{formatNumber deltas.us.offRating 1}}</td>
+    </tr>
+    <tr>
+        <td title="Points allowed per 100 possessions">Defensive Rating</td>
+        <td align="right">{{formatNumber with.averages.us.defRating 1}}</td>
+        <td align="right">{{formatNumber without.averages.us.defRating 1}}</td>
+        <td align="right">{{formatNumber deltas.us.defRating 1}}</td>
+    </tr>
+    <tr>
+        <td>Net Rating</td>
+        <td align="right">{{formatNumber with.averages.us.netRating 1}}</td>
+        <td align="right">{{formatNumber without.averages.us.netRating 1}}</td>
+        <td align="right">{{formatNumber deltas.us.netRating 1}}</td>
+
+    </tr>
+
+    <tr><td colspan="3"></td></tr>
+    <tr>
+        <td>Passes / poss.</td>
+        <td align="right">{{formatNumber with.averages.us.passesPerPoss 1}}</td>
+        <td align="right">{{formatNumber without.averages.us.passesPerPoss 1}}</td>
+        <td align="right">{{formatNumber deltas.us.passesPerPoss 1}}</td>
+    </tr>
+    <tr>
+        <td title="What percentage of a team's field goal attempts are uncontested: contested FGA / total FGA">% of FGA uncontested</td>
+        <td align="right">{{formatPercent with.averages.us.percentOfFGAUncontested 1}}</td>
+        <td align="right">{{formatPercent without.averages.us.percentOfFGAUncontested 1}}</td>
+        <td align="right">{{formatPercent deltas.us.percentOfFGAUncontested 1}}</td>
+    </tr>
+    <tr>
+        <td>Points in the paint</td>
+        <td align="right">{{formatNumber with.averages.us.ptsPaint 1}}</td>
+        <td align="right">{{formatNumber without.averages.us.ptsPaint 1}}</td>
+        <td align="right">{{formatNumber deltas.us.ptsPaint 1}}</td>
+
+    </tr>
+    <tr>
+        <td>Second chance points</td>
+        <td align="right">{{formatNumber with.averages.us.pts2ndChance 1}}</td>
+        <td align="right">{{formatNumber without.averages.us.pts2ndChance 1}}</td>
+        <td align="right">{{formatNumber deltas.us.pts2ndChance 1}}</td>
+    </tr>
+    <tr>
+        <td>Fast break points</td>
+        <td align="right">{{formatNumber with.averages.us.ptsFb 1}}</td>
+        <td align="right">{{formatNumber without.averages.us.ptsFb 1}}</td>
+        <td align="right">{{formatNumber deltas.us.ptsFb 1}}</td>
+    </tr>
+
+    <tr><td colspan="3"></td></tr>
+
+    <tr>
+        <td>Assists</td>
+        <td align="right">{{formatNumber with.averages.us.aST 1}}</td>
+        <td align="right">{{formatNumber without.averages.us.aST 1}}</td>
+        <td align="right">{{formatNumber deltas.us.aST 1}}</td>
+
+    </tr>
+    <tr>
+        <td>Steals</td>
+        <td align="right">{{formatNumber with.averages.us.sTL 1}}</td>
+        <td align="right">{{formatNumber without.averages.us.sTL 1}}</td>
+        <td align="right">{{formatNumber deltas.us.sTL 1}}</td>
+    </tr>
+    <tr>
+        <td>Turnovers</td>
+        <td align="right">{{formatNumber with.averages.us.tO 1}}</td>
+        <td align="right">{{formatNumber without.averages.us.tO 1}}</td>
+        <td align="right">{{formatNumber deltas.us.tO 1}}</td>
+
+    </tr>
+    <tr>
+        <td>
+            <u>B</u>all <u>C</u>ontrol <u>I</u>ndex (BCI)<br><i>(Assists + Steals) / TO</i>
+        </td>
+        <td align="right">{{formatNumber with.averages.us.bCI 2}}</td>
+        <td align="right">{{formatNumber without.averages.us.bCI 2}}</td>
+        <td align="right">{{formatNumber deltas.us.bCI 1}}</td>
+
+    </tr>
+
+    <tr><td colspan="3"></td></tr>
+
+    <tr>
+        <td title="How many offensive rebounds an average rebounding team could expect to grab, based off the number of opportunities in a game">Expected Offensive Rebounds</td>
+        <td align="right">{{formatNumber with.averages.us.expectedOREB 1}}</td>
+        <td align="right">{{formatNumber without.averages.us.expectedOREB 1}}</td>
+        <td align="right">{{formatNumber deltas.us.expectedOREB 1}}</td>
+
+    </tr>
+    <tr>
+        <td>Offensive Rebounds</td>
+        <td align="right">{{formatNumber with.averages.us.oREB 1}}</td>
+        <td align="right">{{formatNumber without.averages.us.oREB 1}}</td>
+        <td align="right">{{formatNumber deltas.us.oREB 1}}</td>
+
+    </tr>
+    <tr>
+        <td>Difference</td>
+        <td align="right">{{formatNumber with.averages.us.oREBDiff 1}}</td>
+        <td align="right">{{formatNumber without.averages.us.oREBDiff 1}}</td>
+        <td align="right">{{formatNumber deltas.us.oREBDiff 1}}</td>
+    </tr>
+    <tr>
+        <td>OReb%</td>
+        <td align="right">{{formatPercent with.averages.us.orebPct 1}}</td>
+        <td align="right">{{formatPercent without.averages.us.orebPct 1}}</td>
+        <td align="right">{{formatPercent deltas.us.orebPct 1}}</td>
+
+    </tr>
+    <tr>
+        <td>DReb%</td>
+        <td align="right">{{formatPercent with.averages.us.drebPct 1}}</td>
+        <td align="right">{{formatPercent without.averages.us.drebPct 1}}</td>
+        <td align="right">{{formatPercent deltas.us.drebPct 1}}</td>
+
+    </tr>
+    <tr><td colspan="3"></td></tr>
+    <tr>
+        <td>Spurs Index</td>
+        <td align="right">{{formatNumber with.averages.us.spursIndexScore 1}}</td>
+        <td align="right">{{formatNumber without.averages.us.spursIndexScore 1}}</td>
+        <td align="right">{{formatNumber deltas.us.spursIndexScore 1}}</td>
+
+    </tr>
+    </tbody>
+</table>

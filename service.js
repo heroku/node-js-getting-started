@@ -211,6 +211,39 @@ module.exports = {
         return promise;
     },
 
+    getPlayerStats: function(options) {
+        var service = this;
+        return new Promise(function(resolve, reject) {
+            var player = options.player;
+            var team = options.team;
+            var teamStatsWith = service.getTeamAverages(_.extend({}, options, {with: [player.playerId], without:[]}));
+            var teamStatsWithout = service.getTeamAverages(_.extend({}, options, {without: [player.playerId], with:[]}));
+            Promise.all([teamStatsWith, teamStatsWithout]).then(function(results) {
+                var withStats = results[0];
+                var withoutStats = results[1];
+                var deltas = {us:{}, them:{}};
+                _.each(withStats.averages.us, function(withVal, key) {
+                    var withoutVal = withoutStats.averages.us[key];
+                    deltas.us[key] = withVal - withoutVal;
+                });
+                _.each(withStats.averages.them, function(withVal, key) {
+                    var withoutVal = withoutStats.averages.them[key];
+                    deltas.them[key] = withVal - withoutVal;
+                });
+
+
+                var data = {
+                    team: team,
+                    player: player,
+                    with: withStats,
+                    without: withoutStats,
+                    deltas: deltas
+                };
+                resolve(data);
+            }).catch(reject)
+        });
+    },
+
     getGameIfNotInDao: function(game, team, date) {
         var service = this;
         var promise = new Promise(function(resolve, reject) {
@@ -238,15 +271,22 @@ function filterGamesByPlayersWith(games, withPlayers) {
         var players = game.us.players;
         var playersPlayed = true;
         _.each(withPlayers, function(playerName) {
-            var player = _.find(players, function(player) {
-                return (player.playerName.toUpperCase() == playerName.toUpperCase() || player.playerId == playerName);
-            });
+            var player = getPlayer(players, playerName);
             if ( !player || player.minutes < 1 ) {
                 playersPlayed = false;
             }
         });
         return playersPlayed;
     });
+}
+
+function getPlayer(players, playerName) {
+    return _.find(players, function(player) {
+        if (_.isNumber(playerName) ) {
+            return (player.playerId == playerName);
+        }
+        return (player.playerName.toUpperCase() == playerName.toUpperCase() || player.playerId == playerName);
+    })
 }
 
 function getRecord(games) {
@@ -281,9 +321,7 @@ function filterGamesByPlayersWithout(games, without) {
         var players = game.us.players;
         var playersPlayed = false;
         _.each(without, function(playerName) {
-            var player = _.find(players, function(player) {
-                return (player.playerName.toUpperCase() == playerName.toUpperCase() || player.playerId == playerName);
-            });
+            var player = getPlayer(players, playerName);
             if ( player && player.minutes > 1 ) {
                 playersPlayed = true;
             }

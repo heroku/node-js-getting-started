@@ -19,14 +19,7 @@ module.exports = {
         try {
             var team = getTeam(name);
             console.log("Looking up season averages for " + team.teamName);
-            var options = {
-                team: team,
-                with: req.param("with"),
-                without: req.param("without"),
-                season: req.param("season"),
-                outcome: req.param("outcome"),
-                location: req.param("location")
-            };
+            var options = _.extend(req.query, {team: team});
 
             service.getTeamAverages(options).then(function(data) {
                 var html = templates.get('teamAverages')(data);
@@ -35,6 +28,19 @@ module.exports = {
         } catch(e) {
             onError(e, res);
         }
+    },
+
+    player: function(req, res) {
+        var teamName = req.param('team');
+        var team = getTeam(teamName);
+        var playerName = req.param('player');
+        var player = getPlayer(playerName);
+
+        var options = _.extend(req.query, {team: team, player: player});
+        service.getPlayerStats(options).then(function(data) {
+            var html = templates.get('playerAverages')(data);
+            res.send(html);
+        }).catch(function(e){onError(e, res)});
     },
     /*getPlayerImpact: function(req,res) {
         var name = req.param('name');
@@ -114,6 +120,17 @@ function getTeam(name) {
     }
     return team;
 }
+
+function getPlayer(player) {
+    var player = _.find(nba.playersInfo, function(p) {
+        return p.playerId == player || p.fullName.toUpperCase() == player.toUpperCase();
+    });
+    if ( !player ) {
+        throw new Error("No player found for " + player);
+    }
+    return player;
+}
+
 
 function getLastGameForTeam(teamId, date, callback, error) {
     if (!date) {
