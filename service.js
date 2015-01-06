@@ -81,12 +81,12 @@ module.exports = {
         var player = options.player;
         var team = options.team;
         return new Promise(function(resolve, reject) {
-            var base = nba.api.teamPlayerOnOff({teamId:team.teamId, "PerMode": "Per48"});
-            var advanced = nba.api.teamPlayerOnOff({teamId:team.teamId, "PerMode": "Per48", measureType: "Advanced"});
-            var misc = nba.api.teamPlayerOnOff({teamId:team.teamId, "PerMode": "Per48", measureType: "Misc"});
-            var fourFactors = nba.api.teamPlayerOnOff({teamId:team.teamId, "PerMode": "Per48", measureType: "Four Factors"});
-            var scoring = nba.api.teamPlayerOnOff({teamId:team.teamId, "PerMode": "Per48", measureType: "Four Factors"});
-            var opponent = nba.api.teamPlayerOnOff({teamId:team.teamId, "PerMode": "Per48", measureType: "Opponent"});
+            var base = nba.api.teamPlayerOnOff({teamId:team.teamId});
+            var advanced = nba.api.teamPlayerOnOff({teamId:team.teamId, measureType: "Advanced"});
+            var misc = nba.api.teamPlayerOnOff({teamId:team.teamId, measureType: "Misc"});
+            var fourFactors = nba.api.teamPlayerOnOff({teamId:team.teamId, measureType: "Four Factors"});
+            var scoring = nba.api.teamPlayerOnOff({teamId:team.teamId, measureType: "Four Factors"});
+            var opponent = nba.api.teamPlayerOnOff({teamId:team.teamId, measureType: "Opponent"});
 
             Promise.all([base, advanced, misc, fourFactors, scoring, opponent]).then(function(results) {
                 base = results[0];

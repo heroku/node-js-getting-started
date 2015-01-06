@@ -55,7 +55,7 @@
     <tr>
         <td>2-PT FG%</td>
         <td align="right" title="{{formatNumber with.fG2M 1}}/{{formatNumber with.fG2A 1}}">{{formatPercent with.fg2Pct 1}}</td>
-        <td align="right" title="{{formatNumber without.fG2M 1}}/{{formatNumber without.fG2A 1}}">{{formatNumber without.fg2Pct 1}}</td>
+        <td align="right" title="{{formatNumber without.fG2M 1}}/{{formatNumber without.fG2A 1}}">{{formatPercent without.fg2Pct 1}}</td>
         <td align="right">{{formatPercent deltas.fg2Pct 1}}</td>
     </tr>
     <tr>
@@ -71,10 +71,10 @@
         <td align="right">{{formatPercent deltas.fg3Pct 1}}</td>
     </tr>
     <tr>
-        <td>FT%</td>
-        <td align="right" title="{{formatNumber with.fTM 1}}/{{formatNumber with.fTA 1}}">{{formatPercent with.ftPct 1}}</td>
-        <td align="right" title="{{formatNumber without.fTM 1}}/{{formatNumber without.fTA 1}}">{{formatPercent without.ftPct 1}}</td>
-        <td align="right">{{formatPercent deltas.ftPct 1}}</td>
+        <td>FTA</td>
+        <td align="right" title="{{formatNumber with.fTM 1}}/{{formatNumber with.fTA 1}}">{{formatNumber with.fTA 1}}</td>
+        <td align="right" title="{{formatNumber without.fTM 1}}/{{formatNumber without.fTA 1}}">{{formatNumber without.fTA 1}}</td>
+        <td align="right">{{formatNumber deltas.fTA 1}}</td>
     </tr>
     <tr>
         <td>FT%</td>
@@ -99,7 +99,7 @@
         <td title="Effective Field Goal Percentage - Effective Field Goal Percentage is a field goal percentage that is adjusted for made 3 pointers being 1.5 times more valuable than a 2 point shot.">eFG%</td>
         <td align="right">{{formatPercent with.efgPct 1}}</td>
         <td align="right">{{formatPercent without.efgPct 1}}</td>
-        <td align="right">{{formatNumber deltas.efgPct 1}}</td>
+        <td align="right">{{formatPercent deltas.efgPct 1}}</td>
     </tr>
 
     <tr><td colspan="4"></td></tr>
@@ -127,6 +127,13 @@
     <tr><td colspan="4"></td></tr>
 
     <tr>
+        <td>AST%</td>
+        <td align="right">{{formatPercent with.astPct 1}}</td>
+        <td align="right">{{formatPercent without.astPct 1}}</td>
+        <td align="right">{{formatPercent deltas.astPct 1}}</td>
+
+    </tr>
+    <tr>
         <td>Assists</td>
         <td align="right">{{formatNumber with.aST 1}}</td>
         <td align="right">{{formatNumber without.aST 1}}</td>
@@ -153,7 +160,6 @@
         <td align="right">{{formatNumber with.bCI 2}}</td>
         <td align="right">{{formatNumber without.bCI 2}}</td>
         <td align="right">{{formatNumber deltas.bCI 1}}</td>
-
     </tr>
 
     <tr><td colspan="4"></td></tr>
