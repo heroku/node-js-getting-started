@@ -98,6 +98,7 @@ registerPartial('teamAverageStats');
 registerPartial('teamCharts');
 registerPartial('header');
 registerPartial('chartJs');
+registerPartial('shotCharts');
 registerPartial('playerCharts');
 registerPartial('playerTeamStats');
 

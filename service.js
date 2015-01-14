@@ -3,11 +3,15 @@ var _ = require('underscore');
 var Promise = require( "es6-promise" ).Promise;
 var dao = require('./dao');
 var moment = require('moment-timezone');
+var queryString = require('query-string');
+var Handlebars = require('handlebars');
 
 global.GAME_STATUS_FINAL = 3;
 
 var LEAGUE_AVERAGE_ORR = .25016666666666662;
 var LEAGUE_AVERAGE_DRR = .7494666666666669;
+
+var SHOT_CHART_OPTIONS_DEFAULT = {"TeamID":0,"GameID":0,"ContextMeasure":"FGA","Season":"2014-15","SeasonType":"Regular Season","RangeType":"2","StartPeriod":"1","EndPeriod":"10","StartRange":"0","EndRange":"28800","mode":"Advanced","showZones":"1","showDetails":"1","showShots":"1"};
 
 var SEASON_START_2014_2015 = moment("10-28-2014");
 var SEASON_END_2014_2015 = moment("04-15-2015");
@@ -204,8 +208,7 @@ module.exports = {
                     var boxScoreUsage = results[2];
                     var playbyplay = results[3];
 
-
-                    var teams = getTeams([fourFactors.teamStats, fourFactors.sqlTeamsFourFactors, boxScoreUsage.playerTrackTeam, boxScoreAdvanced.sqlTeamsAdvanced, boxScoreUsage.otherStats], team);
+                    var teams = getTeams([fourFactors.teamStats, fourFactors.sqlTeamsFourFactors, boxScoreUsage.playerTrackTeam, boxScoreAdvanced.sqlTeamsAdvanced, boxScoreUsage.otherStats], team, game);
                     teams.us.players = getPlayers([fourFactors.playerStats, boxScoreUsage.sqlPlayersUsage, boxScoreAdvanced.sqlPlayersAdvanced], teams.us);
                     teams.them.players = getPlayers([fourFactors.playerStats, boxScoreUsage.sqlPlayersUsage, boxScoreAdvanced.sqlPlayersAdvanced], teams.them);
 
@@ -418,7 +421,7 @@ function getTeamAverages(usTotals,themTotals, games) {
     return averages;
 }
 
-function getTeams(statsArrays, usTeam) {
+function getTeams(statsArrays, usTeam, game) {
     var us = {};
     var them = {};
     _.each(statsArrays, function(stats) {
@@ -430,6 +433,9 @@ function getTeams(statsArrays, usTeam) {
     us.minutes = getMinutes(us.mIN);
     them.minutes = getMinutes(them.mIN);
 
+    us.shotChartUrl = getShotChartUrl(us, game);
+    them.shotChartUrl = getShotChartUrl(them, game);
+
     addAdvancedStats(us, them);
     addAdvancedStats(them, us);
 
@@ -437,6 +443,11 @@ function getTeams(statsArrays, usTeam) {
     _.extend(them, getSpursIndex(them, us));
 
     return {us: us, them: them};
+}
+
+function getShotChartUrl(team, game) {
+    var shotChartOptions = _.extend(SHOT_CHART_OPTIONS_DEFAULT, {GameID: game.gameId, TeamID: team.teamId, EndRange: team.minutes * 600})
+    return "http://stats.nba.com/shotchart/#!/?" + queryString.stringify(shotChartOptions);
 }
 
 function getPlayers(playersArray, us) {

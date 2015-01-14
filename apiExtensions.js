@@ -3,18 +3,33 @@ var ep = require("nba/lib/endpoints");
 var maps = require( "nba/lib/maps" );
 var util = require( "nba/lib/util" );
 var getJSON = require( "nba/lib/get-json" );
+var _ = require('underscore');
 
-var translate = util.partial( util.translateKeys, maps.twoWayMap() );
+var twoWayMap = maps.twoWayMap();
+_.extend(twoWayMap, {
+    "showShots": "showShots",
+    "mode": "mode",
+    "showZones": "showZones",
+    "showDetails": "showDetails",
+    "endRange": "EndRange",
+    "EndRange": "endRange"
+});
+console.log(twoWayMap);
 
-
-var _ = require("underscore");
+var translate = util.partial( util.translateKeys, twoWayMap);
 
 var extraEndpoints = {
     teamPlayerOnOff: {
         url: "http://stats.nba.com/stats/teamplayeronoffdetails",
-        /* "MeasureType PerMode PlusMinus PaceAdjust Rank SeasonType The Outcome  The Location  Month The SeasonSegment  The DateFrom  The DateTo  OpponentTeamID The VsConference  The VsDivision  The GameSegment  Period LastNGames is required" */
         defaults: function(){return { "Season": "2014-15", "AllStarSeason": "", "SeasonType": "Regular Season", "LeagueID": "00", "MeasureType": "Base", "PerMode": "PerGame", "PlusMinus": "N", "PaceAdjust": "N", "Rank": "N", "Outcome": "", "Location": "", "Month": "0", "SeasonSegment": "", "DateFrom": "", "DateTo": "", "OpponentTeamID": "0", "VsConference": "", "VsDivision": "", "GameSegment": "", "Period": "0", "LastNGames": "0"} },
         transform: util.generalResponseTransform
+    },
+    shotChart: {
+        url: "http://stats.nba.com/shotchart",
+        defaults: function(){return {"TeamID":0,"GameID":0,"ContextMeasure":"FGA","Season":"2014-15","SeasonType":"Regular Season","RangeType":"2","StartPeriod":"1","EndPeriod":"10","StartRange":"0","EndRange":"28800","mode":"Advanced","showZones":"1","showDetails":"1","showShots":"1"} },
+        transform: function(resp) {
+            return resp;
+        }
     }
 };
 
