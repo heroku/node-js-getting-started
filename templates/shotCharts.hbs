@@ -1,50 +1,9 @@
 <h3>{{us.teamName}} Shot Chart</h3>
 <p id="shotChartContainer">
-    <iframe class="shotChart" style="width: 100%;" src="{{us.shotChartUrl}}"></iframe>
+    <iframe class="shotChart" src="{{us.shotChartUrl}}"></iframe>
 </p>
 
 <h3>{{them.teamName}} Shot Chart</h3>
 <p id="shotChartContainer">
-    <iframe class="shotChart" style="width: 100%;" src="{{them.shotChartUrl}}"></iframe>
+    <iframe class="shotChart" src="{{them.shotChartUrl}}"></iframe>
 </p>
-
-{{!--
-<script>
-    jQuery(document).ready(function() {
-        var $ = jQuery;
-
-        $('iframe.shotChart').each(function() {
-            var iframe = this;
-            if ($.browser.msie) {
-                iframe.onreadystatechange = function() {
-                    if (iframe.readyState == "complete") {
-                        onIframeLoad(iframe);
-                    }
-                };
-            } else {
-                var contentWindow = iframe.contentWindow;
-                contentWindow.onload = $.proxy(onIframeLoad, this, iframe);
-            }
-
-        })
-
-
-    })
-
-    function onIframeLoad(iframe) {
-        var doc = getContentDocument(iframe);
-        $(doc.body).
-    }
-
-    function getContentDocument(iframe) {
-        var doc = iframe.contentDocument;
-        if ( !doc ) {
-            doc = iframe.document;
-        }
-        if ( !doc ) {
-            doc = iframe.contentWindow.document;
-        }
-        return doc;
-    }
-
-</script>--}}

@@ -14,7 +14,6 @@ _.extend(twoWayMap, {
     "endRange": "EndRange",
     "EndRange": "endRange"
 });
-console.log(twoWayMap);
 
 var translate = util.partial( util.translateKeys, twoWayMap);
 
