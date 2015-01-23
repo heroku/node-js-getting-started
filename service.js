@@ -84,26 +84,61 @@ module.exports = {
     getPlayerOnOffStats: function(options) {
         var player = options.player;
         var team = options.team;
+        var perMode = options.perMode || "Per48";
         return new Promise(function(resolve, reject) {
-            var base = nba.api.teamPlayerOnOff({teamId:team.teamId});
-            var advanced = nba.api.teamPlayerOnOff({teamId:team.teamId, measureType: "Advanced"});
-            var misc = nba.api.teamPlayerOnOff({teamId:team.teamId, measureType: "Misc"});
-            var fourFactors = nba.api.teamPlayerOnOff({teamId:team.teamId, measureType: "Four Factors"});
-            var scoring = nba.api.teamPlayerOnOff({teamId:team.teamId, measureType: "Four Factors"});
-            var opponent = nba.api.teamPlayerOnOff({teamId:team.teamId, measureType: "Opponent"});
+            var traditional = nba.api.teamPlayerOnOff({teamId:team.teamId, perMode:perMode});
+            var advanced = nba.api.teamPlayerOnOff({teamId:team.teamId, perMode:perMode, measureType: "Advanced"});
+            var misc = nba.api.teamPlayerOnOff({teamId:team.teamId, perMode:perMode, measureType: "Misc"});
+            var fourFactors = nba.api.teamPlayerOnOff({teamId:team.teamId, perMode:perMode, measureType: "Four Factors"});
+            var scoring = nba.api.teamPlayerOnOff({teamId:team.teamId, perMode:perMode, measureType: "Four Factors"});
+            var opponent = nba.api.teamPlayerOnOff({teamId:team.teamId, perMode:perMode, measureType: "Opponent"});
 
-            Promise.all([base, advanced, misc, fourFactors, scoring, opponent]).then(function(results) {
-                base = results[0];
+            Promise.all([traditional, advanced, misc, fourFactors, scoring, opponent]).then(function(results) {
+                traditional = results[0];
                 advanced = results[1];
                 misc = results[2];
                 fourFactors = results[3];
                 scoring = results[4];
                 opponent = results[5];
 
-                console.log(results);
-                resolve(getPlayerOnOffStats(team, player, [base, advanced, misc, fourFactors, scoring], opponent));
-            });
+                resolve(getPlayerOnOffStats(team, player, [traditional, advanced, misc, fourFactors, scoring], opponent));
+            }).catch(reject);
         });
+    },
+
+    getPlayerSplits: function(options) {
+        var player = options.player;
+        var team = options.team;
+        var perMode = options.perMode || "Per48";
+        return new Promise(function(resolve, reject) {
+            console.log("perMode", perMode);
+            var traditional = nba.api.playerSplits({playerId:player.playerId, perMode:perMode});
+            var advanced = nba.api.playerSplits({playerId:player.playerId, perMode:perMode, measureType: "Advanced"});
+            //var shooting = nba.api.playerSplits({playerId:player.playerId, perMode:perMode, measureType: "Shooting"});
+            var scoring = nba.api.playerSplits({playerId:player.playerId, perMode:perMode, measureType: "Scoring"});
+            var usage = nba.api.playerSplits({playerId:player.playerId, perMode:perMode, measureType: "Usage"});
+            //TODO misc, etc.?? Also, 2013-2014????
+
+            /*
+            var opponent = nba.api.playerSplits({playerId:player.playerId, perMode:perMode, measureType: "Opponent"});
+*/
+            Promise.all([traditional,advanced,scoring, usage]).then(function(results) {
+                traditional = results[0];
+                advanced = results[1];
+                scoring = results[2];
+                usage = results[3];
+
+                console.log(usage);
+                //misc = results[2];
+                //shooting = results[3];
+                //opponent = results[6];
+
+                resolve(results)
+            }).catch(reject);
+        });
+    },
+    getPlayerCharts: function(options) {
+        return new Promise(function(resolve, reject){resolve()});
     },
 
     getGameStats: function(game, team, date, refresh, callback, error) {
@@ -445,6 +480,7 @@ function getTeams(statsArrays, usTeam, game) {
     return {us: us, them: them};
 }
 
+//TODO add shot chart links to each player in the players list
 function getShotChartUrl(team, game) {
     var shotChartOptions = _.extend(SHOT_CHART_OPTIONS_DEFAULT, {GameID: game.gameId, TeamID: team.teamId, EndRange: team.minutes * 600})
     return "http://stats.nba.com/shotchart/#!/?" + queryString.stringify(shotChartOptions);
@@ -569,7 +605,7 @@ function getSpursIndex(team, opp) {
         var expected = factor.average;
         var actual = factor.opponentValue ? opp[factor.id] : team[factor.id];
         if ( factor.inverse ) {
-            var score = 100 * factor.weight * (expected / actual);
+            var score = 100 * factor.weight * (expected / actual);//TODO this could be infinite
             var good = 100 * factor.weight * (expected / factor.goodThreshold);
             var bad = 100 * factor.weight * (expected / factor.badThreshold);
         } else {

@@ -10,192 +10,192 @@
     <tbody>
     <tr>
         <td title="Points per 100 possessions">Offensive Rating</td>
-        <td align="right">{{formatNumber with.offRating 1}}</td>
-        <td align="right">{{formatNumber without.offRating 1}}</td>
-        <td align="right">{{formatNumber deltas.offRating 1}}</td>
+        <td align="right">{{formatNumber onOff.with.offRating 1}}</td>
+        <td align="right">{{formatNumber onOff.without.offRating 1}}</td>
+        <td align="right">{{formatNumber onOff.deltas.offRating 1}}</td>
     </tr>
     <tr>
         <td title="Points allowed per 100 possessions">Defensive Rating</td>
-        <td align="right">{{formatNumber with.defRating 1}}</td>
-        <td align="right">{{formatNumber without.defRating 1}}</td>
-        <td align="right">{{formatNumber deltas.defRating 1}}</td>
+        <td align="right">{{formatNumber onOff.with.defRating 1}}</td>
+        <td align="right">{{formatNumber onOff.without.defRating 1}}</td>
+        <td align="right">{{formatNumber onOff.deltas.defRating 1}}</td>
     </tr>
     <tr>
         <td>Net Rating</td>
-        <td align="right">{{formatNumber with.netRating 1}}</td>
-        <td align="right">{{formatNumber without.netRating 1}}</td>
-        <td align="right">{{formatNumber deltas.netRating 1}}</td>
+        <td align="right">{{formatNumber onOff.with.netRating 1}}</td>
+        <td align="right">{{formatNumber onOff.without.netRating 1}}</td>
+        <td align="right">{{formatNumber onOff.deltas.netRating 1}}</td>
     </tr>
     <tr><td colspan="4"></td></tr>
 
     <tr>
         <td>Minutes</td>
-        <td colspan="1" align="right">{{with.mIN}}</td>
-        <td colspan="1" align="right">{{without.mIN}}</td>
+        <td colspan="1" align="right">{{formatNumber onOff.with.mIN}}</td>
+        <td colspan="1" align="right">{{formatNumber onOff.without.mIN}}</td>
         <td colspan="1" align="right"></td>
     </tr>
     <tr>
         <td>Pace (No. of Possessions)</td>
-        <td colspan="1" align="right">{{formatNumber with.pACE 1}}</td>
-        <td colspan="1" align="right">{{formatNumber without.pACE 1}}</td>
-        <td colspan="1" align="right">{{formatNumber deltas.pACE 1}}</td>
+        <td colspan="1" align="right">{{formatNumber onOff.with.pACE 1}}</td>
+        <td colspan="1" align="right">{{formatNumber onOff.without.pACE 1}}</td>
+        <td colspan="1" align="right">{{formatNumber onOff.deltas.pACE 1}}</td>
     </tr>
     <tr>
         <td>Points Per Shot (PPS)</td>
-        <td align="right">{{formatNumber with.pPS 2}}</td>
-        <td align="right">{{formatNumber without.pPS 2}}</td>
-        <td align="right">{{formatNumber deltas.pPS 2}}</td>
+        <td align="right">{{formatNumber onOff.with.pPS 2}}</td>
+        <td align="right">{{formatNumber onOff.without.pPS 2}}</td>
+        <td align="right">{{formatNumber onOff.deltas.pPS 2}}</td>
     </tr>
     <tr>
         <td>2-PT FGA</td>
-        <td align="right" title="{{formatNumber with.fG2M 1}}/{{formatNumber with.fG2A 1}}">{{formatNumber with.fG2A 1}}</td>
-        <td align="right" title="{{formatNumber without.fG2M 1}}/{{formatNumber without.fG2A 1}}">{{formatNumber without.fG2A 1}}</td>
-        <td align="right">{{formatNumber deltas.fG2A 1}}</td>
+        <td align="right" title="{{formatNumber onOff.with.fG2M 1}}/{{formatNumber onOff.with.fG2A 1}}">{{formatNumber onOff.with.fG2A 1}}</td>
+        <td align="right" title="{{formatNumber onOff.without.fG2M 1}}/{{formatNumber onOff.without.fG2A 1}}">{{formatNumber onOff.without.fG2A 1}}</td>
+        <td align="right">{{formatNumber onOff.deltas.fG2A 1}}</td>
     </tr>
     <tr>
         <td>2-PT FG%</td>
-        <td align="right" title="{{formatNumber with.fG2M 1}}/{{formatNumber with.fG2A 1}}">{{formatPercent with.fg2Pct 1}}</td>
-        <td align="right" title="{{formatNumber without.fG2M 1}}/{{formatNumber without.fG2A 1}}">{{formatPercent without.fg2Pct 1}}</td>
-        <td align="right">{{formatPercent deltas.fg2Pct 1}}</td>
+        <td align="right" title="{{formatNumber onOff.with.fG2M 1}}/{{formatNumber onOff.with.fG2A 1}}">{{formatPercent onOff.with.fg2Pct 1}}</td>
+        <td align="right" title="{{formatNumber onOff.without.fG2M 1}}/{{formatNumber onOff.without.fG2A 1}}">{{formatPercent onOff.without.fg2Pct 1}}</td>
+        <td align="right">{{formatPercent onOff.deltas.fg2Pct 1}}</td>
     </tr>
     <tr>
         <td>3-PT FGA</td>
-        <td align="right" title="{{formatNumber with.fG3M 1}}/{{formatNumber with.fG3A 1}}">{{formatNumber with.fG3A 1}}</td>
-        <td align="right" title="{{formatNumber without.fG3M 1}}/{{formatNumber without.fG3A 1}}">{{formatNumber without.fG3A 1}}</td>
-        <td align="right">{{formatNumber deltas.fG3A 1}}</td>
+        <td align="right" title="{{formatNumber onOff.with.fG3M 1}}/{{formatNumber onOff.with.fG3A 1}}">{{formatNumber onOff.with.fG3A 1}}</td>
+        <td align="right" title="{{formatNumber onOff.without.fG3M 1}}/{{formatNumber onOff.without.fG3A 1}}">{{formatNumber onOff.without.fG3A 1}}</td>
+        <td align="right">{{formatNumber onOff.deltas.fG3A 1}}</td>
     </tr>
     <tr>
         <td>3-PT FG%</td>
-        <td align="right" title="{{formatNumber with.fG3M 1}}/{{formatNumber with.fG3A}}">{{formatPercent with.fg3Pct 1}}</td>
-        <td align="right" title="{{formatNumber without.fG3M 1}}/{{formatNumber without.fG3A}}">{{formatPercent without.fg3Pct 1}}</td>
-        <td align="right">{{formatPercent deltas.fg3Pct 1}}</td>
+        <td align="right" title="{{formatNumber onOff.with.fG3M 1}}/{{formatNumber onOff.with.fG3A}}">{{formatPercent onOff.with.fg3Pct 1}}</td>
+        <td align="right" title="{{formatNumber onOff.without.fG3M 1}}/{{formatNumber onOff.without.fG3A}}">{{formatPercent onOff.without.fg3Pct 1}}</td>
+        <td align="right">{{formatPercent onOff.deltas.fg3Pct 1}}</td>
     </tr>
     <tr>
         <td>FTA</td>
-        <td align="right" title="{{formatNumber with.fTM 1}}/{{formatNumber with.fTA 1}}">{{formatNumber with.fTA 1}}</td>
-        <td align="right" title="{{formatNumber without.fTM 1}}/{{formatNumber without.fTA 1}}">{{formatNumber without.fTA 1}}</td>
-        <td align="right">{{formatNumber deltas.fTA 1}}</td>
+        <td align="right" title="{{formatNumber onOff.with.fTM 1}}/{{formatNumber onOff.with.fTA 1}}">{{formatNumber onOff.with.fTA 1}}</td>
+        <td align="right" title="{{formatNumber onOff.without.fTM 1}}/{{formatNumber onOff.without.fTA 1}}">{{formatNumber onOff.without.fTA 1}}</td>
+        <td align="right">{{formatNumber onOff.deltas.fTA 1}}</td>
     </tr>
     <tr>
         <td>FT%</td>
-        <td align="right" title="{{formatNumber with.fTM 1}}/{{formatNumber with.fTA 1}}">{{formatPercent with.ftPct 1}}</td>
-        <td align="right" title="{{formatNumber without.fTM 1}}/{{formatNumber without.fTA 1}}">{{formatPercent without.ftPct 1}}</td>
-        <td align="right">{{formatPercent deltas.ftPct 1}}</td>
+        <td align="right" title="{{formatNumber onOff.with.fTM 1}}/{{formatNumber onOff.with.fTA 1}}">{{formatPercent onOff.with.ftPct 1}}</td>
+        <td align="right" title="{{formatNumber onOff.without.fTM 1}}/{{formatNumber onOff.without.fTA 1}}">{{formatPercent onOff.without.ftPct 1}}</td>
+        <td align="right">{{formatPercent onOff.deltas.ftPct 1}}</td>
     </tr>
     <tr>
         <td>True Shooting%</td>
-        <td align="right">{{formatPercent with.tSPct 1}}</td>
-        <td align="right">{{formatPercent without.tSPct 1}}</td>
-        <td align="right">{{formatPercent deltas.tsPct 1}}</td>
+        <td align="right">{{formatPercent onOff.with.tSPct 1}}</td>
+        <td align="right">{{formatPercent onOff.without.tSPct 1}}</td>
+        <td align="right">{{formatPercent onOff.deltas.tsPct 1}}</td>
     </tr>
 
     <tr>
         <td>FG%</td>
-        <td align="right">{{formatPercent with.fgPct 1}}</td>
-        <td align="right">{{formatPercent without.fgPct 1}}</td>
-        <td align="right">{{formatPercent deltas.fgPct 1}}</td>
+        <td align="right">{{formatPercent onOff.with.fgPct 1}}</td>
+        <td align="right">{{formatPercent onOff.without.fgPct 1}}</td>
+        <td align="right">{{formatPercent onOff.deltas.fgPct 1}}</td>
     </tr>
     <tr>
         <td title="Effective Field Goal Percentage - Effective Field Goal Percentage is a field goal percentage that is adjusted for made 3 pointers being 1.5 times more valuable than a 2 point shot.">eFG%</td>
-        <td align="right">{{formatPercent with.efgPct 1}}</td>
-        <td align="right">{{formatPercent without.efgPct 1}}</td>
-        <td align="right">{{formatPercent deltas.efgPct 1}}</td>
+        <td align="right">{{formatPercent onOff.with.efgPct 1}}</td>
+        <td align="right">{{formatPercent onOff.without.efgPct 1}}</td>
+        <td align="right">{{formatPercent onOff.deltas.efgPct 1}}</td>
     </tr>
 
     <tr><td colspan="4"></td></tr>
 
     <tr>
         <td>Points in the paint</td>
-        <td align="right">{{formatNumber with.ptsPaint 1}}</td>
-        <td align="right">{{formatNumber without.ptsPaint 1}}</td>
-        <td align="right">{{formatNumber deltas.ptsPaint 1}}</td>
+        <td align="right">{{formatNumber onOff.with.ptsPaint 1}}</td>
+        <td align="right">{{formatNumber onOff.without.ptsPaint 1}}</td>
+        <td align="right">{{formatNumber onOff.deltas.ptsPaint 1}}</td>
 
     </tr>
     <tr>
         <td>Second chance points</td>
-        <td align="right">{{formatNumber with.pts2ndChance 1}}</td>
-        <td align="right">{{formatNumber without.pts2ndChance 1}}</td>
-        <td align="right">{{formatNumber deltas.pts2ndChance 1}}</td>
+        <td align="right">{{formatNumber onOff.with.pts2ndChance 1}}</td>
+        <td align="right">{{formatNumber onOff.without.pts2ndChance 1}}</td>
+        <td align="right">{{formatNumber onOff.deltas.pts2ndChance 1}}</td>
     </tr>
     <tr>
         <td>Fast break points</td>
-        <td align="right">{{formatNumber with.ptsFb 1}}</td>
-        <td align="right">{{formatNumber without.ptsFb 1}}</td>
-        <td align="right">{{formatNumber deltas.ptsFb 1}}</td>
+        <td align="right">{{formatNumber onOff.with.ptsFb 1}}</td>
+        <td align="right">{{formatNumber onOff.without.ptsFb 1}}</td>
+        <td align="right">{{formatNumber onOff.deltas.ptsFb 1}}</td>
     </tr>
 
     <tr><td colspan="4"></td></tr>
 
     <tr>
         <td>AST%</td>
-        <td align="right">{{formatPercent with.astPct 1}}</td>
-        <td align="right">{{formatPercent without.astPct 1}}</td>
-        <td align="right">{{formatPercent deltas.astPct 1}}</td>
+        <td align="right">{{formatPercent onOff.with.astPct 1}}</td>
+        <td align="right">{{formatPercent onOff.without.astPct 1}}</td>
+        <td align="right">{{formatPercent onOff.deltas.astPct 1}}</td>
 
     </tr>
     <tr>
         <td>Assists</td>
-        <td align="right">{{formatNumber with.aST 1}}</td>
-        <td align="right">{{formatNumber without.aST 1}}</td>
-        <td align="right">{{formatNumber deltas.aST 1}}</td>
+        <td align="right">{{formatNumber onOff.with.aST 1}}</td>
+        <td align="right">{{formatNumber onOff.without.aST 1}}</td>
+        <td align="right">{{formatNumber onOff.deltas.aST 1}}</td>
 
     </tr>
     <tr>
         <td>Steals</td>
-        <td align="right">{{formatNumber with.sTL 1}}</td>
-        <td align="right">{{formatNumber without.sTL 1}}</td>
-        <td align="right">{{formatNumber deltas.sTL 1}}</td>
+        <td align="right">{{formatNumber onOff.with.sTL 1}}</td>
+        <td align="right">{{formatNumber onOff.without.sTL 1}}</td>
+        <td align="right">{{formatNumber onOff.deltas.sTL 1}}</td>
     </tr>
     <tr>
         <td>Turnovers</td>
-        <td align="right">{{formatNumber with.tOV 1}}</td>
-        <td align="right">{{formatNumber without.tOV 1}}</td>
-        <td align="right">{{formatNumber deltas.tOV 1}}</td>
+        <td align="right">{{formatNumber onOff.with.tOV 1}}</td>
+        <td align="right">{{formatNumber onOff.without.tOV 1}}</td>
+        <td align="right">{{formatNumber onOff.deltas.tOV 1}}</td>
 
     </tr>
     <tr>
         <td>
             <u>B</u>all <u>C</u>ontrol <u>I</u>ndex (BCI)<br><i>(Assists + Steals) / TO</i>
         </td>
-        <td align="right">{{formatNumber with.bCI 2}}</td>
-        <td align="right">{{formatNumber without.bCI 2}}</td>
-        <td align="right">{{formatNumber deltas.bCI 1}}</td>
+        <td align="right">{{formatNumber onOff.with.bCI 2}}</td>
+        <td align="right">{{formatNumber onOff.without.bCI 2}}</td>
+        <td align="right">{{formatNumber onOff.deltas.bCI 1}}</td>
     </tr>
 
     <tr><td colspan="4"></td></tr>
 
     <tr>
         <td title="How many offensive rebounds an average rebounding team could expect to grab, based off the number of opportunities in a game">Expected Offensive Rebounds</td>
-        <td align="right">{{formatNumber with.expectedOREB 1}}</td>
-        <td align="right">{{formatNumber without.expectedOREB 1}}</td>
-        <td align="right">{{formatNumber deltas.expectedOREB 1}}</td>
+        <td align="right">{{formatNumber onOff.with.expectedOREB 1}}</td>
+        <td align="right">{{formatNumber onOff.without.expectedOREB 1}}</td>
+        <td align="right">{{formatNumber onOff.deltas.expectedOREB 1}}</td>
 
     </tr>
     <tr>
         <td>Offensive Rebounds</td>
-        <td align="right">{{formatNumber with.oREB 1}}</td>
-        <td align="right">{{formatNumber without.oREB 1}}</td>
-        <td align="right">{{formatNumber deltas.oREB 1}}</td>
+        <td align="right">{{formatNumber onOff.with.oREB 1}}</td>
+        <td align="right">{{formatNumber onOff.without.oREB 1}}</td>
+        <td align="right">{{formatNumber onOff.deltas.oREB 1}}</td>
 
     </tr>
     <tr>
         <td>Difference</td>
-        <td align="right">{{formatNumber with.oREBDiff 1}}</td>
-        <td align="right">{{formatNumber without.oREBDiff 1}}</td>
-        <td align="right">{{formatNumber deltas.oREBDiff 1}}</td>
+        <td align="right">{{formatNumber onOff.with.oREBDiff 1}}</td>
+        <td align="right">{{formatNumber onOff.without.oREBDiff 1}}</td>
+        <td align="right">{{formatNumber onOff.deltas.oREBDiff 1}}</td>
     </tr>
     <tr>
         <td>OReb%</td>
-        <td align="right">{{formatPercent with.orebPct 1}}</td>
-        <td align="right">{{formatPercent without.orebPct 1}}</td>
-        <td align="right">{{formatPercent deltas.orebPct 1}}</td>
+        <td align="right">{{formatPercent onOff.with.orebPct 1}}</td>
+        <td align="right">{{formatPercent onOff.without.orebPct 1}}</td>
+        <td align="right">{{formatPercent onOff.deltas.orebPct 1}}</td>
 
     </tr>
     <tr>
         <td>DReb%</td>
-        <td align="right">{{formatPercent with.drebPct 1}}</td>
-        <td align="right">{{formatPercent without.drebPct 1}}</td>
-        <td align="right">{{formatPercent deltas.drebPct 1}}</td>
+        <td align="right">{{formatPercent onOff.with.drebPct 1}}</td>
+        <td align="right">{{formatPercent onOff.without.drebPct 1}}</td>
+        <td align="right">{{formatPercent onOff.deltas.drebPct 1}}</td>
 
     </tr>
     </tbody>

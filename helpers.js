@@ -99,6 +99,7 @@ registerPartial('teamCharts');
 registerPartial('header');
 registerPartial('chartJs');
 registerPartial('shotCharts');
+registerPartial('formJs');
 registerPartial('playerCharts');
 registerPartial('playerTeamStats');
 

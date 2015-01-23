@@ -50,9 +50,22 @@ module.exports = {
         var player = getPlayer(playerName);
 
         var options = _.extend(req.query, {team: team, player: player});
-        service.getPlayerOnOffStats(options).then(function(data) {
-            console.log(data);
-            var html = templates.get('playerImpact')(data);
+        var onOff = service.getPlayerOnOffStats(options);
+        var playerSplits = service.getPlayerSplits(options);
+        var playerCharts = service.getPlayerCharts(options);
+        Promise.all([onOff, playerSplits, playerCharts]).then(function(results) {
+            onOff = results[0];
+            playerSplits = results[1];
+            playerCharts = results[2];
+
+            var html = templates.get('playerImpact')({
+                player: player,
+                team: team,
+                onOff: onOff,
+                options: options,
+                playerSplits: playerSplits,
+                playerCharts: playerCharts
+            });
             res.send(html);
         }).catch(function(e){onError(e, res)});
 

@@ -1,0 +1,39 @@
+<script>$(document).ready(function(){
+    $('button#copy').click(function(e) {
+        e.preventDefault();
+        var html = $('#content').html();
+
+        var div = $('<div></div>');
+        div.html(html);
+        div.find('div.c3').remove();
+        html = div.html();
+
+        $('textarea.copy').remove();
+        $('<textarea class="copy"></textarea>').appendTo('body');
+        $('textarea.copy').val(html).focus();
+        //window.prompt("Copy to clipboard: Ctrl+C", html);
+    });
+
+    $('#clearAll').click(function(e) {
+        e.preventDefault();
+        $(this).click(false);
+        window.location = window.location.pathname;
+    });
+
+    var filters = $('#filters');
+    var showFilters = $('#showFilters').click(function(e) {
+        e.preventDefault();
+        filters.show();
+        showFilters.hide();
+    });
+    $('#hideFilters').click(function(e) {
+        e.preventDefault();
+        filters.hide();
+        showFilters.show();
+    })
+    $('form').submit(function(e) {
+        $('button, a').attr('disabled', 'disabled');
+        $('form').submit(false);
+    });
+})
+</script>

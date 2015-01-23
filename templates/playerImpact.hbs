@@ -3,30 +3,46 @@
     <title>{{player.fullName}}</title>
     {{> header}}
     {{> chartJs}}
-
-    <script>$(document).ready(function(){
-        $('button#copy').click(function(e) {
-            e.preventDefault();
-            var html = $('#content').html();
-
-            var div = $('<div></div>');
-            div.html(html);
-            div.find('div.c3').remove();
-            html = div.html();
-
-            $('textarea.copy').remove();
-            $('<textarea class="copy"></textarea>').appendTo('body');
-            $('textarea.copy').val(html).focus();
-            //window.prompt("Copy to clipboard: Ctrl+C", html);
-        });
-    })
-    </script>
-
+    {{> formJs}}
 </head>
 <body>
 <div class="container-fluid" >
+    <section class="row">
+        <section>
+            <button id="showFilters" type="button" class="btn btn-default" {{#if hasOptions}}style="display:none;"{{/if}}>
+                <span class="glyphicon glyphicon-filter" aria-hidden="true"></span> Filter
+            </button>
+        </section>
+        <section id="filters">
+            <form action="" class="well" method="get">
+                <h3>Filter</h3>
+                <div class="form-group">
+                    <label for="season">Per Type</label>
+                    <select name="perMode">
+                        <option {{#ifCond options.perMode '==' 'Totals'}}selected="selected"{{/ifCond}} value="Totals">Totals</option>
+                        <option {{#ifCond options.perMode '==' 'PerGame'}}selected="selected"{{/ifCond}} value="PerGame">Per Game</option>
+                        <option {{#ifCond options.perMode '==' 'Per100Possessions'}}selected="selected"{{/ifCond}}value="Per100Possessions">Per 100 Poss</option>
+                        <option {{#ifCond options.perMode '==' 'Per48'}}selected="selected"{{/ifCond}}value="Per48">Per 48 Minutes</option>
+                        <option {{#ifCond options.perMode '==' 'Per40'}}selected="selected"{{/ifCond}}value="Per40">Per 40 Minutes</option>
+                        <option {{#ifCond options.perMode '==' 'Per36'}}selected="selected"{{/ifCond}}value="Per36">Per 36 Minutes</option>
+                    </select>
+                </div>
+
+                <input type="hidden" name="player" value="{{player.fullName}}"/>
+                <input type="hidden" name="team" value="{{team.simpleName}}"/>
+
+                <div class="clearfix"></div>
+
+                <div>
+                    <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+                    <a id="clearAll" href="#">clear</a>
+                    <a id="hideFilters" href="#" class="">hide</a>
+                </div>
+            </form>
+        </section>
+    </section>
     <div id="content" class="row">
-        {{#if with}}
+        {{#if onOff.with}}
             <h2>{{player.fullName}} - {{team.teamName}}</h2>
 
             <h3>Team Stats</h3>
