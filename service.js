@@ -480,6 +480,7 @@ function getTeams(statsArrays, usTeam, game) {
     return {us: us, them: them};
 }
 
+
 //TODO add shot chart links to each player in the players list
 function getShotChartUrl(team, game) {
     var shotChartOptions = _.extend(SHOT_CHART_OPTIONS_DEFAULT, {GameID: game.gameId, TeamID: team.teamId, EndRange: team.minutes * 600})
