@@ -15,7 +15,7 @@ var SHOT_CHART_OPTIONS_DEFAULT = {"TeamID":0,"GameID":0,"ContextMeasure":"FGA","
 
 var SEASON_START_2014_2015 = moment("10-28-2014");
 var SEASON_END_2014_2015 = moment("04-15-2015");
-var PLAYOFFS_START_2014_2015 = moment("04-16-2015");
+var PLAYOFFS_START_2014_2015 = moment("04-18-2015");
 var PLAYOFFS_END_2014_2015 = moment("07-01-2015"); //play it safe
 
 var SEASON_REGULAR = 'regular';
@@ -243,9 +243,9 @@ module.exports = {
                     var boxScoreUsage = results[2];
                     var playbyplay = results[3];
 
-                    var teams = getTeams([fourFactors.teamStats, fourFactors.sqlTeamsFourFactors, boxScoreUsage.playerTrackTeam, boxScoreAdvanced.sqlTeamsAdvanced, boxScoreUsage.otherStats], team, game);
-                    teams.us.players = getPlayers([fourFactors.playerStats, boxScoreUsage.sqlPlayersUsage, boxScoreAdvanced.sqlPlayersAdvanced], teams.us);
-                    teams.them.players = getPlayers([fourFactors.playerStats, boxScoreUsage.sqlPlayersUsage, boxScoreAdvanced.sqlPlayersAdvanced], teams.them);
+                    var teams = getTeams([fourFactors.teamStats, fourFactors.sqlTeamsFourFactors, boxScoreUsage.playerTrackTeam, boxScoreAdvanced.sqlTeamsAdvanced, boxScoreUsage.otherStats], team, game, date);
+                    teams.us.players = getPlayers([fourFactors.playerStats, boxScoreUsage.sqlPlayersUsage, boxScoreAdvanced.sqlPlayersAdvanced], teams.us, game, date);
+                    teams.them.players = getPlayers([fourFactors.playerStats, boxScoreUsage.sqlPlayersUsage, boxScoreAdvanced.sqlPlayersAdvanced], teams.them, game, date);
 
                     if ( !teams.us.pTS) {
                         console.log("Game stats not available yet");
@@ -456,7 +456,7 @@ function getTeamAverages(usTotals,themTotals, games) {
     return averages;
 }
 
-function getTeams(statsArrays, usTeam, game) {
+function getTeams(statsArrays, usTeam, game, date) {
     var us = {};
     var them = {};
     _.each(statsArrays, function(stats) {
@@ -468,8 +468,8 @@ function getTeams(statsArrays, usTeam, game) {
     us.minutes = getMinutes(us.mIN);
     them.minutes = getMinutes(them.mIN);
 
-    us.shotChartUrl = getShotChartUrl(us, game);
-    them.shotChartUrl = getShotChartUrl(them, game);
+    us.shotChartUrl = getShotChartUrl(us, game, date);
+    them.shotChartUrl = getShotChartUrl(them, game, date);
 
     addAdvancedStats(us, them);
     addAdvancedStats(them, us);
@@ -482,12 +482,17 @@ function getTeams(statsArrays, usTeam, game) {
 
 
 //TODO add shot chart links to each player in the players list
-function getShotChartUrl(team, game) {
-    var shotChartOptions = _.extend(SHOT_CHART_OPTIONS_DEFAULT, {GameID: game.gameId, TeamID: team.teamId, EndRange: team.minutes * 600})
+function getShotChartUrl(team, game, date, playerId) {
+    var isPlayoffs = moment(date).isAfter(PLAYOFFS_START_2014_2015);
+    var seasonType = isPlayoffs ? "Playoffs" : "Regular Season";
+    var shotChartOptions = _.extend({}, SHOT_CHART_OPTIONS_DEFAULT, {SeasonType: seasonType, GameID: game.gameId, TeamID: team.teamId, EndRange: team.minutes * 600})
+    if (playerId) {
+        _.extend(shotChartOptions, {PlayerID: playerId});
+    }
     return "http://stats.nba.com/shotchart/#!/?" + queryString.stringify(shotChartOptions);
 }
 
-function getPlayers(playersArray, us) {
+function getPlayers(playersArray, us, game, date) {
     var players = playersArray[0];
     _.each(players, function(player) {
         _.each(playersArray, function(playersStats) {
@@ -495,7 +500,7 @@ function getPlayers(playersArray, us) {
             _.extend(player, playerOtherStats);
         });
     });
-    players = adornPlayerStats(players, us);
+    players = adornPlayerStats(players, us, game, date);
 
     return players;
 }
@@ -510,12 +515,13 @@ function getMinutes(min) {
     return 0;
 }
 
-function adornPlayerStats(players, team) {
+function adornPlayerStats(players, team, game, date) {
     players = _.where(players, {teamId: team.teamId});
     _.each(players, function(player){
         player.REB = player.oREB + player.dREB;
         var min = player.mIN;
         player.minutes = getMinutes(min);
+        player.shotChartUrl = getShotChartUrl(team, game, date, player.playerId);
     });
     _.each(players, addGameScore);
     //calculate adjusted game score to redistribute points actually scored
