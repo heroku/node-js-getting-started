@@ -14,5 +14,5 @@ app.listen(app.get('port'), function() {
 
 app.post('/*', function(req, res){
 
-  res.sendfile('index.html');
+  res.sendfile('public/index.html');
 });
