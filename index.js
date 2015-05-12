@@ -194,7 +194,7 @@ router.route('/faces')
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 publicRouter.get('/', function(req, res) {
-    res.sendfile(path.resolve('../omf-client/public/index.html'));
+    res.sendfile(path.resolve('./public/register.html'));
 });
 
 publicRouter.get('/register', function(req, res, next) {
