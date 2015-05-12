@@ -1,0 +1,28 @@
+body {
+  background: linear-gradient(rgba(0, 0, 0, .2), rgba(0, 0, 0, .2)), url('city.jpg') no-repeat center center fixed;
+  background-size: cover;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.header {
+  height: 60px;
+  width: 95%;
+  text-align: center;
+  color: white;
+  margin: 30px;
+}
+
+.box {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  background-color: #ededed;
+}
+
+.input-group {
+  text-align: center;
+  width: 100%;
+}
+
+
+
