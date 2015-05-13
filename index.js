@@ -1,19 +1,3 @@
-/*var express = require('express');
-var app = express();
-
-app.set('port', (process.env.PORT || 5000));
-app.use(express.static(__dirname + '/public'));
-
-app.get('/', function(request, response) {
-  response.send('Hello World!');
-});
-
-app.listen(app.get('port'), function() {
-  console.log('Node app is running on port', app.get('port'));
-});*/
-
-// server.js
-
 // BASE SETUP
 // =============================================================================
 
@@ -24,13 +8,14 @@ mongoose.connect(config.mongodb); // connect to our database
 var Face     = require('./app/models/face');
 
 // call the packages we need
-var express    = require('express');        // call express
-var app        = express();                 // define our app using express
-var bodyParser = require('body-parser');
-var cookieParser = require('cookie-parser');
-var cors = require('cors');
-var session = require('cookie-session')
-var path = require('path');
+var express        = require('express');        // call express
+var app            = express();
+var exphbs         = require('express-handlebars');
+var bodyParser     = require('body-parser');
+var cookieParser   = require('cookie-parser');
+var cors           = require('cors');
+var session        = require('cookie-session')
+var path           = require('path');
 var methodOverride = require('method-override')
 //path.resolve('../omf-client/public/index.html');
 
@@ -45,8 +30,35 @@ passport.use(new FacebookStrategy({
   callbackURL: config.FACEBOOK_CALLBACK_URL
 }, function(accessToken, refreshToken, profile, done) {
       setTimeout(function() {
-            //Assuming user exists
-            done(null, profile);
+        var face = new Face();      // create a new instance of the Face model
+        /**
+        { id: '10153295122599265',
+          first_name: 'Jérémie',
+          gender: 'male',
+          last_name: 'Lenoir',
+          link: 'https://www.facebook.com/app_scoped_user_id/10153295122599265/',
+          locale: 'fr_FR',
+          name: 'Jérémie Lenoir',
+          timezone: 2,
+          updated_time: '2014-05-28T20:08:41+0000',
+          verified: true
+        **/
+        face.accountname = profile._json.name;  // set the faces name (comes from the request)
+        face.firstname = profile._json.first_name;  // set the faces name (comes from the request)
+        face.lastname = profile._json.last_name;  // set the faces name (comes from the request)
+        //face.number = 1;  // set the faces name (comes from the request)
+        face.picture = profile._json.link;  // set the faces name (comes from the request)
+        face.network = 'facebook';  // set the faces name (comes from the request)
+        face.network_id = profile._json.id;  // set the faces name (comes from the request)
+        console.log('PROFILE FACEBOOK', profile);
+        // save the face and check for errors
+        face.save(function(err) {
+            if (err)
+                res.send(err);
+
+
+                return done(null, face);
+        });
       }, 0);
 }));
 
@@ -75,7 +87,7 @@ passport.use(new TwitterStrategy({
       face.accountname = profile._json.name;  // set the faces name (comes from the request)
       face.firstname = profile._json.screen_name;  // set the faces name (comes from the request)
       face.lastname = profile._json.screen_name;  // set the faces name (comes from the request)
-      face.number = 1;  // set the faces name (comes from the request)
+      //face.number = 1;  // set the faces name (comes from the request)
       face.picture = profile._json.profile_image_url;  // set the faces name (comes from the request)
       face.network = 'twitter';  // set the faces name (comes from the request)
       face.network_id = profile._json.id;  // set the faces name (comes from the request)
@@ -95,7 +107,7 @@ passport.use(new TwitterStrategy({
 
 passport.serializeUser(function(user, done) {
   console.log('SERIALIZE', user);
-  done(null, user.id);
+  done(null, user);
 });
 
 passport.deserializeUser(function(obj, done) {
@@ -116,6 +128,8 @@ app.use(methodOverride());
 app.use(session({ secret: 'keyboard cat' }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
 
 var port = process.env.PORT || 3000;        // set our port
 
@@ -194,19 +208,41 @@ router.route('/faces')
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 publicRouter.get('/', function(req, res) {
-    res.sendfile(path.resolve('./public/register.html'));
+    Face.find(function(err, faces) {
+        if (err){
+          res.send(err);
+        }
+        res.render('home', {'faces': faces, 'nbFaces': faces.length});
+        //res.json(faces);
+    });
+
+    //res.sendfile(path.resolve('./public/register.html'));
 });
 
 publicRouter.get('/register', function(req, res, next) {
   res.sendfile('./public/register.html');
 });
 
-publicRouter.get('/auth/facebook', passport.authenticate('facebook'));
+publicRouter.get('/auth/facebook/register/:id',
+function(req,res,next) {
+  passport.authenticate(
+    'facebook',
+     {callbackURL: '/auth/facebook/callback/'+req.params.id }
+  )(req,res,next);
+});
 
-publicRouter.get('/auth/facebook/callback', passport.authenticate('facebook', {
-  successRedirect: '/success',
-  failureRedirect: '/error'
-}));
+publicRouter.get('/auth/facebook/callback/:id',
+function(req,res,next) {
+  passport.authenticate(
+    'facebook',
+     {
+       callbackURL:"/auth/facebook/callback/" + req.params.id
+     , successRedirect:"/success/" + req.params.id
+     , failureRedirect:"/error"
+     }
+   ) (req,res,next);
+  }
+);
 
 publicRouter.get('/auth/twitter/register/:id',
 function(req,res,next) {
@@ -230,7 +266,13 @@ function(req,res,next) {
 );
 
 publicRouter.get('/success/:id', function(req, res, next) {
-  res.sendfile('./public/register.html');
+  Face.find(function(err, faces) {
+      if (err){
+        res.send(err);
+      }
+      res.render('home', {'faces': faces, 'nbFaces': faces.length, 'registrationFaces': req.params.id, currentUser: req.user});
+      //res.json(faces);
+  });
 });
 
 publicRouter.get('/error', function(req, res, next) {
