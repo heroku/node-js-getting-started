@@ -10,7 +10,8 @@ var FaceSchema   = new Schema({
     number: { type: Number, min: 1, max: 1000000 }, //registration number
     range: { type: Number, min: 1, max: 1000000 }, //to find by query language
     picture: String,
-    network: String
+    network: String,
+    network_id: String
 });
 
 module.exports = mongoose.model('Face', FaceSchema);

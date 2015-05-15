@@ -47,7 +47,7 @@ passport.use(new FacebookStrategy({
         face.firstname = profile._json.first_name;  // set the faces name (comes from the request)
         face.lastname = profile._json.last_name;  // set the faces name (comes from the request)
         //face.number = 1;  // set the faces name (comes from the request)
-        face.picture = profile._json.link;  // set the faces name (comes from the request)
+        face.picture = 'https://graph.facebook.com/' + profile._json.id + '/picture?type=large';  // set the faces name (comes from the request)
         face.network = 'facebook';  // set the faces name (comes from the request)
         face.network_id = profile._json.id;  // set the faces name (comes from the request)
         console.log('PROFILE FACEBOOK', profile);
@@ -89,6 +89,7 @@ passport.use(new TwitterStrategy({
       face.lastname = profile._json.screen_name;  // set the faces name (comes from the request)
       //face.number = 1;  // set the faces name (comes from the request)
       face.picture = profile._json.profile_image_url;  // set the faces name (comes from the request)
+      face.picture = face.picture.replace('_normal','');  // set the faces name (comes from the request)
       face.network = 'twitter';  // set the faces name (comes from the request)
       face.network_id = profile._json.id;  // set the faces name (comes from the request)
       console.log('PROFILE TWITTER', profile);
@@ -266,6 +267,24 @@ function(req,res,next) {
 );
 
 publicRouter.get('/success/:id', function(req, res, next) {
+
+  Face.findOne({'id': req.user.id},function(err, face) {
+      if (err){
+        console.log('UTILISATEUR NON TROUVE', err);
+      }else{
+          console.log('FACE', face);
+          face.number = req.params.id;
+          face.save(function(err) {
+              if (err){
+                console.log('ERROR SAVE NUMBER', err);
+              }
+
+          });
+      }
+
+      //res.json(faces);
+  });
+
   Face.find(function(err, faces) {
       if (err){
         res.send(err);

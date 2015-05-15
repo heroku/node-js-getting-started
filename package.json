@@ -17,7 +17,8 @@
     "passport-facebook": "~2.0.0",
     "method-override": "~2.3.2",
     "passport": "~0.2.1",
-    "express-handlebars": "~2.0.1"
+    "express-handlebars": "~2.0.1",
+    "underscore": "~1.8.3"
   },
   "engines": {
     "node": "0.12.2"
