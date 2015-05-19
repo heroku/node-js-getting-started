@@ -1,0 +1,25 @@
+{
+  "name": "grunt-base-template",
+  "version": "0.0.0",
+  "homepage": "https://github.com/ssavajols/grunt-base-template",
+  "authors": [
+    "savajols <s.savajols@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "vendor",
+    "test",
+    "tests",
+    "views"
+  ],
+  "dependencies": {
+    "requirejs": "~2.1.15",
+    "almond": "~0.3.0",
+    "handlebars": "~2.0.0",
+    "pixi.js": "~2.1.1",
+    "gsap": "~1.14.2",
+    "jquery": "~2.1.4"
+  }
+}

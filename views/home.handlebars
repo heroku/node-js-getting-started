@@ -1,26 +1,17 @@
-<div class="cards">
-  <a href="/auth/facebook/register/{{nbFaces}}">Register with Facebook</a>
-  <br></br>
-  <a href="/auth/twitter/register/{{nbFaces}}">Register with Twitter</a>
-</div>
-{{#each faces}}
-  <div class="cards">
-    <img class="profile" src="{{this.picture}}" />
-    <div class="info">
-      <div>{{this.accountname}}</div>
-    </div>
-    <a href="/auth/facebook/register/{{this.number}}">Register with Facebook</a>
-    <br></br>
-    <a href="/auth/twitter/register/{{this.number}}">Register with Twitter</a>
-  </div>
-{{/each}}
-{{#if registrationFaces}}
+<img id="loading" class="loading" src="img/square.gif">
+	<canvas id="canvas" class="canvas"></canvas>
 
-<div class="modal registration">
-  <img class="profile" src="{{currentUser.picture}}" />
-  <div class="number">{{registrationFaces}}</div>
-  <div class="info">{{currentUser.accountname}}</div>
-  <div>Merci de valider les informations ci-dessus</div>
-</div>
 
-{{/if}}
+	<script src="js/vendor.js"></script>
+	<script src="js/scripts.js"></script>
+	<script type="text/javascript">
+		var _app;
+		var _canvas = document.getElementById("canvas");
+
+		function start() {
+			require(['main'],function(main){
+				_app = new main([_canvas]);
+			});
+		}
+		start();
+	</script>

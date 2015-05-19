@@ -1,0 +1,28 @@
+@font-face {
+	font-family: 'Proxima';
+	src: url("../fonts/proxima-regular.woff") format("woff"); 
+}
+.font0 {
+	font-family: Proxima;
+}
+.invisible{
+	overflow: hidden;
+	visibility : hidden;
+	height : 0px;	
+}
+.canvas {
+	position: absolute;
+	top: 0px;
+}
+
+body{
+	margin: 0;
+	padding: 0;
+	background-color: #000000;
+}
+
+.loading {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+}

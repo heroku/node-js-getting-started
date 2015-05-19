@@ -1,0 +1,23 @@
+{
+  "tmp_path": "./tmp",
+  "public_path": "./public",
+  "vendor_path": "./vendor",
+  "sass_path": "./scss",
+  "app_path": "./canvas",
+  "css_dir": "css",
+  "js_dir": "js",
+
+  "protocole": "http",
+  "hostname": "localhost",
+  "port": 8080,
+
+  "require_include_modules" : ["main"],
+
+  "handlebars_template_container": "hbsTemplate",
+
+  "bower_dependencies" : {
+  },
+  "bower_main_files" : {
+  "gsap":["src/minified/TimelineLite.min.js","src/minified/TweenLite.min.js","src/minified/plugins/CSSPlugin.min.js","src/minified/plugins/EaselPlugin.min.js","src/minified/easing/EasePack.min.js"]
+  }
+}

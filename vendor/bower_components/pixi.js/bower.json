@@ -1,0 +1,17 @@
+{
+    "name": "pixi.js",
+    "version": "2.1.1",
+
+    "main": "bin/pixi.dev.js",
+
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test"
+    ],
+    "dependencies": {
+    },
+    "devDependencies": {
+    }
+}

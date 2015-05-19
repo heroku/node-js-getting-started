@@ -131,6 +131,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
+app.use(express.static('public'));
 
 var port = process.env.PORT || 3000;        // set our port
 
@@ -170,7 +171,11 @@ router.route('/faces')
     // get all the faces (accessed at GET http://localhost:8080/api/faces)
     .get(function(req, res) {
         console.log('REQUEST', req.query);
+
         Face.find(function(err, faces) {
+
+            console.log(faces);
+
             if (err)
                 res.send(err);
 
@@ -206,6 +211,19 @@ router.route('/faces')
             });
         });
 
+        // on routes that end in /faces/:face_id
+        // ----------------------------------------------------
+        router.route('/faces/:x/:y')
+
+            // get the face with that id (accessed at GET http://localhost:8080/api/faces/:face_id)
+            .get(function(req, res) {
+                Face.find(function(err, faces) {
+                    if (err)
+                        res.send(err);
+                    res.json(faces);
+                });
+            });
+
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 publicRouter.get('/', function(req, res) {
@@ -221,7 +239,13 @@ publicRouter.get('/', function(req, res) {
 });
 
 publicRouter.get('/register', function(req, res, next) {
-  res.sendfile('./public/register.html');
+  Face.find(function(err, faces) {
+      if (err){
+        res.send(err);
+      }
+      res.render('register', {'faces': faces, 'nbFaces': faces.length});
+      //res.json(faces);
+  });
 });
 
 publicRouter.get('/auth/facebook/register/:id',
@@ -289,7 +313,7 @@ publicRouter.get('/success/:id', function(req, res, next) {
       if (err){
         res.send(err);
       }
-      res.render('home', {'faces': faces, 'nbFaces': faces.length, 'registrationFaces': req.params.id, currentUser: req.user});
+      res.render('register', {'faces': faces, 'nbFaces': faces.length, 'registrationFaces': req.params.id, currentUser: req.user});
       //res.json(faces);
   });
 });
