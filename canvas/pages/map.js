@@ -1,4 +1,4 @@
-define('map', ["ScrollContainer", "bloc"], function(ScrollContainer, Bloc) {
+define('map', ["ScrollContainer", "bloc", "components/services"], function(ScrollContainer, Bloc, Services) {
 
 	var _map = function() {
 
@@ -23,6 +23,7 @@ define('map', ["ScrollContainer", "bloc"], function(ScrollContainer, Bloc) {
 		var _idRangeY = 0;
 		var _ID = 0;
 		var ID = 0;
+		var _services = new Services();
 
 		PIXI.DisplayObjectContainer.call(this);
 		_scope = this;
@@ -37,10 +38,11 @@ define('map', ["ScrollContainer", "bloc"], function(ScrollContainer, Bloc) {
 				for (j = 0; j < _rangeColonne; j++) {
 					var _tmp = [];
 					for (var k = 0; k < _rangePage; k++) {
-						_tmp.push({txt : _ID, img : "img/" + ((_ID === 0) ? "logo.jpg" : parseInt(MathUtils.randomMinMax(0, 15)) + ".jpg")});
+						_tmp.push({number : _ID, picture : "img/" + ((_ID === 0) ? "logo.jpg" : parseInt(MathUtils.randomMinMax(0, 15)) + ".jpg")});
+						main.martixRange[_ID] = {number : _ID, picture : "img/noimage.jpg"};
 						_ID++;
 					}
-					//_ranges => "getFaces(x,y) => [24]"
+					// _ranges => "getFaces(x,y) => [12]"
 					_ranges[j + "," + i] = _tmp;
 				}
 			}
@@ -54,18 +56,18 @@ define('map', ["ScrollContainer", "bloc"], function(ScrollContainer, Bloc) {
 			for (i = 0; i < _l; i++) {
 				for (j = 0; j < _c; j++) {
 					_bloc = new Bloc();
+					_blocs[_id] = _bloc;
 					_bloc.idX = _bloc.initidX = j;
 					_bloc.idY = _bloc.initidY = i;
 					_bloc.lock0 = _bloc.lock1 = true;
 
-					_bloc.setValue( _ranges[j + "," + i]);
-
+					(getFaces(_id, j, i));
 
 					_bloc.x = _posx;
 					_bloc.y = _posy;
 					_scrollObject.addChild(_bloc);
 					_posx += _bloc._width;
-					_blocs[_id] = _bloc;
+
 					if (_posx >= _maxWidth) {
 						_maxWidth = _posx;
 					}
@@ -104,7 +106,8 @@ define('map', ["ScrollContainer", "bloc"], function(ScrollContainer, Bloc) {
 					} else {
 						_blocs[i].idY = _rangeLinge + _blocs[i].initidY - _l;
 					}
-					_blocs[i].setValue( _ranges[_blocs[i].idX + "," + _blocs[i].idY]);
+
+					(getFaces(i, _blocs[i].idX, _blocs[i].idY));
 
 				} else if (_tempY < -_lastItemY) {
 					if (_scrollObject.y + (_blocs[i].y + _maxHeight) <= _h) {
@@ -114,7 +117,8 @@ define('map', ["ScrollContainer", "bloc"], function(ScrollContainer, Bloc) {
 						} else {
 							_blocs[i].idY = _blocs[i].initidY;
 						}
-						_blocs[i].setValue( _ranges[_blocs[i].idX + "," + _blocs[i].idY]);
+
+						(getFaces(i, _blocs[i].idX, _blocs[i].idY));
 
 					}
 				}
@@ -128,7 +132,8 @@ define('map', ["ScrollContainer", "bloc"], function(ScrollContainer, Bloc) {
 					} else {
 						_blocs[i].idX = _rangeColonne + _blocs[i].initidX - _c;
 					}
-					_blocs[i].setValue( _ranges[_blocs[i].idX + "," + _blocs[i].idY]);
+
+					(getFaces(i, _blocs[i].idX, _blocs[i].idY));
 
 				} else if (_tempX < -_lastItemX) {
 					if (_scrollObject.x + (_blocs[i].x + _maxWidth) <= _w) {
@@ -138,7 +143,8 @@ define('map', ["ScrollContainer", "bloc"], function(ScrollContainer, Bloc) {
 						} else {
 							_blocs[i].idX = _blocs[i].initidX;
 						}
-						_blocs[i].setValue( _ranges[_blocs[i].idX + "," + _blocs[i].idY]);
+
+						(getFaces(i, _blocs[i].idX, _blocs[i].idY));
 
 					}
 				}
@@ -151,6 +157,22 @@ define('map', ["ScrollContainer", "bloc"], function(ScrollContainer, Bloc) {
 			for (var i = 0; i < _blocs.length; i++) {
 				_blocs[i].oldPos = {x : _blocs[i].position.x, y : _blocs[i].position.y};
 			}
+		}
+
+		function getFaces(id, x, y) {
+
+			_blocs[id].setValue(_ranges[x + "," + y]);
+			_services.getFaces(x, y, onGetFaces, id);
+			// return _ranges[x + "," + y];
+		}
+
+		function onGetFaces(data, id) {
+			for (var i = 0; i < data.length; i++) {
+				if (data[i].number) {
+					main.martixRange[data[i].number] = data[i];
+				}
+			}
+			_blocs[id].setValue(data);
 		}
 
 		this.process = function() {

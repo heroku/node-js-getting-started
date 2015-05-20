@@ -34,15 +34,15 @@ define('blocIthem', [], function() {
 			_scope.addChild(_rect);
 
 			_item = new PIXI.Sprite(new PIXI.Texture(new PIXI.BaseTexture()));
-			_itemText = new PIXI.Text("No", {font : "25px Proxima", fill : "#ffffff"});
+			_itemText = new PIXI.Text("#", {font : "25px Proxima", fill : "#ffffff"});
 			_scope.addChild(_item);
-			// _scope.addChild(_itemText);
+			_scope.addChild(_itemText);
 			// _itemText.visible = false;
 		}
 
 		this.update = function(txt) {
-			// _txt = txt;
-			// _itemText.setText(_txt);
+			_txt = txt;
+			_itemText.setText(_txt);
 			_item.texture.destroy();
 			_item.texture = new PIXI.Texture(new PIXI.BaseTexture());
 		};
@@ -50,8 +50,10 @@ define('blocIthem', [], function() {
 		this.updateImage = function(img) {
 			_item.texture.destroy();
 			_item.texture = new PIXI.Texture(PIXI.Texture.fromImage(img));
-			//_item.visible = false;
-			//console.log(((_scope !== null)? _scope.x:"") + "," + ( (_scope.parent !==null) ? _scope.parent.x: "" )+ "," +( (_scope.parent.parent !==null) ? _scope.parent.parent .x: ""));
+			// _item.visible = false;
+			// console.log(((_scope !== null)? _scope.x:"") + "," + (
+			// (_scope.parent !==null) ? _scope.parent.x: "" )+ "," +(
+			// (_scope.parent.parent !==null) ? _scope.parent.parent .x: ""));
 		};
 
 	};

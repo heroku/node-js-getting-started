@@ -43,25 +43,18 @@ define('bloc', ["blocIthem"], function(BlocIthem) {
 
 		}
 
-		this.setValue = function(val) {
+		this.setValue = function(data) {
 
-	
-			// _worker.removeEventListener("message", fromWorker, false);
-			// _worker.addEventListener("message", fromWorker, false);
-
-			for (var i = 0; i < val.length; i++) {
-				var id = val[i].txt;
-				var img = val[i].img + "?n=" + Math.random() * 1000000;
-				_items[i].update("ID:" + id);
-				_items[i].updateImage(img);
-				// _worker.postMessage({id : id, img : img, i : i});
+			for (var i = 0; i < data.length; i++) {
+				if (data[i].number) {
+					var id = data[i].number;
+					console.log(main.martixRange[id]);
+					var img = main.martixRange[id].picture + "?n=" + Math.random() * 1000000;
+					_items[i].update("ID:" + id);
+					_items[i].updateImage(img);
+				}
 			}
 		};
-
-		function fromWorker(event) {
-			console.log("fromWorker:" + event.data.id + "," + event.data.img + "," + event.data.i);
-			_items[parseInt(event.data.i)].updateImage(event.data.img);
-		}
 
 		this.process = function() {
 
