@@ -23,6 +23,12 @@ var methodOverride = require('method-override')
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
 var TwitterStrategy = require('passport-twitter').Strategy;
+//get file
+var fs      = require('fs');
+var request = require('request');
+var path = require('path');
+var imgDestPath = path.resolve('./public/img');
+
 
 passport.use(new FacebookStrategy({
   clientID: config.FACEBOOK_APP_ID,
@@ -43,23 +49,39 @@ passport.use(new FacebookStrategy({
           updated_time: '2014-05-28T20:08:41+0000',
           verified: true
         **/
-        face.accountname = profile._json.name;  // set the faces name (comes from the request)
-        face.firstname = profile._json.first_name;  // set the faces name (comes from the request)
-        face.lastname = profile._json.last_name;  // set the faces name (comes from the request)
-        //face.number = 1;  // set the faces name (comes from the request)
-        face.picture = 'https://graph.facebook.com/' + profile._json.id + '/picture?type=large';  // set the faces name (comes from the request)
-        face.network = 'facebook';  // set the faces name (comes from the request)
-        face.network_id = profile._json.id;  // set the faces name (comes from the request)
-        console.log('PROFILE FACEBOOK', profile);
-        // save the face and check for errors
-        face.save(function(err) {
-            if (err)
-                res.send(err);
+        // Or with cookies
+        // var request = require('request').defaults({jar: true});
+
+        request.get({url: 'https://graph.facebook.com/' + profile._json.id + '/picture?type=large', encoding: 'binary'}, function (err, response, body) {
+          fs.writeFile(imgDestPath + '/' + profile._json.id + '.jpeg', body, 'binary', function(error) {
+            if(error){
+              console.log(error);
+            }
+            else{
+              face.accountname = profile._json.name;  // set the faces name (comes from the request)
+              face.firstname = profile._json.first_name;  // set the faces name (comes from the request)
+              face.lastname = profile._json.last_name;  // set the faces name (comes from the request)
+              //face.number = 1;  // set the faces name (comes from the request)
+              face.picture = '/img/' + profile._json.id + '.jpeg';  // set the faces name (comes from the request)
+              face.network = 'facebook';  // set the faces name (comes from the request)
+              face.network_id = profile._json.id;  // set the faces name (comes from the request)
+              console.log('PROFILE FACEBOOK', profile, imgDestPath);
+              // save the face and check for errors
+              face.save(function(err) {
+                    if (err)
+                        res.send(err);
 
 
-                return done(null, face);
+                        return done(null, face);
+                });
+
+            }
+
+          });
         });
+
       }, 0);
+
 }));
 
 passport.use(new TwitterStrategy({
@@ -84,25 +106,38 @@ passport.use(new TwitterStrategy({
        screen_name: 'lenoirjeremie',
        location: 'paris',
       **/
-      face.accountname = profile._json.name;  // set the faces name (comes from the request)
-      face.firstname = profile._json.screen_name;  // set the faces name (comes from the request)
-      face.lastname = profile._json.screen_name;  // set the faces name (comes from the request)
-      //face.number = 1;  // set the faces name (comes from the request)
-      face.picture = profile._json.profile_image_url;  // set the faces name (comes from the request)
-      face.picture = face.picture.replace('_normal','');  // set the faces name (comes from the request)
-      face.network = 'twitter';  // set the faces name (comes from the request)
-      face.network_id = profile._json.id;  // set the faces name (comes from the request)
-      console.log('PROFILE TWITTER', profile);
-      // save the face and check for errors
-      face.save(function(err) {
-          if (err)
-              res.send(err);
+
+      request.get({url: profile._json.profile_image_url.replace('_normal',''), encoding: 'binary'}, function (err, response, body) {
+        fs.writeFile(imgDestPath + '/' + profile._json.id + '.jpeg', body, 'binary', function(error) {
+          if(error){
+            console.log(error);
+          }
+          else{
+            face.accountname = profile._json.name;  // set the faces name (comes from the request)
+            face.firstname = profile._json.screen_name;  // set the faces name (comes from the request)
+            face.lastname = profile._json.screen_name;  // set the faces name (comes from the request)
+            //face.number = 1;  // set the faces name (comes from the request)
+            face.picture = '/img/' + profile._json.id + '.jpeg';  // set the faces name (comes from the request)
+            //face.picture = face.picture.replace('_normal','');  // set the faces name (comes from the request)
+            face.network = 'twitter';  // set the faces name (comes from the request)
+            face.network_id = profile._json.id;  // set the faces name (comes from the request)
+            console.log('PROFILE TWITTER', profile);
+            // save the face and check for errors
+              face.save(function(err) {
+                  if (err)
+                      res.send(err);
 
 
-              return done(null, face);
+                      return done(null, face);
+              });
+
+
+          }
+
+        });
       });
-
     }, 0);
+
   }
 ));
 
