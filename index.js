@@ -29,7 +29,6 @@ var request = require('request');
 var path = require('path');
 var imgDestPath = path.resolve('./public/img');
 
-
 passport.use(new FacebookStrategy({
   clientID: config.FACEBOOK_APP_ID,
   clientSecret: config.FACEBOOK_APP_SECRET,
@@ -65,6 +64,7 @@ passport.use(new FacebookStrategy({
               face.picture = '/img/' + profile._json.id + '.jpeg';  // set the faces name (comes from the request)
               face.network = 'facebook';  // set the faces name (comes from the request)
               face.network_id = profile._json.id;  // set the faces name (comes from the request)
+              face.lang = profile._json.locale;
               console.log('PROFILE FACEBOOK', profile, imgDestPath);
               // save the face and check for errors
               face.save(function(err) {
@@ -121,6 +121,7 @@ passport.use(new TwitterStrategy({
             //face.picture = face.picture.replace('_normal','');  // set the faces name (comes from the request)
             face.network = 'twitter';  // set the faces name (comes from the request)
             face.network_id = profile._json.id;  // set the faces name (comes from the request)
+            face.lang = profile._json.lang;  // set the faces name (comes from the request)
             console.log('PROFILE TWITTER', profile);
             // save the face and check for errors
               face.save(function(err) {
@@ -164,7 +165,46 @@ app.use(methodOverride());
 app.use(session({ secret: 'keyboard cat' }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.engine('handlebars',
+  exphbs({
+    defaultLayout: 'main',
+    helpers: {
+        ifCond: function(v1,operator,v2,options) {
+              switch (operator){
+                  case "==":
+                      return (v1==v2)?options.fn(this):options.inverse(this);
+
+                  case "!=":
+                      return (v1!=v2)?options.fn(this):options.inverse(this);
+
+                  case "===":
+                      return (v1===v2)?options.fn(this):options.inverse(this);
+
+                  case "!==":
+                      return (v1!==v2)?options.fn(this):options.inverse(this);
+
+                  case "&&":
+                      return (v1&&v2)?options.fn(this):options.inverse(this);
+
+                  case "||":
+                      return (v1||v2)?options.fn(this):options.inverse(this);
+
+                  case "<":
+                      return (v1<v2)?options.fn(this):options.inverse(this);
+
+                  case "<=":
+                      return (v1<=v2)?options.fn(this):options.inverse(this);
+
+                  case ">":
+                      return (v1>v2)?options.fn(this):options.inverse(this);
+
+                  case ">=":
+                      return (v1>=v2)?options.fn(this):options.inverse(this);
+              }
+          }
+    }
+
+}));
 app.set('view engine', 'handlebars');
 app.use(express.static('public'));
 
@@ -278,7 +318,7 @@ publicRouter.get('/register', function(req, res, next) {
       if (err){
         res.send(err);
       }
-      res.render('register', {'faces': faces, 'nbFaces': faces.length});
+      res.render('register', {'faces': faces, 'nbFaces': (faces.length + 1) });
       //res.json(faces);
   });
 });
@@ -327,16 +367,20 @@ function(req,res,next) {
 
 publicRouter.get('/success/:id', function(req, res, next) {
 
-  Face.findOne({'id': req.user.id},function(err, face) {
+  console.log('REQ ID', req.user._id);
+  Face.findOne({'_id': req.user._id},function(err, face) {
       if (err){
         console.log('UTILISATEUR NON TROUVE', err);
       }else{
+
+          face.number = req.params.id == 0 ? 1 : req.params.id;
           console.log('FACE', face);
-          face.number = req.params.id;
+          req.user.number = req.params.id == 0 ? 1 : req.params.id;
           face.save(function(err) {
               if (err){
                 console.log('ERROR SAVE NUMBER', err);
               }
+
 
           });
       }
@@ -348,10 +392,26 @@ publicRouter.get('/success/:id', function(req, res, next) {
       if (err){
         res.send(err);
       }
-      res.render('register', {'faces': faces, 'nbFaces': faces.length, 'registrationFaces': req.params.id, currentUser: req.user});
+
+      res.render('register', {'faces': faces, 'nbFaces': (faces.length + 1), 'editedFace': req.params.id, currentUser: req.user});
       //res.json(faces);
   });
 });
+
+/***** EDIT PART *******/
+publicRouter.get('/edit/:number', function(req, res, next) {
+
+  Face.find(function(err, faces) {
+      if (err){
+        res.send(err);
+      }
+
+      res.render('register', {'faces': faces, 'nbFaces': (faces.length + 1), 'editedFace': req.params.number, currentUser: req.user});
+      //res.json(faces);
+  });
+});
+
+/***********************/
 
 publicRouter.get('/error', function(req, res, next) {
   res.send("Error logging in.");

@@ -6,21 +6,54 @@
 {{#each faces}}
   <div class="cards">
     <img class="profile" src="{{this.picture}}" />
-    <div class="info">
-      <div>{{this.accountname}}</div>
-    </div>
-    <a href="/auth/facebook/register/{{this.number}}">Register with Facebook</a>
+
+    {{#if ../editedFace}}
+      {{#ifCond ../editedFace '==' ../currentUser.number}}
+
+        <div class="edit-info">
+          <div>
+            <label>Occupation :</label>
+            <select>
+              <option>student</option>
+              <option>parent</option>
+              <option>worker</option>
+              <option>artist</option>
+              <option>undisclosed</option>
+              <option>geek</option>
+              <option>athlete</option>
+              <option>hype</option>
+              <option>explorer</option>
+              <option>scientist</option>
+            </select>
+          </div>
+          <div>
+            <label>Name :</label><input type="text" name="fullname" value="{{this.accountname}}"/>
+          </div>
+          <div>
+            <label>Lang :</label><input type="text" name="language" value="{{this.lang}}"/>
+          </div>
+          <div>
+            <label>Website :</label><input type="text" name="website"/>
+          </div>
+          <div>
+            <input type="button" name="save" value="save"/>
+          </div>
+        </div>
+        
+      {{/ifCond}}
+    {{else}}
+      <div class="info">
+        <div>{{this.accountname}}</div>
+        <div>{{this.occupation}}</div>
+        <div>{{this.lang}}</div>
+        <div>{{this.website}}</div>
+        <div>
+          <a href="/edit/{{this.number}}">Edit</a>
+        </div>
+      </div>
+    {{/if}}
+    <!--a href="/auth/facebook/register/{{this.number}}">Register with Facebook</a>
     <br></br>
-    <a href="/auth/twitter/register/{{this.number}}">Register with Twitter</a>
+    <a href="/auth/twitter/register/{{this.number}}">Register with Twitter</a-->
   </div>
 {{/each}}
-{{#if registrationFaces}}
-
-<div class="modal registration">
-  <img class="profile" src="{{currentUser.picture}}" />
-  <div class="number">{{registrationFaces}}</div>
-  <div class="info">{{currentUser.accountname}}</div>
-  <div>Merci de valider les informations ci-dessus</div>
-</div>
-
-{{/if}}

@@ -1,6 +1,6 @@
 @font-face {
 	font-family: 'Proxima';
-	src: url("../fonts/proxima-regular.woff") format("woff"); 
+	src: url("../fonts/proxima-regular.woff") format("woff");
 }
 .font0 {
 	font-family: Proxima;
@@ -8,7 +8,7 @@
 .invisible{
 	overflow: hidden;
 	visibility : hidden;
-	height : 0px;	
+	height : 0px;
 }
 .canvas {
 	position: absolute;
@@ -25,4 +25,39 @@ body{
 	position: absolute;
 	top: 50%;
 	left: 50%;
+}
+
+.cards{
+	width:200px;
+	height:200px;
+	border:1px solid grey;
+	display:inline-block;
+}
+
+.profile{
+	position:absolute;
+	width:200px;
+	height:200px;
+}
+
+.modal{
+	width:200px;
+	height:200px;
+	border:1px solid grey;
+}
+.info{
+	color:#000;
+	font-size:12px;
+	position:absolute;
+	top:20px;
+	background:#fff;
+	opacity:0.5;
+}
+.edit-info{
+	color:#000;
+	font-size:12px;
+	position:absolute;
+	top:60px;
+	background:#fff;
+	opacity:0.9;
 }

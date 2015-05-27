@@ -11,7 +11,10 @@ var FaceSchema   = new Schema({
     range: { type: Number, min: 0, max: 1000000 }, //to find by query language
     picture: String,
     network: String,
-    network_id: String
+    network_id: String,
+    lang: String,
+    website: String,
+    occupation: String
 });
 
 module.exports = mongoose.model('Face', FaceSchema);
