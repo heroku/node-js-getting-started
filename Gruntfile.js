@@ -28,7 +28,8 @@ module.exports = function (grunt) {
                 mangle: true,
                 sourceMap: true,
                 compress: true,
-                preserveComments: false
+                preserveComments: false,
+                force: true
             },
             uglify_vendor_files: {
                 '<%= config.public_path %>/<%= config.js_dir %>/vendor.js': [

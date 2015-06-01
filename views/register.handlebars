@@ -1,19 +1,66 @@
+{{#with error}}
+{{log this.error}}
+<script>
+  alert('{{this.error}}');
+</script>
+{{/with}}
+
+{{#with claim}}
+
+<script>
+  alert('User has claim');
+</script>
+{{/with}}
+
 <div class="cards">
   <a href="/auth/facebook/register/{{nbFaces}}">Register with Facebook</a>
   <br></br>
   <a href="/auth/twitter/register/{{nbFaces}}">Register with Twitter</a>
 </div>
+<div class="cards">
+  <a href="/auth/twitter/claim/lenoirjeremie">Claim</a>
+  <a href="/auth/twitter/claim/lenoirjeremie">Decline</a>
+</div>
 {{#each faces}}
   <div class="cards">
     <img class="profile" src="{{this.picture}}" />
-
     {{#if ../editedFace}}
-      {{#ifCond ../editedFace '==' ../currentUser.number}}
+      {{#ifCond ../../editedFace '==' ../../currentUser.number}}
+      {{log ../../../editedFace}}
+      {{log ../../../currentUser.number}}
+      {{log this.number}}
+      {{#ifCond this.number '==' ../../../currentUser.number}}
+
+      <script>
+      $(document).ready(function(){
+        $('#edit-user').on('submit', function(e){
+          var $form = $(this);
+          e.preventDefault();
+
+          console.log('SERIALIZE', $form.serializeArray());
+
+          $.ajax({
+            type: "POST",
+            url: $form.attr('action'),
+            data: $form.serializeArray(),
+            success: function(data){
+              console.log('DATA', data);
+              console.log($form.parent());
+              $form.parent().addClass('hide');
+
+              $form.parent().parent().find('.info').removeClass('hide');
+            }
+          });
+
+        });
+      });
+      </script>
 
         <div class="edit-info">
+          <form id="edit-user" method="post" action="/api/faces/{{this._id}}">
           <div>
             <label>Occupation :</label>
-            <select>
+            <select name="occupation">
               <option>student</option>
               <option>parent</option>
               <option>worker</option>
@@ -27,19 +74,31 @@
             </select>
           </div>
           <div>
-            <label>Name :</label><input type="text" name="fullname" value="{{this.accountname}}"/>
+            <label>Name :</label><input type="text" name="accountname" value="{{this.accountname}}"/>
           </div>
           <div>
-            <label>Lang :</label><input type="text" name="language" value="{{this.lang}}"/>
+            <label>Lang :</label><input type="text" name="lang" value="{{this.lang}}"/>
           </div>
           <div>
-            <label>Website :</label><input type="text" name="website"/>
+            <label>Website :</label><input type="text" name="website" value="{{this.website}}"/>
           </div>
           <div>
-            <input type="button" name="save" value="save"/>
+            <input type="submit" name="save" value="save"/>
+          </div>
+        </form>
+        </div>
+
+        <div class="info hide">
+          <div>{{this.accountname}}</div>
+          <div>{{this.occupation}}</div>
+          <div>{{this.lang}}</div>
+          <div>{{this.website}}</div>
+          <div>
+            <a href="/edit/{{this.number}}">Edit</a>
           </div>
         </div>
-        
+
+      {{/ifCond}}
       {{/ifCond}}
     {{else}}
       <div class="info">
@@ -47,9 +106,13 @@
         <div>{{this.occupation}}</div>
         <div>{{this.lang}}</div>
         <div>{{this.website}}</div>
+        {{log this.number}}
+
+        {{#ifCond this.number '==' ../../currentUser.number}}
         <div>
           <a href="/edit/{{this.number}}">Edit</a>
         </div>
+        {{/ifCond}}
       </div>
     {{/if}}
     <!--a href="/auth/facebook/register/{{this.number}}">Register with Facebook</a>

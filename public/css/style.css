@@ -61,3 +61,6 @@ body{
 	background:#fff;
 	opacity:0.9;
 }
+.hide{
+	display:none;
+}

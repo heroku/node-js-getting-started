@@ -16,7 +16,8 @@ var cookieParser   = require('cookie-parser');
 var cors           = require('cors');
 var session        = require('cookie-session')
 var path           = require('path');
-var methodOverride = require('method-override')
+var methodOverride = require('method-override');
+var flash = require('connect-flash');
 //path.resolve('../omf-client/public/index.html');
 
 //PASSPORT
@@ -35,50 +36,72 @@ passport.use(new FacebookStrategy({
   callbackURL: config.FACEBOOK_CALLBACK_URL
 }, function(accessToken, refreshToken, profile, done) {
       setTimeout(function() {
-        var face = new Face();      // create a new instance of the Face model
-        /**
-        { id: '10153295122599265',
-          first_name: 'Jérémie',
-          gender: 'male',
-          last_name: 'Lenoir',
-          link: 'https://www.facebook.com/app_scoped_user_id/10153295122599265/',
-          locale: 'fr_FR',
-          name: 'Jérémie Lenoir',
-          timezone: 2,
-          updated_time: '2014-05-28T20:08:41+0000',
-          verified: true
-        **/
-        // Or with cookies
-        // var request = require('request').defaults({jar: true});
 
-        request.get({url: 'https://graph.facebook.com/' + profile._json.id + '/picture?type=large', encoding: 'binary'}, function (err, response, body) {
-          fs.writeFile(imgDestPath + '/' + profile._json.id + '.jpeg', body, 'binary', function(error) {
-            if(error){
-              console.log(error);
+        var userExist = false;
+
+        Face.find({network: 'facebook', network_id: profile._json.id}, function(err, faces) {
+
+            if(faces.length > 0){
+              userExist = true;
             }
-            else{
-              face.accountname = profile._json.name;  // set the faces name (comes from the request)
-              face.firstname = profile._json.first_name;  // set the faces name (comes from the request)
-              face.lastname = profile._json.last_name;  // set the faces name (comes from the request)
-              //face.number = 1;  // set the faces name (comes from the request)
-              face.picture = '/img/' + profile._json.id + '.jpeg';  // set the faces name (comes from the request)
-              face.network = 'facebook';  // set the faces name (comes from the request)
-              face.network_id = profile._json.id;  // set the faces name (comes from the request)
-              face.lang = profile._json.locale;
-              console.log('PROFILE FACEBOOK', profile, imgDestPath);
-              // save the face and check for errors
-              face.save(function(err) {
-                    if (err)
-                        res.send(err);
+
+            if(userExist == false){
+              console.log('ERRORS', userExist);
+              var face = new Face();      // create a new instance of the Face model
+              /**
+              { id: '10153295122599265',
+                first_name: 'Jérémie',
+                gender: 'male',
+                last_name: 'Lenoir',
+                link: 'https://www.facebook.com/app_scoped_user_id/10153295122599265/',
+                locale: 'fr_FR',
+                name: 'Jérémie Lenoir',
+                timezone: 2,
+                updated_time: '2014-05-28T20:08:41+0000',
+                verified: true
+              **/
+              // Or with cookies
+              // var request = require('request').defaults({jar: true});
+
+              request.get({url: 'https://graph.facebook.com/' + profile._json.id + '/picture?type=large', encoding: 'binary'}, function (err, response, body) {
+                fs.writeFile(imgDestPath + '/' + profile._json.id + '.jpeg', body, 'binary', function(error) {
+                  if(error){
+                    console.log(error);
+                  }
+                  else{
+                    face.accountname = profile._json.name;  // set the faces name (comes from the request)
+                    face.firstname = profile._json.first_name;  // set the faces name (comes from the request)
+                    face.lastname = profile._json.last_name;  // set the faces name (comes from the request)
+                    //face.number = 1;  // set the faces name (comes from the request)
+                    face.picture = '/img/' + profile._json.id + '.jpeg';  // set the faces name (comes from the request)
+                    face.network = 'facebook';  // set the faces name (comes from the request)
+                    face.network_id = profile._json.id;  // set the faces name (comes from the request)
+                    face.lang = profile._json.locale;
+                    console.log('PROFILE FACEBOOK', profile, imgDestPath);
+                    // save the face and check for errors
+                    face.save(function(err) {
+                          if (err)
+                              res.send(err);
 
 
-                        return done(null, face);
+                              return done(null, face);
+                      });
+
+                  }
+
                 });
-
+              });
             }
+          else{
+            console.log('PASSE');
+            return done(null, false, { message: 'User already exist' });
+          }
 
-          });
         });
+
+
+
+
 
       }, 0);
 
@@ -97,6 +120,16 @@ passport.use(new TwitterStrategy({
       // represent the logged-in user.  In a typical application, you would want
       // to associate the Twitter account with a user record in your database,
       // and return that user instead.
+
+      var userExist = false;
+
+      Face.find({network: 'twitter', network_id: profile._json.id}, function(err, faces) {
+
+          if(faces.length > 0){
+            userExist = true;
+          }
+
+          if(userExist == false){
 
       var face = new Face();      // create a new instance of the Face model
       /**
@@ -136,6 +169,12 @@ passport.use(new TwitterStrategy({
           }
 
         });
+      });
+      }else{
+        console.log('PASSE');
+        return done(null, false, { message: 'User already exist' });
+      }
+
       });
     }, 0);
 
@@ -207,6 +246,7 @@ app.engine('handlebars',
 }));
 app.set('view engine', 'handlebars');
 app.use(express.static('public'));
+app.use(flash());
 
 var port = process.env.PORT || 3000;        // set our port
 
@@ -270,6 +310,27 @@ router.route('/faces')
                 res.json(face);
             });
         })
+        .post(function(req, res) {
+            Face.findById(req.params.face_id, function(err, face) {
+                if (err){
+                  res.send(err);
+                }
+                console.log('PARAMS', req.body, face);
+                face.occupation = req.body.occupation;
+                face.lang = req.body.lang;
+                face.website = req.body.website;
+                face.accountname = req.body.accountname;
+
+                face.save(function(err) {
+                    if (err)
+                        res.send(err);
+
+                    res.json({ 'message': 'Face saved!', 'face': face});
+                });
+
+
+            });
+        })
         // update the face with this id (accessed at PUT http://localhost:8080/api/faces/:face_id)
         .put(function(req, res) {
 
@@ -318,7 +379,7 @@ publicRouter.get('/register', function(req, res, next) {
       if (err){
         res.send(err);
       }
-      res.render('register', {'faces': faces, 'nbFaces': (faces.length + 1) });
+      res.render('register', {'faces': faces, 'nbFaces': (faces.length + 1), currentUser: req.user });
       //res.json(faces);
   });
 });
@@ -339,6 +400,7 @@ function(req,res,next) {
        callbackURL:"/auth/facebook/callback/" + req.params.id
      , successRedirect:"/success/" + req.params.id
      , failureRedirect:"/error"
+     , failureFlash: true
      }
    ) (req,res,next);
   }
@@ -360,10 +422,79 @@ function(req,res,next) {
        callbackURL:"/auth/twitter/callback/" + req.params.id
      , successRedirect:"/success/" + req.params.id
      , failureRedirect:"/error"
+     , failureFlash: true
      }
    ) (req,res,next);
   }
 );
+
+publicRouter.get('/auth/twitter/claim/:id',
+function(req,res,next) {
+  passport.authenticate(
+    'twitter',
+     {callbackURL: '/auth/twitter/claim/callback/'+req.params.id }
+  )(req,res,next);
+});
+
+publicRouter.get('/auth/twitter/claim/callback/:id',
+function(req,res,next) {
+  passport.authenticate(
+    'twitter',
+     {
+       callbackURL:"/auth/twitter/claim/callback/" + req.params.id
+     , successRedirect:"/claim/" + req.params.id
+     , failureRedirect:"/error"
+     , failureFlash: true
+     }
+   ) (req,res,next);
+  }
+);
+
+publicRouter.get('/claim/:id', function(req, res, next) {
+
+  console.log('CLAIM', req.user, req.params.id );
+
+
+    Face.findOne({'accountname': req.user.accountname},function(err, face) {
+        if (err){
+          console.log('UTILISATEUR NON TROUVE', err);
+        }else{
+
+        if(req.user.accountname != req.params.id){
+            face.remove(function(err) {
+                if (err){
+                  console.log('ERROR SAVE NUMBER', err);
+                }
+
+
+            });
+          }else{
+            face.claim = true;
+            face.save(function(err) {
+                if (err){
+                  console.log('ERROR SAVE NUMBER', err);
+                }
+
+
+            });
+          }
+        }
+
+        //res.json(faces);
+    });
+
+
+
+
+  Face.find(function(err, faces) {
+      if (err){
+        res.send(err);
+      }
+
+      res.render('register', {'faces': faces, 'nbFaces': (faces.length + 1), 'editedFace': req.params.id, currentUser: req.user, 'claim': true});
+      //res.json(faces);
+  });
+});
 
 publicRouter.get('/success/:id', function(req, res, next) {
 
@@ -414,7 +545,14 @@ publicRouter.get('/edit/:number', function(req, res, next) {
 /***********************/
 
 publicRouter.get('/error', function(req, res, next) {
-  res.send("Error logging in.");
+  //console.log('FLASH', req.flash());
+  Face.find(function(err, faces) {
+      if (err){
+        res.send(err);
+      }
+      res.render('register', {'faces': faces, 'nbFaces': (faces.length + 1) , error : req.flash()});
+      //res.json(faces);
+  });
 });
 
 app.use('/api', router);

@@ -14,7 +14,8 @@ var FaceSchema   = new Schema({
     network_id: String,
     lang: String,
     website: String,
-    occupation: String
+    occupation: String,
+    claim: {type: Boolean, default: true}
 });
 
 module.exports = mongoose.model('Face', FaceSchema);
