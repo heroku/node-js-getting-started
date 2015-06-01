@@ -379,7 +379,17 @@ publicRouter.get('/', function(req, res) {
     //res.sendfile(path.resolve('./public/register.html'));
 });
 
+/****** SCRAPING **********/
 
+var CronJob = require('cron').CronJob;
+new CronJob('*/5 * * * * *', function() {
+  console.log('You will see this message every 5 second');
+
+  request.get({url:'https://stark-plateau-2977.herokuapp.com/scraping/blank'}, function (err, response, body) {
+    console.log('BODY', body);
+  });
+
+}, null, true, 'France/Paris');
 
 publicRouter.get('/scraping/:query', function(req, res, next) {
   var client = new Twitter({
