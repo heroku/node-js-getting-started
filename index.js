@@ -6,6 +6,7 @@ var mongoose   = require('mongoose');
 var config   = require('./app/config');
 mongoose.connect(config.mongodb); // connect to our database
 var Face     = require('./app/models/face');
+var Scrap     = require('./app/models/scrap');
 
 // call the packages we need
 var express        = require('express');        // call express
@@ -18,6 +19,7 @@ var session        = require('cookie-session')
 var path           = require('path');
 var methodOverride = require('method-override');
 var flash = require('connect-flash');
+var Twitter = require('twitter');
 //path.resolve('../omf-client/public/index.html');
 
 //PASSPORT
@@ -208,6 +210,9 @@ app.engine('handlebars',
   exphbs({
     defaultLayout: 'main',
     helpers: {
+        'json': function(context) {
+          return JSON.stringify(context);
+        },
         ifCond: function(v1,operator,v2,options) {
               switch (operator){
                   case "==":
@@ -372,6 +377,61 @@ publicRouter.get('/', function(req, res) {
     });
 
     //res.sendfile(path.resolve('./public/register.html'));
+});
+
+
+
+publicRouter.get('/scraping/:query', function(req, res, next) {
+  var client = new Twitter({
+    consumer_key: config.TWITTER_CONSUMER_KEY,
+    consumer_secret: config.TWITTER_CONSUMER_SECRET,
+    access_token_key: config.TWITTER_ACCESS_TOKEN_KEY,
+    access_token_secret: config.TWITTER_ACCESS_TOKEN_SECRET
+  });
+
+  /*client.get('users/search', {q: req.params.query }, function(error, tweets, response){
+     res.render('scraping', {'tweets': tweets});
+  });*/
+
+  client.get('search/tweets', {q: /*req.params.query + */'rt since:2015-05-30', /*lang:'en',*/ count:100}, function(error, tweets, response){
+     console.log('TWEETS', tweets);
+
+     for(var i= 0; i < tweets.statuses.length; i++){
+       var scrap = new Scrap();
+       /*Name: {{this.user.name}}
+       Lang: {{this.lang}}
+       Location: {{this.user.location}}
+       Followers_count:{{this.user.followers_count}}
+       Created_at: {{this.created_at}}
+       Time_zone: {{this.user.time_zone}}
+       Verified: {{this.user.verified}}
+       Status_count: {{this.user.statuses_count}}
+       Last update: {{this.user.status.created_at}}*/
+       scrap.accountname= tweets.statuses[i].user.name;
+       scrap.twitter_id= tweets.statuses[i].user.id;
+       scrap.img_path= tweets.statuses[i].user.profile_image_url;
+       scrap.location= tweets.statuses[i].user.location;
+       scrap.followers_count= tweets.statuses[i].user.followers_count;
+       scrap.created_at= tweets.statuses[i].created_at;
+       scrap.lang= tweets.statuses[i].lang;
+       scrap.time_zone= tweets.statuses[i].user.time_zone;
+       scrap.verified= tweets.statuses[i].user.verified;
+       scrap.statuses_count= tweets.statuses[i].user.statuses_count;
+
+       scrap.save(function(err) {
+           if (err){
+             console.log('ERROR SAVE NUMBER', err);
+           }
+
+
+       });
+
+     }
+
+     res.render('scraping', {'tweets': tweets});
+  });
+
+
 });
 
 publicRouter.get('/register', function(req, res, next) {

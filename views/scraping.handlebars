@@ -1,0 +1,24 @@
+<div class="scraped-users">
+{{#each tweets.statuses}}
+  <pre>
+    {{{json this}}}
+    Name: {{this.user.name}}
+    Lang: {{this.lang}}
+    Location: {{this.user.location}}
+    Followers_count:{{this.user.followers_count}}
+    Created_at: {{this.created_at}}
+    Time_zone: {{this.user.time_zone}}
+    Verified: {{this.user.verified}}
+    Status_count: {{this.user.statuses_count}}
+    Last update: {{this.user.status.created_at}}
+  </pre>
+{{/each}}
+
+{{{json tweets.search_metadata}}}
+</div>
+
+<script>
+  setTimeout(function(){
+    parent.location = '/scraping/blank';
+  }, 6000);
+</script>
