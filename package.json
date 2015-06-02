@@ -34,6 +34,7 @@
     "cron": "^1.0.9",
     "express": "~4.9.x",
     "express-handlebars": "~2.0.1",
+    "fbgraph": "^1.0.0",
     "fs": "0.0.2",
     "grunt": "^0.4.5",
     "method-override": "~2.3.2",
@@ -43,7 +44,8 @@
     "passport-twitter": "~1.0.3",
     "request": "~2.55.0",
     "twitter": "^1.2.5",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "underscore-express": "0.0.4"
   },
   "engines": {
     "node": "0.12.2"

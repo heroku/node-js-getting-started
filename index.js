@@ -20,6 +20,8 @@ var path           = require('path');
 var methodOverride = require('method-override');
 var flash = require('connect-flash');
 var Twitter = require('twitter');
+var fbgraph = require('fbgraph');
+var _ = require('underscore-express');
 //path.resolve('../omf-client/public/index.html');
 
 //PASSPORT
@@ -79,6 +81,8 @@ passport.use(new FacebookStrategy({
                     face.network = 'facebook';  // set the faces name (comes from the request)
                     face.network_id = profile._json.id;  // set the faces name (comes from the request)
                     face.lang = profile._json.locale;
+                    face.access_token = accessToken;
+                    face.refresh_token = refreshToken;
                     console.log('PROFILE FACEBOOK', profile, imgDestPath);
                     // save the face and check for errors
                     face.save(function(err) {
@@ -382,10 +386,10 @@ publicRouter.get('/', function(req, res) {
 /****** SCRAPING **********/
 
 var CronJob = require('cron').CronJob;
-new CronJob('*/5 * * * * *', function() {
-  console.log('You will see this message every 5 second');
+new CronJob('*/15 * * * * *', function() {
+  console.log('You will see this message every 15 second');
 
-  request.get({url:'https://stark-plateau-2977.herokuapp.com/scraping/blank'}, function (err, response, body) {
+  request.get({url:/*'http://localhost:3000/scraping/blank'*/'https://stark-plateau-2977.herokuapp.com/scraping/blank'}, function (err, response, body) {
     console.log('BODY', body);
   });
 
@@ -407,34 +411,55 @@ publicRouter.get('/scraping/:query', function(req, res, next) {
      console.log('TWEETS', tweets);
 
      for(var i= 0; i < tweets.statuses.length; i++){
-       var scrap = new Scrap();
-       /*Name: {{this.user.name}}
-       Lang: {{this.lang}}
-       Location: {{this.user.location}}
-       Followers_count:{{this.user.followers_count}}
-       Created_at: {{this.created_at}}
-       Time_zone: {{this.user.time_zone}}
-       Verified: {{this.user.verified}}
-       Status_count: {{this.user.statuses_count}}
-       Last update: {{this.user.status.created_at}}*/
-       scrap.accountname= tweets.statuses[i].user.name;
-       scrap.twitter_id= tweets.statuses[i].user.id;
-       scrap.img_path= tweets.statuses[i].user.profile_image_url;
-       scrap.location= tweets.statuses[i].user.location;
-       scrap.followers_count= tweets.statuses[i].user.followers_count;
-       scrap.created_at= tweets.statuses[i].created_at;
-       scrap.lang= tweets.statuses[i].lang;
-       scrap.time_zone= tweets.statuses[i].user.time_zone;
-       scrap.verified= tweets.statuses[i].user.verified;
-       scrap.statuses_count= tweets.statuses[i].user.statuses_count;
+       var currentTweet = tweets.statuses[i];
+       Scrap.find({twitter_id: tweets.statuses[i].user.id}, function(err, scrapes) {
 
-       scrap.save(function(err) {
-           if (err){
-             console.log('ERROR SAVE NUMBER', err);
-           }
+           if(scrapes.length > 0){
+             userExist = true;
+             scrapes[0].occurs++;
+             scrapes[0].save(function(err) {
+                 if (err){
+                   console.log('SCRAPE UPDATED', err);
+                 }
+             });
+           }else{
 
 
-       });
+
+
+
+           var scrap = new Scrap();
+           /*Name: {{this.user.name}}
+           Lang: {{this.lang}}
+           Location: {{this.user.location}}
+           Followers_count:{{this.user.followers_count}}
+           Created_at: {{this.created_at}}
+           Time_zone: {{this.user.time_zone}}
+           Verified: {{this.user.verified}}
+           Status_count: {{this.user.statuses_count}}
+           Last update: {{this.user.status.created_at}}*/
+           //scrap.accountname= tweets.statuses[i].user.name;
+           //console.log('TWEET STATUS', currentTweet);
+           scrap.twitter_id= currentTweet.user.id;
+           //scrap.img_path= tweets.statuses[i].user.profile_image_url;
+           scrap.location= currentTweet.user.location;
+           scrap.followers_count= currentTweet.user.followers_count;
+           scrap.created_at= currentTweet.created_at;
+           scrap.lang= currentTweet.lang;
+           scrap.time_zone= currentTweet.user.time_zone;
+           scrap.verified= currentTweet.user.verified;
+           scrap.statuses_count= currentTweet.user.statuses_count;
+
+           scrap.save(function(err) {
+               if (err){
+                 console.log('ERROR SAVE NUMBER', err);
+               }
+
+
+           });
+         }
+
+     });
 
      }
 
@@ -458,7 +483,7 @@ publicRouter.get('/auth/facebook/register/:id',
 function(req,res,next) {
   passport.authenticate(
     'facebook',
-     {callbackURL: '/auth/facebook/callback/'+req.params.id }
+     {callbackURL: '/auth/facebook/callback/'+req.params.id, scope: ['publish_actions'] }
   )(req,res,next);
 });
 
@@ -471,6 +496,7 @@ function(req,res,next) {
      , successRedirect:"/success/" + req.params.id
      , failureRedirect:"/error"
      , failureFlash: true
+     , scope: ['publish_actions']
      }
    ) (req,res,next);
   }
@@ -493,7 +519,7 @@ function(req,res,next) {
      , successRedirect:"/success/" + req.params.id
      , failureRedirect:"/error"
      , failureFlash: true
-     }
+   }
    ) (req,res,next);
   }
 );
@@ -568,7 +594,7 @@ publicRouter.get('/claim/:id', function(req, res, next) {
 
 publicRouter.get('/success/:id', function(req, res, next) {
 
-  console.log('REQ ID', req.user._id);
+  console.log('REQ ID', req.session);
   Face.findOne({'_id': req.user._id},function(err, face) {
       if (err){
         console.log('UTILISATEUR NON TROUVE', err);
@@ -593,6 +619,17 @@ publicRouter.get('/success/:id', function(req, res, next) {
       if (err){
         res.send(err);
       }
+
+      fbgraph.setAccessToken(req.user.access_token);
+
+      var wallPost = {
+        message: 'Premier test one millions humans'
+      };
+
+      fbgraph.post("/feed", wallPost, function(err, res) {
+        // returns the post id
+        console.log(res); // { id: xxxxx}
+      });
 
       res.render('register', {'faces': faces, 'nbFaces': (faces.length + 1), 'editedFace': req.params.id, currentUser: req.user});
       //res.json(faces);

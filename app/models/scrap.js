@@ -13,7 +13,8 @@ var ScrapSchema   = new Schema({
     lang: String,
     time_zone: String,
     verified: String,
-    statuses_count: Number
+    statuses_count: Number,
+    occurs: {type: Number, default: 1}
 });
 
 module.exports = mongoose.model('Scrap', ScrapSchema);

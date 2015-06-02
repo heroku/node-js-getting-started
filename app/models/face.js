@@ -15,7 +15,9 @@ var FaceSchema   = new Schema({
     lang: String,
     website: String,
     occupation: String,
-    claim: {type: Boolean, default: true}
+    claim: {type: Boolean, default: true},
+    access_token: String,
+    refresh_token: String
 });
 
 module.exports = mongoose.model('Face', FaceSchema);
