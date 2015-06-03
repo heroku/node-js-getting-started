@@ -1,3 +1,14 @@
+<script>
+$(document).ready(function(){
+
+
+  $('.share-popin a').on('click', function(e){
+    e.preventDefault();
+    console.log('show');
+    $('.modal').modal('show');
+  });
+});
+</script>
 {{#with error}}
 {{log this.error}}
 <script>
@@ -11,6 +22,10 @@
   alert('User has claim');
 </script>
 {{/with}}
+
+<div class="share-popin">
+  <a href="">Share popin</a>
+</div>
 
 <div class="cards">
   <a href="/auth/facebook/register/{{nbFaces}}">Register with Facebook</a>
@@ -33,6 +48,7 @@
 
       <script>
       $(document).ready(function(){
+
         $('#edit-user').on('submit', function(e){
           var $form = $(this);
           e.preventDefault();
@@ -120,3 +136,13 @@
     <a href="/auth/twitter/register/{{this.number}}">Register with Twitter</a-->
   </div>
 {{/each}}
+
+<div class="fb-share-button" data-href="https://stark-plateau-2977.herokuapp.com/" data-layout="button"></div>
+
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      ...
+    </div>
+  </div>
+</div>

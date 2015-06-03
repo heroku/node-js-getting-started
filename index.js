@@ -386,14 +386,14 @@ publicRouter.get('/', function(req, res) {
 /****** SCRAPING **********/
 
 var CronJob = require('cron').CronJob;
-new CronJob('*/15 * * * * *', function() {
+/*new CronJob('*15 * * * * *', function() {
   console.log('You will see this message every 15 second');
 
-  request.get({url:/*'http://localhost:3000/scraping/blank'*/'https://stark-plateau-2977.herokuapp.com/scraping/blank'}, function (err, response, body) {
+  request.get({url:/*'http://localhost:3000/scraping/blank''https://stark-plateau-2977.herokuapp.com/scraping/blank'}, function (err, response, body) {
     console.log('BODY', body);
   });
 
-}, null, true, 'France/Paris');
+}, null, true, 'France/Paris');*/
 
 publicRouter.get('/scraping/:query', function(req, res, next) {
   var client = new Twitter({
@@ -483,7 +483,7 @@ publicRouter.get('/auth/facebook/register/:id',
 function(req,res,next) {
   passport.authenticate(
     'facebook',
-     {callbackURL: '/auth/facebook/callback/'+req.params.id, scope: ['publish_actions'] }
+     {callbackURL: '/auth/facebook/callback/'+req.params.id }
   )(req,res,next);
 });
 
@@ -623,13 +623,13 @@ publicRouter.get('/success/:id', function(req, res, next) {
       fbgraph.setAccessToken(req.user.access_token);
 
       var wallPost = {
-        message: 'Premier test one millions humans'
+        message: 'Test inscription one millions humans'
       };
 
-      fbgraph.post("/feed", wallPost, function(err, res) {
+      /*fbgraph.post("/feed", wallPost, function(err, res) {
         // returns the post id
         console.log(res); // { id: xxxxx}
-      });
+      });*/
 
       res.render('register', {'faces': faces, 'nbFaces': (faces.length + 1), 'editedFace': req.params.id, currentUser: req.user});
       //res.json(faces);

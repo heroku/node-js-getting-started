@@ -55,12 +55,17 @@ module.exports = function (grunt) {
             dev_vendor: {
                 options: {
                     compress: {
-                        warnings: false
+                        warnings: true
                     }
                 },
                 files: '<%= uglify.uglify_vendor_files %>'
             },
             dev_app: {
+                options: {
+                    compress: {
+                        warnings: true
+                    }
+                },
                 files: '<%= uglify.uglify_dev_files %>'
             },
             // ONLY VENDORS
