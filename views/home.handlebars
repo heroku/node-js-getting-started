@@ -6,8 +6,7 @@
 
 		function start() {
 			require(['main'],function(main){
-				_app = new main([_canvas]);
-				_app.setData({{faces}});
+				_app = new main([_canvas, {{{json data}}}]);
 			});
 		}
 		start();
