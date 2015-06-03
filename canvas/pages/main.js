@@ -29,6 +29,7 @@ define('main', ['map'], function(Map) {
 		var _viewPosX;
 		var _viewPosY;
 		var _canvas = args[0];
+		var _data = args[1];
 		//
 
 		function init() {
@@ -114,6 +115,9 @@ define('main', ['map'], function(Map) {
 
 			console.log("<< start >>");
 
+			// DATA ARG
+			console.log("DATA:", _data);
+
 			// INIT PAGES
 			initPages();
 
@@ -138,10 +142,6 @@ define('main', ['map'], function(Map) {
 				_stats.update();
 			}
 		}
-
-		_main.setData = function(data) {
-			console.log("data:", data);
-		};
 
 		function stat() {
 			_stats = new Stats();
