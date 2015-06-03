@@ -139,6 +139,10 @@ define('main', ['map'], function(Map) {
 			}
 		}
 
+		_main.setData = function(data) {
+			console.log("data:", data);
+		};
+
 		function stat() {
 			_stats = new Stats();
 			_stats.domElement.style.position = 'absolute';
