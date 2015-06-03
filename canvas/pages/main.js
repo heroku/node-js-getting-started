@@ -4,7 +4,7 @@ define('main', ['map'], function(Map) {
 
 	var _main = function(args) {
 
-		console.log("<< Lenoir::main >>");
+		console.log("<< Kamal::main >>");
 
 		// CONFIG
 		var _statEnabled = true;

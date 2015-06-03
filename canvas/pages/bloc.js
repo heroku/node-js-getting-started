@@ -48,9 +48,11 @@ define('bloc', ["blocIthem"], function(BlocIthem) {
 			for (var i = 0; i < data.length; i++) {
 				if (data[i].number) {
 					var id = data[i].number;
-					console.log(main.martixRange[id]);
-					var img = main.martixRange[id].picture + "?n=" + Math.random() * 1000000;
-					_items[i].update("ID:" + id);
+					// console.log(main.martixRange[id]);
+					var img = main.martixRange[id].picture;// + "?n=" +
+					// Math.random() *
+					// 1000000;
+					_items[i].update(id);
 					_items[i].updateImage(img);
 				}
 			}
