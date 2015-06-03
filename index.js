@@ -631,7 +631,7 @@ publicRouter.get('/success/:id', function(req, res, next) {
         console.log(res); // { id: xxxxx}
       });*/
 
-      res.render('register', {'faces': faces, 'nbFaces': (faces.length + 1), 'editedFace': req.params.id, currentUser: req.user});
+      res.render('home', {'faces': faces, 'nbFaces': (faces.length + 1), 'editedFace': req.params.id, currentUser: req.user});
       //res.json(faces);
   });
 });
