@@ -376,7 +376,7 @@ publicRouter.get('/', function(req, res) {
         if (err){
           res.send(err);
         }
-        res.render('home', {'faces': faces, 'nbFaces': faces.length});
+        res.render('home', {data:{'faces': faces, 'nbFaces': faces.length, 'currentUser': req.user}});
         //res.json(faces);
     });
 

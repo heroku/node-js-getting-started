@@ -58,6 +58,7 @@ define('main', ['map'], function(Map) {
 		}
 
 		function initPages() {
+			console.log('INIT PAGES');
 			main.stage = _stage;
 			main.view = _renderer.view;
 			main.resolution = window.devicePixelRatio || 1;
@@ -72,8 +73,13 @@ define('main', ['map'], function(Map) {
 		}
 
 		function initEvents() {
+			console.log('INIT EVENTS');
 			window.addEventListener("resize", main.onResize);
 			main.onResize(null);
+		}
+
+		function editFace(){
+			$('.modal').modal('show');
 		}
 
 		main.onResize = function() {
@@ -123,8 +129,12 @@ define('main', ['map'], function(Map) {
 
 			// INIT DOM EVENTS
 			initEvents();
-
 			requestAnimFrame(processFrame);
+
+			//if(_data.editedFace){
+				editFace();
+			//}
+
 			if (_statEnabled) {
 				stat();
 			}
