@@ -1,7 +1,7 @@
-define('btn-social', function(){
+define('btnSocial', function(){
 
     /**
-     *
+     * Add interactive social button with glyph
      * @param glyph
      * @param color
      * @param clickCallback
@@ -38,7 +38,7 @@ define('btn-social', function(){
     BtnSocial.constructor = BtnSocial.prototype.constructor;
 
     /**
-     *
+     * fadeIn with enable actions
      * @param speed
      * @param delay
      */
@@ -53,7 +53,7 @@ define('btn-social', function(){
     };
 
     /**
-     *
+     * fadeOut with disable actions
      * @param speed
      * @param delay
      */

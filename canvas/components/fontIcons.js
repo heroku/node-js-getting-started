@@ -1,5 +1,10 @@
-define('font-icons', function(){
+define('fontIcons', function(){
 
+    /**
+     * Simple font loader useful for canvas
+     * @param name
+     * @param glyph
+     */
     var fontLoader = function fontLoader(name, glyph){
         var canvasFontLoader = document.createElement('div');
         canvasFontLoader.style.fontFamily = name;
@@ -17,6 +22,8 @@ define('font-icons', function(){
     var icons = {};
 
     icons.load = function(){ fontLoader(icons.FONT_NAME, icons.FACEBOOK); };
+    // troubleshooting with Tools.loadFont on first load after changing style.css content
+    // Font display squares instead font characters
     //icons.load = function(){ Tools.loadFont(icons.FONT_NAME); };
 
     icons.FONT_NAME = "fontello";
@@ -71,6 +78,7 @@ define('font-icons', function(){
     icons.SEARCH_4          = Tools.hexDecode("\e828");
     icons.SEARCH_OUTLINE    = Tools.hexDecode("\e826");
 
+    // autoload font
     icons.load();
 
     return icons;
