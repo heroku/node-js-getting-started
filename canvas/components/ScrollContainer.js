@@ -2,7 +2,7 @@ var ScrollContainerType = ScrollContainerType || {};
 ScrollContainerType.SCROLL = "scroll";
 ScrollContainerType.SLIDER = "slider";
 
-define('ScrollContainer', ['Gesture'], function(Gesture) {
+define('ScrollContainer', ['Gesture', 'messageBus'], function(Gesture, messageBus) {
 
 	var ScrollContainer = function(type, stage, rect, viewPort, constraintAxe) {
 
@@ -11,6 +11,7 @@ define('ScrollContainer', ['Gesture'], function(Gesture) {
 		var MOUSE_DOWN_DEC = 0.7;
 		var BOUNCING_SPRINGESS = 0.25;// back speed
 		var MAX = 5000;
+		var moved = false;
 
 		var _type = type;
 		var _constraintAxe;
@@ -168,6 +169,16 @@ define('ScrollContainer', ['Gesture'], function(Gesture) {
 
 			if (_constraintAxe != "x") {
 				this.position.x += Math.round(_velocitx + _bouncingx);
+			}
+
+			if( ( Math.abs(_velocitx) !== 0 || Math.abs(_velocity) !== 0 ) && moved === false ){
+				messageBus.emit('ScrollContainer:StartMoving');
+				moved = true;
+			}
+
+			if( Math.abs(_velocitx) <= 0 && Math.abs(_velocity) <= 0 && moved === true ){
+				messageBus.emit('ScrollContainer:StopMoving');
+				moved = false;
 			}
 		};
 

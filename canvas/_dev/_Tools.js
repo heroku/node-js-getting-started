@@ -1,6 +1,5 @@
 var Tools = {};
 
-
 Tools.ieInnerHTML = function ieInnerHTML(obj, convertToLowerCase) {
     var zz = obj.innerHTML ? String(obj.innerHTML) : obj
     	       ,z  = zz.match(/(<.+[^>])/g);    

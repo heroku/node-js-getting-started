@@ -1,4 +1,4 @@
-define('blocIthem', [], function() {
+define('blocIthem', ['font-icons', 'btn-social', 'messageBus'], function(fontello, BtnSocial, messageBus) {
 
 	var _blocIthem = function() {
 
@@ -29,6 +29,7 @@ define('blocIthem', [], function() {
 
 		function build() {
 
+			var _tw, _fb;
 			var _rect = new PIXI.Graphics();
 			_rect.beginFill(0x000000, 1);
 			_rect.lineStyle(1, 0xFFFFFF);
@@ -39,24 +40,26 @@ define('blocIthem', [], function() {
 			_item = new PIXI.Sprite(new PIXI.Texture(new PIXI.BaseTexture()));
 			_itemText = new PIXI.Text("#", {font : "25px Proxima", fill : "#ffffff"});
 
-			_fb = new PIXI.Graphics();
-			_fb.beginFill(0x0000FF, 1);
-			_fb.drawRect(0, 0, 30, 30);
-			_fb.endFill();
-			_fb.interactive = true;
-			_fb.buttonMode = true;
-			_fb.tap = _fb.click = onFBCLick;
-			_fb.y = 100;
-			
-			_tw = new PIXI.Graphics();
-			_tw.beginFill(0xFF0000, 1);
-			_tw.drawRect(0, 0, 30, 30);
-			_tw.endFill();
-			_tw.interactive = true;
-			_tw.buttonMode = true;
-			_tw.tap = _tw.click = onTWCLick;
-			_tw.x = 40;
-			_tw.y = 100;
+			_fb = new BtnSocial(fontello.FACEBOOK_SQUARED, "#3a5795", onFBCLick);
+			_fb.x = ITEM_WIDTH/2-35;
+			_fb.y = (ITEM_HEIGHT+30)/2-15;
+
+			_tw = new BtnSocial(fontello.TWITTER_SQUARED, "#55acee", onTWCLick);
+			_tw.x = ITEM_WIDTH/2+5;
+			_tw.y = (ITEM_HEIGHT+30)/2-15;
+
+
+			messageBus.addEventListener('ScrollContainer:StartMoving', function(){
+				_tw.disable(0.25, 0);
+				_fb.disable(0.25, 0);
+			});
+
+			messageBus.addEventListener('ScrollContainer:StopMoving', function(){
+				var delay = Math.random()/3;
+				_tw.enable(0.25, delay);
+				_fb.enable(0.25, delay);
+			});
+
 
 			_scope.addChild(_item);
 			_scope.addChild(_itemText);

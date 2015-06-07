@@ -1,3 +1,103 @@
+/* fontello */
+@font-face {
+	font-family: 'fontello';
+	src: url('../fonts/fontello.eot?45569593');
+	src: url('../fonts/fontello.eot?45569593#iefix') format('embedded-opentype'),
+	url('../fonts/fontello.woff?45569593') format('woff'),
+	url('../fonts/fontello.ttf?45569593') format('truetype'),
+	url('../fonts/fontello.svg?45569593#fontello') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'fontello';
+    src: url('../font/fontello.svg?45569593#fontello') format('svg');
+  }
+}
+*/
+
+[class^="icon-"]:before, [class*=" icon-"]:before {
+	font-family: "fontello";
+	font-style: normal;
+	font-weight: normal;
+	speak: none;
+
+	display: inline-block;
+	text-decoration: inherit;
+	width: 1em;
+	margin-right: .2em;
+	text-align: center;
+	/* opacity: .8; */
+
+	/* For safety - reset parent styles, that can break glyph codes*/
+	font-variant: normal;
+	text-transform: none;
+
+	/* fix buttons height, for twitter bootstrap */
+	line-height: 1em;
+
+	/* Animation center compensation - margins should be symmetric */
+	/* remove if not needed */
+	margin-left: .2em;
+
+	/* you can be more comfortable with increased icons size */
+	/* font-size: 120%; */
+
+	/* Font smoothing. That was taken from TWBS */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+
+	/* Uncomment for 3D effect */
+	/* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+
+.icon-facebook-squared:before { content: '\e800'; } /* '' */
+.icon-facebook-circled:before { content: '\e801'; } /* '' */
+.icon-facebook:before { content: '\e802'; } /* '' */
+.icon-twitter:before { content: '\e803'; } /* '' */
+.icon-twitter-squared:before { content: '\e804'; } /* '' */
+.icon-twitter-circled:before { content: '\e805'; } /* '' */
+.icon-twitter-1:before { content: '\e806'; } /* '' */
+.icon-twitter-2:before { content: '\e807'; } /* '' */
+.icon-twitter-rect:before { content: '\e808'; } /* '' */
+.icon-facebook-1:before { content: '\e809'; } /* '' */
+.icon-home:before { content: '\e80a'; } /* '' */
+.icon-mail-alt:before { content: '\e80b'; } /* '' */
+.icon-mail:before { content: '\e80c'; } /* '' */
+.icon-mail-1:before { content: '\e80d'; } /* '' */
+.icon-mail-2:before { content: '\e80e'; } /* '' */
+.icon-right-open-big:before { content: '\e80f'; } /* '' */
+.icon-left-open-big:before { content: '\e810'; } /* '' */
+.icon-up-open-big:before { content: '\e811'; } /* '' */
+.icon-down-open-big:before { content: '\e812'; } /* '' */
+.icon-down-open:before { content: '\e813'; } /* '' */
+.icon-left-open:before { content: '\e814'; } /* '' */
+.icon-right-open:before { content: '\e815'; } /* '' */
+.icon-up-open:before { content: '\e816'; } /* '' */
+.icon-down:before { content: '\e817'; } /* '' */
+.icon-left:before { content: '\e818'; } /* '' */
+.icon-right:before { content: '\e819'; } /* '' */
+.icon-up:before { content: '\e81a'; } /* '' */
+.icon-down-circle:before { content: '\e81b'; } /* '' */
+.icon-left-circle:before { content: '\e81c'; } /* '' */
+.icon-right-circle:before { content: '\e81d'; } /* '' */
+.icon-up-circle:before { content: '\e81e'; } /* '' */
+.icon-down-circle-1:before { content: '\e81f'; } /* '' */
+.icon-left-circle-1:before { content: '\e820'; } /* '' */
+.icon-right-circle-1:before { content: '\e821'; } /* '' */
+.icon-up-circle-1:before { content: '\e822'; } /* '' */
+.icon-search:before { content: '\e823'; } /* '' */
+.icon-search-1:before { content: '\e824'; } /* '' */
+.icon-search-2:before { content: '\e825'; } /* '' */
+.icon-search-outline:before { content: '\e826'; } /* '' */
+.icon-search-3:before { content: '\e827'; } /* '' */
+.icon-search-4:before { content: '\e828'; } /* '' */
+
+
 @font-face {
 	font-family: 'Proxima';
 	src: url("../fonts/proxima-regular.woff") format("woff");
@@ -67,4 +167,99 @@ body{
 .scraped-users{
 	color:#fff;
 	width:400px;
+}
+
+.main-logo {
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	left: 20px;
+	top: 20px;
+	background: red;
+	width: 100px;
+}
+
+.main-logo img {
+	width:100%;
+}
+
+.legals-footer {
+	position: absolute;
+	right: 0px;
+	bottom: 0px;
+	background-color: white;
+	background-color: rgba(255,255,255, 0.8);
+	height: 1em;
+	line-height: 0.8em;
+}
+
+.legals-footer ul  {
+	padding: 0 10px;
+	text-align: left;
+	margin: 0;
+}
+
+.legals-footer ul li {
+	display: inline-block;
+	padding: 0 10px;
+}
+
+.legals-footer ul li a {
+	font-family: Proxima;
+	font-size: 10px;
+	color: #000;
+	text-decoration: none;
+}
+
+.legals-footer ul li a:hover {
+	text-decoration: underline;
+}
+
+/* Search bar */
+.search-bar {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+}
+
+.search-bar .search-container {
+	box-shadow: 0 0 10px rgba(0,0,0,0.4);
+	overflow: hidden;
+}
+
+.search-bar .search-input-button,
+.search-bar .search-input-item {
+	float: left;
+}
+
+.search-bar .search-input-item input,
+.search-bar .search-input-button button {
+	font-family: Proxima;
+	font-size: 1.1em;
+	height:2em;
+	line-height: 2em;
+	background:white;
+	border: 0;
+	border-radius: 0;
+	width: 4em;
+	outline:0;
+}
+
+.search-bar .search-input-item input {
+	padding: 0 1em;
+	width:10em;
+	-webkit-transition: 0.25s ease-out;
+	-ms-transition: 0.25s ease-out;
+	-moz-transition: 0.25s ease-out;
+	-o-transition: 0.25s ease-out;
+	transition: 0.25s ease-out;
+}
+
+.search-bar .search-input-item input:focus {
+	width: 25em;
+}
+
+.search-bar .search-input-button button {
+	background-color:#286090;
+	color:white;
 }
