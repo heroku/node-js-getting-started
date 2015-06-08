@@ -98,7 +98,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 			}, 250);
 		}
 
-		function onScrollMouseUp(event) {
+		function onScrollMouseUp() {
 			clearTimeout(_hideTimer);
 		}
 

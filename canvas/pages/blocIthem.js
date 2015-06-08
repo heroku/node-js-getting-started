@@ -12,6 +12,8 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus'], function(fontello,
 		var _txt;
 		var _fb;
 		var _tw;
+		var _claim;
+		var _decline;
 		var _id;
 
 		PIXI.DisplayObjectContainer.call(this);
@@ -29,7 +31,6 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus'], function(fontello,
 
 		function build() {
 
-			var _tw, _fb;
 			var _rect = new PIXI.Graphics();
 			_rect.beginFill(0x000000, 1);
 			_rect.lineStyle(1, 0xFFFFFF);
@@ -51,16 +52,28 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus'], function(fontello,
 			_tw.x = ITEM_WIDTH/2+5;
 			_tw.y = (ITEM_HEIGHT+30)/2-15;
 
+			_claim = new BtnSocial(fontello.FACEBOOK_SQUARED, "#00FF00", onClaimCLick);
+            _claim.x = ITEM_WIDTH/2-35;
+            _claim.y = (ITEM_HEIGHT+30)/2-15;
+
+			_decline = new BtnSocial(fontello.TWITTER_SQUARED, "#FF0000", onDeclineCLick);
+            _decline.x = ITEM_WIDTH/2+5;
+            _decline.y = (ITEM_HEIGHT+30)/2-15;
+
 
 			messageBus.addEventListener('ScrollContainer:StartMoving', function(){
 				_tw.disable(0.25, 0);
 				_fb.disable(0.25, 0);
+                _claim.disable(0.25, 0);
+                _decline.disable(0.25, 0);
 			});
 
 			messageBus.addEventListener('ScrollContainer:StopMoving', function(){
 				var delay = Math.random()/3;
 				_tw.enable(0.25, delay);
 				_fb.enable(0.25, delay);
+                _claim.enable(0.25, delay);
+                _decline.enable(0.25, delay);
 			});
 
 
@@ -68,6 +81,8 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus'], function(fontello,
 			_scope.addChild(_itemText);
 			_scope.addChild(_fb);
 			_scope.addChild(_tw);
+			_scope.addChild(_claim);
+			_scope.addChild(_decline);
 			// _itemText.visible = false;
 		}
 
@@ -80,6 +95,70 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus'], function(fontello,
 			console.log(">>"+"/auth/facebook/register/" + _id);
 			parent.location = "/auth/facebook/register/" + _id;
 		}
+
+        /**
+         * Claim button callback
+         * @param event
+         */
+		function onClaimCLick(event) {
+            alert('claim');
+		}
+
+        /**
+         * Decline button callback
+         * @param event
+         */
+		function onDeclineCLick(event) {
+            alert('decline');
+		}
+
+        /**
+         * Hide social buttons
+         */
+		this.hideSocials = function() {
+            _fb.hideElement();
+            _tw.hideElement();
+        };
+
+        /**
+         * Show social buttons
+         */
+		this.showSocials = function() {
+            _fb.showElement();
+            _tw.showElement();
+        };
+
+        /**
+         * Hide claim/decline buttons
+         */
+		this.hideClaims = function() {
+            _claim.hideElement();
+            _decline.hideElement();
+        };
+
+        /**
+         * Show claim/decline buttons
+         */
+		this.showClaims = function() {
+            _claim.showElement();
+            _decline.showElement();
+        };
+
+        /**
+         * Switch show/hide social buttons
+         * @param show
+         */
+        this.setSocials = function(show){
+            this[show ? 'showSocials' : 'hideSocials']();
+        };
+
+        /**
+         * Switch show/hide claim/decline buttons
+         * @param isClaimed
+         */
+        this.setClaim = function(isClaimed){
+            this[isClaimed ? 'showClaims' : 'hideClaims']();
+        };
 
 		this.update = function(id) {
 			_id = _txt = id;

@@ -52,8 +52,14 @@ define('bloc', ["blocIthem"], function(BlocIthem) {
 					var img = main.martixRange[id].picture;// + "?n=" +
 					// Math.random() *
 					// 1000000;
-					_items[i].update(id);
-					_items[i].updateImage(img);
+
+					if( _items[i] ){
+						_items[i].setSocials(main.martixRange[id]._id ? false : true);
+						_items[i].setClaim(main.martixRange[id].claim === false);
+						_items[i].update(id);
+						_items[i].updateImage(img);
+					}
+
 				}
 			}
 		};

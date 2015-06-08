@@ -12,6 +12,8 @@ define('btnSocial', function(){
 
         var _btn, _text;
 
+        this.isHide = false;
+
         _btn = new PIXI.Graphics();
         _btn.beginFill(0xFF0000, 0);
         _btn.drawRect(0, 0, w || 30, h || 30);
@@ -43,6 +45,11 @@ define('btnSocial', function(){
      * @param delay
      */
     BtnSocial.prototype.enable = function(speed, delay){
+
+        if( this.isHide ){
+            return;
+        }
+
         var speed, delay;
 
         speed = speed || 0.25;
@@ -53,11 +60,32 @@ define('btnSocial', function(){
     };
 
     /**
+     * Hide button
+     */
+    BtnSocial.prototype.hideElement = function(){
+        this.visible = false;
+        this.isHide = true;
+    };
+
+    /**
+     * Show button
+     */
+    BtnSocial.prototype.showElement = function(){
+        this.visible = true;
+        this.isHide = false;
+    };
+
+    /**
      * fadeOut with disable actions
      * @param speed
      * @param delay
      */
     BtnSocial.prototype.disable = function(speed, delay){
+
+        if( this.isHide ){
+            return;
+        }
+
         var speed, delay;
 
         speed = speed || 0.25;

@@ -1,6 +1,6 @@
 var main = main || {};
 
-define('main', ['map'], function(Map) {
+define('main', ['map', 'messageBus'], function(Map, messageBus) {
 
 	var _main = function(args) {
 
@@ -42,6 +42,12 @@ define('main', ['map'], function(Map) {
 			}
 			onReady();
 
+			_renderer.view.addEventListener('mouseleave', function(event){
+				 //trigger only on window leave
+				//if( event.toElement === null || event.toElement === document.getElementsByTagName('html')[0] ){
+					messageBus.emit('renderer:mouseleave');
+				//}
+			});
 		}
 
 		function onReady() {

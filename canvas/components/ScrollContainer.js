@@ -194,6 +194,7 @@ define('ScrollContainer', ['Gesture', 'messageBus'], function(Gesture, messageBu
 			_scope.interactive = true;
 			_scope.mousedown = _scope.touchstart = onDown;
 			_scope.mouseup = _scope.touchend = onUp;
+            messageBus.addEventListener('renderer:mouseleave', onMouseleave);
 		}
 
 		this.isDown = function() {
@@ -228,6 +229,10 @@ define('ScrollContainer', ['Gesture', 'messageBus'], function(Gesture, messageBu
 				this.progressCallBack(_val);
 			}
 		};
+
+		function onMouseleave(event) {
+            onUp();
+        }
 
 		function onDown(event) {
 			_event = event;
