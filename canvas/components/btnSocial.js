@@ -46,9 +46,9 @@ define('btnSocial', function(){
      */
     BtnSocial.prototype.enable = function(speed, delay){
 
-        if( this.isHide ){
-            return;
-        }
+        //if( this.isHide ){
+        //    return;
+        //}
 
         var speed, delay;
 
@@ -82,9 +82,9 @@ define('btnSocial', function(){
      */
     BtnSocial.prototype.disable = function(speed, delay){
 
-        if( this.isHide ){
-            return;
-        }
+        //if( this.isHide ){
+        //    return;
+        //}
 
         var speed, delay;
 
