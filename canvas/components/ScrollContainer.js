@@ -240,6 +240,15 @@ define('ScrollContainer', ['Gesture', 'messageBus'], function(Gesture, messageBu
 
 		function onUp() {
 			_isDown = false;
+
+			_scope.dispatchEvent({type : "up"});
+
+			setTimeout(function(){
+				if( !moved ){
+					messageBus.emit('ScrollContainer:StopMoving');
+				}
+			}, 100);
+
 			if (_type == ScrollContainerType.SLIDER) {
 				var _newPos = _event.getLocalPosition(_stage);
 				var _delta = (_oldPos.x - _newPos.x);
