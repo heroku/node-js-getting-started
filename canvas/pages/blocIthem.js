@@ -1,4 +1,4 @@
-define('blocIthem', ['font-icons', 'btn-social', 'messageBus'], function(fontello, BtnSocial, messageBus) {
+define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus'], function(fontello, BtnSocial, messageBus) {
 
 	var _blocIthem = function() {
 
@@ -38,6 +38,9 @@ define('blocIthem', ['font-icons', 'btn-social', 'messageBus'], function(fontell
 			_scope.addChild(_rect);
 
 			_item = new PIXI.Sprite(new PIXI.Texture(new PIXI.BaseTexture()));
+			_item.x = (ITEM_WIDTH-150)/2;
+			_item.y = (ITEM_HEIGHT-150)/2;
+
 			_itemText = new PIXI.Text("#", {font : "25px Proxima", fill : "#ffffff"});
 
 			_fb = new BtnSocial(fontello.FACEBOOK_SQUARED, "#3a5795", onFBCLick);
@@ -86,15 +89,34 @@ define('blocIthem', ['font-icons', 'btn-social', 'messageBus'], function(fontell
 		};
 
 		this.updateImage = function(img) {
-			_item.texture.destroy();
-			_item.texture = new PIXI.Texture(PIXI.Texture.fromImage(img));
+
+			// Methode 2
+			//var texture = new PIXI.Texture(PIXI.Texture.fromImage(img));
+			//_item.texture.destroy();
+			//_item.texture = texture;
+
+			// @TODO: display loader while image loading
+
+			// Methode 3
+			var loader = new PIXI.ImageLoader(img);
+			loader.onLoaded = function(){
+				var texture = PIXI.TextureCache[img];
+				_item.texture = texture;
+
+				_item.width = 150;
+				_item.height = 150;
+			};
+			loader.load();
+
 			// _item.visible = false;
 			// console.log(((_scope !== null)? _scope.x:"") + "," + (
 			// (_scope.parent !==null) ? _scope.parent.x: "" )+ "," +(
 			// (_scope.parent.parent !==null) ? _scope.parent.parent .x: ""));
 		};
 
+
 	};
+
 
 	_blocIthem.prototype = Object.create(PIXI.DisplayObjectContainer.prototype);
 

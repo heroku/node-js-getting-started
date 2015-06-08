@@ -20,17 +20,19 @@
         </ul>
     </div>
     <div class="search-bar">
-        <div class="search-container">
-            <div class="search-input-item">
-                <input id="search-field" type="search" placeholder="Rechercher..."/>
+        <form action="#">
+            <div class="search-container">
+                <div class="search-input-item">
+                    <input id="search-field" type="search" placeholder="Rechercher..."/>
+                </div>
+                <div class="search-input-button">
+                    <button class="icon-search"></button>
+                </div>
             </div>
-            <div class="search-input-button">
-                <button class="icon-search"></button>
+            <div class="completion-container">
+                <div class="completion-result"></div>
             </div>
-        </div>
-        <div class="completion-container">
-            <div class="completion-result"></div>
-        </div>
+        </form>
     </div>
     <div id="fb-root"></div>
 <script>(function(d, s, id) {

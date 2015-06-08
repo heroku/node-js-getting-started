@@ -1,4 +1,4 @@
-define('map', ["ScrollContainer", "bloc", "components/services"], function(ScrollContainer, Bloc, Services) {
+define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], function(ScrollContainer, Bloc, Services, messageBus) {
 
 	var _map = function() {
 
@@ -23,6 +23,7 @@ define('map', ["ScrollContainer", "bloc", "components/services"], function(Scrol
 		var _idRangeY = 0;
 		var _ID = 0;
 		var ID = 0;
+		var _hideTimer = null;
 		var _services = new Services();
 
 		PIXI.DisplayObjectContainer.call(this);
@@ -49,6 +50,7 @@ define('map', ["ScrollContainer", "bloc", "components/services"], function(Scrol
 
 			_scrollObject = new ScrollContainer(ScrollContainerType.SCROLL, main.stage);
 			_scrollObject.addEventListener("down", onScrollMouseDown);
+			_scrollObject.addEventListener("up", onScrollMouseUp);
 			_scope.addChild(_scrollObject);
 
 			var _posx = 0;
@@ -89,6 +91,15 @@ define('map', ["ScrollContainer", "bloc", "components/services"], function(Scrol
 
 		function onScrollMouseDown(event) {
 			initPosItems();
+
+			clearTimeout(_hideTimer);
+			_hideTimer = setTimeout(function(){
+				messageBus.emit('ScrollContainer:StartMoving');
+			}, 250);
+		}
+
+		function onScrollMouseUp(event) {
+			clearTimeout(_hideTimer);
 		}
 
 		function replaceItem() {
