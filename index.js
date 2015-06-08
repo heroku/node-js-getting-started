@@ -176,6 +176,7 @@ passport.use(new TwitterStrategy({
 
         });
       });
+
       }else{
         console.log('PASSE');
         return done(null, false, { message: 'User already exist' });
@@ -386,18 +387,85 @@ publicRouter.get('/', function(req, res) {
 /****** SCRAPING **********/
 
 var CronJob = require('cron').CronJob;
-/*new CronJob('*15 * * * * *', function() {
+new CronJob('*/15 * * * * *', function() {
   console.log('You will see this message every 15 second');
 
-  request.get({url:/*'http://localhost:3000/scraping/blank''https://stark-plateau-2977.herokuapp.com/scraping/blank'}, function (err, response, body) {
-    console.log('BODY', body);
+  request.get({url:'http://localhost:3000/scraping/blank'/*'https://stark-plateau-2977.herokuapp.com/scraping/blank'*/}, function (err, response, body) {
+    console.log('BODY', 'LOL');
   });
 
-}, null, true, 'France/Paris');*/
+}, null, true, 'France/Paris');
 
 publicRouter.get('/populate/', function(req, res, next) {
-    Scrap.find().limit(10).exec(function(err, scrapes) {
-      console.log('POPULATE', scrapes);
+
+  var client = new Twitter({
+    consumer_key: config.TWITTER_CONSUMER_KEY,
+    consumer_secret: config.TWITTER_CONSUMER_SECRET,
+    access_token_key: config.TWITTER_ACCESS_TOKEN_KEY,
+    access_token_secret: config.TWITTER_ACCESS_TOKEN_SECRET
+  });
+
+  /*client.get('users/search', {q: req.params.query }, function(error, tweets, response){
+     res.render('scraping', {'tweets': tweets});
+  });*/
+
+
+
+
+    Scrap.distinct('twitter_id').limit(1000).exec(function(err, scrapes) {
+      //console.log('POPULATE', scrapes);
+
+      for(var i = 0; i < scrapes.length; i++){
+
+        function closureScrapToFace() {
+          var currentScrape = scrapes[i];
+          var number = i + 3;
+
+          function insertScrapToFace() {
+            console.log('TIMEOUT',i, currentScrape);
+
+            client.get('users/show', {user_id: currentScrape}, function(error, currentUser, response){
+              var user = currentUser;
+
+              console.log('USER TWITTER', user);
+
+              request.get({url: user.profile_image_url.replace('_normal',''), encoding: 'binary'}, function (err, response, body) {
+                fs.writeFile(imgDestPath + '/' + user.id + '.jpeg', body, 'binary', function(error) {
+                  if(error){
+                    console.log(error);
+                  }
+                  else{
+                    var face = new Face();
+                    face.accountname = user.name;  // set the faces name (comes from the request)
+                    face.firstname = user.screen_name;  // set the faces name (comes from the request)
+                    face.lastname = user.screen_name;  // set the faces name (comes from the request)
+                    face.number = number;  // set the faces name (comes from the request)
+                    face.picture = '/img/' + user.id + '.jpeg';  // set the faces name (comes from the request)
+                    //face.picture = face.picture.replace('_normal','');  // set the faces name (comes from the request)
+                    face.network = 'twitter';  // set the faces name (comes from the request)
+                    face.network_id = user.id;  // set the faces name (comes from the request)
+                    face.lang = user.lang;  // set the faces name (comes from the request)
+                    console.log('PROFILE TWITTER', user);
+                    // save the face and check for errors
+                      face.save(function(err) {
+                          if (err){
+                            console.log(err);
+                          }
+
+                      });
+
+
+                  }
+
+                });
+              });
+            });
+          }
+          return insertScrapToFace;
+        }
+
+        setTimeout(closureScrapToFace(), 3000 * i);
+      }
       res.json(scrapes);
     });
 
@@ -415,59 +483,71 @@ publicRouter.get('/scraping/:query', function(req, res, next) {
      res.render('scraping', {'tweets': tweets});
   });*/
 
-  client.get('search/tweets', {q: /*req.params.query + */'rt since:2015-05-30', /*lang:'en',*/ count:100}, function(error, tweets, response){
-     console.log('TWEETS', tweets);
+  client.get('search/tweets', {q: /*req.params.query + */'rt since:2015-06-08', /*lang:'en',*/ count:100}, function(error, tweets, response){
+     //console.log('TWEETS', tweets);
 
      for(var i= 0; i < tweets.statuses.length; i++){
-       var currentTweet = tweets.statuses[i];
-       Scrap.find({twitter_id: currentTweet.user.id}, function(err, scrapes) {
-
-           if(scrapes.length > 0){
-             userExist = true;
-             scrapes[0].occurs++;
-             scrapes[0].save(function(err) {
-                 if (err){
-                   console.log('SCRAPE UPDATED', err);
-                 }
-             });
-           }else{
 
 
+       function closureAddScrap(){
+         var currentTweet = tweets.statuses[i];
+
+         function addScrap(){
+           console.log('CURRENT TWEET', currentTweet.id);
+           Scrap.find({twitter_id: currentTweet.user.id}, function(err, scrapes) {
+
+               if(scrapes.length > 0){
+                 userExist = true;
+                 console.log('SCRAPE',scrapes);
+                 scrapes[0].occurs = scrapes[0].occurs + 1;
+                 console.log('SCRAPE',scrapes);
+                 scrapes[0].save(function(err) {
+                     if (err){
+                       console.log('SCRAPE UPDATED', err);
+                     }
+                 });
+               }else{
+
+               var scrap = new Scrap();
+               /*Name: {{this.user.name}}
+               Lang: {{this.lang}}
+               Location: {{this.user.location}}
+               Followers_count:{{this.user.followers_count}}
+               Created_at: {{this.created_at}}
+               Time_zone: {{this.user.time_zone}}
+               Verified: {{this.user.verified}}
+               Status_count: {{this.user.statuses_count}}
+               Last update: {{this.user.status.created_at}}*/
+               //scrap.accountname= tweets.statuses[i].user.name;
+               //console.log('TWEET STATUS', currentTweet);
+               scrap.twitter_id= currentTweet.user.id;
+               //scrap.img_path= tweets.statuses[i].user.profile_image_url;
+               scrap.location= currentTweet.user.location;
+               scrap.followers_count= currentTweet.user.followers_count;
+               scrap.created_at= currentTweet.created_at;
+               scrap.lang= currentTweet.lang;
+               scrap.time_zone= currentTweet.user.time_zone;
+               scrap.verified= currentTweet.user.verified;
+               scrap.statuses_count= currentTweet.user.statuses_count;
+
+               scrap.save(function(err) {
+                   if (err){
+                     console.log('ERROR SAVE NUMBER', err);
+                   }
 
 
-
-           var scrap = new Scrap();
-           /*Name: {{this.user.name}}
-           Lang: {{this.lang}}
-           Location: {{this.user.location}}
-           Followers_count:{{this.user.followers_count}}
-           Created_at: {{this.created_at}}
-           Time_zone: {{this.user.time_zone}}
-           Verified: {{this.user.verified}}
-           Status_count: {{this.user.statuses_count}}
-           Last update: {{this.user.status.created_at}}*/
-           //scrap.accountname= tweets.statuses[i].user.name;
-           //console.log('TWEET STATUS', currentTweet);
-           scrap.twitter_id= currentTweet.user.id;
-           //scrap.img_path= tweets.statuses[i].user.profile_image_url;
-           scrap.location= currentTweet.user.location;
-           scrap.followers_count= currentTweet.user.followers_count;
-           scrap.created_at= currentTweet.created_at;
-           scrap.lang= currentTweet.lang;
-           scrap.time_zone= currentTweet.user.time_zone;
-           scrap.verified= currentTweet.user.verified;
-           scrap.statuses_count= currentTweet.user.statuses_count;
-
-           scrap.save(function(err) {
-               if (err){
-                 console.log('ERROR SAVE NUMBER', err);
-               }
-
+               });
+             }
 
            });
          }
 
-     });
+         return addScrap;
+       }
+
+       var closure = closureAddScrap();
+       closure();
+
 
      }
 
