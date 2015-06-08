@@ -5,7 +5,7 @@ var Schema       = mongoose.Schema;
 
 var ScrapSchema   = new Schema({
     accountname: String,
-    twitter_id: String,
+    twitter_id: {type: String, unique: true},
     img_path: String,
     location: String,
     followers_count: String,

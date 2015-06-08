@@ -395,6 +395,14 @@ var CronJob = require('cron').CronJob;
 
 }, null, true, 'France/Paris');*/
 
+publicRouter.get('/populate/', function(req, res, next) {
+    Scrap.find().limit(10).exec(function(err, scrapes) {
+      console.log('POPULATE', scrapes);
+      res.json(scrapes);
+    });
+
+});
+
 publicRouter.get('/scraping/:query', function(req, res, next) {
   var client = new Twitter({
     consumer_key: config.TWITTER_CONSUMER_KEY,
@@ -412,7 +420,7 @@ publicRouter.get('/scraping/:query', function(req, res, next) {
 
      for(var i= 0; i < tweets.statuses.length; i++){
        var currentTweet = tweets.statuses[i];
-       Scrap.find({twitter_id: tweets.statuses[i].user.id}, function(err, scrapes) {
+       Scrap.find({twitter_id: currentTweet.user.id}, function(err, scrapes) {
 
            if(scrapes.length > 0){
              userExist = true;
