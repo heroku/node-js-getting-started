@@ -390,7 +390,7 @@ var CronJob = require('cron').CronJob;
 new CronJob('*/15 * * * * *', function() {
   console.log('You will see this message every 15 second');
 
-  request.get({url:'http://localhost:3000/scraping/blank'/*'https://stark-plateau-2977.herokuapp.com/scraping/blank'*/}, function (err, response, body) {
+  request.get({url:/*'http://localhost:3000/scraping/blank'*/'https://stark-plateau-2977.herokuapp.com/scraping/blank'}, function (err, response, body) {
     console.log('BODY', 'LOL');
   });
 
