@@ -1,6 +1,6 @@
 var main = main || {};
 
-define('main', ['map', 'messageBus'], function(Map, messageBus) {
+define('main', ['map', 'messageBus', "components/services"], function(Map, messageBus, Services) {
 
 	var _main = function(args) {
 
@@ -30,6 +30,7 @@ define('main', ['map', 'messageBus'], function(Map, messageBus) {
 		var _viewPosY;
 		var _canvas = args[0];
 		var _data = args[1];
+		var _services = new Services();
 		//
 
 		function init() {
@@ -145,6 +146,15 @@ define('main', ['map', 'messageBus'], function(Map, messageBus) {
 				stat();
 			}
 		}
+
+		function initSearch(){
+			$('.search-input-button button').on('click', function(){
+				_services.searchFaces($('#search-field').val(), function(data,query){
+						console.log('SEARCH RESULTS', data);
+				});
+			});
+		}
+
 
 		function processFrame() {
 			requestAnimFrame(processFrame);

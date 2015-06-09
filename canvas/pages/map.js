@@ -172,12 +172,18 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 
 		function getFaces(id, x, y) {
 
+      var ranges = _ranges[x + "," + y];
+      var number = ranges[0].number;
+
+      console.log('NUMBER TO CALL', number);
+
 			_blocs[id].setValue(_ranges[x + "," + y]);
-			_services.getFaces(x, y, onGetFaces, id);
+			_services.getFaces(number, onGetFaces, id);
 			// return _ranges[x + "," + y];
 		}
 
 		function onGetFaces(data, id) {
+      console.log('DATA', data);
 			for (var i = 0; i < data.length; i++) {
 				if (data[i].number) {
 					main.martixRange[data[i].number] = data[i];

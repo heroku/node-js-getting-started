@@ -359,11 +359,27 @@ router.route('/faces')
 
         // on routes that end in /faces/:face_id
         // ----------------------------------------------------
-        router.route('/faces/:x/:y')
+        router.route('/faces_by_number/:number')
 
             // get the face with that id (accessed at GET http://localhost:8080/api/faces/:face_id)
             .get(function(req, res) {
-                Face.find(function(err, faces) {
+                Face.find({number:{$gt:(req.params.number - 1),$lt:(req.params.number + config.faces_by_request)}}).limit(config.faces_by_request).exec(function(err, faces) {
+                    console.log('FACES BY NUMBER', faces);
+                    if (err)
+                        res.send(err);
+                    res.json(faces);
+                });
+            });
+
+        // on routes that end in /faces/search/:query
+        // ----------------------------------------------------
+        router.route('/faces/search/:query')
+
+            .get(function(req, res) {
+              var regex = new RegExp(req.params.query, "i");
+              
+                Face.find({accountname: regex}).limit(config.faces_by_search).exec(function(err, faces) {
+                    console.log('FACES BY NUMBER', faces);
                     if (err)
                         res.send(err);
                     res.json(faces);
@@ -395,6 +411,23 @@ var CronJob = require('cron').CronJob;
   });
 
 }, null, true, 'France/Paris');*/
+
+publicRouter.get('/initnumbers/', function(req, res, next) {
+  Face.find(function(err, faces) {
+    console.log('FACES LENGTH', faces.length);
+    var nb = 1;
+
+    for(var i = 0; i < faces.length; i++){
+      faces[i].number = nb;
+      faces[i].save(function(err){
+        console.log('ERREUR', err);
+      });
+      nb = nb + 3;
+    }
+
+    res.json(faces);
+  });
+});
 
 publicRouter.get('/populate/', function(req, res, next) {
 
