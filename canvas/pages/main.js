@@ -154,12 +154,15 @@ define('main', ['map', 'messageBus', "components/services"], function(Map, messa
 
 		function initSearch(){
 
-			$('#form-search').on('submit', function(e){
-				var $form = $(this);
+            var $field = $('#search-field');
+            var $form = $('#form-search');
+
+            $form.on('submit', function(e){
 				e.preventDefault();
+                $field.blur();
 
 				console.log('SERIALIZE', $form.serializeArray());
-				_services.searchFaces($('#search-field').val(), function(data,query){
+				_services.searchFaces($field.val(), function(data,query){
 						console.log('SEARCH RESULTS', data);
 				});
 
