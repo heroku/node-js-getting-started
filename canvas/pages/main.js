@@ -141,18 +141,26 @@ define('main', ['map', 'messageBus', "components/services"], function(Map, messa
 			//if(_data.editedFace){
 				editFace();
 			//}
-
+			initSearch();
+			
 			if (_statEnabled) {
 				stat();
 			}
 		}
 
 		function initSearch(){
-			$('.search-input-button button').on('click', function(){
+
+			$('#form-search').on('submit', function(e){
+				var $form = $(this);
+				e.preventDefault();
+
+				console.log('SERIALIZE', $form.serializeArray());
 				_services.searchFaces($('#search-field').val(), function(data,query){
 						console.log('SEARCH RESULTS', data);
 				});
+
 			});
+
 		}
 
 
