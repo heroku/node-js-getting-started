@@ -1,5 +1,7 @@
 define('cacheControl', function(){
 
+    //@TODO: à tester
+
     /**
      * Request cached holder
      * @type {{}}

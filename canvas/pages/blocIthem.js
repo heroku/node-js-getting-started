@@ -97,12 +97,14 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 		}
 
 		function updateRectColor(id){
+
 			var color = colorMapping.getColorByBoxNumber(id);
-			console.log(color);
+
+			_rect.clear();
 			_rect.beginFill(color, 1);
-			//_rect.lineStyle(1, 0xFFFFFF);
 			_rect.drawRect(0, 0, ITEM_WIDTH, ITEM_HEIGHT);
 			_rect.endFill();
+
 		}
 
         /**
