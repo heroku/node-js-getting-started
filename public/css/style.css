@@ -124,6 +124,16 @@ body{
 	background-color: #000000;
 }
 
+.loading-container {
+	position: fixed;
+	left: 0;
+	top:0;
+	width: 100%;
+	height:100%;
+	background-color: black;
+	z-index: 999;
+}
+
 .loading {
 	position: absolute;
 	top: 50%;

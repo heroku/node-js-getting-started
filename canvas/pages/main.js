@@ -126,6 +126,10 @@ define('main', ['map', 'messageBus', "components/services"], function(Map, messa
 
 		function start() {
 
+			var loader = $('.loading-container').get(0);
+			TweenLite.to(loader, 0.25, {opacity:0, onComplete: function(){
+				TweenLite.set(loader, {display:'none'});
+			}});
 			console.log("<< start >>");
 
 			// DATA ARG
