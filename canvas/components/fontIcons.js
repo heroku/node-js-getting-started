@@ -78,6 +78,11 @@ define('fontIcons', function(){
     icons.SEARCH_4          = Tools.hexDecode("\e828");
     icons.SEARCH_OUTLINE    = Tools.hexDecode("\e826");
 
+    icons.FOOD              = Tools.hexDecode("\e829");
+
+    icons.OK_SQUARED        = Tools.hexDecode("\e82a");
+    icons.CANCEL_SQUARED    = Tools.hexDecode("\e82b");
+
     // autoload font
     icons.load();
 

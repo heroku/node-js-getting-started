@@ -51,11 +51,11 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 			_tw.x = ITEM_WIDTH/2+5;
 			_tw.y = (ITEM_HEIGHT+30)/2-15;
 
-			_claim = new BtnSocial(fontello.FACEBOOK_SQUARED, "#00FF00", onClaimCLick);
+			_claim = new BtnSocial(fontello.OK_SQUARED, "#00EE00", onClaimCLick);
             _claim.x = ITEM_WIDTH/2-35;
             _claim.y = (ITEM_HEIGHT+30)/2-15;
 
-			_decline = new BtnSocial(fontello.TWITTER_SQUARED, "#FF0000", onDeclineCLick);
+			_decline = new BtnSocial(fontello.CANCEL_SQUARED, "#EE0000", onDeclineCLick);
             _decline.x = ITEM_WIDTH/2+5;
             _decline.y = (ITEM_HEIGHT+30)/2-15;
 
