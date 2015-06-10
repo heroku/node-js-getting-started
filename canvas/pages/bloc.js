@@ -49,7 +49,7 @@ define('bloc', ["blocIthem"], function(BlocIthem) {
 				if (data[i].number) {
 					var id = data[i].number;
 					// console.log(main.martixRange[id]);
-					var img = main.martixRange[id].picture;// + "?n=" +
+					var img = main.martixRange[id].picture || "img/noimage.jpg";// + "?n=" +
 					// Math.random() *
 					// 1000000;
 
@@ -57,10 +57,7 @@ define('bloc', ["blocIthem"], function(BlocIthem) {
 						_items[i].setSocials(typeof main.martixRange[id].claim === 'undefined');
 						_items[i].setClaim(main.martixRange[id].claim === false);
 						_items[i].update(id);
-						if(img){
-							_items[i].updateImage(img);
-						}
-
+						_items[i].updateImage(img);
 					}
 
 				}
