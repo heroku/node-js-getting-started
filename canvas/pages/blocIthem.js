@@ -1,10 +1,12 @@
-define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus'], function(fontello, BtnSocial, messageBus) {
+define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], function(fontello, BtnSocial, messageBus, colorMapping) {
 
-	var _blocIthem = function() {
+	var _blocIthem = function(ITEM_WIDTH, ITEM_HEIGHT) {
 
 		// CONST
-		var ITEM_WIDTH = 256;
-		var ITEM_HEIGHT = 256;
+		//var ITEM_WIDTH = 154;
+		//var ITEM_HEIGHT = 154;
+		var PICTURE_WIDTH = ITEM_WIDTH-4;
+		var PICTURE_HEIGHT = ITEM_HEIGHT-4;
 
 		var _scope;
 		var _item;
@@ -15,6 +17,7 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus'], function(fontello,
 		var _claim;
 		var _decline;
 		var _id;
+		var _rect;
 
 		PIXI.DisplayObjectContainer.call(this);
 		_scope = this;
@@ -31,16 +34,12 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus'], function(fontello,
 
 		function build() {
 
-			var _rect = new PIXI.Graphics();
-			_rect.beginFill(0x000000, 1);
-			_rect.lineStyle(1, 0xFFFFFF);
-			_rect.drawRect(2, 2, ITEM_WIDTH - 4, ITEM_HEIGHT - 4);
-			_rect.endFill();
-			_scope.addChild(_rect);
+			_rect = new PIXI.Graphics();
+			updateRectColor(0);
 
 			_item = new PIXI.Sprite(new PIXI.Texture(new PIXI.BaseTexture()));
-			_item.x = (ITEM_WIDTH-150)/2;
-			_item.y = (ITEM_HEIGHT-150)/2;
+			_item.x = Math.round((ITEM_WIDTH-PICTURE_WIDTH)/2);
+			_item.y = Math.round((ITEM_HEIGHT-PICTURE_HEIGHT)/2);
 
 			_itemText = new PIXI.Text("#", {font : "25px Proxima", fill : "#ffffff"});
 
@@ -52,11 +51,11 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus'], function(fontello,
 			_tw.x = ITEM_WIDTH/2+5;
 			_tw.y = (ITEM_HEIGHT+30)/2-15;
 
-			_claim = new BtnSocial(fontello.FACEBOOK_SQUARED, "#00FF00", onClaimCLick);
+			_claim = new BtnSocial(fontello.OK_SQUARED, "#00EE00", onClaimCLick);
             _claim.x = ITEM_WIDTH/2-35;
             _claim.y = (ITEM_HEIGHT+30)/2-15;
 
-			_decline = new BtnSocial(fontello.TWITTER_SQUARED, "#FF0000", onDeclineCLick);
+			_decline = new BtnSocial(fontello.CANCEL_SQUARED, "#EE0000", onDeclineCLick);
             _decline.x = ITEM_WIDTH/2+5;
             _decline.y = (ITEM_HEIGHT+30)/2-15;
 
@@ -77,6 +76,7 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus'], function(fontello,
 			});
 
 
+			_scope.addChild(_rect);
 			_scope.addChild(_item);
 			_scope.addChild(_itemText);
 			_scope.addChild(_fb);
@@ -94,6 +94,17 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus'], function(fontello,
 		function onFBCLick(event) {
 			console.log(">>"+"/auth/facebook/register/" + _id);
 			parent.location = "/auth/facebook/register/" + _id;
+		}
+
+		function updateRectColor(id){
+
+			var color = colorMapping.getColorByBoxNumber(id);
+
+			_rect.clear();
+			_rect.beginFill(color, 1);
+			_rect.drawRect(0, 0, ITEM_WIDTH, ITEM_HEIGHT);
+			_rect.endFill();
+
 		}
 
         /**
@@ -162,6 +173,7 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus'], function(fontello,
 
 		this.update = function(id) {
 			_id = _txt = id;
+			updateRectColor(id);
 			_itemText.setText(_txt);
 			_item.texture.destroy();
 			_item.texture = new PIXI.Texture(new PIXI.BaseTexture());
@@ -182,8 +194,8 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus'], function(fontello,
 				var texture = PIXI.TextureCache[img];
 				_item.texture = texture;
 
-				_item.width = 150;
-				_item.height = 150;
+				_item.width = PICTURE_WIDTH;
+				_item.height = PICTURE_HEIGHT;
 			};
 			loader.load();
 

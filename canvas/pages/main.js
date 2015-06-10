@@ -1,6 +1,6 @@
 var main = main || {};
 
-define('main', ['map', 'messageBus', "components/services"], function(Map, messageBus, Services) {
+define('main', ['map', 'messageBus', "components/services", 'searchBar'], function(Map, messageBus, Services, SearchBar) {
 
 	var _main = function(args) {
 
@@ -126,6 +126,19 @@ define('main', ['map', 'messageBus', "components/services"], function(Map, messa
 
 		function start() {
 
+			var loader = $('.loading-container').get(0);
+			TweenLite.to(loader, 0.25, {opacity:0, onComplete: function(){
+				TweenLite.set(loader, {display:'none'});
+			}});
+
+            var search = new SearchBar();
+
+            search.onSubmit(function(e, value){
+                _services.searchFaces(value, function(data,query){
+                    console.log('SEARCH RESULTS', data);
+                });
+            });
+
 			console.log("<< start >>");
 
 			// DATA ARG
@@ -149,17 +162,6 @@ define('main', ['map', 'messageBus', "components/services"], function(Map, messa
 		}
 
 		function initSearch(){
-
-			$('#form-search').on('submit', function(e){
-				var $form = $(this);
-				e.preventDefault();
-
-				console.log('SERIALIZE', $form.serializeArray());
-				_services.searchFaces($('#search-field').val(), function(data,query){
-						console.log('SEARCH RESULTS', data);
-				});
-
-			});
 
 		}
 

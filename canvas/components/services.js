@@ -1,28 +1,50 @@
-define('components/services', [], function() {
+define('components/services', ['cacheControl'], function(CacheControl) {
+
+	var cache = new CacheControl();
 
 	var Services = function() {
 
 		this.getFaces = function(number, callback, id) {
 
-			$.getJSON("/api/faces_by_number/" + number, {'id' : id}).done(function(json) {
-				// TODO binding "id"
-				callback(json, id, number);
-			}).fail(function(jqxhr, textStatus, error) {
-				var err = textStatus + ", " + error;
-				console.log("Request Failed: " + err);
-			});
+			var serviceQuery = "/api/faces_by_number/" + number;
+
+			if( cache.checkFromCache(serviceQuery) ){
+				callback(cache.getFromCache(serviceQuery), id, number);
+			}else{
+				$.getJSON(serviceQuery, {'id' : id}).done(function(json) {
+					// TODO binding "id"
+					callback(json, id, number);
+
+                    //@TODO: add result condition. No cache for unclaim boxes
+					cache.cache(serviceQuery, json);
+				}).fail(function(jqxhr, textStatus, error) {
+					var err = textStatus + ", " + error;
+					console.log("Request Failed: " + err);
+				});
+			}
+
 		};
 
 		//search faces by account name or number
 		this.searchFaces = function(query, callback) {
 
-			$.getJSON("/api/faces/search/" + query).done(function(json) {
-				// TODO binding "id"
-				callback(json, query);
-			}).fail(function(jqxhr, textStatus, error) {
-				var err = textStatus + ", " + error;
-				console.log("Request Failed: " + err);
-			});
+			var serviceQuery = "/api/faces/search/" + query;
+
+			if( cache.checkFromCache(serviceQuery) ){
+				callback(query, cache.getFromCache(serviceQuery));
+			}else{
+				$.getJSON(serviceQuery).done(function(json) {
+					// TODO binding "id"
+					callback(json, query);
+
+                    //@TODO: add result condition. No cache for unclaim boxes
+					cache.cache(serviceQuery, json);
+				}).fail(function(jqxhr, textStatus, error) {
+					var err = textStatus + ", " + error;
+					console.log("Request Failed: " + err);
+				});
+			}
+
 		};
 	};
 

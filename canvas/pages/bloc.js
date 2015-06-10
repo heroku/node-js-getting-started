@@ -6,8 +6,8 @@ define('bloc', ["blocIthem"], function(BlocIthem) {
 		PIXI.EventTarget.call(this);
 
 		// CONST
-		var ITEM_WIDTH = 256;
-		var ITEM_HEIGHT = 256;
+		var ITEM_WIDTH = 154;
+		var ITEM_HEIGHT = 154;
 
 		var _scope;
 		var _item;
@@ -29,7 +29,7 @@ define('bloc', ["blocIthem"], function(BlocIthem) {
 			var _posy = 0;
 			for (var i = 0; i < _l; i++) {
 				for (var j = 0; j < _c; j++) {
-					_item = new BlocIthem();
+					_item = new BlocIthem(ITEM_WIDTH, ITEM_HEIGHT);
 					_item.x = _posx;
 					_item.y = _posy;
 					_scope.addChild(_item);
@@ -54,7 +54,7 @@ define('bloc', ["blocIthem"], function(BlocIthem) {
 					// 1000000;
 
 					if( _items[i] ){
-						_items[i].setSocials(main.martixRange[id]._id ? false : true);
+						_items[i].setSocials(typeof main.martixRange[id].claim === 'undefined');
 						_items[i].setClaim(main.martixRange[id].claim === false);
 						_items[i].update(id);
 						_items[i].updateImage(img);
