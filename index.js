@@ -363,7 +363,7 @@ router.route('/faces')
 
             // get the face with that id (accessed at GET http://localhost:8080/api/faces/:face_id)
             .get(function(req, res) {
-                Face.find({number:{$gt:(req.params.number - 1),$lt:(req.params.number + config.faces_by_request)}}).limit(config.faces_by_request).exec(function(err, faces) {
+                Face.find({number:{$gt:(req.params.number - 1),$lt:(req.params.number + config.faces_by_request)}}).sort('number').limit(config.faces_by_request).exec(function(err, faces) {
                     console.log('FACES BY NUMBER', faces);
                     if (err)
                         res.send(err);
@@ -377,7 +377,7 @@ router.route('/faces')
 
             .get(function(req, res) {
               var regex = new RegExp(req.params.query, "i");
-              
+
                 Face.find({accountname: regex}).limit(config.faces_by_search).exec(function(err, faces) {
                     console.log('FACES BY NUMBER', faces);
                     if (err)
