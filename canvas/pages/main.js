@@ -151,11 +151,11 @@ define('main', ['map', 'messageBus', "components/services", 'searchBar'], functi
 			initEvents();
 			requestAnimFrame(processFrame);
 
-			//if(_data.editedFace){
+			if(_data.editedFace){
 				editFace();
-			//}
+			}
 			initSearch();
-			
+
 			if (_statEnabled) {
 				stat();
 			}

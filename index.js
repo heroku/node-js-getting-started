@@ -21,7 +21,7 @@ var methodOverride = require('method-override');
 var flash = require('connect-flash');
 var Twitter = require('twitter');
 var fbgraph = require('fbgraph');
-var _ = require('underscore-express');
+var _ = require('underscore');
 //path.resolve('../omf-client/public/index.html');
 
 //PASSPORT
@@ -363,11 +363,24 @@ router.route('/faces')
 
             // get the face with that id (accessed at GET http://localhost:8080/api/faces/:face_id)
             .get(function(req, res) {
-                Face.find({number:{$gt:(req.params.number - 1),$lt:(req.params.number + config.faces_by_request)}}).sort('number').limit(config.faces_by_request).exec(function(err, faces) {
-                    console.log('FACES BY NUMBER', faces);
-                    if (err)
+                var number = req.params.number;
+                Face.find({number:{$gt:(number - 1),$lt:(number + config.faces_by_request)}}).sort('number').limit(config.faces_by_request).exec(function(err, faces) {
+
+                      //console.log('FACES BY NUMBER', faces);
+                      var tempFaces = _.clone(faces);
+
+                      if (err){
                         res.send(err);
-                    res.json(faces);
+                      }
+                      console.log('NUMBER', number, parseInt(number, 10) + parseInt(config.faces_by_request, 10));
+                      for(var i = number; i < parseInt(number, 10) + parseInt(config.faces_by_request, 10); i++){
+                        if( ! _.find(tempFaces, function(currentFace){ return currentFace.number == i; }) ){
+                          tempFaces.push({'number': i});
+                        }
+                      }
+
+                    tempFaces = _.sortBy(tempFaces, 'number');
+                    res.json(tempFaces);
                 });
             });
 
@@ -393,7 +406,7 @@ publicRouter.get('/', function(req, res) {
         if (err){
           res.send(err);
         }
-        res.render('home', {data:{'faces': faces, 'nbFaces': faces.length, 'currentUser': req.user}});
+        res.render('home', {data:{'nbFaces': faces.length, 'currentUser': req.user}});
         //res.json(faces);
     });
 

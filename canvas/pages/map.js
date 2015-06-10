@@ -175,7 +175,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
       var ranges = _ranges[x + "," + y];
       var number = ranges[0].number;
 
-      console.log('NUMBER TO CALL', number);
+      //console.log('NUMBER TO CALL', ranges);
 
 			_blocs[id].setValue(_ranges[x + "," + y]);
 			_services.getFaces(number, onGetFaces, id);

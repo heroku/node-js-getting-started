@@ -57,7 +57,10 @@ define('bloc', ["blocIthem"], function(BlocIthem) {
 						_items[i].setSocials(typeof main.martixRange[id].claim === 'undefined');
 						_items[i].setClaim(main.martixRange[id].claim === false);
 						_items[i].update(id);
-						_items[i].updateImage(img);
+						if(img){
+							_items[i].updateImage(img);
+						}
+
 					}
 
 				}
