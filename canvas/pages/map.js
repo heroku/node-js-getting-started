@@ -8,16 +8,20 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 		var _scrollObject;
 		var _w;
 		var _h;
-		var _c = (Tools.getDevice() == "desktop") ? 3 : 2;
-		var _l = (Tools.getDevice() == "desktop") ? 3 : 2;
+		// nb col to display
+		// Must be modified with screen size
+		var _c = (Tools.getDevice() == "desktop") ? 2 : 2;
+		// nb line to display
+		// Must be modified with screen size
+		var _l = (Tools.getDevice() == "desktop") ? 6 : 3;
 		var _id = 0;
 		var _maxWidth = 0;
 		var _maxHeight = 0;
 		var _lastItemX = 0;
 		var _lastItemY = 0;
-		var _rangeLinge = 333;
-		var _rangeColonne = 250;
-		var _rangePage = 12;
+		var _rangeLinge = 1000;
+		var _rangeColonne = 100;
+		var _rangePage = 10;
 		var _ranges = [];
 		var _idRangeX = 0;
 		var _idRangeY = 0;
@@ -39,7 +43,8 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 				for (j = 0; j < _rangeColonne; j++) {
 					var _tmp = [];
 					for (var k = 0; k < _rangePage; k++) {
-						_tmp.push({number : _ID, picture : "img/" + ((_ID === 0) ? "logo.jpg" : parseInt(MathUtils.randomMinMax(0, 15)) + ".jpg")});
+						//_tmp.push({number : _ID, picture : "img/" + ((_ID === 0) ? "logo.jpg" : parseInt(MathUtils.randomMinMax(0, 15)) + ".jpg")});
+						_tmp.push({number : _ID, picture : "img/" + parseInt(MathUtils.randomMinMax(0, 15)) + ".jpg"});
 						main.martixRange[_ID] = {number : _ID, picture : "img/noimage.jpg"};
 						_ID++;
 					}
@@ -47,6 +52,9 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 					_ranges[j + "," + i] = _tmp;
 				}
 			}
+			//console.log('_ID', _ID);
+			//console.log('_ranges', _ranges['0,0']);
+			//console.log('main.martixRange', main.martixRange);
 
 			_scrollObject = new ScrollContainer(ScrollContainerType.SCROLL, main.stage);
 			_scrollObject.addEventListener("down", onScrollMouseDown);
@@ -55,6 +63,8 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 
 			var _posx = 0;
 			var _posy = 0;
+			var rangesPos = [];
+
 			for (i = 0; i < _l; i++) {
 				for (j = 0; j < _c; j++) {
 					_bloc = new Bloc();
@@ -63,7 +73,8 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 					_bloc.idY = _bloc.initidY = i;
 					_bloc.lock0 = _bloc.lock1 = true;
 
-					(getFaces(_id, j, i));
+					rangesPos.push({blocId: _id, range: getRange(j,i)});
+					//(getFaces(_id, j, i));
 
 					_bloc.x = _posx;
 					_bloc.y = _posy;
@@ -82,11 +93,14 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 				}
 			}
 
+			console.log("_blocs", _blocs);
+
 			_lastItemX = _bloc._width;
 			_lastItemY = _bloc._height;
 
 			initPosItems();
 
+			getFacesByRanges(rangesPos);
 		}
 
 		function onScrollMouseDown(event) {
@@ -105,6 +119,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 		function replaceItem() {
 
 			var _tempY, _tempX;
+			var rangesPos = [];
 
 			// Y
 			for (var i = 0; i < _blocs.length; i++) {
@@ -118,7 +133,8 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 						_blocs[i].idY = _rangeLinge + _blocs[i].initidY - _l;
 					}
 
-					(getFaces(i, _blocs[i].idX, _blocs[i].idY));
+					rangesPos.push({blocId: i, range: getRange(_blocs[i].idX, _blocs[i].idY)});
+					//(getFaces(i, _blocs[i].idX, _blocs[i].idY));
 
 				} else if (_tempY < -_lastItemY) {
 					if (_scrollObject.y + (_blocs[i].y + _maxHeight) <= _h) {
@@ -129,7 +145,8 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 							_blocs[i].idY = _blocs[i].initidY;
 						}
 
-						(getFaces(i, _blocs[i].idX, _blocs[i].idY));
+						rangesPos.push({blocId: i, range: getRange(_blocs[i].idX, _blocs[i].idY)});
+						//(getFaces(i, _blocs[i].idX, _blocs[i].idY));
 
 					}
 				}
@@ -144,7 +161,8 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 						_blocs[i].idX = _rangeColonne + _blocs[i].initidX - _c;
 					}
 
-					(getFaces(i, _blocs[i].idX, _blocs[i].idY));
+					rangesPos.push({blocId: i, range: getRange(_blocs[i].idX, _blocs[i].idY)});
+					//(getFaces(i, _blocs[i].idX, _blocs[i].idY));
 
 				} else if (_tempX < -_lastItemX) {
 					if (_scrollObject.x + (_blocs[i].x + _maxWidth) <= _w) {
@@ -155,12 +173,16 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 							_blocs[i].idX = _blocs[i].initidX;
 						}
 
-						(getFaces(i, _blocs[i].idX, _blocs[i].idY));
+						rangesPos.push({blocId: i, range: getRange(_blocs[i].idX, _blocs[i].idY)});
+						//(getFaces(i, _blocs[i].idX, _blocs[i].idY));
 
 					}
 				}
 
 			}
+
+
+			getFacesByRanges(rangesPos);
 		}
 
 		function initPosItems() {
@@ -170,20 +192,50 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 			}
 		}
 
+		function getRange(x, y){
+			return _ranges[x + "," + y];
+		}
+
+		function getFacesByRanges(ranges){
+			var rangeIndex, rangeLength, faceIndex, faceLength;
+			var range = [], faces, id;
+
+            if( !ranges.length){
+                return;
+            }
+
+			for(rangeIndex = 0, rangeLength = ranges.length; rangeIndex<rangeLength; rangeIndex++){
+                id = ranges[rangeIndex].blocId;
+                faces = ranges[rangeIndex].range;
+                for(faceIndex = 0, faceLength = faces.length; faceIndex<faceLength; faceIndex++){
+                    _services.getFaces(faces[faceIndex].number, onGetFaces, id);
+                    _blocs[id].setValue(faces);
+                    //_services.getFacesByRange(range, onGetFaces);
+                    //range.push();
+                }
+			}
+
+            //if( ranges.length){
+            //    console.log(ranges);
+            //}
+		}
+
+
+
 		function getFaces(id, x, y) {
 
       var ranges = _ranges[x + "," + y];
       var number = ranges[0].number;
 
-      //console.log('NUMBER TO CALL', ranges);
+      //console.log('NUMBER TO CALL', number);
 
-			_blocs[id].setValue(_ranges[x + "," + y]);
+			_blocs[id].setValue(ranges);
 			_services.getFaces(number, onGetFaces, id);
 			// return _ranges[x + "," + y];
 		}
 
 		function onGetFaces(data, id) {
-      console.log('DATA', data);
+      //console.log('DATA', data);
 			for (var i = 0; i < data.length; i++) {
 				if (data[i].number) {
 					main.martixRange[data[i].number] = data[i];

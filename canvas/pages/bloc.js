@@ -11,8 +11,8 @@ define('bloc', ["blocIthem"], function(BlocIthem) {
 
 		var _scope;
 		var _item;
-		var _c = 4;
-		var _l = 3;
+		var _c = 10;
+		var _l = 1;
 		var _width = _c * ITEM_WIDTH;
 		var _height = _l * ITEM_HEIGHT;
 		var _id = 0;
@@ -46,7 +46,7 @@ define('bloc', ["blocIthem"], function(BlocIthem) {
 		this.setValue = function(data) {
 
 			for (var i = 0; i < data.length; i++) {
-				if (data[i].number) {
+				if (data[i].number >= 0) {
 					var id = data[i].number;
 					// console.log(main.martixRange[id]);
 					var img = main.martixRange[id].picture || "img/noimage.jpg";// + "?n=" +

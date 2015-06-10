@@ -186,7 +186,7 @@ body{
 	margin: 0;
 	padding: 0;
 	position: absolute;
-	left: 20px;
+	right: 20px;
 	top: 20px;
 	background: red;
 	width: 100px;
@@ -232,7 +232,7 @@ body{
 .search-bar {
 	position: absolute;
 	top: 20px;
-	right: 20px;
+	left: 20px;
 }
 
 .search-bar .search-container {

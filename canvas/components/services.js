@@ -4,6 +4,26 @@ define('components/services', ['cacheControl'], function(CacheControl) {
 
 	var Services = function() {
 
+		this.getFacesByRange = function(range, callback, id) {
+
+			var serviceQuery = "/api/faces_by_range/" + range.toString();
+
+			if( cache.checkFromCache(serviceQuery) ){
+				callback(cache.getFromCache(serviceQuery), id, number);
+			}else{
+				$.getJSON(serviceQuery, {'range' : range}).done(function(json) {
+					// TODO binding "id"
+					callback(json, id, number);
+
+					cache.cache(serviceQuery, json);
+				}).fail(function(jqxhr, textStatus, error) {
+					var err = textStatus + ", " + error;
+					console.log("Request Failed: " + err);
+				});
+			}
+
+		};
+
 		this.getFaces = function(number, callback, id) {
 
 			var serviceQuery = "/api/faces_by_number/" + number;

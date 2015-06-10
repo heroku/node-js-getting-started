@@ -32,7 +32,7 @@ define('cacheControl', function(){
      * @returns {*}
      */
     CacheControl.prototype.getFromCache = function(key){
-        console.log('fromCache', key);
+        //console.log('fromCache', key);
         return _cached[key];
     };
 
@@ -42,7 +42,7 @@ define('cacheControl', function(){
      * @param result
      */
     CacheControl.prototype.cache = function(key, result){
-        console.log('push to cache', key);
+        //console.log('push to cache', key);
         _cached[key] = result;
     };
 
