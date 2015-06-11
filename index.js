@@ -215,6 +215,11 @@ app.engine('handlebars',
   exphbs({
     defaultLayout: 'main',
     helpers: {
+        'checked': function(search, list){
+          var listTab = JSON.parse(list);
+          console.log('PARSE', listTab.length, search);
+          return _.contains(listTab, search, 0) ? 'checked="true"':'';
+        },
         'json': function(context) {
           return JSON.stringify(context);
         },
@@ -325,8 +330,8 @@ router.route('/faces')
                 if (err){
                   res.send(err);
                 }
-                console.log('PARAMS', req.body, face);
-                face.occupation = req.body.occupation;
+                console.log('PARAMS', JSON.stringify(req.body.occupations));
+                face.occupations = JSON.stringify(req.body.occupations);
                 face.lang = req.body.lang;
                 face.website = req.body.website;
                 face.accountname = req.body.accountname;
@@ -378,6 +383,31 @@ router.route('/faces')
                           tempFaces.push({'number': i});
                         }
                       }
+
+                    tempFaces = _.sortBy(tempFaces, 'number');
+                    res.json(tempFaces);
+                });
+            });
+
+        router.route('/faces_by_range/:range')
+
+            // get the face with that id (accessed at GET http://localhost:8080/api/faces/:face_id)
+            .get(function(req, res) {
+                var range = JSON.parse(req.params.range);
+
+                Face.find({number:{$in:range}}).sort('number').limit(config.faces_by_request).exec(function(err, faces) {
+
+                      console.log('FACES BY RANGE', faces);
+                      var tempFaces = _.clone(faces);
+
+                      /*if (err){
+                        res.send(err);
+                      }
+                      for(var i = number; i < parseInt(number, 10) + parseInt(config.faces_by_request, 10); i++){
+                        if( ! _.find(tempFaces, function(currentFace){ return currentFace.number == i; }) ){
+                          tempFaces.push({'number': i});
+                        }
+                      }*/
 
                     tempFaces = _.sortBy(tempFaces, 'number');
                     res.json(tempFaces);
@@ -773,12 +803,18 @@ publicRouter.get('/success/:id', function(req, res, next) {
 /***** EDIT PART *******/
 publicRouter.get('/edit/:number', function(req, res, next) {
 
-  Face.find(function(err, faces) {
+  Face.findOne({'number': req.params.number}, function(err, face) {
       if (err){
         res.send(err);
       }
+      if(face.number == req.user.number){
+        //face.occupations = JSON.parse(face.occupations);
+        console.log('OCCUPATIONS', face.occupations);
+        res.render('home', {data:{'editedFace': face, 'currentUser': req.user}});
+      }else{
+        res.send(err);
+      }
 
-      res.render('register', {'faces': faces, 'nbFaces': (faces.length + 1), 'editedFace': req.params.number, currentUser: req.user});
       //res.json(faces);
   });
 });

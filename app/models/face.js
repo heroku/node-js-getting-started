@@ -14,7 +14,7 @@ var FaceSchema   = new Schema({
     network_id: {type: String, unique:true},
     lang: String,
     website: String,
-    occupation: String,
+    occupations: String,
     claim: {type: Boolean, default: true},
     access_token: String,
     refresh_token: String

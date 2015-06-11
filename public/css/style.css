@@ -276,3 +276,86 @@ body{
 	background-color:#286090;
 	color:white;
 }
+
+.modal-container .modal-dialog {
+  position:absolute;
+  top:50% !important;
+  transform: translate(0, -50%) !important;
+  -ms-transform: translate(0, -50%) !important;
+  -webkit-transform: translate(0, -50%) !important;
+  margin:auto 5%;
+  width:90%;
+  height:80%;
+}
+.modal-container .modal-content {
+  min-height:100%;
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+	width:500px;
+	margin:auto;
+}
+.modal-container .modal-body {
+  position:absolute;
+  top:45px;
+  bottom:45px;
+  left:0;
+  right:0;
+  overflow-y:auto;
+}
+.modal-container .modal-footer {
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+}
+
+/***** CHECKBOX *****/
+input[type=checkbox] {
+  display: none;
+}
+
+/*
+- Style each label that is directly after the input
+- position: relative; will ensure that any position: absolute children will position themselves in relation to it
+*/
+input[type=checkbox] + label {
+  background: url(http://lorempixel.com/output/people-q-c-50-50-1.jpg) no-repeat;
+  height: 50px;
+  width: 50px;
+  display: inline-block;
+  border-radius: 50%;
+  position: relative;
+  transition: all 0.4s;
+  border: solid 5px #FFF;
+  box-shadow: 0 0 1px #FFF; /* Soften the jagged edge */
+}
+
+/* Provide a border when hovered and when the checkbox before it is checked */
+input[type=checkbox] + label:hover,
+input[type=checkbox]:checked + label {
+  border: solid 5px #F00;
+  box-shadow: 0 0 1px #F00; /* Soften the jagged edge */
+	cursor:pointer;
+}
+
+/*
+- Create a pseudo element :after when checked and provide a tick
+- Center the content
+*/
+input[type=checkbox]:checked + label:after {
+  content: '\2714'; /*content is required, though it can be empty - content: '';*/
+  display: block;
+  height: 1em;
+  width: 1em;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  color: #F00;
+}
+/********************/
