@@ -13,6 +13,11 @@
 
 			$(document).ready(function(){
 
+				$('.js-edit-user-submit').on('click', function(e){
+					e.preventDefault();
+					$('#edit-user').submit();
+				});
+
         $('#edit-user').on('submit', function(e){
           var $form = $(this);
           e.preventDefault();
@@ -24,11 +29,14 @@
             url: $form.attr('action'),
             data: $form.serializeArray(),
             success: function(data){
-              console.log('DATA', data);
-              console.log($form.parent());
-              //$form.parent().addClass('hide');
+              //console.log('DATA', data);
+							{{#if data.register}}
+								$('.edit-human').hide();
+								$('.share-register').removeClass('hide');
+							{{else}}
+								$('.modal').modal('hide');
+							{{/if}}
 
-              //$form.parent().parent().find('.info').removeClass('hide');
             }
           });
 
@@ -46,7 +54,6 @@
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
-				<form id="edit-user" method="post" action="/api/faces/{{data.editedFace._id}}">
 
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -54,70 +61,82 @@
 	        </div>
         	<div class="modal-body">
 
-	          <div class="input-group input-group">
-						  <span class="input-group-addon" id="label-name">Your name</span>
-						  <input type="text" class="form-control" placeholder="Your name" aria-describedby="label-name" name="accountname" value="{{data.editedFace.accountname}}">
-						</div>
+						<div class="edit-human">
+							<form id="edit-user" method="post" action="/api/faces/{{data.editedFace._id}}">
 
-						<div class="input-group input-group">
-						  <span class="input-group-addon" id="label-website">your website</span>
-						  <input type="text" class="form-control" placeholder="your website" aria-describedby="label-website"  name="website" value="{{data.editedFace.website}}">
-						</div>
+		          <div class="input-group input-group">
+							  <span class="input-group-addon" id="label-name">Your name</span>
+							  <input type="text" class="form-control" placeholder="Your name" aria-describedby="label-name" name="accountname" value="{{data.editedFace.accountname}}">
+							</div>
 
-						<div class="input-group input-group">
-						  <span class="input-group-addon" id="label-lang">your language (max. 3)</span>
-						  <input type="text" class="form-control" placeholder="your website" aria-describedby="label-lang" name="lang" value="{{data.editedFace.lang}}">
-						</div>
-						<div class="input-group input-group">
-							<span class="input-group-addon" id="label-occupations">your occupation (max. 3)</span>
-							<!--option>student</option>
-              <option>parent</option>
-              <option>worker</option>
-              <option>artist</option>
-              <option>undisclosed</option>
-              <option>geek</option>
-              <option>athlete</option>
-              <option>hype</option>
-              <option>explorer</option>
-              <option>scientist</option-->
-							<input name="occupations" type="checkbox" {{checked 'student' data.editedFace.occupations}} id="student" value="student" />
-							<label for="student">Student</label>
+							<div class="input-group input-group">
+							  <span class="input-group-addon" id="label-website">your website</span>
+							  <input type="text" class="form-control" placeholder="your website" aria-describedby="label-website"  name="website" value="{{data.editedFace.website}}">
+							</div>
 
-							<input name="occupations" type="checkbox" {{checked 'parent' data.editedFace.occupations}} id="parent" value="parent" />
-							<label for="parent">Parent</label>
+							<div class="input-group input-group">
+							  <span class="input-group-addon" id="label-lang">your language (max. 3)</span>
+							  <input type="text" class="form-control" placeholder="your website" aria-describedby="label-lang" name="lang" value="{{data.editedFace.lang}}">
+							</div>
+							<div class="input-group input-group">
+								<span class="input-group-addon" id="label-occupations">your occupation (max. 3)</span>
+								<!--option>student</option>
+	              <option>parent</option>
+	              <option>worker</option>
+	              <option>artist</option>
+	              <option>undisclosed</option>
+	              <option>geek</option>
+	              <option>athlete</option>
+	              <option>hype</option>
+	              <option>explorer</option>
+	              <option>scientist</option-->
+								<input name="occupations" type="checkbox" {{checked 'student' data.editedFace.occupations}} id="student" value="student" />
+								<label for="student">Student</label>
 
-							<input name="occupations" type="checkbox" {{checked 'worker' data.editedFace.occupations}} id="worker" value="worker"/>
-							<label for="worker">Worker</label>
+								<input name="occupations" type="checkbox" {{checked 'parent' data.editedFace.occupations}} id="parent" value="parent" />
+								<label for="parent">Parent</label>
 
-							<input name="occupations" type="checkbox" {{checked 'artist' data.editedFace.occupations}} id="artist" value="artist"/>
-							<label for="artist">Artist</label>
+								<input name="occupations" type="checkbox" {{checked 'worker' data.editedFace.occupations}} id="worker" value="worker"/>
+								<label for="worker">Worker</label>
 
-							<input name="occupations" type="checkbox" {{checked 'undisclosed' data.editedFace.occupations}} id="undisclosed" value="undisclosed"/>
-							<label for="undisclosed">undisclosed</label>
+								<input name="occupations" type="checkbox" {{checked 'artist' data.editedFace.occupations}} id="artist" value="artist"/>
+								<label for="artist">Artist</label>
 
-							<input name="occupations" type="checkbox" {{checked 'geek' data.editedFace.occupations}} id="geek" value="geek"/>
-							<label for="geek">Geek</label>
+								<input name="occupations" type="checkbox" {{checked 'undisclosed' data.editedFace.occupations}} id="undisclosed" value="undisclosed"/>
+								<label for="undisclosed">undisclosed</label>
 
-							<input name="occupations" type="checkbox" {{checked 'athlete' data.editedFace.occupations}} id="athlete" value="athlete"/>
-							<label for="athlete">Athlete</label>
+								<input name="occupations" type="checkbox" {{checked 'geek' data.editedFace.occupations}} id="geek" value="geek"/>
+								<label for="geek">Geek</label>
 
-							<input name="occupations" type="checkbox" {{checked 'hype' data.editedFace.occupations}} id="hype" value="hype"/>
-							<label for="hype">Hype</label>
+								<input name="occupations" type="checkbox" {{checked 'athlete' data.editedFace.occupations}} id="athlete" value="athlete"/>
+								<label for="athlete">Athlete</label>
 
-							<input name="occupations" type="checkbox" {{checked 'explorer' data.editedFace.occupations}} id="explorer" value="explorer"/>
-							<label for="explorer">Explorer</label>
+								<input name="occupations" type="checkbox" {{checked 'hype' data.editedFace.occupations}} id="hype" value="hype"/>
+								<label for="hype">Hype</label>
 
-							<input name="occupations" type="checkbox" {{checked 'scientist' data.editedFace.occupations}} id="scientist" value="scientist"/>
-							<label for="scientist">Scientist</label>
-						</div>
+								<input name="occupations" type="checkbox" {{checked 'explorer' data.editedFace.occupations}} id="explorer" value="explorer"/>
+								<label for="explorer">Explorer</label>
 
-
-        </div>
+								<input name="occupations" type="checkbox" {{checked 'scientist' data.editedFace.occupations}} id="scientist" value="scientist"/>
+								<label for="scientist">Scientist</label>
+							</div>
+						</form>
+	        </div>
+					{{#if data.register}}
+					<div class="share-register hide">
+								<p>Help us out by Sharing/sharing on your wall about OMH or maybe even donate a little something to help the project.</p>
+								<div class="fb-share-button" data-href="/{{data.number}}" data-layout="button"></div>
+								<a class="twitter-share-button" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Flocalhost:3000%2F{{data.number}}">
+									Tweet
+								</a>
+					</div>
+					{{/if}}
+			</div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-primary" name="save">Save changes</button>
+          <button type="button" class="btn btn-primary js-edit-user-submit" name="save">Save changes</button>
         </div>
-			</form>
-      </div><!-- /.modal-content -->
+
+			</div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
 	{{/if}}

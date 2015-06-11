@@ -216,9 +216,14 @@ app.engine('handlebars',
     defaultLayout: 'main',
     helpers: {
         'checked': function(search, list){
-          var listTab = JSON.parse(list);
-          console.log('PARSE', listTab.length, search);
-          return _.contains(listTab, search, 0) ? 'checked="true"':'';
+          if(list){
+            var listTab = JSON.parse(list);
+            console.log('PARSE', listTab.length, search);
+            return _.contains(listTab, search, 0) ? 'checked="true"':'';
+          }else{
+            return '';
+          }
+
         },
         'json': function(context) {
           return JSON.stringify(context);
@@ -759,19 +764,31 @@ publicRouter.get('/claim/:id', function(req, res, next) {
 publicRouter.get('/success/:id', function(req, res, next) {
 
   console.log('REQ ID', req.session);
+
   Face.findOne({'_id': req.user._id},function(err, face) {
       if (err){
         console.log('UTILISATEUR NON TROUVE', err);
       }else{
 
           face.number = req.params.id == 0 ? 1 : req.params.id;
-          console.log('FACE', face);
+          //console.log('FACE', face);
           req.user.number = req.params.id == 0 ? 1 : req.params.id;
           face.save(function(err) {
               if (err){
                 console.log('ERROR SAVE NUMBER', err);
               }
+              /*fbgraph.setAccessToken(req.user.access_token);
 
+              var wallPost = {
+                message: 'Test inscription one millions humans'
+              };
+
+              fbgraph.post("/feed", wallPost, function(err, res) {
+                // returns the post id
+                console.log(res); // { id: xxxxx}
+              });*/
+
+              res.render('home', {'data':{ 'editedFace': face, 'currentUser': req.user, 'register': true}});
 
           });
       }
@@ -779,25 +796,6 @@ publicRouter.get('/success/:id', function(req, res, next) {
       //res.json(faces);
   });
 
-  Face.find(function(err, faces) {
-      if (err){
-        res.send(err);
-      }
-
-      fbgraph.setAccessToken(req.user.access_token);
-
-      var wallPost = {
-        message: 'Test inscription one millions humans'
-      };
-
-      /*fbgraph.post("/feed", wallPost, function(err, res) {
-        // returns the post id
-        console.log(res); // { id: xxxxx}
-      });*/
-
-      res.render('home', {'data':{'faces': faces, 'nbFaces': (faces.length + 1), 'editedFace': req.params.id, currentUser: req.user}});
-      //res.json(faces);
-  });
 });
 
 /***** EDIT PART *******/
