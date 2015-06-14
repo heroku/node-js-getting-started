@@ -93,8 +93,6 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 				}
 			}
 
-			console.log("_blocs", _blocs);
-
 			_lastItemX = _bloc._width;
 			_lastItemY = _bloc._height;
 
@@ -208,18 +206,33 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
                 id = ranges[rangeIndex].blocId;
                 faces = ranges[rangeIndex].range;
                 for(faceIndex = 0, faceLength = faces.length; faceIndex<faceLength; faceIndex++){
-                    _services.getFaces(faces[faceIndex].number, onGetFaces, id);
-                    _blocs[id].setValue(faces);
-                    //_services.getFacesByRange(range, onGetFaces);
-                    //range.push();
+                    range.push(faces[faceIndex].number);
                 }
 			}
 
-            //if( ranges.length){
-            //    console.log(ranges);
-            //}
+            if( range.length ){
+                _services.getFacesByRange(range, onGetFacesByRange);
+            }
+
 		}
 
+        function onGetFacesByRange(data){
+
+            updateMatrix(data);
+            var r;
+
+            _.each(_blocs, function(blocId){
+                blocId.setValue(getRange(blocId.idX, blocId.idY));
+            });
+        }
+
+        function updateMatrix(data){
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].number) {
+                    main.martixRange[data[i].number] = data[i];
+                }
+            }
+        }
 
 
 		function getFaces(id, x, y) {
@@ -235,12 +248,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 		}
 
 		function onGetFaces(data, id) {
-      //console.log('DATA', data);
-			for (var i = 0; i < data.length; i++) {
-				if (data[i].number) {
-					main.martixRange[data[i].number] = data[i];
-				}
-			}
+            updateMatrix(data);
 			_blocs[id].setValue(data);
 		}
 

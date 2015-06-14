@@ -398,21 +398,28 @@ router.route('/faces')
 
             // get the face with that id (accessed at GET http://localhost:8080/api/faces/:face_id)
             .get(function(req, res) {
-                var range = JSON.parse(req.params.range);
+                var range = JSON.parse("["+req.params.range+"]");
 
-                Face.find({number:{$in:range}}).sort('number').limit(config.faces_by_request).exec(function(err, faces) {
+                Face.find({number:{$in:range}}).sort('number').exec(function(err, faces) {
 
-                      console.log('FACES BY RANGE', faces);
-                      var tempFaces = _.clone(faces);
+                    var tempFaces = _.clone(faces);
+                    var i, isFound = false;
 
-                      /*if (err){
+
+                    if (err){
                         res.send(err);
-                      }
-                      for(var i = number; i < parseInt(number, 10) + parseInt(config.faces_by_request, 10); i++){
-                        if( ! _.find(tempFaces, function(currentFace){ return currentFace.number == i; }) ){
-                          tempFaces.push({'number': i});
+                    }
+
+                    _.each(range, function(i){
+                        isFound = _.find(tempFaces, function(currentFace){ return currentFace.number == i; });
+
+                        if( !isFound ){
+                            tempFaces.push({'number': i});
+                            console.log('not found :', i);
+                        }else{
+                            console.log('found :', i);
                         }
-                      }*/
+                    });
 
                     tempFaces = _.sortBy(tempFaces, 'number');
                     res.json(tempFaces);

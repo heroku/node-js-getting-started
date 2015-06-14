@@ -4,16 +4,15 @@ define('components/services', ['cacheControl'], function(CacheControl) {
 
 	var Services = function() {
 
-		this.getFacesByRange = function(range, callback, id) {
+		this.getFacesByRange = function(range, callback) {
 
 			var serviceQuery = "/api/faces_by_range/" + range.toString();
 
 			if( cache.checkFromCache(serviceQuery) ){
-				callback(cache.getFromCache(serviceQuery), id, number);
+				callback(cache.getFromCache(serviceQuery));
 			}else{
-				$.getJSON(serviceQuery, {'range' : range}).done(function(json) {
-					// TODO binding "id"
-					callback(json, id, number);
+				$.getJSON(serviceQuery).done(function(json) {
+					callback(json);
 
 					cache.cache(serviceQuery, json);
 				}).fail(function(jqxhr, textStatus, error) {
