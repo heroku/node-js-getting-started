@@ -2,8 +2,6 @@ define('components/services', ['cacheControl'], function(CacheControl) {
 
 	var cache = new CacheControl();
 
-    //var _xhr = {ranges: {limit: 5, xhr: []}};
-
 	var Services = function() {
 
 		this.getFacesByRange = function(range, callback) {
@@ -24,9 +22,6 @@ define('components/services', ['cacheControl'], function(CacheControl) {
 					var err = textStatus + ", " + error;
 					console.log("Request Failed: " + err);
 				});
-
-                //_xhr.ranges.xhr.push(xhr);
-                //clearXHR(_xhr.ranges);
 			}
 
 		};
@@ -73,30 +68,6 @@ define('components/services', ['cacheControl'], function(CacheControl) {
 			}
 
 		};
-
-        //function doneXHR(xhrObject, xhr){
-        //    _.each(xhrObject.xhr, function(element, i){
-        //        if( element === xhr ){
-        //            xhrObject.xhr.splice(i,1);
-        //        }
-        //    });
-        //
-        //}
-        //
-        //function clearXHR(xhrObject){
-        //    var limit = xhrObject.limit;
-        //    var xhrList = xhrObject.xhr;
-        //    var first;
-        //
-        //    if( xhrList.length > limit){
-        //        first = xhrList.slice(0,1);
-        //    }
-        //
-        //    if( first && first.length ){
-        //        first[0].abort();
-        //    }
-
-        //}
 	};
 
 	return Services;

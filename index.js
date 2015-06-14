@@ -340,7 +340,7 @@ router.route('/faces')
                 if (err){
                   res.send(err);
                 }
-                console.log('PARAMS', JSON.stringify(req.body));
+                console.log('PARAMS', JSON.stringify(req.body.occupations));
                 face.occupations = JSON.stringify(req.body.occupations);
                 face.lang = req.body.lang;
                 face.website = req.body.website;
@@ -873,7 +873,6 @@ publicRouter.get('/edit/:number', function(req, res, next) {
       if (err){
         res.send(err);
       }
-      console.log('req', req.params);
       if(face.number == req.user.number){
         //face.occupations = JSON.parse(face.occupations);
         console.log('OCCUPATIONS', face.occupations);
@@ -887,60 +886,6 @@ publicRouter.get('/edit/:number', function(req, res, next) {
 });
 
 /***********************/
-
-publicRouter.get('/number/:number', function(req, res, next) {
-  //console.log('FLASH', req.flash());
-  /*Face.find(function(err, faces) {
-      if (err){
-        res.send(err);
-      }
-      res.render('register', {'faces': faces, 'nbFaces': (faces.length + 1)});
-      //res.json(faces);
-  });*/
-
-  Face.findOne({'number':req.params.number},function(err, face) {
-      if (err){
-        res.send(err);
-      }
-      if(!face){
-        face = {'number': req.params.number};
-      }
-      res.render('home', {data:{'currentUser': req.user, 'go_to_number': face}});
-      //res.json(faces);
-  });
-  //res.send('yoplaboum');
-});
-
-
-publicRouter.get('/moderate', function(req, res, next) {
-  //console.log('FLASH', req.flash());
-  Face.find(function(err, faces) {
-      if (err){
-        res.send(err);
-      }
-      res.render('register', {'faces': faces, 'nbFaces': (faces.length + 1)});
-      //res.json(faces);
-  });
-});
-
-publicRouter.get('/delete/:number', function(req, res, next) {
-  Face.remove({
-      number: req.params.number
-  }, function(err, face) {
-      if (err)
-          res.send(err);
-
-      //res.json({ message: 'Successfully deleted' });
-  });
-  //console.log('FLASH', req.flash());
-  Face.find(function(err, faces) {
-      if (err){
-        res.send(err);
-      }
-      res.render('register', {'faces': faces, 'nbFaces': (faces.length + 1)});
-      //res.json(faces);
-  });
-});
 
 publicRouter.get('/error', function(req, res, next) {
   //console.log('FLASH', req.flash());
