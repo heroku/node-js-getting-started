@@ -174,7 +174,7 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 		this.update = function(id) {
 			_id = _txt = id;
 			updateRectColor(id);
-			_itemText.setText(_txt);
+			_itemText.setText(_txt*1+1);
 			_item.texture.destroy();
 			_item.texture = new PIXI.Texture(new PIXI.BaseTexture());
 		};
