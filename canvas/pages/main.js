@@ -136,7 +136,7 @@ define('main', ['map', 'messageBus', "components/services", 'searchBar'], functi
             search.onSubmit(function(e, value){
 
 				if( value*1 >= 0){
-					messageBus.emit('map:gotoFaceNumber', value*1);
+					messageBus.emit('map:gotoFaceNumber', {number: value*1, directly: false});
 				}else{
 					_services.searchFaces(value, function(data,query){
 						console.log('SEARCH RESULTS', data);

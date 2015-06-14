@@ -8,6 +8,12 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 		var _scrollObject;
 		var _w;
 		var _h;
+        var ITEM_WIDTH = 154;
+        var ITEM_HEIGHT = 154;
+        var MIN_SPEED = 1;
+        var MAX_SPEED = 13;
+        var MIN_FACES = 1;
+        var MAX_FACES = 1000000;
 		// nb col to display
 		// Must be modified with screen size
 		var _c = (Tools.getDevice() == "desktop") ? 2 : 2;
@@ -67,7 +73,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 
 			for (i = 0; i < _l; i++) {
 				for (j = 0; j < _c; j++) {
-					_bloc = new Bloc();
+					_bloc = new Bloc(ITEM_WIDTH, ITEM_HEIGHT);
 					_blocs[_id] = _bloc;
 					_bloc.idX = _bloc.initidX = j;
 					_bloc.idY = _bloc.initidY = i;
@@ -181,6 +187,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 			}
 
 
+            updateGrid();
 			getFacesByRanges(rangesPos);
 		}
 
@@ -191,12 +198,11 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 			}
 		}
 
-        function setGridPosition(x, y){
+        function setGridPosition(x, y, directly){
 
             // @TODO: determiner le chemin le plus court vers une case
 
-            var ITEM_WIDTH = 154;
-            var ITEM_HEIGHT = 154;
+            var distance, speed;
 
             var windowDecalX = Math.round(-window.innerWidth/2)+Math.round(ITEM_WIDTH/2);
             var windowDecalY = Math.round(-window.innerHeight/2)+Math.round(ITEM_HEIGHT/2);
@@ -204,16 +210,29 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
             x = (x*-ITEM_WIDTH)-windowDecalX;
             y = (y*-ITEM_HEIGHT)-windowDecalY;
 
-            TweenLite.to(_scrollObject, 1, {x:Math.floor(x),y:Math.floor(y)});
+            if(directly === true ){
+                speed = 0;
+            }else{
+                distance = MathUtils.distance(_scrollObject.position , {x:x,y:y});
+
+                speed = Math.max(MIN_SPEED, Math.min(MAX_SPEED, distance/(1000/1)));
+            }
+
+            TweenLite.to(_scrollObject, speed, {x:Math.floor(x),y:Math.floor(y), ease: Cubic.easeOut});
         }
 
-        function gotoFaceNumber(number){
+        function gotoFaceNumber(arg){
+            var directly = false;
+            var number = arg;
 
-            if(typeof number === "object"){
-                number = number.data;
+            if(typeof arg === "object"){
+                number = arg.data.number;
+                directly = arg.data.directly;
             }
 
             var x, y;
+
+            number = Math.max(MIN_FACES, Math.min(MAX_FACES, number));
 
             number-=1;
 
@@ -221,8 +240,23 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 
             y = Math.floor(number/1000);
 
-            setGridPosition(x,y);
+            setGridPosition(x,y, numberIsVisible(number) ? false : directly);
 
+        }
+
+        function numberIsVisible(number){
+            var isOnGrid = false;
+
+            _.each(_blocs, function(bloc){
+                var faces = getRange(bloc.idX, bloc.idY);
+                _.each(faces, function(face){
+                    if( face.number === number ){
+                        isOnGrid = true;
+                    }
+                });
+            });
+
+            return isOnGrid;
         }
 
 		function getRange(x, y){

@@ -11,7 +11,7 @@ define('searchBar', ['messageBus'], function(){
             var value = _this.$field.val();;
 
             e.preventDefault();
-            _this.$field.blur();
+            //_this.$field.blur();
 
             if( _this._submitCallback ){
                 _this._submitCallback(e, value);
