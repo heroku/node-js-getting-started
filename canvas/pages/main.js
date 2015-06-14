@@ -134,9 +134,14 @@ define('main', ['map', 'messageBus', "components/services", 'searchBar'], functi
             var search = new SearchBar();
 
             search.onSubmit(function(e, value){
-                _services.searchFaces(value, function(data,query){
-                    console.log('SEARCH RESULTS', data);
-                });
+
+				if( value*1 >= 0){
+					messageBus.emit('map:gotoFaceNumber', value*1);
+				}else{
+					_services.searchFaces(value, function(data,query){
+						console.log('SEARCH RESULTS', data);
+					});
+				}
             });
 
 			console.log("<< start >>");

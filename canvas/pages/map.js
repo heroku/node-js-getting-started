@@ -99,6 +99,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 			initPosItems();
 
 			getFacesByRanges(rangesPos);
+            messageBus.on('map:gotoFaceNumber', gotoFaceNumber);
 		}
 
 		function onScrollMouseDown(event) {
@@ -189,6 +190,40 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 				_blocs[i].oldPos = {x : _blocs[i].position.x, y : _blocs[i].position.y};
 			}
 		}
+
+        function setGridPosition(x, y){
+
+            // @TODO: determiner le chemin le plus court vers une case
+
+            var ITEM_WIDTH = 154;
+            var ITEM_HEIGHT = 154;
+
+            var windowDecalX = Math.round(-window.innerWidth/2)+Math.round(ITEM_WIDTH/2);
+            var windowDecalY = Math.round(-window.innerHeight/2)+Math.round(ITEM_HEIGHT/2);
+
+            x = (x*-ITEM_WIDTH)-windowDecalX;
+            y = (y*-ITEM_HEIGHT)-windowDecalY;
+
+            TweenLite.to(_scrollObject, 1, {x:Math.floor(x),y:Math.floor(y)});
+        }
+
+        function gotoFaceNumber(number){
+
+            if(typeof number === "object"){
+                number = number.data;
+            }
+
+            var x, y;
+
+            number-=1;
+
+            x = Math.round(number%1000);
+
+            y = Math.floor(number/1000);
+
+            setGridPosition(x,y);
+
+        }
 
 		function getRange(x, y){
 			return _ranges[x + "," + y];

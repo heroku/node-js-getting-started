@@ -114,6 +114,30 @@ define('ScrollContainer', ['Gesture', 'messageBus'], function(Gesture, messageBu
 			}
 		};
 
+		this.setVelocity = function(x,y){
+
+			if( typeof x === "number" ){
+				_velocitx = x;
+			}
+
+			if( typeof y === "number" ){
+				_velocity = y;
+			}
+
+		};
+
+		this.setPosition = function(x,y){
+
+			if( typeof x === "number" ){
+				this.position.x = x;
+			}
+
+			if( typeof y === "number" ){
+                this.position.y = y;
+			}
+
+		};
+
 		this._update = function(rect) {
 
 			_pos = _gesture.update(rect);
