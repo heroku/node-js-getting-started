@@ -410,7 +410,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
          */
 		function onGetFaces(data, id) {
             updateMatrix(data);
-            updateGrid();
+			_blocs[id].setValue(data);
 		}
 
 		this.process = function() {
