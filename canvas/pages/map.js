@@ -198,6 +198,12 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 			}
 		}
 
+        /**
+         * Move grid to x,y position.
+         * @param x place on grid (not pixels)
+         * @param y place on grid (not pixels)
+         * @param directly set speed to 0
+         */
         function setGridPosition(x, y, directly){
 
             // @TODO: determiner le chemin le plus court vers une case
@@ -221,6 +227,11 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
             TweenLite.to(_scrollObject, speed, {x:Math.floor(x),y:Math.floor(y), ease: Cubic.easeOut});
         }
 
+        /**
+         * Go to face number, can go directly
+         * args could be number face or event object with data
+         * @param arg (number|object) object is : {number: 1, directly: false}
+         */
         function gotoFaceNumber(arg){
             var directly = false;
             var number = arg;
@@ -244,6 +255,11 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 
         }
 
+        /**
+         * Get state of the number, if is currently on the grid
+         * @param number
+         * @returns {boolean}
+         */
         function numberIsVisible(number){
             var isOnGrid = false;
 
@@ -259,10 +275,20 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
             return isOnGrid;
         }
 
+        /**
+         * Get a range from the matrix
+         * @param x
+         * @param y
+         * @returns {*}
+         */
 		function getRange(x, y){
 			return _ranges[x + "," + y];
 		}
 
+        /**
+         * Get faces numbers by a range
+         * @param ranges
+         */
 		function getFacesByRanges(ranges){
 			var rangeIndex, rangeLength, faceIndex, faceLength;
 			var range = [], faces, id;
@@ -285,17 +311,28 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 
 		}
 
+        /**
+         * Callback on services requests getFacesByRange
+         * @param data
+         */
         function onGetFacesByRange(data){
             updateMatrix(data);
             updateGrid();
         }
 
+        /**
+         * Update faces grid
+         */
         function updateGrid(){
             _.each(_blocs, function(blocId){
                 blocId.setValue(getRange(blocId.idX, blocId.idY));
             });
         }
 
+        /**
+         * Update matrix with services data
+         * @param data
+         */
         function updateMatrix(data){
             for (var i = 0; i < data.length; i++) {
                 if (data[i].number) {
@@ -304,7 +341,12 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
             }
         }
 
-
+        /**
+         * Get faces by position on the grid
+         * @param id
+         * @param x
+         * @param y
+         */
 		function getFaces(id, x, y) {
 
             var ranges = _ranges[x + "," + y];
@@ -314,6 +356,11 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 			_services.getFaces(number, onGetFacesByRange, id);
 		}
 
+        /**
+         * Callback on services requests getFaces
+         * @param data
+         * @param id
+         */
 		function onGetFaces(data, id) {
             updateMatrix(data);
             updateGrid();

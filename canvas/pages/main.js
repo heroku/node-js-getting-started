@@ -131,7 +131,7 @@ define('main', ['map', 'messageBus', "components/services", 'searchBar'], functi
 				TweenLite.set(loader, {display:'none'});
 			}});
 
-            var search = new SearchBar();
+            var search = new SearchBar({blurAfterSubmit:false});
 
             search.onSubmit(function(e, value){
 
