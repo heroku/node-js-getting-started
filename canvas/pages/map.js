@@ -198,6 +198,12 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 			}
 		}
 
+        /**
+         * Move grid to x,y position.
+         * @param x place on grid (not pixels)
+         * @param y place on grid (not pixels)
+         * @param directly set speed to 0
+         */
         function setGridPosition(x, y, directly){
 
             // @TODO: determiner le chemin le plus court vers une case
@@ -221,6 +227,11 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
             TweenLite.to(_scrollObject, speed, {x:Math.floor(x),y:Math.floor(y), ease: Cubic.easeOut});
         }
 
+        /**
+         * Go to face number, can go directly
+         * args could be number face or event object with data
+         * @param arg (number|object) object is : {number: 1, directly: false}
+         */
         function gotoFaceNumber(arg){
             var directly = false;
             var number = arg;
@@ -244,6 +255,11 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 
         }
 
+        /**
+         * Get state of the number, if is currently on the grid
+         * @param number
+         * @returns {boolean}
+         */
         function numberIsVisible(number){
             var isOnGrid = false;
 
