@@ -414,7 +414,7 @@ router.route('/faces')
                         isFound = _.find(tempFaces, function(currentFace){ return currentFace.number == i; });
 
                         if( !isFound ){
-                            tempFaces.push({'number': i});
+                            tempFaces.push({number : i, picture : "/img/noimage.jpg"});
                             console.log('not found :', i);
                         }else{
                             console.log('found :', i);

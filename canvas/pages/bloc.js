@@ -49,7 +49,7 @@ define('bloc', ["blocIthem"], function(BlocIthem) {
 				if (data[i].number >= 0) {
 					var id = data[i].number;
 					// console.log(main.martixRange[id]);
-					var img = main.martixRange[id].picture || "img/noimage.jpg";// + "?n=" +
+					var img = main.martixRange[id].picture || "/img/noimage.jpg";// + "?n=" +
 					// Math.random() *
 					// 1000000;
 

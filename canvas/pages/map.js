@@ -45,7 +45,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 					for (var k = 0; k < _rangePage; k++) {
 						//_tmp.push({number : _ID, picture : "img/" + ((_ID === 0) ? "logo.jpg" : parseInt(MathUtils.randomMinMax(0, 15)) + ".jpg")});
 						_tmp.push({number : _ID, picture : "img/" + parseInt(MathUtils.randomMinMax(0, 15)) + ".jpg"});
-						main.martixRange[_ID] = {number : _ID, picture : "img/noimage.jpg"};
+						main.martixRange[_ID] = {number : _ID, picture : "/img/noimage.jpg"};
 						_ID++;
 					}
 					// _ranges => "getFaces(x,y) => [12]"
@@ -217,10 +217,11 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 		}
 
         function onGetFacesByRange(data){
-
             updateMatrix(data);
-            var r;
+            updateGrid();
+        }
 
+        function updateGrid(){
             _.each(_blocs, function(blocId){
                 blocId.setValue(getRange(blocId.idX, blocId.idY));
             });
@@ -237,19 +238,16 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 
 		function getFaces(id, x, y) {
 
-      var ranges = _ranges[x + "," + y];
-      var number = ranges[0].number;
-
-      //console.log('NUMBER TO CALL', number);
+            var ranges = _ranges[x + "," + y];
+            var number = ranges[0].number;
 
 			_blocs[id].setValue(ranges);
-			_services.getFaces(number, onGetFaces, id);
-			// return _ranges[x + "," + y];
+			_services.getFaces(number, onGetFacesByRange, id);
 		}
 
 		function onGetFaces(data, id) {
             updateMatrix(data);
-			_blocs[id].setValue(data);
+            updateGrid();
 		}
 
 		this.process = function() {
