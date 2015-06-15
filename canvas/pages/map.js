@@ -123,7 +123,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 
 		function replaceItem() {
 
-			var _tempY, _tempX;
+			var _tempY, _tempX, moved= false;
 			var rangesPos = [];
 
 			// Y
@@ -139,6 +139,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 					}
 
 					rangesPos.push({blocId: i, range: getRange(_blocs[i].idX, _blocs[i].idY)});
+                    moved = true;
 					//(getFaces(i, _blocs[i].idX, _blocs[i].idY));
 
 				} else if (_tempY < -_lastItemY) {
@@ -151,6 +152,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 						}
 
 						rangesPos.push({blocId: i, range: getRange(_blocs[i].idX, _blocs[i].idY)});
+                        moved = true;
 						//(getFaces(i, _blocs[i].idX, _blocs[i].idY));
 
 					}
@@ -167,6 +169,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 					}
 
 					rangesPos.push({blocId: i, range: getRange(_blocs[i].idX, _blocs[i].idY)});
+                    moved = true;
 					//(getFaces(i, _blocs[i].idX, _blocs[i].idY));
 
 				} else if (_tempX < -_lastItemX) {
@@ -179,6 +182,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 						}
 
 						rangesPos.push({blocId: i, range: getRange(_blocs[i].idX, _blocs[i].idY)});
+                        moved = true;
 						//(getFaces(i, _blocs[i].idX, _blocs[i].idY));
 
 					}
@@ -186,9 +190,13 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 
 			}
 
+            if(moved){
+                //_.throttle(function(){
+                //    updateGrid(); // slow fps
+                //}, 50);
+                getFacesByRanges(rangesPos);
+            }
 
-            //updateGrid(); // slow fps
-			getFacesByRanges(rangesPos);
 		}
 
 		function initPosItems() {
@@ -197,83 +205,6 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 				_blocs[i].oldPos = {x : _blocs[i].position.x, y : _blocs[i].position.y};
 			}
 		}
-
-        /**
-         * Move grid to x,y position.
-         * @param x place on grid (not pixels)
-         * @param y place on grid (not pixels)
-         * @param directly set speed to 0
-         */
-        function setGridPosition(x, y, directly){
-
-            // @TODO: determiner le chemin le plus court vers une case
-
-            var distance, speed;
-
-            var windowDecalX = Math.round(-window.innerWidth/2)+Math.round(ITEM_WIDTH/2);
-            var windowDecalY = Math.round(-window.innerHeight/2)+Math.round(ITEM_HEIGHT/2);
-
-            x = (x*-ITEM_WIDTH)-windowDecalX;
-            y = (y*-ITEM_HEIGHT)-windowDecalY;
-
-            if(directly === true ){
-                speed = 0;
-            }else{
-                distance = MathUtils.distance(_scrollObject.position , {x:x,y:y});
-
-                speed = Math.max(MIN_SPEED, Math.min(MAX_SPEED, distance/(1000/1)));
-            }
-
-            TweenLite.to(_scrollObject, speed, {x:Math.floor(x),y:Math.floor(y), ease: Cubic.easeOut});
-        }
-
-        /**
-         * Go to face number, can go directly
-         * args could be number face or event object with data
-         * @param arg (number|object) object is : {number: 1, directly: false}
-         */
-        function gotoFaceNumber(arg){
-            var directly = false;
-            var number = arg;
-
-            if(typeof arg === "object"){
-                number = arg.data.number;
-                directly = arg.data.directly;
-            }
-
-            var x, y;
-
-            number = Math.max(MIN_FACES, Math.min(MAX_FACES, number));
-
-            number-=1;
-
-            x = Math.round(number%1000);
-
-            y = Math.floor(number/1000);
-
-            setGridPosition(x,y, numberIsVisible(number) ? false : directly);
-
-        }
-
-        /**
-         * Get state of the number, if is currently on the grid
-         * @param number
-         * @returns {boolean}
-         */
-        function numberIsVisible(number){
-            var isOnGrid = false;
-
-            _.each(_blocs, function(bloc){
-                var faces = getRange(bloc.idX, bloc.idY);
-                _.each(faces, function(face){
-                    if( face.number === number ){
-                        isOnGrid = true;
-                    }
-                });
-            });
-
-            return isOnGrid;
-        }
 
         /**
          * Move grid to x,y position.
@@ -304,6 +235,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 
             isTooFar = speed === MAX_SPEED;
 
+            // skip if to far
             if( isTooFar ){
                 decal.x = (path.x-_scrollObject.position.x)*0.05;
                 decal.y = (path.y-_scrollObject.position.y)*0.05;
@@ -316,7 +248,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
                     .to(_scrollObject, 0, {x:path.x-decal.x,y:path.y-decal.y, ease: Cubic.easeOut})
                     .to(_scrollObject, 2, {x:path.x,y:path.y, ease: Cubic.easeOut})
                     //.to(_blurFilter, 0.5, {blur: 0}, "-=1")
-                    .to(_scrollObject, 0.5, {alpha: 1}, "-=0.5");
+                    .to(_scrollObject, 0.5, {alpha: 1}, "-=1");
             }else{
                 TweenLite.to(_scrollObject, speed, {x:path.x,y:path.y, ease: Cubic.easeOut});
             }
