@@ -285,7 +285,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 
             // @TODO: determiner le chemin le plus court vers une case
 
-            var distance, speed, path;
+            var distance, speed, path, isTooFar, timeline, decal={x:0,y:0};
 
             var windowDecalX = Math.round(-window.innerWidth/2)+Math.round(ITEM_WIDTH/2);
             var windowDecalY = Math.round(-window.innerHeight/2)+Math.round(ITEM_HEIGHT/2);
@@ -302,7 +302,25 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
                 speed = Math.max(MIN_SPEED, Math.min(MAX_SPEED, distance/(1000/1)));
             }
 
-            TweenLite.to(_scrollObject, speed, {x:path.x,y:path.y, ease: Cubic.easeOut});
+            isTooFar = speed === MAX_SPEED;
+
+            if( isTooFar ){
+                decal.x = (path.x-_scrollObject.position.x)*0.05;
+                decal.y = (path.y-_scrollObject.position.y)*0.05;
+
+                timeline = new TimelineLite();
+                timeline
+                    .to(_scrollObject, 0.5, {alpha: 0}, 0)
+                    //.to(_blurFilter, 0.5, {blur: 10}, 0)
+                    .to(_scrollObject.position, 1, {x: "+="+decal.x, y: "+="+decal.y, ease: Cubic.easeOut}, 0)
+                    .to(_scrollObject, 0, {x:path.x-decal.x,y:path.y-decal.y, ease: Cubic.easeOut})
+                    .to(_scrollObject, 2, {x:path.x,y:path.y, ease: Cubic.easeOut})
+                    //.to(_blurFilter, 0.5, {blur: 0}, "-=1")
+                    .to(_scrollObject, 0.5, {alpha: 1}, "-=0.5");
+            }else{
+                TweenLite.to(_scrollObject, speed, {x:path.x,y:path.y, ease: Cubic.easeOut});
+            }
+
         }
 
 

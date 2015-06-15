@@ -189,6 +189,7 @@ define('main', ['map', 'messageBus', "components/services", 'searchBar'], functi
 			_stats.domElement.style.position = 'absolute';
 			_stats.domElement.style.top = '0px';
 			_stats.domElement.style.left = '0px';
+			_stats.domElement.style.opacity = '0.5';
 			document.body.appendChild(_stats.domElement);
 		}
 
