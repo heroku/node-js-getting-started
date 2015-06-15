@@ -542,6 +542,17 @@ publicRouter.get('/put_to_scrap/:number', function(req, res, next) {
 
 });
 
+publicRouter.get('/moderate', function(req, res, next) {
+  Face.find(function(err, faces) {
+      if (err){
+        res.send(err);
+      }
+      res.render('register', {'faces': faces, 'nbFaces': (faces.length + 1)});
+      //res.json(faces);
+  });
+
+});
+
 
 publicRouter.get('/populate/', function(req, res, next) {
 
