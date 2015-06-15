@@ -208,7 +208,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 
             // @TODO: determiner le chemin le plus court vers une case
 
-            var distance, speed;
+            var distance, speed, path;
 
             var windowDecalX = Math.round(-window.innerWidth/2)+Math.round(ITEM_WIDTH/2);
             var windowDecalY = Math.round(-window.innerHeight/2)+Math.round(ITEM_HEIGHT/2);
@@ -219,12 +219,59 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
             if(directly === true ){
                 speed = 0;
             }else{
-                distance = MathUtils.distance(_scrollObject.position , {x:x,y:y});
+                path = findSmallerPath(x,y);
+                distance = MathUtils.distance(_scrollObject, path);
 
                 speed = Math.max(MIN_SPEED, Math.min(MAX_SPEED, distance/(1000/1)));
             }
 
-            TweenLite.to(_scrollObject, speed, {x:Math.floor(x),y:Math.floor(y), ease: Cubic.easeOut});
+            TweenLite.to(_scrollObject, speed, {x:path.x,y:path.y, ease: Cubic.easeOut});
+        }
+
+
+        function findSmallerPath(x, y){
+
+            var iterate = {x:{n:0}, y:{n:0}};
+
+            var maxWidth  = _rangeColonne*_rangePage*ITEM_WIDTH; // only if 1 page per line
+            var maxHeight = _rangeLinge*ITEM_HEIGHT; // only if 1 page per line
+
+            iterate.x.n = Math[x>=0 ? "floor" : "ceil"](x/maxWidth);
+            iterate.y.n = Math[y>=0 ? "floor" : "ceil"](x/maxWidth);
+
+            //console.log(x, maxWidth, iterate.x.n);
+            //console.log(y, maxHeight, iterate.y.n);
+
+            var minx = Math.min(
+                x+(iterate.x.n)*maxWidth-maxWidth,
+                x+(iterate.x.n)*maxWidth,
+                x+(iterate.x.n+1)*maxWidth
+            );
+
+            var miny = Math.min(
+                y+(iterate.y.n)*maxHeight-maxHeight,
+                y+(iterate.y.n)*maxHeight,
+                y+(iterate.y.n+1)*maxHeight
+            );
+
+            if(Math.abs(x+(iterate.x.n-1)*maxWidth) < Math.abs(x+(iterate.x.n)*maxWidth)){
+                minx = x+(iterate.x.n-1)*maxWidth;
+            }else if(Math.abs(x+(iterate.x.n)*maxWidth) < Math.abs(x+(iterate.x.n+1)*maxWidth)){
+                minx = x+(iterate.x.n)*maxWidth;
+            }else{
+                minx = x+(iterate.x.n+1)*maxWidth;
+            }
+
+            if(Math.abs(y+(iterate.y.n-1)*maxHeight) < Math.abs(y+(iterate.y.n)*maxHeight)){
+                miny = y+(iterate.y.n-1)*maxHeight;
+            }else if(Math.abs(y+(iterate.y.n)*maxHeight) < Math.abs(y+(iterate.y.n+1)*maxHeight)){
+                miny = y+(iterate.y.n)*maxHeight;
+            }else{
+                miny = y+(iterate.y.n+1)*maxHeight;
+            }
+
+            return {x: minx, y: miny};
+
         }
 
         /**
