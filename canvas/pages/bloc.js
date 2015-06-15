@@ -1,14 +1,11 @@
 define('bloc', ["blocIthem"], function(BlocIthem) {
 
-	var _bloc = function() {
+	var _bloc = function(ITEM_WIDTH, ITEM_HEIGHT) {
 
 		PIXI.DisplayObjectContainer.call(this);
 		PIXI.EventTarget.call(this);
 
 		// CONST
-		var ITEM_WIDTH = 154;
-		var ITEM_HEIGHT = 154;
-
 		var _scope;
 		var _item;
 		var _c = 10;
@@ -49,7 +46,7 @@ define('bloc', ["blocIthem"], function(BlocIthem) {
 				if (data[i].number >= 0) {
 					var id = data[i].number;
 					// console.log(main.martixRange[id]);
-					var img = main.martixRange[id].picture || "img/noimage.jpg";// + "?n=" +
+					var img = main.martixRange[id].picture || "/img/noimage.jpg";// + "?n=" +
 					// Math.random() *
 					// 1000000;
 

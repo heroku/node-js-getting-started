@@ -8,6 +8,12 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 		var _scrollObject;
 		var _w;
 		var _h;
+        var ITEM_WIDTH = 154;
+        var ITEM_HEIGHT = 154;
+        var MIN_SPEED = 1;
+        var MAX_SPEED = 13;
+        var MIN_FACES = 1;
+        var MAX_FACES = 1000000;
 		// nb col to display
 		// Must be modified with screen size
 		var _c = (Tools.getDevice() == "desktop") ? 2 : 2;
@@ -45,7 +51,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 					for (var k = 0; k < _rangePage; k++) {
 						//_tmp.push({number : _ID, picture : "img/" + ((_ID === 0) ? "logo.jpg" : parseInt(MathUtils.randomMinMax(0, 15)) + ".jpg")});
 						_tmp.push({number : _ID, picture : "img/" + parseInt(MathUtils.randomMinMax(0, 15)) + ".jpg"});
-						main.martixRange[_ID] = {number : _ID, picture : "img/noimage.jpg"};
+						main.martixRange[_ID] = {number : _ID, picture : "/img/noimage.jpg"};
 						_ID++;
 					}
 					// _ranges => "getFaces(x,y) => [12]"
@@ -67,7 +73,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 
 			for (i = 0; i < _l; i++) {
 				for (j = 0; j < _c; j++) {
-					_bloc = new Bloc();
+					_bloc = new Bloc(ITEM_WIDTH, ITEM_HEIGHT);
 					_blocs[_id] = _bloc;
 					_bloc.idX = _bloc.initidX = j;
 					_bloc.idY = _bloc.initidY = i;
@@ -93,14 +99,13 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 				}
 			}
 
-			console.log("_blocs", _blocs);
-
 			_lastItemX = _bloc._width;
 			_lastItemY = _bloc._height;
 
 			initPosItems();
 
 			getFacesByRanges(rangesPos);
+            messageBus.on('map:gotoFaceNumber', gotoFaceNumber);
 		}
 
 		function onScrollMouseDown(event) {
@@ -182,6 +187,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 			}
 
 
+            //updateGrid(); // slow fps
 			getFacesByRanges(rangesPos);
 		}
 
@@ -192,10 +198,144 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 			}
 		}
 
+        /**
+         * Move grid to x,y position.
+         * @param x place on grid (not pixels)
+         * @param y place on grid (not pixels)
+         * @param directly set speed to 0
+         */
+        function setGridPosition(x, y, directly){
+
+            // @TODO: determiner le chemin le plus court vers une case
+
+            var distance, speed, path;
+
+            var windowDecalX = Math.round(-window.innerWidth/2)+Math.round(ITEM_WIDTH/2);
+            var windowDecalY = Math.round(-window.innerHeight/2)+Math.round(ITEM_HEIGHT/2);
+
+            x = (x*-ITEM_WIDTH)-windowDecalX;
+            y = (y*-ITEM_HEIGHT)-windowDecalY;
+
+            if(directly === true ){
+                speed = 0;
+            }else{
+                path = findSmallerPath(x,y);
+                distance = MathUtils.distance(_scrollObject, path);
+
+                speed = Math.max(MIN_SPEED, Math.min(MAX_SPEED, distance/(1000/1)));
+            }
+
+            TweenLite.to(_scrollObject, speed, {x:path.x,y:path.y, ease: Cubic.easeOut});
+        }
+
+
+        function findSmallerPath(x, y){
+
+            var iterate = {x:{n:0}, y:{n:0}};
+
+            var maxWidth  = _rangeColonne*_rangePage*ITEM_WIDTH; // only if 1 page per line
+            var maxHeight = _rangeLinge*ITEM_HEIGHT; // only if 1 page per line
+
+            iterate.x.n = Math[x>=0 ? "floor" : "ceil"](x/maxWidth);
+            iterate.y.n = Math[y>=0 ? "floor" : "ceil"](x/maxWidth);
+
+            //console.log(x, maxWidth, iterate.x.n);
+            //console.log(y, maxHeight, iterate.y.n);
+
+            var minx = Math.min(
+                x+(iterate.x.n)*maxWidth-maxWidth,
+                x+(iterate.x.n)*maxWidth,
+                x+(iterate.x.n+1)*maxWidth
+            );
+
+            var miny = Math.min(
+                y+(iterate.y.n)*maxHeight-maxHeight,
+                y+(iterate.y.n)*maxHeight,
+                y+(iterate.y.n+1)*maxHeight
+            );
+
+            if(Math.abs(x+(iterate.x.n-1)*maxWidth) < Math.abs(x+(iterate.x.n)*maxWidth)){
+                minx = x+(iterate.x.n-1)*maxWidth;
+            }else if(Math.abs(x+(iterate.x.n)*maxWidth) < Math.abs(x+(iterate.x.n+1)*maxWidth)){
+                minx = x+(iterate.x.n)*maxWidth;
+            }else{
+                minx = x+(iterate.x.n+1)*maxWidth;
+            }
+
+            if(Math.abs(y+(iterate.y.n-1)*maxHeight) < Math.abs(y+(iterate.y.n)*maxHeight)){
+                miny = y+(iterate.y.n-1)*maxHeight;
+            }else if(Math.abs(y+(iterate.y.n)*maxHeight) < Math.abs(y+(iterate.y.n+1)*maxHeight)){
+                miny = y+(iterate.y.n)*maxHeight;
+            }else{
+                miny = y+(iterate.y.n+1)*maxHeight;
+            }
+
+            return {x: minx, y: miny};
+
+        }
+
+        /**
+         * Go to face number, can go directly
+         * args could be number face or event object with data
+         * @param arg (number|object) object is : {number: 1, directly: false}
+         */
+        function gotoFaceNumber(arg){
+            var directly = false;
+            var number = arg;
+
+            if(typeof arg === "object"){
+                number = arg.data.number;
+                directly = arg.data.directly;
+            }
+
+            var x, y;
+
+            number = Math.max(MIN_FACES, Math.min(MAX_FACES, number));
+
+            number-=1;
+
+            x = Math.round(number%1000);
+
+            y = Math.floor(number/1000);
+
+            setGridPosition(x,y, numberIsVisible(number) ? false : directly);
+
+        }
+
+        /**
+         * Get state of the number, if is currently on the grid
+         * @param number
+         * @returns {boolean}
+         */
+        function numberIsVisible(number){
+            var isOnGrid = false;
+
+            _.each(_blocs, function(bloc){
+                var faces = getRange(bloc.idX, bloc.idY);
+                _.each(faces, function(face){
+                    if( face.number === number ){
+                        isOnGrid = true;
+                    }
+                });
+            });
+
+            return isOnGrid;
+        }
+
+        /**
+         * Get a range from the matrix
+         * @param x
+         * @param y
+         * @returns {*}
+         */
 		function getRange(x, y){
 			return _ranges[x + "," + y];
 		}
 
+        /**
+         * Get faces numbers by a range
+         * @param ranges
+         */
 		function getFacesByRanges(ranges){
 			var rangeIndex, rangeLength, faceIndex, faceLength;
 			var range = [], faces, id;
@@ -208,40 +348,69 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
                 id = ranges[rangeIndex].blocId;
                 faces = ranges[rangeIndex].range;
                 for(faceIndex = 0, faceLength = faces.length; faceIndex<faceLength; faceIndex++){
-                    _services.getFaces(faces[faceIndex].number, onGetFaces, id);
-                    _blocs[id].setValue(faces);
-                    //_services.getFacesByRange(range, onGetFaces);
-                    //range.push();
+                    range.push(faces[faceIndex].number);
                 }
 			}
 
-            //if( ranges.length){
-            //    console.log(ranges);
-            //}
+            if( range.length ){
+                _services.getFacesByRange(range, onGetFacesByRange);
+            }
+
 		}
 
+        /**
+         * Callback on services requests getFacesByRange
+         * @param data
+         */
+        function onGetFacesByRange(data){
+            updateMatrix(data);
+            updateGrid();
+        }
 
+        /**
+         * Update faces grid
+         */
+        function updateGrid(){
+            _.each(_blocs, function(blocId){
+                blocId.setValue(getRange(blocId.idX, blocId.idY));
+            });
+        }
 
+        /**
+         * Update matrix with services data
+         * @param data
+         */
+        function updateMatrix(data){
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].number) {
+                    main.martixRange[data[i].number] = data[i];
+                }
+            }
+        }
+
+        /**
+         * Get faces by position on the grid
+         * @param id
+         * @param x
+         * @param y
+         */
 		function getFaces(id, x, y) {
 
-      var ranges = _ranges[x + "," + y];
-      var number = ranges[0].number;
-
-      //console.log('NUMBER TO CALL', number);
+            var ranges = _ranges[x + "," + y];
+            var number = ranges[0].number;
 
 			_blocs[id].setValue(ranges);
-			_services.getFaces(number, onGetFaces, id);
-			// return _ranges[x + "," + y];
+			_services.getFaces(number, onGetFacesByRange, id);
 		}
 
+        /**
+         * Callback on services requests getFaces
+         * @param data
+         * @param id
+         */
 		function onGetFaces(data, id) {
-      //console.log('DATA', data);
-			for (var i = 0; i < data.length; i++) {
-				if (data[i].number) {
-					main.martixRange[data[i].number] = data[i];
-				}
-			}
-			_blocs[id].setValue(data);
+            updateMatrix(data);
+            updateGrid();
 		}
 
 		this.process = function() {

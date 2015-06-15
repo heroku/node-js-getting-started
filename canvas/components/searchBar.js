@@ -1,6 +1,6 @@
 define('searchBar', ['messageBus'], function(){
 
-    var SearchBar = function(){
+    var SearchBar = function(options){
 
         var _this = this;
 
@@ -11,7 +11,10 @@ define('searchBar', ['messageBus'], function(){
             var value = _this.$field.val();;
 
             e.preventDefault();
-            _this.$field.blur();
+
+            if(options.blurAfterSubmit === true){
+                _this.$field.blur();
+            }
 
             if( _this._submitCallback ){
                 _this._submitCallback(e, value);

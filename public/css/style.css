@@ -161,7 +161,7 @@ body{
 .info{
 	color:#000;
 	font-size:12px;
-	position:absolute;
+	position:relative;
 	top:20px;
 	background:#fff;
 	opacity:0.5;

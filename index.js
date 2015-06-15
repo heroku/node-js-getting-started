@@ -398,7 +398,7 @@ router.route('/faces')
 
             // get the face with that id (accessed at GET http://localhost:8080/api/faces/:face_id)
             .get(function(req, res) {
-                var range = JSON.parse(req.params.range);
+                var range = JSON.parse('[' + req.params.range + ']');
 
                 Face.find({number:{$in:range}}).sort('number').exec(function(err, faces) {
 
@@ -820,7 +820,7 @@ publicRouter.get('/edit/:number', function(req, res, next) {
 
 /***********************/
 
-publicRouter.get('/:number', function(req, res, next) {
+publicRouter.get('/number/:number', function(req, res, next) {
   //console.log('FLASH', req.flash());
   /*Face.find(function(err, faces) {
       if (err){
@@ -833,6 +833,9 @@ publicRouter.get('/:number', function(req, res, next) {
   Face.findOne({'number':req.params.number},function(err, face) {
       if (err){
         res.send(err);
+      }
+      if(!face){
+        face = {'number': req.params.number};
       }
       res.render('home', {data:{'currentUser': req.user, 'go_to_number': face}});
       //res.json(faces);
@@ -859,7 +862,7 @@ publicRouter.get('/delete/:number', function(req, res, next) {
       if (err)
           res.send(err);
 
-      res.json({ message: 'Successfully deleted' });
+      //res.json({ message: 'Successfully deleted' });
   });
   //console.log('FLASH', req.flash());
   Face.find(function(err, faces) {

@@ -131,12 +131,17 @@ define('main', ['map', 'messageBus', "components/services", 'searchBar'], functi
 				TweenLite.set(loader, {display:'none'});
 			}});
 
-            var search = new SearchBar();
+            var search = new SearchBar({blurAfterSubmit:false});
 
             search.onSubmit(function(e, value){
-                _services.searchFaces(value, function(data,query){
-                    console.log('SEARCH RESULTS', data);
-                });
+
+				if( value*1 >= 0){
+					messageBus.emit('map:gotoFaceNumber', {number: value*1, directly: false});
+				}else{
+					_services.searchFaces(value, function(data,query){
+						console.log('SEARCH RESULTS', data);
+					});
+				}
             });
 
 			console.log("<< start >>");
