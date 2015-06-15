@@ -505,7 +505,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
          */
 		function onGetFaces(data, id) {
             updateMatrix(data);
-			_blocs[id].setValue(data);
+            updateGrid();
 		}
 
 		this.process = function() {
