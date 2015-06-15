@@ -191,9 +191,9 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 			}
 
             if(moved){
-                _.throttle(function(){
-                    updateGrid(); // slow fps
-                }, 50);
+                //_.throttle(function(){
+                //    updateGrid(); // slow fps
+                //}, 50);
                 getFacesByRanges(rangesPos);
             }
 
