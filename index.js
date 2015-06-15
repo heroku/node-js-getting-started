@@ -405,14 +405,14 @@ router.route('/faces')
                       console.log('FACES BY RANGE', faces);
                       var tempFaces = _.clone(faces);
 
-                      /*if (err){
+                      if (err){
                         res.send(err);
                       }
-                      for(var i = number; i < parseInt(number, 10) + parseInt(config.faces_by_request, 10); i++){
-                        if( ! _.find(tempFaces, function(currentFace){ return currentFace.number == i; }) ){
-                          tempFaces.push({'number': i});
+                      for(var i = 0; i < range.length; i++){
+                        if( ! _.find(tempFaces, function(currentFace){ return currentFace.number == range[i]; }) ){
+                          tempFaces.push({'number': range[i]});
                         }
-                      }*/
+                      }
 
                     tempFaces = _.sortBy(tempFaces, 'number');
                     res.json(tempFaces);
@@ -819,6 +819,19 @@ publicRouter.get('/edit/:number', function(req, res, next) {
 });
 
 /***********************/
+
+publicRouter.get('/:number', function(req, res, next) {
+  //console.log('FLASH', req.flash());
+  /*Face.find(function(err, faces) {
+      if (err){
+        res.send(err);
+      }
+      res.render('register', {'faces': faces, 'nbFaces': (faces.length + 1)});
+      //res.json(faces);
+  });*/
+  res.send('yoplaboum');
+});
+
 
 publicRouter.get('/moderate', function(req, res, next) {
   //console.log('FLASH', req.flash());
