@@ -408,7 +408,6 @@ router.route('/faces')
                 Face.find({number:{$in:range}}).sort('number').exec(function(err, faces) {
 
                     var tempFaces = _.clone(faces);
-                    var i, isFound = false;
 
                       if (err){
                         res.send(err);
