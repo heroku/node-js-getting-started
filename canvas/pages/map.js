@@ -191,9 +191,9 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 			}
 
             if(moved){
-                _.throttle(function(){
-                    updateGrid(); // slow fps
-                }, 50);
+                //_.throttle(function(){
+                //    updateGrid(); // slow fps
+                //}, 20);
                 getFacesByRanges(rangesPos);
             }
 
@@ -246,7 +246,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
                     //.to(_blurFilter, 0.5, {blur: 10}, 0)
                     .to(_scrollObject.position, 1, {x: "+="+decal.x, y: "+="+decal.y, ease: Cubic.easeOut}, 0)
                     .to(_scrollObject, 0, {x:path.x-decal.x,y:path.y-decal.y, ease: Cubic.easeOut})
-                    .to(_scrollObject, 2, {x:path.x,y:path.y, ease: Cubic.easeOut})
+                    .to(_scrollObject, 2, {x:path.x,y:path.y, delay:1, ease: Cubic.easeOut})
                     //.to(_blurFilter, 0.5, {blur: 0}, "-=1")
                     .to(_scrollObject, 0.5, {alpha: 1}, "-=1");
             }else{
