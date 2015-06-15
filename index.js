@@ -400,7 +400,7 @@ router.route('/faces')
             .get(function(req, res) {
                 var range = JSON.parse(req.params.range);
 
-                Face.find({number:{$in:range}}).sort('number').limit(config.faces_by_request).exec(function(err, faces) {
+                Face.find({number:{$in:range}}).sort('number').exec(function(err, faces) {
 
                       console.log('FACES BY RANGE', faces);
                       var tempFaces = _.clone(faces);
@@ -829,7 +829,15 @@ publicRouter.get('/:number', function(req, res, next) {
       res.render('register', {'faces': faces, 'nbFaces': (faces.length + 1)});
       //res.json(faces);
   });*/
-  res.send('yoplaboum');
+
+  Face.findOne({'number':req.params.number},function(err, face) {
+      if (err){
+        res.send(err);
+      }
+      res.render('home', {data:{'currentUser': req.user, 'go_to_number': face}});
+      //res.json(faces);
+  });
+  //res.send('yoplaboum');
 });
 
 
