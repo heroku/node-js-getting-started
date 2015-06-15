@@ -429,14 +429,35 @@ router.route('/faces')
         router.route('/faces/search/:query')
 
             .get(function(req, res) {
-              var regex = new RegExp(req.params.query, "i");
+              var regex = new RegExp('.*' + req.params.query + '.*', "i");
+              var testInt = parseInt(req.params.query, 10);
 
-                Face.find({accountname: regex}).limit(config.faces_by_search).exec(function(err, faces) {
-                    console.log('FACES BY NUMBER', faces);
-                    if (err)
+              console.log('SEARCH', _.isNaN(testInt), testInt);
+
+                if(_.isNaN(testInt)){
+                  Face.find({accountname: regex}).limit(config.faces_by_search).exec(function(err, faces) {
+                      console.log('SEARCH BY ACCOUNT NAME', faces);
+                      if (err){
                         res.send(err);
-                    res.json(faces);
-                });
+                      }else{
+                        res.json(faces);
+                      }
+
+
+                  });
+                }else{
+                  Face.find({number: req.params.query}).limit(config.faces_by_search).exec(function(err, faces) {
+                      console.log('SEARCH BY NUMBER', faces);
+                      if (err){
+                        res.send(err);
+                      }else{
+                        res.json(faces);
+                      }
+
+
+                  });
+                }
+
             });
 
 
