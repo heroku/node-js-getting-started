@@ -187,7 +187,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 			}
 
 
-            updateGrid();
+            //updateGrid(); // slow fps
 			getFacesByRanges(rangesPos);
 		}
 
