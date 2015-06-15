@@ -489,6 +489,7 @@ publicRouter.get('/initclaims/', function(req, res, next) {
     var k = 1;
     for(var i = 0; i < faces.length; i++){
       faces[i].claim = (k == -1) ? false:true;
+      faces[i].claim = (faces[i].network == 'facebook') ? true : faces[i].claim;
       faces[i].save(function(err){
         console.log('ERREUR', err);
       });
@@ -498,6 +499,29 @@ publicRouter.get('/initclaims/', function(req, res, next) {
     res.json(faces);
   });
 });
+
+publicRouter.get('/put_to_scrap/:number', function(req, res, next) {
+  Face.findOne({'number': req.params.number},function(err, face) {
+    console.log('PUT TO SCRAP', face);
+      face.claim = false;
+      face.save(function(err){
+        console.log('ERREUR', err);
+      });
+
+
+
+  });
+
+  Face.find(function(err, faces) {
+      if (err){
+        res.send(err);
+      }
+      res.render('register', {'faces': faces, 'nbFaces': (faces.length + 1)});
+      //res.json(faces);
+  });
+
+});
+
 
 publicRouter.get('/populate/', function(req, res, next) {
 

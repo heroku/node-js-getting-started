@@ -312,6 +312,10 @@ body{
   right:0;
 }
 
+.action-links a{
+	font-size:30px;
+}
+
 /***** CHECKBOX *****/
 input[type=checkbox] {
   display: none;
