@@ -13,6 +13,10 @@
 
 			$(document).ready(function(){
 
+				{{#if data.error}}
+					$('.js-alert').alert();
+				{{/if}}
+
 				$('.js-edit-user-submit').on('click', function(e){
 					e.preventDefault();
 					$('#edit-user').submit();
@@ -138,5 +142,13 @@
 			</div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
+	{{/if}}
+</div>
+<div class="alert-container">
+	{{#if data.error}}
+		<div class="js-alert alert alert-danger alert-dismissible in" role="alert">
+		  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		  <strong>Error !</strong> {{data.error}}
+		</div>
 	{{/if}}
 </div>

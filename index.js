@@ -179,7 +179,12 @@ passport.use(new TwitterStrategy({
 
       }else{
         console.log('PASSE');
-        return done(null, false, { message: 'User already exist' });
+        if(faces[0].claim === false){
+          return done(null, faces[0]);
+        }else{
+          return done(null, false, { message: 'User already exist' });
+        }
+
       }
 
       });
@@ -477,6 +482,23 @@ publicRouter.get('/initnumbers/', function(req, res, next) {
   });
 });
 
+publicRouter.get('/initclaims/', function(req, res, next) {
+  Face.find(function(err, faces) {
+    console.log('FACES LENGTH', faces.length);
+    var nb = 1;
+    var k = 1;
+    for(var i = 0; i < faces.length; i++){
+      faces[i].claim = (k == -1) ? false:true;
+      faces[i].save(function(err){
+        console.log('ERREUR', err);
+      });
+      k = k * -1;
+    }
+
+    res.json(faces);
+  });
+});
+
 publicRouter.get('/populate/', function(req, res, next) {
 
   var client = new Twitter({
@@ -694,12 +716,35 @@ function(req,res,next) {
 );
 
 publicRouter.get('/auth/twitter/claim/:id',
+  function(req,res,next) {
+    passport.authenticate(
+      'twitter',
+       {callbackURL: '/auth/twitter/claim/callback/'+req.params.id }
+    )(req,res,next);
+});
+
+publicRouter.get('/auth/twitter/decline/:id',
+  function(req,res,next) {
+    passport.authenticate(
+      'twitter',
+       {callbackURL: '/auth/twitter/decline/callback/'+req.params.id }
+    )(req,res,next);
+});
+
+publicRouter.get('/auth/twitter/decline/callback/:id',
 function(req,res,next) {
   passport.authenticate(
     'twitter',
-     {callbackURL: '/auth/twitter/claim/callback/'+req.params.id }
-  )(req,res,next);
-});
+     {
+       callbackURL:"/auth/twitter/decline/callback/" + req.params.id
+     , successRedirect:"/decline/" + req.params.id
+     , failureRedirect:"/error"
+     , failureFlash: true
+     }
+   ) (req,res,next);
+  }
+);
+
 
 publicRouter.get('/auth/twitter/claim/callback/:id',
 function(req,res,next) {
@@ -717,7 +762,7 @@ function(req,res,next) {
 
 publicRouter.get('/claim/:id', function(req, res, next) {
 
-  console.log('CLAIM', req.user, req.params.id );
+    console.log('CLAIM', req.user, req.params.id );
 
 
     Face.findOne({'accountname': req.user.accountname},function(err, face) {
@@ -726,20 +771,14 @@ publicRouter.get('/claim/:id', function(req, res, next) {
         }else{
 
         if(req.user.accountname != req.params.id){
-            face.remove(function(err) {
-                if (err){
-                  console.log('ERROR SAVE NUMBER', err);
-                }
-
-
-            });
-          }else{
+            res.render('home', {data:{'error': 'Account name does not match. Sorry'}});
+        }else{
             face.claim = true;
             face.save(function(err) {
                 if (err){
                   console.log('ERROR SAVE NUMBER', err);
                 }
-
+                res.render('home', {data:{'editedFace': face, 'currentUser': req.user, 'claim': true}});
 
             });
           }
@@ -751,15 +790,44 @@ publicRouter.get('/claim/:id', function(req, res, next) {
 
 
 
-  Face.find(function(err, faces) {
-      if (err){
-        res.send(err);
-      }
 
-      res.render('register', {'faces': faces, 'nbFaces': (faces.length + 1), 'editedFace': req.params.id, currentUser: req.user, 'claim': true});
-      //res.json(faces);
-  });
 });
+
+publicRouter.get('/decline/:id', function(req, res, next) {
+
+    console.log('DECLINE', req.user, req.params.id );
+
+
+    Face.findOne({'accountname': req.user.accountname},function(err, face) {
+        if (err){
+          console.log('UTILISATEUR NON TROUVE', err);
+        }else{
+
+        if(req.user.accountname != req.params.id){
+            res.render('home', {data:{'error': 'Account name does not match. Sorry'}});
+        }else{
+            Face.remove({
+                accountname: req.params.id
+            }, function(err, face) {
+                if (err){
+                  res.send(err);
+                }else{
+                  res.render('home', {data:{'decline': true, 'declineFace':req.params.id}});
+                }
+            });
+
+          }
+        }
+
+        //res.json(faces);
+    });
+
+
+
+
+
+});
+
 
 publicRouter.get('/success/:id', function(req, res, next) {
 
@@ -876,13 +944,10 @@ publicRouter.get('/delete/:number', function(req, res, next) {
 
 publicRouter.get('/error', function(req, res, next) {
   //console.log('FLASH', req.flash());
-  Face.find(function(err, faces) {
-      if (err){
-        res.send(err);
-      }
-      res.render('register', {'faces': faces, 'nbFaces': (faces.length + 1) , error : req.flash()});
-      //res.json(faces);
-  });
+  var errors = req.flash();
+  res.render('home', {data:{'error' : errors.error[0]}});
+  //res.json(faces);
+
 });
 
 app.use('/api', router);

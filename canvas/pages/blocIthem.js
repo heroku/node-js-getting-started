@@ -17,6 +17,7 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 		var _claim;
 		var _decline;
 		var _id;
+		var _accountName;
 		var _rect;
 
 		PIXI.DisplayObjectContainer.call(this);
@@ -112,7 +113,8 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
          * @param event
          */
 		function onClaimCLick(event) {
-            alert('claim');
+			console.log(">>" + "/auth/twitter/claim/" + _accountName);
+			parent.location = "/auth/twitter/claim/" + _accountName;
 		}
 
         /**
@@ -120,7 +122,8 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
          * @param event
          */
 		function onDeclineCLick(event) {
-            alert('decline');
+			console.log(">>" + "/auth/twitter/decline/" + _accountName);
+			parent.location = "/auth/twitter/decline/" + _accountName;
 		}
 
         /**
@@ -171,9 +174,14 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
             this[isClaimed ? 'showClaims' : 'hideClaims']();
         };
 
-		this.update = function(id) {
-			_id = _txt = id;
-			updateRectColor(id);
+		this.update = function(data) {
+			_id = _txt = data.number;
+			if(data.number == 1003){
+				console.log('BLOC ITEM DATA', data);
+			}
+
+			_accountName = data.accountname;
+			updateRectColor(_id);
 			_itemText.setText(_txt*1+1);
 			_item.texture.destroy();
 			_item.texture = new PIXI.Texture(new PIXI.BaseTexture());
