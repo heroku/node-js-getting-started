@@ -414,7 +414,7 @@ router.route('/faces')
                       }
                       for(var i = 0; i < range.length; i++){
                         if( ! _.find(tempFaces, function(currentFace){ return currentFace.number == range[i]; }) ){
-                          tempFaces.push({'number': range[i]});
+                          tempFaces.push({'number': range[i], picture:"/img/noimage.jpg"});
                         }
                       }
 
@@ -428,14 +428,35 @@ router.route('/faces')
         router.route('/faces/search/:query')
 
             .get(function(req, res) {
-              var regex = new RegExp(req.params.query, "i");
+              var regex = new RegExp('.*' + req.params.query + '.*', "i");
+              var testInt = parseInt(req.params.query, 10);
 
-                Face.find({accountname: regex}).limit(config.faces_by_search).exec(function(err, faces) {
-                    console.log('FACES BY NUMBER', faces);
-                    if (err)
+              console.log('SEARCH', _.isNaN(testInt), testInt);
+
+                if(_.isNaN(testInt)){
+                  Face.find({accountname: regex}).limit(config.faces_by_search).exec(function(err, faces) {
+                      console.log('SEARCH BY ACCOUNT NAME', faces);
+                      if (err){
                         res.send(err);
-                    res.json(faces);
-                });
+                      }else{
+                        res.json(faces);
+                      }
+
+
+                  });
+                }else{
+                  Face.find({number: req.params.query}).limit(config.faces_by_search).exec(function(err, faces) {
+                      console.log('SEARCH BY NUMBER', faces);
+                      if (err){
+                        res.send(err);
+                      }else{
+                        res.json(faces);
+                      }
+
+
+                  });
+                }
+
             });
 
 
@@ -511,6 +532,17 @@ publicRouter.get('/put_to_scrap/:number', function(req, res, next) {
 
   });
 
+  Face.find(function(err, faces) {
+      if (err){
+        res.send(err);
+      }
+      res.render('register', {'faces': faces, 'nbFaces': (faces.length + 1)});
+      //res.json(faces);
+  });
+
+});
+
+publicRouter.get('/moderate', function(req, res, next) {
   Face.find(function(err, faces) {
       if (err){
         res.send(err);

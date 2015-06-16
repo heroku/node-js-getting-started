@@ -29,10 +29,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 		var _rangeColonne = 100;
 		var _rangePage = 10;
 		var _ranges = [];
-		var _idRangeX = 0;
-		var _idRangeY = 0;
 		var _ID = 0;
-		var ID = 0;
 		var _hideTimer = null;
 		var _services = new Services();
 
@@ -193,7 +190,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
             if(moved){
                 //_.throttle(function(){
                 //    updateGrid(); // slow fps
-                //}, 20);
+                //}, 50);
                 getFacesByRanges(rangesPos);
             }
 
@@ -246,7 +243,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
                     //.to(_blurFilter, 0.5, {blur: 10}, 0)
                     .to(_scrollObject.position, 1, {x: "+="+decal.x, y: "+="+decal.y, ease: Cubic.easeOut}, 0)
                     .to(_scrollObject, 0, {x:path.x-decal.x,y:path.y-decal.y, ease: Cubic.easeOut})
-                    .to(_scrollObject, 2, {x:path.x,y:path.y, delay:1, ease: Cubic.easeOut})
+                    .to(_scrollObject, 2, {x:path.x,y:path.y, ease: Cubic.easeOut})
                     //.to(_blurFilter, 0.5, {blur: 0}, "-=1")
                     .to(_scrollObject, 0.5, {alpha: 1}, "-=1");
             }else{
@@ -421,24 +418,24 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
          * @param x
          * @param y
          */
-		function getFaces(id, x, y) {
-
-            var ranges = _ranges[x + "," + y];
-            var number = ranges[0].number;
-
-			_blocs[id].setValue(ranges);
-			_services.getFaces(number, onGetFacesByRange, id);
-		}
+		//function getFaces(id, x, y) {
+        //
+         //   var ranges = _ranges[x + "," + y];
+         //   var number = ranges[0].number;
+        //
+		//	_blocs[id].setValue(ranges);
+		//	_services.getFaces(number, onGetFacesByRange, id);
+		//}
 
         /**
          * Callback on services requests getFaces
          * @param data
          * @param id
          */
-		function onGetFaces(data, id) {
-            updateMatrix(data);
-            updateGrid();
-		}
+		//function onGetFaces(data, id) {
+         //   updateMatrix(data);
+         //   updateGrid();
+		//}
 
 		this.process = function() {
 			if (_scrollObject) {
