@@ -466,7 +466,7 @@ publicRouter.get('/', function(req, res) {
         if (err){
           res.send(err);
         }
-        res.render('home', {data:{'nbFaces': faces.length, 'currentUser': req.user}});
+        res.render('home', {data:{'config': config, 'nbFaces': faces.length, 'currentUser': req.user}});
         //res.json(faces);
     });
 
@@ -846,14 +846,14 @@ publicRouter.get('/claim/:id', function(req, res, next) {
         }else{
 
         if(req.user.accountname != req.params.id){
-            res.render('home', {data:{'error': 'Account name does not match. Sorry'}});
+            res.render('home', {data:{'config': config, 'error': 'Account name does not match. Sorry'}});
         }else{
             face.claim = true;
             face.save(function(err) {
                 if (err){
                   console.log('ERROR SAVE NUMBER', err);
                 }
-                res.render('home', {data:{'editedFace': face, 'currentUser': req.user, 'claim': true}});
+                res.render('home', {data:{'config': config, 'editedFace': face, 'currentUser': req.user, 'claim': true}});
 
             });
           }
@@ -879,7 +879,7 @@ publicRouter.get('/decline/:id', function(req, res, next) {
         }else{
 
         if(req.user.accountname != req.params.id){
-            res.render('home', {data:{'error': 'Account name does not match. Sorry'}});
+            res.render('home', {data:{'config': config, 'error': 'Account name does not match. Sorry'}});
         }else{
             Face.remove({
                 accountname: req.params.id
@@ -887,7 +887,7 @@ publicRouter.get('/decline/:id', function(req, res, next) {
                 if (err){
                   res.send(err);
                 }else{
-                  res.render('home', {data:{'decline': true, 'declineFace':req.params.id}});
+                  res.render('home', {data:{'config': config, 'decline': true, 'declineFace':req.params.id}});
                 }
             });
 
@@ -931,7 +931,7 @@ publicRouter.get('/success/:id', function(req, res, next) {
                 console.log(res); // { id: xxxxx}
               });*/
 
-              res.render('home', {'data':{ 'editedFace': face, 'currentUser': req.user, 'register': true}});
+              res.render('home', {'data':{'config': config, 'editedFace': face, 'currentUser': req.user, 'register': true}});
 
           });
       }
@@ -951,7 +951,7 @@ publicRouter.get('/edit/:number', function(req, res, next) {
       if(face.number == req.user.number){
         //face.occupations = JSON.parse(face.occupations);
         console.log('OCCUPATIONS', face.occupations);
-        res.render('home', {data:{'editedFace': face, 'currentUser': req.user}});
+        res.render('home', {data:{'config': config, 'editedFace': face, 'currentUser': req.user}});
       }else{
         res.send(err);
       }
@@ -960,12 +960,22 @@ publicRouter.get('/edit/:number', function(req, res, next) {
   });
 });
 
+publicRouter.get('/number/:number', function(req, res, next) {
+  Face.findOne({'number': req.params.number}, function(err, face) {
+      if (err){
+        res.send(err);
+      }
+      res.render('home', {data:{'config': config, 'showFace': face, 'currentUser': req.user}});
+  });
+
+});
+
 /***********************/
 
 publicRouter.get('/error', function(req, res, next) {
   //console.log('FLASH', req.flash());
   var errors = req.flash();
-  res.render('home', {data:{'error' : errors.error[0]}});
+  res.render('home', {data:{'config': config, 'error' : errors.error[0]}});
   //res.json(faces);
 
 });
