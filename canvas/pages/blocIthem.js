@@ -3,8 +3,6 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 	var _blocIthem = function(ITEM_WIDTH, ITEM_HEIGHT) {
 
 		// CONST
-		//var ITEM_WIDTH = 154;
-		//var ITEM_HEIGHT = 154;
 		var PICTURE_WIDTH = ITEM_WIDTH-4;
 		var PICTURE_HEIGHT = ITEM_HEIGHT-4;
 
@@ -17,8 +15,8 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 		var _claim;
 		var _decline;
 		var _id;
-		var _accountName;
 		var _rect;
+		var _data;
 
 		PIXI.DisplayObjectContainer.call(this);
 		_scope = this;
@@ -84,7 +82,6 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 			_scope.addChild(_tw);
 			_scope.addChild(_claim);
 			_scope.addChild(_decline);
-			// _itemText.visible = false;
 		}
 
 		function onTWCLick(event) {
@@ -113,8 +110,8 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
          * @param event
          */
 		function onClaimCLick(event) {
-			console.log(">>" + "/auth/twitter/claim/" + _accountName);
-			parent.location = "/auth/twitter/claim/" + _accountName;
+			console.log(">>" + "/auth/twitter/claim/" + _data.accountname);
+			parent.location = "/auth/twitter/claim/" + _data.accountname;
 		}
 
         /**
@@ -122,8 +119,8 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
          * @param event
          */
 		function onDeclineCLick(event) {
-			console.log(">>" + "/auth/twitter/decline/" + _accountName);
-			parent.location = "/auth/twitter/decline/" + _accountName;
+			console.log(">>" + "/auth/twitter/decline/" + _data.accountname);
+			parent.location = "/auth/twitter/decline/" + _data.accountname;
 		}
 
         /**
@@ -175,12 +172,17 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
         };
 
 		this.update = function(data) {
-			_id = _txt = data.number;
-			if(data.number == 1003){
-				console.log('BLOC ITEM DATA', data);
+			_data = data;
+
+			_id = _txt = _data.number;
+
+			if(_data.number == 1003){
+				console.log('BLOC ITEM DATA', _data);
 			}
 
-			_accountName = data.accountname;
+			this.setSocials(typeof _data.claim === 'undefined');
+			this.setClaim(_data.claim === false);
+
 			updateRectColor(_id);
 			_itemText.setText(_txt*1+1);
 			_item.texture.destroy();

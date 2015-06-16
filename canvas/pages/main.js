@@ -1,6 +1,6 @@
 var main = main || {};
 
-define('main', ['map', 'messageBus', "components/services", 'searchBar'], function(Map, messageBus, Services, SearchBar) {
+define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, SearchBar) {
 
 	var _main = function(args) {
 
@@ -30,7 +30,6 @@ define('main', ['map', 'messageBus', "components/services", 'searchBar'], functi
 		var _viewPosY;
 		var _canvas = args[0];
 		var _data = args[1];
-		var _services = new Services();
 		//
 
 		function init() {
@@ -131,18 +130,7 @@ define('main', ['map', 'messageBus', "components/services", 'searchBar'], functi
 				TweenLite.set(loader, {display:'none'});
 			}});
 
-            var search = new SearchBar({blurAfterSubmit:false});
-
-            search.onSubmit(function(e, value){
-
-				if( value*1 >= 0){
-					messageBus.emit('map:gotoFaceNumber', {number: value*1, directly: false});
-				}else{
-					_services.searchFaces(value, function(data,query){
-						console.log('SEARCH RESULTS', data);
-					});
-				}
-            });
+            new SearchBar({blurAfterSubmit:false});
 
 			console.log("<< start >>");
 

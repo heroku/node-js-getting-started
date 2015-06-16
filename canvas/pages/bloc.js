@@ -41,21 +41,14 @@ define('bloc', ["blocIthem"], function(BlocIthem) {
 		}
 
 		this.setValue = function(data) {
-
 			for (var i = 0; i < data.length; i++) {
 				if (data[i].number >= 0) {
-					var id = data[i].number;
-					var accountName = data[i].accountname;
-					// console.log(main.martixRange[id]);
-					var img = main.martixRange[id].picture || "/img/noimage.jpg";// + "?n=" +
-					// Math.random() *
-					// 1000000;
-
 					if( _items[i] ){
-						_items[i].setSocials(typeof main.martixRange[id].claim === 'undefined');
-						_items[i].setClaim(main.martixRange[id].claim === false);
-						_items[i].update(data[i]);
-						_items[i].updateImage(img);
+						var id = data[i].number;
+						var blocData = main.martixRange[id];
+
+						_items[i].update(blocData);
+						_items[i].updateImage(blocData.picture);
 					}
 
 				}

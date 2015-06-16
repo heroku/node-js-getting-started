@@ -414,7 +414,7 @@ router.route('/faces')
                       }
                       for(var i = 0; i < range.length; i++){
                         if( ! _.find(tempFaces, function(currentFace){ return currentFace.number == range[i]; }) ){
-                          tempFaces.push({'number': range[i]});
+                          tempFaces.push({'number': range[i], picture:"/img/noimage.jpg"});
                         }
                       }
 

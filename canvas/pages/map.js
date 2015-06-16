@@ -29,10 +29,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 		var _rangeColonne = 100;
 		var _rangePage = 10;
 		var _ranges = [];
-		var _idRangeX = 0;
-		var _idRangeY = 0;
 		var _ID = 0;
-		var ID = 0;
 		var _hideTimer = null;
 		var _services = new Services();
 
@@ -421,24 +418,24 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
          * @param x
          * @param y
          */
-		function getFaces(id, x, y) {
-
-            var ranges = _ranges[x + "," + y];
-            var number = ranges[0].number;
-
-			_blocs[id].setValue(ranges);
-			_services.getFaces(number, onGetFacesByRange, id);
-		}
+		//function getFaces(id, x, y) {
+        //
+         //   var ranges = _ranges[x + "," + y];
+         //   var number = ranges[0].number;
+        //
+		//	_blocs[id].setValue(ranges);
+		//	_services.getFaces(number, onGetFacesByRange, id);
+		//}
 
         /**
          * Callback on services requests getFaces
          * @param data
          * @param id
          */
-		function onGetFaces(data, id) {
-            updateMatrix(data);
-            updateGrid();
-		}
+		//function onGetFaces(data, id) {
+         //   updateMatrix(data);
+         //   updateGrid();
+		//}
 
 		this.process = function() {
 			if (_scrollObject) {
