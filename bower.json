@@ -24,6 +24,7 @@
     "underscore": "~1.8.3",
     "bootstrap": "~3.3.4",
     "chosen-bootstrap": "~1.0.4",
-    "chosen": "~1.4.2"
+    "chosen": "~1.4.2",
+    "backbone": "~1.2.1"
   }
 }

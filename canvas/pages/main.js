@@ -149,6 +149,8 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 			}
 			initSearch();
 
+			initRouter();
+
 			if (_statEnabled) {
 				stat();
 			}
@@ -156,6 +158,33 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 
 		function initSearch(){
 
+		}
+
+		function initRouter(){
+			//create router
+			var OmhRouter = Backbone.Router.extend({
+
+			  routes: {
+			    "edit/:number":"edit",  // #search/kiwis
+			    "number/:number": "number"   // #search/kiwis/p7
+			  },
+
+			  edit: function(number) {
+					console.log('BACKBONE EDIT', number);
+					editFace();
+			  },
+
+			  number: function(number) {
+					console.log('BACKBONE NUMBER', number);
+					messageBus.emit('map:gotoFaceNumber', {'number': number, directly: false});
+			  }
+
+			});
+
+			new OmhRouter();
+			//start listening routes
+			console.log('ROUTER START', Backbone.history.start);
+			Backbone.history.start({pushState: false});
 		}
 
 
