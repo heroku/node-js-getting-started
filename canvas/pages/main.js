@@ -83,6 +83,13 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 			window.addEventListener("resize", main.onResize);
 			main.onResize(null);
 		}
+		//EDIT MODAL FACE
+
+		function initEditFace(){
+			$('.modal').on('hide.bs.modal', function (e) {
+			  // do something...
+			});
+		}
 
 		function editFace(){
 			$('.modal').modal('show');
@@ -181,7 +188,10 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 
 			});
 
-			new OmhRouter();
+			var omhRouter = new OmhRouter();
+			$('.modal').on('hidden.bs.modal', function (e) {
+				omhRouter.navigate("", {trigger: false, replace: true});
+			});
 			//start listening routes
 			console.log('ROUTER START', Backbone.history.start);
 			Backbone.history.start({pushState: false});
