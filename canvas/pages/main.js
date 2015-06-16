@@ -137,7 +137,7 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 				TweenLite.set(loader, {display:'none'});
 			}});
 
-            new SearchBar({blurAfterSubmit:false});
+            new SearchBar({blurAfterSubmit:true});
 
 			console.log("<< start >>");
 
