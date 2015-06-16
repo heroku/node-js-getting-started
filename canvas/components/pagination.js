@@ -1,4 +1,4 @@
-define('pagination', function(){
+define('pagination', ['messageBus'], function(messageBus){
 
     /**
      *
@@ -10,16 +10,23 @@ define('pagination', function(){
         var _this = this;
 
         this.$el = $(el);
-        this.$label = this.$el.find('.pagination-label');
-        this.$buttonPrev = this.$el.find('.pagination-button-prev');
-        this.$buttonNext = this.$el.find('.pagination-button-next');
+        this.$label = this.$el.find('.search-pagination-label');
+        this.$buttonPrev = this.$el.find('.search-pagination-button-prev');
+        this.$buttonNext = this.$el.find('.search-pagination-button-next');
         this.data = [];
         this.current = 0;
         this.length = 0;
         this.setData();
 
-        this.$buttonPrev.on('click', function(){ _this.previous();});
-        this.$buttonNext.on('click', function(){ _this.next();});
+        this.$buttonPrev.on('mousedown', function(e){e.preventDefault(); _this.previous();});
+        this.$buttonNext.on('mousedown', function(e){e.preventDefault(); _this.next();});
+    };
+
+    /**
+     *
+     */
+    Pagination.prototype.reset = function(){
+        this.setData([]);
     };
 
     /**
@@ -32,7 +39,6 @@ define('pagination', function(){
         this.length = this.data.length;
         this.current = 0;
         this.el = {};
-        this.updatePaginationButtons();
         return this.update();
     };
 
@@ -40,6 +46,7 @@ define('pagination', function(){
      *
      */
     Pagination.prototype.next = function(){
+        console.log("next");
         this.setNextIndex();
         return this.update();
     };
@@ -48,6 +55,7 @@ define('pagination', function(){
      *
      */
     Pagination.prototype.previous = function(){
+        console.log("previous");
         this.setPrevIndex();
         return this.update();
     };
@@ -66,6 +74,11 @@ define('pagination', function(){
      */
     Pagination.prototype.update = function(){
         this.el = this.data[this.current];
+
+        if( this.el ){
+            messageBus.emit('map:gotoFaceNumber', {number: this.el.number, directly: false});
+        }
+        this.updatePaginationButtons();
         return this.el;
     };
 
@@ -77,7 +90,7 @@ define('pagination', function(){
         this.current--;
 
         if( this.current < 0 ){
-            this.current = this.length;
+            this.current = this.length-1;
         }
         return this.current;
     };
@@ -111,8 +124,12 @@ define('pagination', function(){
      *
      * @param label
      */
-    Pagination.prototype.setPaginationLabel = function(label){
-        this.$label.text(this.current+"/"+this.length);
+    Pagination.prototype.setPaginationLabel = function(){
+        if( this.length > 0 ){
+            this.$label.text((this.current+1)+"/"+this.length);
+        }else{
+            this.$label.text('');
+        }
     };
 
     /**

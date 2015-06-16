@@ -22,7 +22,7 @@ define('searchBar', ['messageBus', "components/services", 'pagination'], functio
             console.log(value);
 
             if( _lastValue === value ){
-                _this.paginationUpdated(_this.pagination.next());
+                _this.pagination.next() ;
                 return;
             }
 
@@ -54,18 +54,12 @@ define('searchBar', ['messageBus', "components/services", 'pagination'], functio
 
         if( value*1 >= 0){
             messageBus.emit('map:gotoFaceNumber', {number: value*1, directly: false});
+            _this.pagination.reset();
         }else if(value.length > 2){
             _services.searchFaces(value, function(data,query){
-                _this.paginationUpdated(_this.pagination.setData(data));
+                _this.pagination.setData(data);
                 console.log('SEARCH RESULTS', data);
             });
-        }
-    };
-
-    SearchBar.prototype.paginationUpdated = function(el){
-        if( el ){
-            console.log(el.number, el);
-            messageBus.emit('map:gotoFaceNumber', {number: el.number+1, directly: false});
         }
     };
 

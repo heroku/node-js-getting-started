@@ -363,3 +363,53 @@ input[type=checkbox]:checked + label:after {
   color: #F00;
 }
 /********************/
+
+/* Pagination search */
+.search-pagination {
+	position: absolute;
+	right: 62px;
+	top: 0;
+	white-space: nowrap;
+	font-size: 12px;
+	color: #AAA;
+	height: 30px;
+	background: white;
+	padding:0 5px;
+}
+
+.search-pagination-label {
+	display: inline-block;
+}
+
+.search-pagination-button-prev {
+	display: none;
+	cursor: pointer;
+}
+
+.search-pagination-label,
+.search-pagination-button-prev,
+.search-pagination-button-next {
+	height: 100%;
+}
+
+.search-pagination-label,
+.search-pagination-button-prev:before,
+.search-pagination-button-next:before {
+	line-height: 2.5em;
+}
+
+.search-pagination-button-next {
+	display: none;
+	cursor: pointer;
+}
+
+.search-pagination-button-prev:hover,
+.search-pagination-button-next:hover {
+	color:#333;
+}
+
+.search-pagination-label.is-active,
+.search-pagination-button-prev.is-active,
+.search-pagination-button-next.is-active {
+	display: inline-block;
+}
