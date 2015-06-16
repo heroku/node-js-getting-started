@@ -76,7 +76,9 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 			// a new imported Main project Class //
 			_page = new Map();
 			_container.addChild(_page);
+
 		}
+
 
 		function initEvents() {
 			console.log('INIT EVENTS');
@@ -126,6 +128,7 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 		function start() {
 
 			var loader = $('.loading-container').get(0);
+
 			TweenLite.to(loader, 0.25, {opacity:0, onComplete: function(){
 				TweenLite.set(loader, {display:'none'});
 			}});
@@ -148,6 +151,7 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 				editFace();
 			}
 			initSearch();
+
 
 			if (_statEnabled) {
 				stat();
