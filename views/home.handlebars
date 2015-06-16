@@ -17,6 +17,8 @@
 					$('.js-alert').alert();
 				{{/if}}
 
+				$('.lang-select').chosen({max_selected_options: 3});
+
 				$('.js-edit-user-submit').on('click', function(e){
 					e.preventDefault();
 					$('#edit-user').submit();
@@ -79,7 +81,15 @@
 
 							<div class="input-group input-group">
 							  <span class="input-group-addon" id="label-lang">your language (max. 3)</span>
-							  <input type="text" class="form-control" placeholder="your website" aria-describedby="label-lang" name="lang" value="{{data.editedFace.lang}}">
+							  <select data-placeholder="Choose a language..." style="width:350px;" multiple class="lang-select" name="lang">
+									<option value="fr">French</option>
+									<option value="en">English</option>
+									<option value="de">German</option>
+									<option value="es">Spanish</option>
+									<option value="it">Italian</option>
+									<option value="cn">Chinese</option>
+								</select>
+								<!--input type="text" class="form-control" placeholder="your website" aria-describedby="label-lang" name="lang" value="{{data.editedFace.lang}}">
 							</div>
 							<div class="input-group input-group">
 								<span class="input-group-addon" id="label-occupations">your occupation (max. 3)</span>
