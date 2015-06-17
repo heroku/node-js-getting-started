@@ -170,9 +170,9 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 			var OmhRouter = Backbone.Router.extend({
 
 			  routes: {
-			    "edit":"edit",  // #search/kiwis
+			    "edit/":"edit",  // #search/kiwis
 			    "number/:number": "number",   // #search/kiwis/p7
-					"login": "login"   // #search/kiwis/p7
+					"login/": "login"   // #search/kiwis/p7
 			  },
 
 			  edit: function(number) {
