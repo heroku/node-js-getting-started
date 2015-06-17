@@ -170,14 +170,19 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 			var OmhRouter = Backbone.Router.extend({
 
 			  routes: {
-			    "edit/":"edit",  // #search/kiwis
+			    "edit/": "edit",  // #search/kiwis
+					"success/": "success",  // #search/kiwis
 			    "number/:number": "number",   // #search/kiwis/p7
 					"login/": "login"   // #search/kiwis/p7
 			  },
 
 			  edit: function(number) {
 					console.log('BACKBONE EDIT', number);
-					editFace();
+					showEditFace();
+			  },
+			  success: function(number) {
+					console.log('BACKBONE EDIT', number);
+					showSuccessFace();
 			  },
 			  login: function(number) {
 					console.log('BACKBONE LOGIN', number);
@@ -185,7 +190,6 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 			  },
 			  logout: function(number) {
 					console.log('BACKBONE EDIT', number);
-
 			  },
 
 			  number: function(number) {
@@ -227,12 +231,17 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 			document.body.appendChild(_stats.domElement);
 		}
 
-		/*** Login functions ***/
+		/*** modal functions ***/
 		function showLoginPopin(){
 			$('.modal-login').modal('show');
 		}
 
-		function editFace(){
+		function showEditFace(){
+			$('.modal-edit').modal('show');
+		}
+
+		function showSuccessFace(){
+			$('#edit-user').data('register', 'true');
 			$('.modal-edit').modal('show');
 		}
 

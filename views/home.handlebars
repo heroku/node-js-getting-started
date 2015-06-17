@@ -36,14 +36,14 @@
             data: $form.serializeArray(),
             success: function(data){
               //console.log('DATA', data);
-							{{#if data.register}}
+							if($(this).data('register') == 'true'){
 								$('.edit-human').hide();
 								$('.modal-footer').hide();
 								$('.share-register').removeClass('hide');
-							{{else}}
+							}else{
 								$('.modal').modal('hide');
-							{{/if}}
-
+							}
+			
             }
           });
 
@@ -154,7 +154,6 @@
 							</div>
 						</form>
 	        </div>
-					{{#if data.register}}
 					<div class="share-register hide">
 								<p>Help us out by Sharing/sharing on your wall about OMH or maybe even donate a little something to help the project.</p>
 								<div class="fb-share-button" data-href="/number/{{data.editedFace.number}}" data-layout="button"></div>
@@ -162,7 +161,6 @@
 									Tweet
 								</a>
 					</div>
-					{{/if}}
 			</div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary js-edit-user-submit" name="save">Save changes</button>
