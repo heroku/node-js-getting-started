@@ -359,6 +359,27 @@ input[type=checkbox]:checked + label:after {
 }
 /********************/
 
+
+/***** profile links ******/
+
+.profile-container{
+	position:absolute;
+	top:0px;
+	left:0px;
+	z-index:9999;
+	height: 30px;
+	width:20%;
+	margin:0 45%;
+	background:#000;
+	opacity:0.7;
+}
+
+.profile-container a{
+
+}
+
+/**************************/
+
 /* Pagination search */
 .search-toolbar {
 	position: absolute;

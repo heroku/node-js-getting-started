@@ -93,9 +93,6 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 			});
 		}
 
-		function editFace(){
-			$('.modal').modal('show');
-		}
 
 		main.onResize = function() {
 
@@ -174,13 +171,22 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 			var OmhRouter = Backbone.Router.extend({
 
 			  routes: {
-			    "edit/:number":"edit",  // #search/kiwis
-			    "number/:number": "number"   // #search/kiwis/p7
+			    "edit":"edit",  // #search/kiwis
+			    "number/:number": "number",   // #search/kiwis/p7
+					"login": "login"   // #search/kiwis/p7
 			  },
 
 			  edit: function(number) {
 					console.log('BACKBONE EDIT', number);
 					editFace();
+			  },
+			  login: function(number) {
+					console.log('BACKBONE LOGIN', number);
+					showLoginPopin();
+			  },
+			  logout: function(number) {
+					console.log('BACKBONE EDIT', number);
+
 			  },
 
 			  number: function(number) {
@@ -221,6 +227,17 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 			_stats.domElement.style.opacity = '0.5';
 			document.body.appendChild(_stats.domElement);
 		}
+
+		/*** Login functions ***/
+		function showLoginPopin(){
+			$('.modal-login').modal('show');
+		}
+
+		function editFace(){
+			$('.modal-edit').modal('show');
+		}
+
+		/***********************/
 
 		init();
 	};

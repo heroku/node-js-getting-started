@@ -46,13 +46,14 @@
     <h1 class="main-logo"><a href="/"><img src="/img/one_million_faces_logo.png" alt="One Million Human Faces"/></a></h1>
 
     <div>{{data.nbFaces}}</div>
-
-    {{#if data.currentUser}}
-        <a href="#login" class="profile-button-login"></a>
-    {{else}}
-        <a href="#edit" class="profile-button-edit"></a>
-        <a href="#logout" class="profile-button-logout"></a>
-    {{/if}}
+    <div class="profile-container">
+      {{#if data.currentUser}}
+          <a href="#login" class="profile-button-login">Login</a>
+      {{else}}
+          <a href="#edit" class="profile-button-edit">Edit my profile</a>
+          <a href="#logout" class="profile-button-logout">Logout</a>
+      {{/if}}
+    </div>
 
     <div class="legals-footer">
         <ul>
