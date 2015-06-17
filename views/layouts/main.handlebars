@@ -48,10 +48,10 @@
     <div>{{data.nbFaces}}</div>
     <div class="profile-container">
       {{#if data.currentUser}}
-          <a href="#login" class="profile-button-login">Login</a>
+          <a href="/#edit" class="profile-button-edit">Edit my profile</a>
+          <a href="/logout" class="profile-button-logout">Logout</a>
       {{else}}
-          <a href="#edit" class="profile-button-edit">Edit my profile</a>
-          <a href="#logout" class="profile-button-logout">Logout</a>
+          <a href="/#login" class="profile-button-login">Login</a>
       {{/if}}
     </div>
 
