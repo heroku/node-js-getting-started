@@ -31,9 +31,6 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 		var _canvas = args[0];
 		var _data = args[1];
 
-        console.log(_data);
-		//
-
 		function init() {
 			_stage = new PIXI.Stage(0x000000);
 			_rendererOptions = {view : _canvas, transparent : false, resolution : window.devicePixelRatio || 1};
