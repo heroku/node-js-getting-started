@@ -30,6 +30,8 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 		var _viewPosY;
 		var _canvas = args[0];
 		var _data = args[1];
+
+        console.log(_data);
 		//
 
 		function init() {

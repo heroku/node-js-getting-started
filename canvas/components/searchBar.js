@@ -15,18 +15,28 @@ define('searchBar', ['messageBus', "components/services", 'pagination'], functio
         this.pagination = new Pagination("#search-field-pagination");
         this.$field = $('#search-field');
         this.$form = $('#form-search');
+        this.$reset = this.$form.find('.search-reset');
 
-        this.$form.on('submit', function(e){
+        this.$field.on('keyup change blur focus', function(e){
             var value = _this.$field.val();
 
-            console.log(value);
+            if( value !== '' ){
+                _this.enableReset();
+            }else{
+                _this.disableReset();
+            }
+        });
+
+        this.$form.on('submit', function(e){
+            e.preventDefault();
+
+            var value = _this.$field.val();
 
             if( _lastValue === value ){
                 _this.pagination.next() ;
                 return;
             }
 
-            e.preventDefault();
 
             if(options.blurAfterSubmit === true){
                 _this.$field.blur();
@@ -42,6 +52,31 @@ define('searchBar', ['messageBus', "components/services", 'pagination'], functio
 
         });
 
+        this.$reset.on('mousedown', function(){
+            _this.reset();
+        })
+
+    };
+
+    SearchBar.prototype.enableReset = function(){
+        this.$reset.addClass('is-active');
+        this.$form.addClass('extended');
+    };
+
+    SearchBar.prototype.disableReset = function(){
+        this.$reset.removeClass('is-active');
+        this.$form.removeClass('extended');
+    };
+
+    /**
+     *
+     * @param e
+     */
+    SearchBar.prototype.reset = function(e){
+        this.$field.val('');
+        this.disableReset();
+        this.pagination.reset();
+        _lastValue = '';
     };
 
     /**
