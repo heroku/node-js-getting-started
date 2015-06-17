@@ -16,6 +16,7 @@ define('searchBar', ['messageBus', "components/services", 'pagination'], functio
         this.$field = $('#search-field');
         this.$form = $('#form-search');
         this.$reset = this.$form.find('.search-reset');
+        this.$buttonSubmit = this.$form.find('.search-submit');
 
         this.$field.on('keyup change blur focus', function(e){
             var value = _this.$field.val();
@@ -25,6 +26,10 @@ define('searchBar', ['messageBus', "components/services", 'pagination'], functio
             }else{
                 _this.disableReset();
             }
+        });
+
+        this.$buttonSubmit.on('click', function(){
+            _this.$form.submit();
         });
 
         this.$form.on('submit', function(e){
