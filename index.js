@@ -971,7 +971,7 @@ publicRouter.get('/success/:id', function(req, res, next) {
                 // returns the post id
                 console.log(res); // { id: xxxxx}
               });*/
-              res.redirect('/#number/' + req.user.number);
+              res.redirect('/#edit/');
               //res.render('home', {'data':{'config': config, 'editedFace': face, 'currentUser': req.user, 'register': true}});
 
           });
