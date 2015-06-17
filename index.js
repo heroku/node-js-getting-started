@@ -956,7 +956,7 @@ publicRouter.get('/success/:id', function(req, res, next) {
             face.number = req.params.id == 0 ? 1 : req.params.id;
             req.user.number = req.params.id == 0 ? 1 : req.params.id;
           }
-          
+
           face.save(function(err) {
               if (err){
                 console.log('ERROR SAVE NUMBER', err);
@@ -971,8 +971,8 @@ publicRouter.get('/success/:id', function(req, res, next) {
                 // returns the post id
                 console.log(res); // { id: xxxxx}
               });*/
-
-              res.render('home', {'data':{'config': config, 'editedFace': face, 'currentUser': req.user, 'register': true}});
+              res.redirect('/#number/' + req.user.number);
+              //res.render('home', {'data':{'config': config, 'editedFace': face, 'currentUser': req.user, 'register': true}});
 
           });
       }
