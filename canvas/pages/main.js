@@ -189,7 +189,7 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 			});
 
 			var omhRouter = new OmhRouter();
-			$('.modal').on('hidden.bs.modal', function (e) {
+			$('.modal').on('hide.bs.modal', function (e) {
 				omhRouter.navigate("", {trigger: false, replace: true});
 			});
 			//start listening routes
