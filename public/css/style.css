@@ -359,27 +359,6 @@ input[type=checkbox]:checked + label:after {
 }
 /********************/
 
-
-/***** profile links ******/
-
-.profile-container{
-	position:absolute;
-	top:0px;
-	left:0px;
-	z-index:9999;
-	height: 30px;
-	width:20%;
-	margin:0 45%;
-	background:#000;
-	opacity:0.7;
-}
-
-.profile-container a{
-
-}
-
-/**************************/
-
 /* Pagination search */
 .search-toolbar {
 	position: absolute;
@@ -432,4 +411,43 @@ input[type=checkbox]:checked + label:after {
 .search-pagination-button-prev.is-active,
 .search-pagination-button-next.is-active {
 	display: table-cell;
+}
+
+.profile-button-login,
+.profile-button-edit,
+.profile-button-logout {
+	position: absolute;
+	right: 125px;
+	top:30px;
+	color:white;
+	font-size: 25px;
+}
+
+.profile-button-logout {
+	top:70px;
+}
+
+.profile-button-login:active,
+.profile-button-edit:active,
+.profile-button-logout:active,
+.profile-button-login:focus,
+.profile-button-edit:focus,
+.profile-button-logout:focus {
+	color:white;
+	text-decoration: none;
+}
+
+.profile-button-login:hover,
+.profile-button-edit:hover,
+.profile-button-logout:hover {
+	color:white;
+	opacity: 0.8;
+	text-decoration: none;
+}
+
+.alert-container {
+	position:absolute;
+	top:0;
+	left:0;
+	z-index:9999;
 }

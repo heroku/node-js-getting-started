@@ -46,7 +46,6 @@ define('pagination', ['messageBus'], function(messageBus){
      *
      */
     Pagination.prototype.next = function(){
-        console.log("next");
         this.setNextIndex();
         return this.update();
     };
@@ -55,7 +54,6 @@ define('pagination', ['messageBus'], function(messageBus){
      *
      */
     Pagination.prototype.previous = function(){
-        console.log("previous");
         this.setPrevIndex();
         return this.update();
     };
