@@ -45,6 +45,15 @@
     {{{body}}}
     <h1 class="main-logo"><a href="/"><img src="/img/one_million_faces_logo.png" alt="One Million Human Faces"/></a></h1>
 
+    <div>{{data.nbFaces}}</div>
+
+    {{#if data.currentUser}}
+        <a href="#login" class="profile-button-login"></a>
+    {{else}}
+        <a href="#edit" class="profile-button-edit"></a>
+        <a href="#logout" class="profile-button-logout"></a>
+    {{/if}}
+
     <div class="legals-footer">
         <ul>
             <li><a href="#">Copyright</a></li>
@@ -54,13 +63,24 @@
         </ul>
     </div>
     <div class="search-bar">
-        <form id="form-search" action="#">
+        <form id="form-search" action="#" role="search">
             <div class="search-container">
+
                 <div class="search-input-item">
-                    <input id="search-field" type="search" placeholder="Rechercher..."/>
-                </div>
-                <div class="search-input-button">
-                    <button class="icon-search"></button>
+                    <div class="input-group">
+                        <input type="text" id="search-field" class="form-control" placeholder="Rechercher...">
+                        <span class="input-group-btn">
+                            <button class="search-submit btn btn-custom-blue icon-search" type="button"></button>
+                        </span>
+                    </div>
+                    <div class="search-toolbar">
+                        <div class="search-reset icon-cancel-squared"></div>
+                        <div id="search-field-pagination" class="search-pagination">
+                            <div class="search-pagination-label"></div>
+                            <div class="search-pagination-button-prev icon-left"></div>
+                            <div class="search-pagination-button-next icon-right"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="completion-container">

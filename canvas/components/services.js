@@ -58,7 +58,8 @@ define('components/services', ['cacheControl'], function(CacheControl) {
 			var serviceQuery = "/api/faces/search/" + query;
 
 			if( cache.checkFromCache(serviceQuery) ){
-				callback(query, cache.getFromCache(serviceQuery));
+                console.log('from cache', cache.getFromCache(serviceQuery));
+				callback(cache.getFromCache(serviceQuery), query);
 			}else{
 				$.getJSON(serviceQuery).done(function(json) {
 					// TODO binding "id"

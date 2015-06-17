@@ -41,6 +41,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 
 			var i;
 			var j;
+            var uriIdSegment = getIdUriSegment();
 
 			for (i = 0; i < _rangeLinge; i++) {
 				for (j = 0; j < _rangeColonne; j++) {
@@ -103,6 +104,14 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 
 			getFacesByRanges(rangesPos);
             messageBus.on('map:gotoFaceNumber', gotoFaceNumber);
+
+            console.log((uriIdSegment));
+            if( uriIdSegment ){
+                setTimeout(function(){
+                    messageBus.emit('map:gotoFaceNumber', {number: uriIdSegment, directly: true});
+                }, 1000);
+            }
+
 		}
 
 		function onScrollMouseDown(event) {
@@ -113,6 +122,19 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 				messageBus.emit('ScrollContainer:StartMoving');
 			}, 250);
 		}
+
+        function getIdUriSegment(){
+            var id;
+
+            var uri = location.href;
+            var regexp = /^[0-9]*$/;
+            var segments = uri.split('/');
+            var lastSegment = segments[segments.length-1];
+
+            id = !!lastSegment.match(regexp) ? lastSegment : null;
+
+            return id;
+        }
 
 		function onScrollMouseUp() {
 			clearTimeout(_hideTimer);
@@ -243,7 +265,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
                     //.to(_blurFilter, 0.5, {blur: 10}, 0)
                     .to(_scrollObject.position, 1, {x: "+="+decal.x, y: "+="+decal.y, ease: Cubic.easeOut}, 0)
                     .to(_scrollObject, 0, {x:path.x-decal.x,y:path.y-decal.y, ease: Cubic.easeOut})
-                    .to(_scrollObject, 2, {x:path.x,y:path.y, ease: Cubic.easeOut})
+                    .to(_scrollObject, 2, {x:path.x,y:path.y, delay:1, ease: Cubic.easeOut})
                     //.to(_blurFilter, 0.5, {blur: 0}, "-=1")
                     .to(_scrollObject, 0.5, {alpha: 1}, "-=1");
             }else{
