@@ -952,10 +952,11 @@ publicRouter.get('/success/:id', function(req, res, next) {
       if (err){
         console.log('UTILISATEUR NON TROUVE', err);
       }else{
-
-          face.number = req.params.id == 0 ? 1 : req.params.id;
-          //console.log('FACE', face);
-          req.user.number = req.params.id == 0 ? 1 : req.params.id;
+          if(!face.number > 0){
+            face.number = req.params.id == 0 ? 1 : req.params.id;
+            req.user.number = req.params.id == 0 ? 1 : req.params.id;
+          }
+          
           face.save(function(err) {
               if (err){
                 console.log('ERROR SAVE NUMBER', err);
