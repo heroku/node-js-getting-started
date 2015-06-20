@@ -51,8 +51,8 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 					var _tmp = [];
 					for (var k = 0; k < _rangePage; k++) {
 						//_tmp.push({number : _ID, picture : "img/" + ((_ID === 0) ? "logo.jpg" : parseInt(MathUtils.randomMinMax(0, 15)) + ".jpg")});
-						_tmp.push({number : _ID, picture : "img/" + parseInt(MathUtils.randomMinMax(0, 15)) + ".jpg"});
-						main.martixRange[_ID] = {number : _ID, picture : "/img/noimage.jpg"};
+						_tmp.push({number : _ID, picture : "img/" + parseInt(MathUtils.randomMinMax(1, 10)) + ".jpg"});
+						main.martixRange[_ID] = {number : _ID, picture : "/img/"+parseInt(MathUtils.randomMinMax(1, 10))+".jpg"};
 						_ID++;
 					}
 					// _ranges => "getFaces(x,y) => [12]"
@@ -107,12 +107,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 
 			getFacesByRanges(rangesPos);
             messageBus.on('map:gotoFaceNumber', gotoFaceNumber);
-
-            if( uriIdSegment ){
-                setTimeout(function(){
-					Backbone.history.navigate("number/"+uriIdSegment,{trigger:true});
-                }, 1000);
-            }
+            messageBus.on('map:updateGrid', updateGrid);
 
 		}
 
@@ -212,9 +207,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 			}
 
             if(moved){
-                //_.throttle(function(){
-                //    updateGrid(); // slow fps
-                //}, 50);
+				updateGrid();
                 getFacesByRanges(rangesPos);
             }
 
@@ -431,8 +424,8 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
          */
         function updateMatrix(data){
             for (var i = 0; i < data.length; i++) {
-                if (data[i].number) {
-                    main.martixRange[data[i].number] = data[i];
+                if (data[i].picture) {
+					main.martixRange[data[i].number] = data[i];
                 }
             }
         }
