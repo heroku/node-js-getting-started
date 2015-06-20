@@ -8,6 +8,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 		var _scrollObject;
 		var _w;
 		var _h;
+		var _coefPage = window.screen.width > 1600 ? 0.5 :  (Tools.getDevice() == "desktop")  ? 1 : 2;
         var ITEM_WIDTH = 154;
         var ITEM_HEIGHT = 154;
         var MIN_SPEED = 1;
@@ -16,18 +17,20 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
         var MAX_FACES = 1000000;
 		// nb col to display
 		// Must be modified with screen size
-		var _c = (Tools.getDevice() == "desktop") ? 2 : 2;
+		var _c = 2;
 		// nb line to display
 		// Must be modified with screen size
-		var _l = (Tools.getDevice() == "desktop") ? 6 : 3;
+		var _l = 6;
 		var _id = 0;
 		var _maxWidth = 0;
 		var _maxHeight = 0;
 		var _lastItemX = 0;
 		var _lastItemY = 0;
 		var _rangeLinge = 1000;
-		var _rangeColonne = 100;
-		var _rangePage = 10;
+		var _rangeColonne = 100*_coefPage;
+		var _rangePage = 10/_coefPage;
+		var nbItemByLine = 1;
+		var nbItemByCol = 10/_coefPage;
 		var _ranges = [];
 		var _ID = 0;
 		var _hideTimer = null;
@@ -71,7 +74,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 
 			for (i = 0; i < _l; i++) {
 				for (j = 0; j < _c; j++) {
-					_bloc = new Bloc(ITEM_WIDTH, ITEM_HEIGHT);
+					_bloc = new Bloc(ITEM_WIDTH, ITEM_HEIGHT, nbItemByCol, nbItemByLine);
 					_blocs[_id] = _bloc;
 					_bloc.idX = _bloc.initidX = j;
 					_bloc.idY = _bloc.initidY = i;

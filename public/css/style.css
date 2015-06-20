@@ -272,6 +272,12 @@ body{
 	width: 25em;
 }
 
+@media screen and (max-width: 480px){
+	.search-bar #form-search.extended .input-group {
+		width: 15em;
+	}
+}
+
 .modal-container .modal-dialog {
   position:absolute;
   top:50% !important;
