@@ -158,7 +158,7 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 
 		function start() {
 
-            new SearchBar({blurAfterSubmit:true});
+            new SearchBar({blurAfterSubmit:false});
 
 			console.log("<< start >>");
 
