@@ -444,3 +444,10 @@ input[type=checkbox]:checked + label:after {
 	opacity: 0.8;
 	text-decoration: none;
 }
+
+.alert-container {
+	position:absolute;
+	top:0;
+	left:0;
+	z-index:9999;
+}

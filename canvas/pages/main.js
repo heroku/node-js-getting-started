@@ -31,6 +31,8 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 		var _canvas = args[0];
 		var _data = args[1];
 
+        main.currentUser = _data.currentUser;
+
 		function init() {
 			_stage = new PIXI.Stage(0x000000);
 			_rendererOptions = {view : _canvas, transparent : false, resolution : window.devicePixelRatio || 1};
@@ -90,9 +92,6 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 			});
 		}
 
-		function editFace(){
-			$('.modal').modal('show');
-		}
 
 		main.onResize = function() {
 
@@ -171,13 +170,26 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 			var OmhRouter = Backbone.Router.extend({
 
 			  routes: {
-			    "edit/:number":"edit",  // #search/kiwis
-			    "number/:number": "number"   // #search/kiwis/p7
+			    "edit/": "edit",  // #search/kiwis
+					"success/": "success",  // #search/kiwis
+			    "number/:number": "number",   // #search/kiwis/p7
+					"login/": "login"   // #search/kiwis/p7
 			  },
 
 			  edit: function(number) {
 					console.log('BACKBONE EDIT', number);
-					editFace();
+					showEditFace();
+			  },
+			  success: function(number) {
+					console.log('BACKBONE EDIT', number);
+					showSuccessFace();
+			  },
+			  login: function(number) {
+					console.log('BACKBONE LOGIN', number);
+					showLoginPopin();
+			  },
+			  logout: function(number) {
+					console.log('BACKBONE EDIT', number);
 			  },
 
 			  number: function(number) {
@@ -188,7 +200,7 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 			});
 
 			var omhRouter = new OmhRouter();
-			$('.modal').on('hidden.bs.modal', function (e) {
+			$('.modal').on('hide.bs.modal', function (e) {
 				omhRouter.navigate("", {trigger: false, replace: true});
 			});
 			//start listening routes
@@ -218,6 +230,22 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 			_stats.domElement.style.opacity = '0.5';
 			document.body.appendChild(_stats.domElement);
 		}
+
+		/*** modal functions ***/
+		function showLoginPopin(){
+			$('.modal-login').modal('show');
+		}
+
+		function showEditFace(){
+			$('.modal-edit').modal('show');
+		}
+
+		function showSuccessFace(){
+			$('#edit-user').data('register', 'true');
+			$('.modal-edit').modal('show');
+		}
+
+		/***********************/
 
 		init();
 	};

@@ -47,6 +47,7 @@ passport.use(new FacebookStrategy({
 
             if(faces.length > 0){
               userExist = true;
+              face = faces[0];
             }
 
             if(userExist == false){
@@ -86,11 +87,10 @@ passport.use(new FacebookStrategy({
                     console.log('PROFILE FACEBOOK', profile, imgDestPath);
                     // save the face and check for errors
                     face.save(function(err) {
-                          if (err)
-                              res.send(err);
-
-
-                              return done(null, face);
+                          if (err){
+                            res.send(err);
+                          }
+                          return done(null, face);
                       });
 
                   }
@@ -100,7 +100,7 @@ passport.use(new FacebookStrategy({
             }
           else{
             console.log('PASSE');
-            return done(null, false, { message: 'User already exist' });
+            return done(null, face, { message: 'User find' });
           }
 
         });
@@ -182,7 +182,7 @@ passport.use(new TwitterStrategy({
         if(faces[0].claim === false){
           return done(null, faces[0]);
         }else{
-          return done(null, false, { message: 'User already exist' });
+          return done(null, faces[0], { message: 'User login' });
         }
 
       }
@@ -745,6 +745,46 @@ publicRouter.get('/register', function(req, res, next) {
   });
 });
 
+//LOGIN / LOGOUT
+publicRouter.get('/login/facebook',
+function(req,res,next) {
+  passport.authenticate(
+    'facebook',
+     {callbackURL: '/login/facebook/callback' }
+  )(req,res,next);
+});
+
+app.get('/login/facebook/callback',
+  passport.authenticate('facebook', { failureRedirect: '/#login' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/#number/' + req.user.number);
+  });
+
+publicRouter.get('/login/twitter',
+function(req,res,next) {
+  passport.authenticate(
+    'twitter',
+     {callbackURL: '/login/twitter/callback' }
+  )(req,res,next);
+});
+
+app.get('/login/twitter/callback',
+  passport.authenticate('twitter', { failureRedirect: '/#login' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/#number/' + req.user.number);
+  });
+
+  app.get('/logout', function(req, res){
+      console.log("logging out");
+      console.log(req.user);
+      req.logout();
+      res.redirect('/');
+  });
+
+/****** END LOGIN / LOGOUT *********/
+
 publicRouter.get('/auth/facebook/register/:id',
 function(req,res,next) {
   passport.authenticate(
@@ -912,10 +952,11 @@ publicRouter.get('/success/:id', function(req, res, next) {
       if (err){
         console.log('UTILISATEUR NON TROUVE', err);
       }else{
+          if(!face.number > 0){
+            face.number = req.params.id == 0 ? 1 : req.params.id;
+            req.user.number = req.params.id == 0 ? 1 : req.params.id;
+          }
 
-          face.number = req.params.id == 0 ? 1 : req.params.id;
-          //console.log('FACE', face);
-          req.user.number = req.params.id == 0 ? 1 : req.params.id;
           face.save(function(err) {
               if (err){
                 console.log('ERROR SAVE NUMBER', err);
@@ -930,8 +971,8 @@ publicRouter.get('/success/:id', function(req, res, next) {
                 // returns the post id
                 console.log(res); // { id: xxxxx}
               });*/
-
-              res.render('home', {'data':{'config': config, 'editedFace': face, 'currentUser': req.user, 'register': true}});
+              res.redirect('/#success/');
+              //res.render('home', {'data':{'config': config, 'editedFace': face, 'currentUser': req.user, 'register': true}});
 
           });
       }

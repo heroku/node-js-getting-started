@@ -180,8 +180,8 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 				console.log('BLOC ITEM DATA', _data);
 			}
 
-			this.setSocials(typeof _data.claim === 'undefined');
-			this.setClaim(_data.claim === false);
+			this.setSocials(typeof _data.claim === 'undefined' && !main.currentUser);
+			this.setClaim(_data.claim === false && !main.currentUser);
 
 			updateRectColor(_id);
 			_itemText.setText(_txt*1+1);
