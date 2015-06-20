@@ -130,6 +130,7 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 				if( _interactive){
 					Backbone.history.navigate('profile/'+_data.accountname, {trigger:true});
 					setSelected(_data.number);
+                    messageBus.emit('map:gotoFaceNumber', {number: _data.number+1, directly: false});
 				}
 			}, _timerBeforeClickAction);
 
