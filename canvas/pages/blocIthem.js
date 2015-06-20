@@ -1,5 +1,7 @@
 define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], function(fontello, BtnSocial, messageBus, colorMapping) {
 
+    var _lastSelected;
+
 	var _blocIthem = function(ITEM_WIDTH, ITEM_HEIGHT) {
 
 		// CONST
@@ -20,6 +22,8 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 		var _data;
 		var _interactive;
 		var _selectedAnimation;
+		var _timer;
+		var _timerBeforeClickAction = 500;
 
 		PIXI.DisplayObjectContainer.call(this);
 		_scope = this;
@@ -81,6 +85,7 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 
 			messageBus.on('blocItem:setUnselected', setUnselected);
 			messageBus.on('blocItem:setSelected', setSelected);
+			messageBus.on('ScrollContainer:StartMoving', clearTimer);
 
 
 			_selectedAnimation = getAnimation();
@@ -119,11 +124,15 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 		 *
 		 */
 		function onFaceClick(){
-			if( _interactive ){
-				Backbone.history.navigate('profile/'+_data.accountname, {trigger:true});
-				messageBus.emit('blocItem:setUnselected');
-				setSelected(_data.number);
-			}
+			clearTimer();
+
+			_timer = setTimeout(function(){
+				if( _interactive){
+					Backbone.history.navigate('profile/'+_data.accountname, {trigger:true});
+					setSelected(_data.number);
+				}
+			}, _timerBeforeClickAction);
+
 		}
 
 		/**
@@ -139,6 +148,14 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 
 			tw.pause();
 			return tw;
+		}
+
+		/**
+		 *
+		 */
+		function clearTimer(){
+			clearTimeout(_timer);
+            messageBus.emit('blocItem:setUnselected');
 		}
 
 		/**
