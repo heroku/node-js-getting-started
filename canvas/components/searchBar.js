@@ -93,7 +93,7 @@ define('searchBar', ['messageBus', "components/services", 'pagination'], functio
         var _this = this;
 
         if( value*1 >= 0){
-            messageBus.emit('map:gotoFaceNumber', {number: value*1, directly: false});
+            Backbone.history.navigate("number/"+value*1,{trigger:true});
             _this.pagination.reset();
         }else if(value.length > 2){
             _services.searchFaces(value, function(data,query){

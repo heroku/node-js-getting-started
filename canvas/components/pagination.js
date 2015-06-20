@@ -74,7 +74,9 @@ define('pagination', ['messageBus'], function(messageBus){
         this.el = this.data[this.current];
 
         if( this.el ){
-            messageBus.emit('map:gotoFaceNumber', {number: this.el.number, directly: false});
+
+            Backbone.history.navigate("number/"+this.el.number,{trigger:true});
+            //messageBus.emit('map:gotoFaceNumber', {number: this.el.number, directly: false});
         }
         this.updatePaginationButtons();
         return this.el;

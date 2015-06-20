@@ -108,10 +108,9 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 			getFacesByRanges(rangesPos);
             messageBus.on('map:gotoFaceNumber', gotoFaceNumber);
 
-            console.log((uriIdSegment));
             if( uriIdSegment ){
                 setTimeout(function(){
-                    messageBus.emit('map:gotoFaceNumber', {number: uriIdSegment, directly: true});
+					Backbone.history.navigate("number/"+uriIdSegment,{trigger:true});
                 }, 1000);
             }
 
@@ -271,6 +270,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
                     .to(_scrollObject, 2, {x:path.x,y:path.y, delay:1, ease: Cubic.easeOut})
                     //.to(_blurFilter, 0.5, {blur: 0}, "-=1")
                     .to(_scrollObject, 0.5, {alpha: 1}, "-=1");
+
             }else{
                 TweenLite.to(_scrollObject, speed, {x:path.x,y:path.y, ease: Cubic.easeOut});
             }

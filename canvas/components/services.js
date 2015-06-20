@@ -1,4 +1,4 @@
-define('components/services', ['cacheControl'], function(CacheControl) {
+define('components/services', ['cacheControl', 'messageBus'], function(CacheControl, messageBus) {
 
 	var cache = new CacheControl();
 
@@ -20,6 +20,7 @@ define('components/services', ['cacheControl'], function(CacheControl) {
 
                     //doneXHR(_xhr.ranges, xhr);
 					cache.cache(serviceQuery, json);
+					messageBus.emit('main:hideLoader');
 				}).fail(function(jqxhr, textStatus, error) {
 					var err = textStatus + ", " + error;
 					console.log("Request Failed: " + err);
