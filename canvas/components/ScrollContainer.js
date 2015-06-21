@@ -235,6 +235,7 @@ define('ScrollContainer', ['Gesture', 'messageBus'], function(Gesture, messageBu
         }
 
 		function onDown(event) {
+			messageBus.emit('searchBar:blur');
 			_event = event;
 			_isDown = true;
 			_oldPos = _gesture.update(rect);

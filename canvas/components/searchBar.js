@@ -32,16 +32,17 @@ define('searchBar', ['messageBus', "components/services", 'pagination'], functio
             _this.$form.submit();
         });
 
+        messageBus.on('searchBar:blur', function(){ _this.$field.blur()});
+
         this.$form.on('submit', function(e){
             e.preventDefault();
 
             var value = _this.$field.val();
 
-            if( _lastValue === value ){
+            if( _lastValue === value && !(value*1 >= 0) ){
                 _this.pagination.next() ;
                 return;
             }
-
 
             if(options.blurAfterSubmit === true){
                 _this.$field.blur();
@@ -93,7 +94,8 @@ define('searchBar', ['messageBus', "components/services", 'pagination'], functio
         var _this = this;
 
         if( value*1 >= 0){
-            messageBus.emit('map:gotoFaceNumber', {number: value*1, directly: false});
+            Backbone.history.navigate("number/"+value*1,{trigger:false});
+            messageBus.emit('map:gotoFaceNumber', {'number': value*1, directly: false});
             _this.pagination.reset();
         }else if(value.length > 2){
             _services.searchFaces(value, function(data,query){

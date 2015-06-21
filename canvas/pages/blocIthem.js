@@ -1,5 +1,7 @@
 define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], function(fontello, BtnSocial, messageBus, colorMapping) {
 
+    var _lastSelected;
+
 	var _blocIthem = function(ITEM_WIDTH, ITEM_HEIGHT) {
 
 		// CONST
@@ -7,6 +9,7 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 		var PICTURE_HEIGHT = ITEM_HEIGHT-4;
 
 		var _scope;
+		var _container;
 		var _item;
 		var _itemText;
 		var _txt;
@@ -17,6 +20,10 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 		var _id;
 		var _rect;
 		var _data;
+		var _interactive;
+		var _selectedAnimation;
+		var _timer;
+		var _timerBeforeClickAction = 500;
 
 		PIXI.DisplayObjectContainer.call(this);
 		_scope = this;
@@ -32,6 +39,8 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 		};
 
 		function build() {
+
+			_container = new PIXI.DisplayObjectContainer();
 
 			_rect = new PIXI.Graphics();
 			updateRectColor(0);
@@ -74,24 +83,102 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
                 _decline.enable(0.25, delay);
 			});
 
+			messageBus.on('blocItem:setUnselected', setUnselected);
+			messageBus.on('blocItem:setSelected', setSelected);
+			messageBus.on('ScrollContainer:StartMoving', clearTimer);
+
+
+			_selectedAnimation = getAnimation();
+			_scope.mousedown = _scope.touchstart = onFaceClick;
 
 			_scope.addChild(_rect);
-			_scope.addChild(_item);
+			_scope.addChild(_container);
 			_scope.addChild(_itemText);
-			_scope.addChild(_fb);
-			_scope.addChild(_tw);
-			_scope.addChild(_claim);
-			_scope.addChild(_decline);
+
+			_container.addChild(_item);
+			_container.addChild(_fb);
+			_container.addChild(_tw);
+			_container.addChild(_claim);
+			_container.addChild(_decline);
 		}
 
+		/**
+		 *
+		 * @param event
+		 */
 		function onTWCLick(event) {
 			console.log(">>" + "/auth/twitter/register/" + _id);
 			parent.location = "/auth/twitter/register/" + _id;
 		}
 
+		/**
+		 *
+		 * @param event
+		 */
 		function onFBCLick(event) {
 			console.log(">>"+"/auth/facebook/register/" + _id);
 			parent.location = "/auth/facebook/register/" + _id;
+		}
+
+		/**
+		 *
+		 */
+		function onFaceClick(){
+			clearTimer();
+
+			_timer = setTimeout(function(){
+				if( _interactive){
+					Backbone.history.navigate('profile/'+_data.accountname, {trigger:true});
+					setSelected(_data.number);
+                    messageBus.emit('map:gotoFaceNumber', {number: _data.number+1, directly: false});
+				}
+			}, _timerBeforeClickAction);
+
+		}
+
+		/**
+		 *
+		 * @returns {TweenLite.to}
+		 */
+		function getAnimation(){
+			var tw = new TimelineLite()
+
+			tw.to(_container, 0.5, {alpha: 0.3});
+			tw.to(_container.scale, 0.5, {x: 0.5, y:0.5}, 0);
+			tw.to(_container.position, 0.5, {x: PICTURE_WIDTH/4, y: PICTURE_WIDTH/4}, 0);
+
+			tw.pause();
+			return tw;
+		}
+
+		/**
+		 *
+		 */
+		function clearTimer(){
+			clearTimeout(_timer);
+            messageBus.emit('blocItem:setUnselected');
+		}
+
+		/**
+		 *
+		 */
+		function setUnselected(){
+			_selectedAnimation.reverse();
+		}
+
+		/**
+		 *
+		 * @param event
+		 */
+		function setSelected(event){
+			var number = event;
+			if( typeof event === 'object'){
+				number = event.data.number;
+			}
+
+			if( number === _data.number ){
+				_selectedAnimation.play();
+			}
 		}
 
 		function updateRectColor(id){
@@ -155,6 +242,15 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
             _decline.showElement();
         };
 
+		/**
+		 *
+		 */
+		this.setInteractive = function(isInteractive){
+			_interactive = isInteractive;
+			_scope.interactive = isInteractive;
+			_scope.buttonMode = isInteractive;
+		}
+
         /**
          * Switch show/hide social buttons
          * @param show
@@ -180,6 +276,7 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 				console.log('BLOC ITEM DATA', _data);
 			}
 
+			this.setInteractive(_data.accountname && !(_data.claim === false && !main.currentUser));
 			this.setSocials(typeof _data.claim === 'undefined' && !main.currentUser);
 			this.setClaim(_data.claim === false && !main.currentUser);
 

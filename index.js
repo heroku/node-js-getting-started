@@ -418,13 +418,16 @@ router.route('/faces')
                 Face.find({number:{$in:range}}).sort('number').exec(function(err, faces) {
 
                     var tempFaces = _.clone(faces);
+                    //var randomPicture;
 
                       if (err){
                         res.send(err);
                       }
                       for(var i = 0; i < range.length; i++){
+                        //randomPicture = Math.round(Math.random()*config.nbFreeSlotFacesPictures-1)+1;
+
                         if( ! _.find(tempFaces, function(currentFace){ return currentFace.number == range[i]; }) ){
-                          tempFaces.push({'number': range[i], picture:"/img/noimage.jpg"});
+                            tempFaces.push({'number': range[i]});
                         }
                       }
 

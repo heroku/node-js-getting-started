@@ -30,6 +30,8 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 		var _viewPosY;
 		var _canvas = args[0];
 		var _data = args[1];
+		var _loaded = false;
+		var _loader = $('.loading-container').get(0);
 
         main.currentUser = _data.currentUser;
 
@@ -43,12 +45,38 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 			}
 			onReady();
 
+			messageBus.on('main:hideLoader', hideLoader);
+			messageBus.on('main:showLoader', showLoader);
+
 			_renderer.view.addEventListener('mouseleave', function(event){
 				 //trigger only on window leave
 				//if( event.toElement === null || event.toElement === document.getElementsByTagName('html')[0] ){
 					messageBus.emit('renderer:mouseleave');
 				//}
 			});
+		}
+
+		function hideLoader(){
+			if( _loaded ){
+				return;
+			}
+
+			TweenLite.to(_loader, 0.25, {opacity:0, delay: 1, onComplete: function(){
+				TweenLite.set(_loader, {display:'none'});
+				_loaded = true;
+			}});
+
+		}
+
+		function showLoader(){
+			if( !_loaded ){
+				return;
+			}
+
+			TweenLite.fromTo(_loader, 0.25, {display: 'block', opacity: 0}, {opacity:1, onComplete: function(){
+				_loaded = false;
+			}});
+
 		}
 
 		function onReady() {
@@ -130,12 +158,7 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 
 		function start() {
 
-			var loader = $('.loading-container').get(0);
-			TweenLite.to(loader, 0.25, {opacity:0, onComplete: function(){
-				TweenLite.set(loader, {display:'none'});
-			}});
-
-            new SearchBar({blurAfterSubmit:true});
+            new SearchBar({blurAfterSubmit:false});
 
 			console.log("<< start >>");
 
@@ -171,9 +194,9 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 
 			  routes: {
 			    "edit/": "edit",  // #search/kiwis
-					"success/": "success",  // #search/kiwis
+				"success/": "success",  // #search/kiwis
 			    "number/:number": "number",   // #search/kiwis/p7
-					"login/": "login"   // #search/kiwis/p7
+				"login/": "login"   // #search/kiwis/p7
 			  },
 
 			  edit: function(number) {

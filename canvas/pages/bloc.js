@@ -1,6 +1,6 @@
 define('bloc', ["blocIthem"], function(BlocIthem) {
 
-	var _bloc = function(ITEM_WIDTH, ITEM_HEIGHT) {
+	var _bloc = function(ITEM_WIDTH, ITEM_HEIGHT, c, l) {
 
 		PIXI.DisplayObjectContainer.call(this);
 		PIXI.EventTarget.call(this);
@@ -8,8 +8,8 @@ define('bloc', ["blocIthem"], function(BlocIthem) {
 		// CONST
 		var _scope;
 		var _item;
-		var _c = 10;
-		var _l = 1;
+		var _c = c;
+		var _l = l;
 		var _width = _c * ITEM_WIDTH;
 		var _height = _l * ITEM_HEIGHT;
 		var _id = 0;
