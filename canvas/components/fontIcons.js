@@ -83,6 +83,12 @@ define('fontIcons', function(){
     icons.OK_SQUARED        = Tools.hexDecode("\e82a");
     icons.CANCEL_SQUARED    = Tools.hexDecode("\e82b");
 
+    icons.MAP               = Tools.hexDecode("\e82c");
+    icons.MAP_1             = Tools.hexDecode("\e82d");
+
+    icons.LOCATION          = Tools.hexDecode("\e82e");
+    icons.LOCATION_CIRCLED  = Tools.hexDecode("\e82f");
+
     // autoload font
     icons.load();
 

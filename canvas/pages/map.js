@@ -1,4 +1,4 @@
-define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], function(ScrollContainer, Bloc, Services, messageBus) {
+define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', 'minimap'], function(ScrollContainer, Bloc, Services, messageBus, Minimap) {
 
 	var _map = function() {
 
@@ -6,6 +6,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 		var _blocs = [];
 		var _bloc;
 		var _scrollObject;
+		var _minimap;
 		var _w;
 		var _h;
 		var _coefPage = window.screen.width > 1600 ? 0.5 :  (Tools.getDevice() == "desktop")  ? 1 : 2;
@@ -31,6 +32,10 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 		var _rangePage = 10/_coefPage;
 		var nbItemByLine = 1;
 		var nbItemByCol = 10/_coefPage;
+		var maxGridWidth  = _rangeColonne*_rangePage*ITEM_WIDTH; // only if 1 page per line
+		var maxGridHeight = _rangeLinge*ITEM_HEIGHT; // only if 1 page per line
+		var _minimapWidth  = ITEM_WIDTH; // only if 1 page per line
+		var _minimapHeight = ITEM_HEIGHT; // only if 1 page per line
 		var _ranges = [];
 		var _ID = 0;
 		var _hideTimer = null;
@@ -64,9 +69,13 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 			//console.log('main.martixRange', main.martixRange);
 
 			_scrollObject = new ScrollContainer(ScrollContainerType.SCROLL, main.stage);
+			_minimap = new Minimap(_minimapWidth, _minimapHeight, ITEM_WIDTH, ITEM_HEIGHT, maxGridWidth, maxGridHeight);
 			_scrollObject.addEventListener("down", onScrollMouseDown);
 			_scrollObject.addEventListener("up", onScrollMouseUp);
 			_scope.addChild(_scrollObject);
+			_scope.addChild(_minimap);
+
+			updateMinimapPosition();
 
 			var _posx = 0;
 			var _posy = 0;
@@ -106,6 +115,8 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 			initPosItems();
 
 			getFacesByRanges(rangesPos);
+
+
             messageBus.on('map:gotoFaceNumber', gotoFaceNumber);
             messageBus.on('map:updateGrid', updateGrid);
 
@@ -118,6 +129,18 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 			_hideTimer = setTimeout(function(){
 				messageBus.emit('ScrollContainer:StartMoving');
 			}, 250);
+		}
+
+		function updateMinimapPosition(){
+			var x, y;
+
+			console.log("update minimap");
+			x = 20;
+
+			y = window.innerHeight-_minimapHeight-20;
+
+			_minimap.position.x = x;
+			_minimap.position.y = y;
 		}
 
         function getIdUriSegment(){
@@ -207,7 +230,6 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 			}
 
             if(moved){
-				updateGrid();
                 getFacesByRanges(rangesPos);
             }
 
@@ -275,41 +297,38 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 
             var iterate = {x:{n:0}, y:{n:0}};
 
-            var maxWidth  = _rangeColonne*_rangePage*ITEM_WIDTH; // only if 1 page per line
-            var maxHeight = _rangeLinge*ITEM_HEIGHT; // only if 1 page per line
+            iterate.x.n = Math[x>=0 ? "floor" : "ceil"](x/maxGridWidth);
+            iterate.y.n = Math[y>=0 ? "floor" : "ceil"](x/maxGridWidth);
 
-            iterate.x.n = Math[x>=0 ? "floor" : "ceil"](x/maxWidth);
-            iterate.y.n = Math[y>=0 ? "floor" : "ceil"](x/maxWidth);
-
-            //console.log(x, maxWidth, iterate.x.n);
-            //console.log(y, maxHeight, iterate.y.n);
+            //console.log(x, maxGridWidth, iterate.x.n);
+            //console.log(y, maxGridHeight, iterate.y.n);
 
             var minx = Math.min(
-                x+(iterate.x.n)*maxWidth-maxWidth,
-                x+(iterate.x.n)*maxWidth,
-                x+(iterate.x.n+1)*maxWidth
+                x+(iterate.x.n)*maxGridWidth-maxGridWidth,
+                x+(iterate.x.n)*maxGridWidth,
+                x+(iterate.x.n+1)*maxGridWidth
             );
 
             var miny = Math.min(
-                y+(iterate.y.n)*maxHeight-maxHeight,
-                y+(iterate.y.n)*maxHeight,
-                y+(iterate.y.n+1)*maxHeight
+                y+(iterate.y.n)*maxGridHeight-maxGridHeight,
+                y+(iterate.y.n)*maxGridHeight,
+                y+(iterate.y.n+1)*maxGridHeight
             );
 
-            if(Math.abs(x+(iterate.x.n-1)*maxWidth) < Math.abs(x+(iterate.x.n)*maxWidth)){
-                minx = x+(iterate.x.n-1)*maxWidth;
-            }else if(Math.abs(x+(iterate.x.n)*maxWidth) < Math.abs(x+(iterate.x.n+1)*maxWidth)){
-                minx = x+(iterate.x.n)*maxWidth;
+            if(Math.abs(x+(iterate.x.n-1)*maxGridWidth) < Math.abs(x+(iterate.x.n)*maxGridWidth)){
+                minx = x+(iterate.x.n-1)*maxGridWidth;
+            }else if(Math.abs(x+(iterate.x.n)*maxGridWidth) < Math.abs(x+(iterate.x.n+1)*maxGridWidth)){
+                minx = x+(iterate.x.n)*maxGridWidth;
             }else{
-                minx = x+(iterate.x.n+1)*maxWidth;
+                minx = x+(iterate.x.n+1)*maxGridWidth;
             }
 
-            if(Math.abs(y+(iterate.y.n-1)*maxHeight) < Math.abs(y+(iterate.y.n)*maxHeight)){
-                miny = y+(iterate.y.n-1)*maxHeight;
-            }else if(Math.abs(y+(iterate.y.n)*maxHeight) < Math.abs(y+(iterate.y.n+1)*maxHeight)){
-                miny = y+(iterate.y.n)*maxHeight;
+            if(Math.abs(y+(iterate.y.n-1)*maxGridHeight) < Math.abs(y+(iterate.y.n)*maxGridHeight)){
+                miny = y+(iterate.y.n-1)*maxGridHeight;
+            }else if(Math.abs(y+(iterate.y.n)*maxGridHeight) < Math.abs(y+(iterate.y.n+1)*maxGridHeight)){
+                miny = y+(iterate.y.n)*maxGridHeight;
             }else{
-                miny = y+(iterate.y.n+1)*maxHeight;
+                miny = y+(iterate.y.n+1)*maxGridHeight;
             }
 
             return {x: minx, y: miny};
@@ -395,6 +414,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 			}
 
             if( range.length ){
+				updateGrid();
                 _services.getFacesByRange(range, onGetFacesByRange);
             }
 
@@ -458,12 +478,14 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus'], 
 		this.process = function() {
 			if (_scrollObject) {
 				_scrollObject.scroll();
+				_minimap.process();
 				replaceItem();
 			}
 		};
 
 		this.resize = function(w, h) {
 
+			updateMinimapPosition();
 			_w = w;
 			_h = h;
 

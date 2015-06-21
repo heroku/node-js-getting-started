@@ -24,6 +24,7 @@ define('components/services', ['cacheControl', 'messageBus'], function(CacheCont
 				}).fail(function(jqxhr, textStatus, error) {
 					var err = textStatus + ", " + error;
 					console.log("Request Failed: " + err);
+					messageBus.emit('main:hideLoader');
 				});
 
                 //_xhr.ranges.xhr.push(xhr);
