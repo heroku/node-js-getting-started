@@ -22,6 +22,7 @@ var flash = require('connect-flash');
 var Twitter = require('twitter');
 var fbgraph = require('fbgraph');
 var _ = require('underscore');
+
 //path.resolve('../omf-client/public/index.html');
 
 //PASSPORT
@@ -33,6 +34,15 @@ var fs      = require('fs');
 var request = require('request');
 var path = require('path');
 var imgDestPath = path.resolve('./public/img');
+var gm = require('gm');
+var im = gm.subClass({ imageMagick: true });
+console.log('IMG DEST PATH', imgDestPath + '/logo.jpg');
+/*im(imgDestPath + '/logo.jpg')
+.append(imgDestPath + '/logo.jpg', true)
+.write(imgDestPath + '/logo-test.jpg'
+, function(stdout){
+  console.log('STD OUT', stdout);
+});*/
 
 passport.use(new FacebookStrategy({
   clientID: config.FACEBOOK_APP_ID,
@@ -462,14 +472,7 @@ router.route('/faces')
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 publicRouter.get('/', function(req, res) {
-    Face.find(function(err, faces) {
-        if (err){
-          res.send(err);
-        }
-        res.render('home', {data:{'config': config, 'nbFaces': faces.length, 'currentUser': req.user}});
-        //res.json(faces);
-    });
-
+    res.render('home', {data:{'config': config, 'currentUser': req.user}});
     //res.sendfile(path.resolve('./public/register.html'));
 });
 

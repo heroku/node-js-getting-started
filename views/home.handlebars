@@ -43,7 +43,7 @@
 							}else{
 								$('.modal').modal('hide');
 							}
-			
+
             }
           });
 
@@ -87,15 +87,15 @@
         	<div class="modal-body">
 
 						<div class="edit-human">
-							<form id="edit-user" method="post" action="/api/faces/{{data.editedFace._id}}">
+							<form id="edit-user" method="post" action="/api/faces/{{data.currentUser._id}}">
 		          <div class="input-group input-group">
 							  <span class="input-group-addon" id="label-name">Your name</span>
-							  <input type="text" class="form-control" placeholder="Your name" aria-describedby="label-name" name="accountname" value="{{data.editedFace.accountname}}">
+							  <input type="text" class="form-control" placeholder="Your name" aria-describedby="label-name" name="accountname" value="{{data.currentUser.accountname}}">
 							</div>
 
 							<div class="input-group input-group">
 							  <span class="input-group-addon" id="label-website">your website</span>
-							  <input type="text" class="form-control" placeholder="your website" aria-describedby="label-website"  name="website" value="{{data.editedFace.website}}">
+							  <input type="text" class="form-control" placeholder="your website" aria-describedby="label-website"  name="website" value="{{data.currentUser.website}}">
 							</div>
 
 							<div class="input-group input-group">
@@ -108,7 +108,7 @@
 									<option value="it">Italian</option>
 									<option value="cn">Chinese</option>
 								</select>
-								<!--input type="text" class="form-control" placeholder="your website" aria-describedby="label-lang" name="lang" value="{{data.editedFace.lang}}">
+								<!--input type="text" class="form-control" placeholder="your website" aria-describedby="label-lang" name="lang" value="{{data.currentUser.lang}}">
 							</div>
 							<div class="input-group input-group">
 								<span class="input-group-addon" id="label-occupations">your occupation (max. 3)</span>
@@ -122,42 +122,42 @@
 	              <option>hype</option>
 	              <option>explorer</option>
 	              <option>scientist</option-->
-								<input name="occupations" type="checkbox" {{checked 'student' data.editedFace.occupations}} id="student" value="student" />
+								<input name="occupations" type="checkbox" {{checked 'student' data.currentUser.occupations}} id="student" value="student" />
 								<label for="student">Student</label>
 
-								<input name="occupations" type="checkbox" {{checked 'parent' data.editedFace.occupations}} id="parent" value="parent" />
+								<input name="occupations" type="checkbox" {{checked 'parent' data.currentUser.occupations}} id="parent" value="parent" />
 								<label for="parent">Parent</label>
 
-								<input name="occupations" type="checkbox" {{checked 'worker' data.editedFace.occupations}} id="worker" value="worker"/>
+								<input name="occupations" type="checkbox" {{checked 'worker' data.currentUser.occupations}} id="worker" value="worker"/>
 								<label for="worker">Worker</label>
 
-								<input name="occupations" type="checkbox" {{checked 'artist' data.editedFace.occupations}} id="artist" value="artist"/>
+								<input name="occupations" type="checkbox" {{checked 'artist' data.currentUser.occupations}} id="artist" value="artist"/>
 								<label for="artist">Artist</label>
 
-								<input name="occupations" type="checkbox" {{checked 'undisclosed' data.editedFace.occupations}} id="undisclosed" value="undisclosed"/>
+								<input name="occupations" type="checkbox" {{checked 'undisclosed' data.currentUser.occupations}} id="undisclosed" value="undisclosed"/>
 								<label for="undisclosed">undisclosed</label>
 
-								<input name="occupations" type="checkbox" {{checked 'geek' data.editedFace.occupations}} id="geek" value="geek"/>
+								<input name="occupations" type="checkbox" {{checked 'geek' data.currentUser.occupations}} id="geek" value="geek"/>
 								<label for="geek">Geek</label>
 
-								<input name="occupations" type="checkbox" {{checked 'athlete' data.editedFace.occupations}} id="athlete" value="athlete"/>
+								<input name="occupations" type="checkbox" {{checked 'athlete' data.currentUser.occupations}} id="athlete" value="athlete"/>
 								<label for="athlete">Athlete</label>
 
-								<input name="occupations" type="checkbox" {{checked 'hype' data.editedFace.occupations}} id="hype" value="hype"/>
+								<input name="occupations" type="checkbox" {{checked 'hype' data.currentUser.occupations}} id="hype" value="hype"/>
 								<label for="hype">Hype</label>
 
-								<input name="occupations" type="checkbox" {{checked 'explorer' data.editedFace.occupations}} id="explorer" value="explorer"/>
+								<input name="occupations" type="checkbox" {{checked 'explorer' data.currentUser.occupations}} id="explorer" value="explorer"/>
 								<label for="explorer">Explorer</label>
 
-								<input name="occupations" type="checkbox" {{checked 'scientist' data.editedFace.occupations}} id="scientist" value="scientist"/>
+								<input name="occupations" type="checkbox" {{checked 'scientist' data.currentUser.occupations}} id="scientist" value="scientist"/>
 								<label for="scientist">Scientist</label>
 							</div>
 						</form>
 	        </div>
 					<div class="share-register hide">
 								<p>Help us out by Sharing/sharing on your wall about OMH or maybe even donate a little something to help the project.</p>
-								<div class="fb-share-button" data-href="/number/{{data.editedFace.number}}" data-layout="button"></div>
-								<a class="twitter-share-button" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Flocalhost:3000%2F{{data.editedFace.number}}">
+								<div class="fb-share-button" data-href="/number/{{data.currentUser.number}}" data-layout="button"></div>
+								<a class="twitter-share-button" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Flocalhost:3000%2F{{data.currentUser.number}}">
 									Tweet
 								</a>
 					</div>
