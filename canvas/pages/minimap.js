@@ -1,7 +1,17 @@
-define('minimap', ['fontIcons', 'messageBus', 'btnSocial'], function(fontello, messageBus, Button){
+define('minimap', ['fontIcons', 'messageBus', 'btnSocial', 'mapCursor'], function(fontello, messageBus, Button, MapCursor){
 
-    var _width, _height, _gridWidth, _gridHeight, _ITEM_WIDTH, _ITEM_HEIGHT;
+    var _width, _height, _gridWidth, _gridHeight, _ITEM_WIDTH, _ITEM_HEIGHT, _event;
 
+    /**
+     * Minimap class
+     * @param width
+     * @param height
+     * @param ITEM_WIDTH
+     * @param ITEM_HEIGHT
+     * @param gridWidth
+     * @param gridHeight
+     * @constructor
+     */
     var Minimap = function(width, height, ITEM_WIDTH, ITEM_HEIGHT, gridWidth, gridHeight){
         PIXI.DisplayObjectContainer.call(this);
 
@@ -13,9 +23,11 @@ define('minimap', ['fontIcons', 'messageBus', 'btnSocial'], function(fontello, m
         _ITEM_HEIGHT = ITEM_HEIGHT;
 
         this.mapDisplayed = false;
+        this.isDragging = false;
 
         this.button = new PIXI.DisplayObjectContainer();
         this.map = new PIXI.DisplayObjectContainer();
+        this.cursor = new MapCursor();
 
         this.button.x = 0;
         this.button.y = _height-40;
@@ -40,13 +52,21 @@ define('minimap', ['fontIcons', 'messageBus', 'btnSocial'], function(fontello, m
         this.background.drawRect(0, 0, _width, _height);
         this.background.endFill();
 
-        this.map.interactive = this.map.buttonMode = true;
-        this.map.mousedown = this.map.touchstart = _.bind(this.onDown, this);
+        this.map.interactive = true;
+        this.cursor.cursorIcon.interactive = this.cursor.cursorIcon.buttonMode = true;
+        this.cursor.cursorIcon.mousedown = this.cursor.cursorIcon.touchstart = _.bind(this.onDown, this);
+
+        window.addEventListener('mouseup', _.bind(this.onUp, this));
+        window.addEventListener('mouseleave', _.bind(this.onUp, this));
 
         this.hideMap();
 
+        this.cursor.position.x = 0;
+        this.cursor.position.y = 0;
+
         this.addChild(this.button);
         this.addChild(this.map);
+        this.addChild(this.cursor);
 
         this.button.addChild(this.bgIcon);
         this.button.addChild(this.icon);
@@ -57,9 +77,48 @@ define('minimap', ['fontIcons', 'messageBus', 'btnSocial'], function(fontello, m
     Minimap.prototype = Object.create(PIXI.DisplayObjectContainer.prototype);
     Minimap.constructor = Minimap.prototype.constructor;
 
+    /**
+     * on handle cursor
+     * @param event
+     */
     Minimap.prototype.onDown = function(event){
+        _event = event;
 
+        this.isDragging = true;
+
+        this.cursor.dragging();
+
+
+    };
+
+    /**
+     * on release cursor
+     * @param event
+     */
+    Minimap.prototype.onUp = function(event){
+        this.isDragging = false;
+        this.cursor.unDragging();
+
+
+        messageBus.emit('map:gotoFaceNumber', {number: this.cursor.numberFace, directly:false});
+    };
+
+    /**
+     * on move event move cursor position
+     * @param event
+     */
+    Minimap.prototype.onMove = function(event){
+        if( !this.isDragging ){
+            return;
+        }
+
+        //@TODO: debug calcul
         var position = event.getLocalPosition(this.background);
+        this.cursor.position.x = Math.min(_width, Math.max(0,position.x));
+        this.cursor.position.y = Math.min(_height, Math.max(0,position.y));
+
+        position = this.cursor.position;
+
         var ratioX = position.x/_width;
         var ratioY = position.y/_height;
 
@@ -68,28 +127,46 @@ define('minimap', ['fontIcons', 'messageBus', 'btnSocial'], function(fontello, m
 
         var number = y * (_gridHeight/_ITEM_HEIGHT) + x;
 
-        messageBus.emit('map:gotoFaceNumber', {number: number, directly:false});
-
+        this.cursor.setNumber(Math.max(0, number));
     };
 
+    /**
+     * display map
+     */
     Minimap.prototype.displayMap = function(){
         this.mapDisplayed = true;
         TweenLite.to(this.map.scale, 0.25, {x: 1, y:1});
         TweenLite.to(this.map, 0.25, {alpha: 1});
+        TweenLite.to(this.cursor, 0.25, {alpha:1});
     };
 
+    /**
+     * hide map
+     */
     Minimap.prototype.hideMap = function(){
         this.mapDisplayed = false;
         TweenLite.to(this.map.scale, 0.25, {x: 0, y:0});
         TweenLite.to(this.map, 0.25, {alpha: 0});
+        TweenLite.to(this.cursor, 0.25, {alpha:0});
     };
 
+    /**
+     * display/hide map
+     */
     Minimap.prototype.toggleMap = function(){
         this[this.mapDisplayed ? 'hideMap' : 'displayMap']();
     };
 
-    Minimap.prototype.process = function(){};
+    /**
+     * update frame callback
+     */
+    Minimap.prototype.process = function(){
+        this.onMove(_event);
+    };
 
+    /**
+     * resize viewport callback
+     */
     Minimap.prototype.resize = function(){};
 
     return Minimap;
