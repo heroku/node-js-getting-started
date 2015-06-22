@@ -34,15 +34,8 @@ var fs      = require('fs');
 var request = require('request');
 var path = require('path');
 var imgDestPath = path.resolve('./public/img');
+var publicPath = path.resolve('./public');
 var gm = require('gm');
-var im = gm.subClass({ imageMagick: true });
-console.log('IMG DEST PATH', imgDestPath + '/logo.jpg');
-/*im(imgDestPath + '/logo.jpg')
-.append(imgDestPath + '/logo.jpg', true)
-.write(imgDestPath + '/logo-test.jpg'
-, function(stdout){
-  console.log('STD OUT', stdout);
-});*/
 
 passport.use(new FacebookStrategy({
   clientID: config.FACEBOOK_APP_ID,
@@ -1021,26 +1014,75 @@ publicRouter.get('/number/:number', function(req, res, next) {
         if (err){
           res.send(err);
         }
-        for(var i = 0; i < range.length; i++){
+        for(var i = 0; i < numberArray.length; i++){
           //randomPicture = Math.round(Math.random()*config.nbFreeSlotFacesPictures-1)+1;
 
-          if( ! _.find(tempFaces, function(currentFace){ return currentFace.number == range[i]; }) ){
-              tempFaces.push({'number': range[i]});
+          if( ! _.find(tempFaces, function(currentFace){ return currentFace.number == numberArray[i]; }) ){
+              tempFaces.push({'number': numberArray[i], picture: '/img/noimage.jpg'});
           }
         }
 
       tempFaces = _.sortBy(tempFaces, 'number');
-      res.json(tempFaces);
+
+      var im = gm.subClass({ imageMagick: true });
+
+
+
+      var img1 = im(publicPath + tempFaces[0].picture);
+      var img2 = im(publicPath + tempFaces[3].picture);
+      var img3 = im(publicPath + tempFaces[6].picture);
+
+      img1.append(publicPath + tempFaces[1].picture, publicPath + tempFaces[2].picture,  true);
+      img2.append(publicPath + tempFaces[4].picture, publicPath + tempFaces[5].picture,  true);
+      img3.append(publicPath + tempFaces[7].picture, publicPath + tempFaces[8].picture,  true);
+
+      img1.write(imgDestPath + '/' + number + '-temp-1.jpg'
+      , function(stdout){
+        console.log('IMG DEST PATH 1', imgDestPath + '/' + number + '-temp-1.jpg');
+        img2.write(imgDestPath + '/' + number + '-temp-2.jpg'
+        , function(stdout2){
+          console.log('IMG DEST PATH 2', imgDestPath + '/' + number + '-temp-2.jpg');
+          img3.write(imgDestPath + '/' + number + '-temp-3.jpg'
+          , function(stdout3){
+            console.log('IMG DEST PATH 3', imgDestPath + '/' + number + '-temp-3.jpg');
+            var imgFinal = im(imgDestPath + '/' + number + '-temp-1.jpg');
+            imgFinal.append(imgDestPath + '/' + number + '-temp-2.jpg', imgDestPath + '/' + number + '-temp-3.jpg', false);
+
+            //.append(publicPath + tempFaces[3].picture,false);
+            //Pas de boucle trop compliqué
+
+            imgFinal.write(imgDestPath + '/' + number + '-mozaic.jpg'
+            , function(stdout4){
+              console.log('IMG DEST PATH', imgDestPath + '/' + number + '-mozaic.jpg');
+
+              Face.findOne({'number': req.params.number}, function(err, face) {
+                  if (err){
+                    res.send(err);
+                  }
+                  res.render('home', {data:{'config': config, 'showFace': face, 'currentUser': req.user}});
+              });
+            });
+
+          });
+        });
+
+      });
+
+
+
+
+      /*im(imgDestPath + '/logo.jpg')
+      .append(imgDestPath + '/logo.jpg', true)
+      .write(imgDestPath + '/logo-test.jpg'
+      , function(stdout){
+        console.log('STD OUT', stdout);
+      });*/
+
   });
 
   /******************************/
 
-  /*Face.findOne({'number': req.params.number}, function(err, face) {
-      if (err){
-        res.send(err);
-      }
-      res.render('home', {data:{'config': config, 'showFace': face, 'currentUser': req.user}});
-  });*/
+
 
 });
 
