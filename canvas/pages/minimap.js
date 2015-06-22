@@ -59,6 +59,7 @@ define('minimap', ['fontIcons', 'messageBus', 'btnSocial', 'mapCursor'], functio
         this.cursor.cursorIcon.mousedown = this.cursor.cursorIcon.touchstart = _.bind(this.onDown, this);
 
         window.addEventListener('mouseup', _.bind(this.onUp, this));
+        window.addEventListener('touchend', _.bind(this.onUp, this));
         window.addEventListener('mouseleave', _.bind(this.onUp, this));
 
         this.hideMap();
