@@ -1008,12 +1008,39 @@ publicRouter.get('/edit/:number', function(req, res, next) {
 });
 
 publicRouter.get('/number/:number', function(req, res, next) {
-  Face.findOne({'number': req.params.number}, function(err, face) {
+
+  /***** IMAGE manipulation *****/
+  var number = parseInt(req.params.number, 10);
+  var numberArray = [number - 1001, number - 1000, number - 999, number - 1, number, number + 1, number + 999, number + 1000, number + 1001];
+
+  Face.find({number:{$in:numberArray}}).sort('number').exec(function(err, faces) {
+
+      var tempFaces = _.clone(faces);
+      //var randomPicture;
+
+        if (err){
+          res.send(err);
+        }
+        for(var i = 0; i < range.length; i++){
+          //randomPicture = Math.round(Math.random()*config.nbFreeSlotFacesPictures-1)+1;
+
+          if( ! _.find(tempFaces, function(currentFace){ return currentFace.number == range[i]; }) ){
+              tempFaces.push({'number': range[i]});
+          }
+        }
+
+      tempFaces = _.sortBy(tempFaces, 'number');
+      res.json(tempFaces);
+  });
+
+  /******************************/
+
+  /*Face.findOne({'number': req.params.number}, function(err, face) {
       if (err){
         res.send(err);
       }
       res.render('home', {data:{'config': config, 'showFace': face, 'currentUser': req.user}});
-  });
+  });*/
 
 });
 
