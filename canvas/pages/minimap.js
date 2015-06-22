@@ -184,7 +184,7 @@ define('minimap', ['fontIcons', 'messageBus', 'btnSocial', 'mapCursor'], functio
         TweenLite.to(this.map.scale, 0.25, {x: 1, y:1});
         TweenLite.to(this.map, 0.25, {alpha: 1});
         TweenLite.to(this.cursor, 0.25, {alpha:1, delay:0.15});
-        TweenLite.to(this.cursor.position, 0.25, {y:0, delay:0.15});
+        //TweenLite.to(this.cursor.position, 0.25, {y:0, delay:0.15});
     };
 
     /**
@@ -195,7 +195,7 @@ define('minimap', ['fontIcons', 'messageBus', 'btnSocial', 'mapCursor'], functio
         TweenLite.to(this.map.scale, 0.25, {x: 0, y:0, delay:0.15});
         TweenLite.to(this.map, 0.25, {alpha: 0, delay:0.15});
         TweenLite.to(this.cursor, 0.25, {alpha:0});
-        TweenLite.to(this.cursor.position, 0.25, {y:-10});
+        //TweenLite.fromTo(this.cursor.position, 0.25, {y:-10});
     };
 
     /**
