@@ -1096,6 +1096,13 @@ publicRouter.get('/error', function(req, res, next) {
 
 });
 
+publicRouter.get('/share/:number', function(req, res, next) {
+  //console.log('FLASH', req.flash());
+  res.render('share', {data:{'config': config, 'number' : req.params.number}});
+  //res.json(faces);
+
+});
+
 app.use('/api', router);
 app.use('/', publicRouter);
 

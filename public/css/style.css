@@ -461,3 +461,10 @@ input[type=checkbox]:checked + label:after {
 	left:0;
 	z-index:9999;
 }
+/*** IFRAME SHARE ***/
+.share-iframe {
+    margin: none;
+    padding: none;
+    background: blue; /* this is just to make the frames easier to see */
+    border: none;
+}

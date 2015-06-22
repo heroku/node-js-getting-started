@@ -194,9 +194,10 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 
 			  routes: {
 			    "edit/": "edit",  // #search/kiwis
-				"success/": "success",  // #search/kiwis
+					"success/": "success",  // #search/kiwis
+			    "share/:number": "share",   // #search/kiwis/p7
 			    "number/:number": "number",   // #search/kiwis/p7
-				"login/": "login"   // #search/kiwis/p7
+					"login/": "login"   // #search/kiwis/p7
 			  },
 
 			  edit: function(number) {
@@ -210,6 +211,10 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 			  login: function(number) {
 					console.log('BACKBONE LOGIN', number);
 					showLoginPopin();
+			  },
+			  share: function(number) {
+					console.log('BACKBONE SHARE', number);
+					showSharePopin(number);
 			  },
 			  logout: function(number) {
 					console.log('BACKBONE EDIT', number);
@@ -259,6 +264,12 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 			$('.modal-login').modal('show');
 		}
 
+		function showSharePopin(number){
+			$('.js-share-url').val('http://stark-plateau-2977.herokuapp.com/number/' + number);
+			$('.js-share-iframe').attr('src', '/share/'+ number);
+			$('.modal-share').modal('show');
+		}
+
 		function showEditFace(){
 			$('.modal-edit').modal('show');
 		}
@@ -267,6 +278,8 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 			$('#edit-user').data('register', 'true');
 			$('.modal-edit').modal('show');
 		}
+
+		https://www.facebook.com/dialog/share?app_id=87741124305&href=https%3A//www.youtube.com/watch%3Fv%3D0RKRWogzVZ0%26feature%3Dshare&display=popup&redirect_uri=https://www.youtube.com/facebook_redirect
 
 		/***********************/
 
