@@ -1,6 +1,6 @@
 define('minimap', ['fontIcons', 'messageBus', 'btnSocial', 'mapCursor'], function(fontello, messageBus, Button, MapCursor){
 
-    var _width, _height, _gridWidth, _gridHeight, _ITEM_WIDTH, _ITEM_HEIGHT, _event;
+    var _width, _height, _gridWidth, _gridHeight, _ITEM_WIDTH, _ITEM_HEIGHT, _event, _lastNumber;
 
     /**
      * Minimap class
@@ -24,6 +24,8 @@ define('minimap', ['fontIcons', 'messageBus', 'btnSocial', 'mapCursor'], functio
 
         this.mapDisplayed = false;
         this.isDragging = false;
+        this.canDrag = true;
+        this.dragTimer = null;
 
         this.button = new PIXI.DisplayObjectContainer();
         this.map = new PIXI.DisplayObjectContainer();
@@ -78,6 +80,23 @@ define('minimap', ['fontIcons', 'messageBus', 'btnSocial', 'mapCursor'], functio
     Minimap.constructor = Minimap.prototype.constructor;
 
     /**
+     *
+     * @param number
+     */
+    Minimap.prototype.updateCursorPosition = function(number){
+
+        if( !this.canDrag ){
+            return;
+        }
+
+        if( _lastNumber !== number ){
+            this.cursor.setNumber(number);
+            this.setCursorPositionByNumber(number);
+        }
+        _lastNumber = number
+    };
+
+    /**
      * on handle cursor
      * @param event
      */
@@ -85,7 +104,6 @@ define('minimap', ['fontIcons', 'messageBus', 'btnSocial', 'mapCursor'], functio
         _event = event;
 
         this.isDragging = true;
-
         this.cursor.dragging();
 
 
@@ -96,9 +114,18 @@ define('minimap', ['fontIcons', 'messageBus', 'btnSocial', 'mapCursor'], functio
      * @param event
      */
     Minimap.prototype.onUp = function(event){
+        if(! this.isDragging ){
+            return;
+        }
+
         this.isDragging = false;
+        this.canDrag = false;
         this.cursor.unDragging();
 
+        clearTimeout(this.dragTimer);
+        this.dragTimer = setTimeout(_.bind(function(){
+            this.canDrag = true;
+        }, this), 5000);
 
         messageBus.emit('map:gotoFaceNumber', {number: this.cursor.numberFace, directly:false});
     };
@@ -112,7 +139,6 @@ define('minimap', ['fontIcons', 'messageBus', 'btnSocial', 'mapCursor'], functio
             return;
         }
 
-        //@TODO: debug calcul
         var position = event.getLocalPosition(this.background);
         this.cursor.position.x = Math.min(_width, Math.max(0,position.x));
         this.cursor.position.y = Math.min(_height, Math.max(0,position.y));
@@ -125,9 +151,29 @@ define('minimap', ['fontIcons', 'messageBus', 'btnSocial', 'mapCursor'], functio
         var x = Math.round(_gridWidth/_ITEM_WIDTH*ratioX);
         var y = Math.round(_gridHeight/_ITEM_HEIGHT*ratioY);
 
-        var number = y * (_gridHeight/_ITEM_HEIGHT) + x;
+        var number = y > 0 ? (y * (_gridHeight/_ITEM_HEIGHT) + x) - _gridHeight/_ITEM_HEIGHT : x;
 
         this.cursor.setNumber(Math.max(0, number));
+    };
+
+    /**
+     *
+     * @param number
+     */
+    Minimap.prototype.setCursorPositionByNumber = function(number){
+        var position = {x:0, y:0};
+
+        var xRatio = _gridWidth/_ITEM_WIDTH;
+        var yRatio = _gridWidth/_ITEM_WIDTH;
+
+        var y = Math.round(number/xRatio);
+        var x = Math.round(number%yRatio);
+
+        position.x = x/xRatio*_width;
+        position.y = y/yRatio*_height;
+
+        this.cursor.position.x = position.x;
+        this.cursor.position.y = position.y;
     };
 
     /**
@@ -137,7 +183,8 @@ define('minimap', ['fontIcons', 'messageBus', 'btnSocial', 'mapCursor'], functio
         this.mapDisplayed = true;
         TweenLite.to(this.map.scale, 0.25, {x: 1, y:1});
         TweenLite.to(this.map, 0.25, {alpha: 1});
-        TweenLite.to(this.cursor, 0.25, {alpha:1});
+        TweenLite.to(this.cursor, 0.25, {alpha:1, delay:0.15});
+        TweenLite.to(this.cursor.position, 0.25, {y:0, delay:0.15});
     };
 
     /**
@@ -145,9 +192,10 @@ define('minimap', ['fontIcons', 'messageBus', 'btnSocial', 'mapCursor'], functio
      */
     Minimap.prototype.hideMap = function(){
         this.mapDisplayed = false;
-        TweenLite.to(this.map.scale, 0.25, {x: 0, y:0});
-        TweenLite.to(this.map, 0.25, {alpha: 0});
+        TweenLite.to(this.map.scale, 0.25, {x: 0, y:0, delay:0.15});
+        TweenLite.to(this.map, 0.25, {alpha: 0, delay:0.15});
         TweenLite.to(this.cursor, 0.25, {alpha:0});
+        TweenLite.to(this.cursor.position, 0.25, {y:-10});
     };
 
     /**

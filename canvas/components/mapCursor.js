@@ -8,7 +8,7 @@ define('mapCursor', function(){
         this.number = new PIXI.DisplayObjectContainer();
         this.cursor = new PIXI.DisplayObjectContainer();
 
-        this.numberText = new PIXI.Text("1", {font : "60px Arial", fill : "#000000"});
+        this.numberText = new PIXI.Text("1", {font : "40px Proxima", fill : "#000000"});
         this.numberText.scale.x = this.numberText.scale.y = 0.5;
 
         this.numberBackground =  new PIXI.Graphics();
@@ -34,8 +34,9 @@ define('mapCursor', function(){
         this.cursorShadow.position.x = 15;
         this.cursorShadow.position.y = 60;
 
-        this.pivot.x = 15;
         this.pivot.y = 90;
+        this.numberBackground.pivot.x = 50;
+        this.cursor.pivot.x = 15;
 
         this.unDragging();
 
@@ -53,14 +54,16 @@ define('mapCursor', function(){
     MapCursor.constructor = MapCursor.prototype.constructor;
 
     MapCursor.prototype.dragging = function(){
-        TweenLite.to(this.cursorShadow.scale, 0.25, {x:1, y:1});
+        TweenLite.to(this.cursorShadow.scale, 0.25, {x:1, y:0.5});
+        TweenLite.to(this.cursorShadow, 0.25, {opacity: 0.2});
         TweenLite.to(this.number, 0.25, {alpha:1});
         TweenLite.to(this.number.position, 0.25, {y:-40});
         TweenLite.to(this.cursor.position, 0.25, {y:-10});
     };
 
     MapCursor.prototype.unDragging = function(){
-        TweenLite.to(this.cursorShadow.scale, 0.25, {x:0.3, y:0.3});
+        TweenLite.to(this.cursorShadow.scale, 0.25, {x:0.3, y:0.15});
+        TweenLite.to(this.cursorShadow, 0.25, {opacity: 0.5});
         TweenLite.to(this.number, 0.25, {alpha:0});
         TweenLite.to(this.number.position, 0.25, {y:-30});
         TweenLite.to(this.cursor.position, 0.25, {y:-0});
@@ -68,8 +71,10 @@ define('mapCursor', function(){
 
     MapCursor.prototype.setNumber = function(number){
         this.numberFace = number;
-        this.numberText.setText(number);
-        //this.number.position.x = -50;
+        this.numberText.setText(this.numberFace);
+        this.numberText.pivot.x = this.numberText.width/2;
+        //this.numberText.position.x = -this.numberText.width/4;
+        //this.numberBackground.position.x = -this.numberBackground.width/2;
     };
 
     return MapCursor;

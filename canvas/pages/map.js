@@ -233,6 +233,8 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
                 getFacesByRanges(rangesPos);
             }
 
+			_minimap.updateCursorPosition(getCenterNumber());
+
 		}
 
 		function initPosItems() {
@@ -418,6 +420,36 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
                 _services.getFacesByRange(range, onGetFacesByRange);
             }
 
+		}
+
+		/**
+		 * get face on the screen
+		 * @returns {number}
+		 */
+		function getCenterNumber(){
+			var number;
+
+			var xDecal = Math.round(window.innerWidth/ITEM_WIDTH/2);
+			var yDecal = Math.round(window.innerHeight/ITEM_HEIGHT/2);
+
+			var xRatio = maxGridWidth/ITEM_WIDTH;
+			var yRatio = maxGridHeight/ITEM_HEIGHT;
+
+			var x = Math.round(Math.abs((_scrollObject.position.x)%maxGridWidth/ITEM_WIDTH));
+			var y = Math.round(Math.abs((_scrollObject.position.y)%maxGridHeight/ITEM_HEIGHT));
+
+			x = _scrollObject.position.x > 0 ? xRatio-x : x;
+			y = _scrollObject.position.y > 0 ? yRatio-y : y;
+
+			x+=xDecal;
+			y+=yDecal
+
+			x = x >= xRatio ? x-xRatio : x;
+			y = y >= yRatio ? y-yRatio : y;
+
+			number = y*yRatio+x;
+
+			return number;
 		}
 
         /**
