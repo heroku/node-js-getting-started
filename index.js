@@ -492,7 +492,7 @@ publicRouter.get('/', function(req, res) {
 /**/
 
 var CronJob = require('cron').CronJob;
-/*new CronJob('*15 * * * * *', function() {
+new CronJob('*/15 * * * * *', function() {
 
   console.log('You will see this message every 30 second');
 
@@ -555,7 +555,7 @@ var CronJob = require('cron').CronJob;
 
   });
 
-}, null, true, 'France/Paris');*/
+}, null, true, 'France/Paris');
 
 publicRouter.get('/initnumbers/', function(req, res, next) {
   Face.find(function(err, faces) {
