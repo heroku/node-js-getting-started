@@ -36,6 +36,8 @@ var path = require('path');
 var imgDestPath = path.resolve('./public/img');
 var publicPath = path.resolve('./public');
 var gm = require('gm');
+var os = require('os');
+console.log('HOSTNAME', os.hostname());
 
 passport.use(new FacebookStrategy({
   clientID: config.FACEBOOK_APP_ID,
