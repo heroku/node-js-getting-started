@@ -501,7 +501,7 @@ new CronJob('*/15 * * * * *', function() {
 
         console.log( "Number of SCRAP:", count );
 
-        if(count > 100){
+        if(count > 100000){
 
         var Client = require('ftp');
 
