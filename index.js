@@ -499,6 +499,7 @@ ftps.raw('set sftp:auto-confirm yes');
 
 ftps.cd('/var/www/omh-scraping').addFile(publicPath + '/img/noimage.jpg');
 
+
 ftps.exec(function (err, res) {
 
   console.log('EXEC LS', err, res);
