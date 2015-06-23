@@ -505,8 +505,6 @@ input[type=checkbox]:checked + label:after {
 	/*float: left;*/
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	text-overflow: ellipsis;
-	white-space: nowrap;
 	overflow: hidden;
 	display: inline-block;
 	width: 19em;
