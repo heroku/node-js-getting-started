@@ -15,6 +15,7 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 		var _txt;
 		var _fb;
 		var _tw;
+        var _share;
 		var _claim;
 		var _decline;
 		var _id;
@@ -59,6 +60,10 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 			_tw.x = ITEM_WIDTH/2+5;
 			_tw.y = (ITEM_HEIGHT+30)/2-15;
 
+			_share = new BtnSocial(fontello.HOME, "#00FFFF", onShareCLick);
+            _share.x = ITEM_WIDTH/2-15;
+            _share.y = (ITEM_HEIGHT+30)/2-15;
+
 			_claim = new BtnSocial(fontello.OK_SQUARED, "#00EE00", onClaimCLick);
             _claim.x = ITEM_WIDTH/2-35;
             _claim.y = (ITEM_HEIGHT+30)/2-15;
@@ -98,8 +103,18 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 			_container.addChild(_item);
 			_container.addChild(_fb);
 			_container.addChild(_tw);
+			_container.addChild(_share);
 			_container.addChild(_claim);
 			_container.addChild(_decline);
+		}
+
+		/**
+		 *
+		 * @param event
+		 */
+		function onShareCLick(event) {
+			console.log(">>" + "/auth/twitter/register/" + _id);
+			Backbone.history.navigate("/share/"+_id, {trigger: true});
 		}
 
 		/**
@@ -227,6 +242,20 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
         };
 
         /**
+         * Hide share buttons
+         */
+		this.hideShare = function() {
+            _share.hideElement();
+        };
+
+        /**
+         * Show share buttons
+         */
+		this.showShare = function() {
+            _share.showElement();
+        };
+
+        /**
          * Hide claim/decline buttons
          */
 		this.hideClaims = function() {
@@ -249,7 +278,14 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 			_interactive = isInteractive;
 			_scope.interactive = isInteractive;
 			_scope.buttonMode = isInteractive;
-		}
+		};
+
+        /**
+         *
+         */
+        this.setShare = function(show){
+            this[show ? 'showShare' : 'hideShare']();
+        };
 
         /**
          * Switch show/hide social buttons
@@ -279,6 +315,7 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 			this.setInteractive(_data.accountname && !(_data.claim === false && !main.currentUser));
 			this.setSocials(typeof _data.claim === 'undefined' && !main.currentUser);
 			this.setClaim(_data.claim === false && !main.currentUser);
+			this.setShare(main.currentUser && !_data.accountname);
 
 			updateRectColor(_id);
 			_itemText.setText(_txt*1+1);
