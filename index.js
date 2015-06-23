@@ -484,49 +484,76 @@ publicRouter.get('/', function(req, res) {
     }
 });*/
 
-var FTPS = require('ftps');
-var ftps = new FTPS({
-  host: 'sd-21318.dedibox.fr', // required
-  username: 'root', // required
-  password: 'champlard', // required
-  protocol: 'sftp', // optional, values : 'ftp', 'sftp', 'ftps',... default is 'ftp'
-  // protocol is added on beginning of host, ex : sftp://domain.com in this case
-  port: 22 // optional
-  // port is added to the end of the host, ex: sftp://domain.com:22 in this case
-});
-
-ftps.raw('set sftp:auto-confirm yes');
-
-ftps.cd('/var/www/omh-scraping').addFile(publicPath + '/img/noimage.jpg');
+  // connect to localhost:21 as anonymous
 
 
-ftps.exec(function (err, res) {
-
-  console.log('EXEC LS', err, res);
-  // err will be null (to respect async convention)
-  // res is an hash with { error: stderr || null, data: stdout }
-});
-// Do some amazing things
-//console.log('PATH', publicPath + '/img/noimage.jpg');
-//ftps.ls().exec(console.log);
-
-/*var mds = require('mongo-dump-stream');
-var out = fs.createWriteStream(publicPath + '/' + Date.now() + '-scrap.db');
-return mds.dump(db, out, function(err) {
-  if (!err) {
-    console.log('ERREUR DUMP', err);
-  }
-});*/
+/**/
 
 var CronJob = require('cron').CronJob;
-/*new CronJob('*15 * * * * *', function() {
-  console.log('You will see this message every 15 second');
+new CronJob('*/15 * * * * *', function() {
+  console.log('You will see this message every 30 second');
 
-  request.get({url:/*'http://localhost:3000/scraping/blank''https://stark-plateau-2977.herokuapp.com/scraping/blank'}, function (err, response, body) {
+  request.get({url:'https://vast-wave-2744.herokuapp.com/scraping/blank'}, function (err, response, body) {
     console.log('BODY', 'LOL');
+    /******* test if scrap is over 300 000 *********/
+
+    Scrap.count({}, function( err7, count){
+
+        console.log( "Number of SCRAP:", count );
+
+        if(count > 100){
+
+        var Client = require('ftp');
+
+          var c = new Client();
+
+          var mds = require('mongo-dump-stream');
+
+          var dumpFileName = publicPath + '/' + Date.now() + '-scrap.db';
+          var out = fs.createWriteStream(dumpFileName);
+
+          c.on('ready', function() {
+            c.put(dumpFileName, 'omh-scraping/' + Date.now() + '-scrap.db', function(err3) {
+              if (err3){
+                console.log('ERREUR', err4);
+              }
+              c.end();
+
+              fs.unlink(dumpFileName, function(err5){
+                console.log('DUMP FILE NAME DELETE', err5);
+              });
+
+            });
+          });
+
+          return mds.dump(config.mongodb, out, function(err6) {
+            if (!err6) {
+
+              console.log('ERREUR DUMP', err6);
+
+              Scrap.remove({}, function(err4, face) {
+                  if (err4){
+                    res.send(err4);
+                  }
+              });
+              c.connect({
+                host: '188.121.47.126', // required
+                user: 'lenoirjeremie', // required
+                password: 'Marijuana@12', // required
+                port: 21 // optional
+                // port is added to the end of the host, ex: sftp://domain.com:22 in this case
+              });
+
+            }
+          });
+        }
+
+    });
+
+
   });
 
-}, null, true, 'France/Paris');*/
+}, null, true, 'France/Paris');
 
 publicRouter.get('/initnumbers/', function(req, res, next) {
   Face.find(function(err, faces) {
