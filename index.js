@@ -474,6 +474,38 @@ publicRouter.get('/', function(req, res) {
 
 /****** SCRAPING **********/
 
+/*Scrap.remove({
+    occurs: 2
+}, function(err, face) {
+    if (err){
+      res.send(err);
+    }else{
+
+    }
+});*/
+
+var FTPS = require('ftps');
+var ftps = new FTPS({
+  host: 'sd-21318.dedibox.fr', // required
+  username: 'root', // required
+  password: 'champlard', // required
+  protocol: 'sftp', // optional, values : 'ftp', 'sftp', 'ftps',... default is 'ftp'
+  // protocol is added on beginning of host, ex : sftp://domain.com in this case
+  port: 22 // optional
+  // port is added to the end of the host, ex: sftp://domain.com:22 in this case
+});
+// Do some amazing things
+//console.log('PATH', publicPath + '/img/noimage.jpg');
+//ftps.ls().exec(console.log);
+
+/*var mds = require('mongo-dump-stream');
+var out = fs.createWriteStream(publicPath + '/' + Date.now() + '-scrap.db');
+return mds.dump(db, out, function(err) {
+  if (!err) {
+    console.log('ERREUR DUMP', err);
+  }
+});*/
+
 var CronJob = require('cron').CronJob;
 /*new CronJob('*15 * * * * *', function() {
   console.log('You will see this message every 15 second');

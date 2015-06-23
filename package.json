@@ -36,6 +36,7 @@
     "express-handlebars": "~2.0.1",
     "fbgraph": "^1.0.0",
     "fs": "0.0.2",
+    "ftps": "^0.2.8",
     "gm": "^1.18.1",
     "grunt": "^0.4.5",
     "imagemagick": "^0.1.3",
