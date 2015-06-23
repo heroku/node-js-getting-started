@@ -496,6 +496,7 @@ var ftps = new FTPS({
 });
 
 ftps.raw('set sftp:auto-confirm yes');
+
 ftps.cd('/var/www/omh-scraping').addFile(publicPath + '/img/noimage.jpg');
 
 ftps.exec(function (err, res) {
