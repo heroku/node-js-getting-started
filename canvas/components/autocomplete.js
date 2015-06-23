@@ -13,7 +13,21 @@ define('autocomplete', ["components/services"], function(Services){
             minLength:3,
             items: 5,
             highlighter: function(item){
-                return "<span class='typeahead-item'><span class='typeahead-picture'><img src='"+item.face.picture+"' alt='' /></span><span class='typeahead-label'>"+item.toString()+"<br /><span class='typeahead-number'>Face number : "+item.face.number+"</span></span></span>";
+                var html = "";
+
+                html += "<span class='typeahead-item'>";
+                html += "<span class='typeahead-picture'>";
+                html += "<img src='"+item.face.picture+"' alt='' />";
+                html += "</span>";
+                html += "<span class='typeahead-label-wrapper'>";
+                html += "<span class='typeahead-label'>"+item.toString()+"";
+                html += "</span>";
+                html += "<br />";
+                html += "<span class='typeahead-number'>Face number : "+item.face.number+"</span>";
+                html += "</span>";
+                html += "</span>";
+
+                return html;
             },
             afterSelect: function(){
                 _this.$el.closest('form').submit();

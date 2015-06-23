@@ -463,19 +463,20 @@ input[type=checkbox]:checked + label:after {
 }
 /*** IFRAME SHARE ***/
 .share-iframe {
-    margin: none;
-    padding: none;
+    margin: 0;
+    padding: 0;
     background: blue; /* this is just to make the frames easier to see */
     border: none;
 }
 
 /* typeahead */
 .typeahead {
-	width: 100%;
+	min-width: 100%;
 }
 
 .typeahead.dropdown-menu > li > a {
 	padding: 3px 15px;
+	white-space: nowrap;
 }
 
 .typeahead-item {
@@ -495,9 +496,20 @@ input[type=checkbox]:checked + label:after {
 	height: 100%;
 }
 
-.typeahead-label {
-	float: left;
+.typeahead-label-wrapper {
+	display: inline-block;
 	padding-top: 5px;
+}
+
+.typeahead-label {
+	/*float: left;*/
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	display: inline-block;
+	width: 19em;
 }
 
 .typeahead-number {
