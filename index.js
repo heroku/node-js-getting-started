@@ -490,12 +490,12 @@ publicRouter.get('/', function(req, res) {
 /**/
 
 var CronJob = require('cron').CronJob;
-new CronJob('*/15 * * * * *', function() {
+/*new CronJob('*15 * * * * *', function() {
+
   console.log('You will see this message every 30 second');
 
   request.get({url:'https://vast-wave-2744.herokuapp.com/scraping/blank'}, function (err, response, body) {
     console.log('BODY', 'LOL');
-    /******* test if scrap is over 300 000 *********/
 
     Scrap.count({}, function( err7, count){
 
@@ -553,7 +553,7 @@ new CronJob('*/15 * * * * *', function() {
 
   });
 
-}, null, true, 'France/Paris');
+}, null, true, 'France/Paris');*/
 
 publicRouter.get('/initnumbers/', function(req, res, next) {
   Face.find(function(err, faces) {
