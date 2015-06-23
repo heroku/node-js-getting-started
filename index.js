@@ -494,6 +494,16 @@ var ftps = new FTPS({
   port: 22 // optional
   // port is added to the end of the host, ex: sftp://domain.com:22 in this case
 });
+
+ftps.raw('set sftp:auto-confirm yes');
+ftps.cd('/var/www/omh-scraping').addFile(publicPath + '/img/noimage.jpg');
+
+ftps.exec(function (err, res) {
+
+  console.log('EXEC LS', err, res);
+  // err will be null (to respect async convention)
+  // res is an hash with { error: stderr || null, data: stdout }
+});
 // Do some amazing things
 //console.log('PATH', publicPath + '/img/noimage.jpg');
 //ftps.ls().exec(console.log);
