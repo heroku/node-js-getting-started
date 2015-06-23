@@ -1,2 +1,2 @@
-git://github.com/heroku/heroku-buildpack-ruby.git
-git://github.com/niteoweb/heroku-buildpack-lftp.git
+https://github.com/heroku/heroku-buildpack-ruby.git
+https://github.com/niteoweb/heroku-buildpack-lftp.git
