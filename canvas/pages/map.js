@@ -79,9 +79,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 					_ranges[j + "," + i] = _tmp;
 				}
 			}
-			//console.log('_ID', _ID);
-			//console.log('_ranges', _ranges['0,0']);
-			//console.log('main.martixRange', main.martixRange);
+
 
 			_scrollObject = new ScrollContainer(ScrollContainerType.SCROLL, main.stage);
 			_minimap = new Minimap(_minimapWidth, _minimapHeight, ITEM_WIDTH, ITEM_HEIGHT, maxGridWidth, maxGridHeight);
@@ -317,9 +315,6 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 
             iterate.x.n = Math[x>=0 ? "floor" : "ceil"](x/maxGridWidth);
             iterate.y.n = Math[y>=0 ? "floor" : "ceil"](x/maxGridWidth);
-
-            //console.log(x, maxGridWidth, iterate.x.n);
-            //console.log(y, maxGridHeight, iterate.y.n);
 
             var minx = Math.min(
                 x+(iterate.x.n)*maxGridWidth-maxGridWidth,

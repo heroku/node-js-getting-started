@@ -7,12 +7,14 @@ define('btnSocial', function(){
      * @param clickCallback
      * @constructor
      */
-    var BtnSocial = function(glyph, color, clickCallback, w, h){
+    var BtnSocial = function(glyph, color, clickCallback, w, h, fontSize){
         PIXI.DisplayObjectContainer.call(this);
 
         var _btn, _text;
 
         this.isHide = false;
+
+        fontSize = fontSize || 60;
 
         _btn = new PIXI.Graphics();
         _btn.beginFill(0xFF0000, 0);
@@ -22,7 +24,7 @@ define('btnSocial', function(){
         _btn.buttonMode = true;
         _btn.tap = _btn.click = clickCallback;
 
-        _text = new PIXI.Text(glyph, {font : "60px fontello", fill : color || "#FFFFFF"});
+        _text = new PIXI.Text(glyph, {font : fontSize+"px fontello", fill : color || "#FFFFFF"});
         _text.x = _btn.width/2 - _text.width/2;
         _text.y = _btn.height/2 - _text.width/2;
         _text.pivot.x = _text.pivot.y = -_text.width/2;
