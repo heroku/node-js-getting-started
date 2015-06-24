@@ -40,6 +40,22 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 		var _ID = 0;
 		var _hideTimer = null;
 		var _services = new Services();
+		var _mapMoved = false;
+
+		var thottleUpdateMinimap = _.throttle(function(){
+				_minimap.updateCursorPosition(getCenterNumber());
+			}, 1000);
+
+		var thottleUpdateGrid = _.throttle(function(){
+				updateGrid();
+			}, 1000);
+
+		messageBus.on('ScrollContainer:StartMoving', function(){
+			_mapMoved = true;
+		});
+		messageBus.on('ScrollContainer:StopMoving', function(){
+			_mapMoved = false;
+		});
 
 		PIXI.DisplayObjectContainer.call(this);
 		_scope = this;
@@ -117,7 +133,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 
 
             messageBus.on('map:gotoFaceNumber', gotoFaceNumber);
-            messageBus.on('map:updateGrid', updateGrid);
+            //messageBus.on('map:updateGrid', updateGrid);
 
 		}
 
@@ -133,7 +149,6 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 		function updateMinimapPosition(){
 			var x, y;
 
-			console.log("update minimap");
 			x = 20;
 
 			y = window.innerHeight-_minimapHeight-20;
@@ -232,7 +247,9 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
                 getFacesByRanges(rangesPos);
             }
 
-			_minimap.updateCursorPosition(getCenterNumber());
+			if( _mapMoved ){
+				thottleUpdateMinimap();
+			}
 
 		}
 
@@ -415,7 +432,8 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 			}
 
             if( range.length ){
-				updateGrid();
+				//updateGrid();
+				thottleUpdateGrid();
                 _services.getFacesByRange(range, onGetFacesByRange);
             }
 

@@ -222,7 +222,7 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 
 			  number: function(number) {
 					console.log('BACKBONE NUMBER', number);
-					messageBus.emit('map:gotoFaceNumber', {'number': number, directly: false});
+					messageBus.emit('map:gotoFaceNumber', {number: number, directly: false});
 			  }
 
 			});
