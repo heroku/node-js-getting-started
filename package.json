@@ -47,6 +47,7 @@
     "passport": "~0.2.1",
     "passport-facebook": "~2.0.0",
     "passport-twitter": "~1.0.3",
+    "paypal-rest-sdk": "^1.5.3",
     "request": "~2.55.0",
     "twitter": "^1.2.5",
     "underscore": "^1.8.3",
