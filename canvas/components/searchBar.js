@@ -1,4 +1,4 @@
-define('searchBar', ['messageBus', "components/services", 'pagination'], function(messageBus, Services, Pagination){
+define('searchBar', ['messageBus', "components/services", 'pagination', 'autocomplete'], function(messageBus, Services, Pagination, Autocomplete){
 
     var _services = new Services();
     var _lastValue = "";
@@ -13,6 +13,7 @@ define('searchBar', ['messageBus', "components/services", 'pagination'], functio
         var _this = this;
 
         this.pagination = new Pagination("#search-field-pagination");
+        this.autocomplete = new Autocomplete("#search-field");
         this.$field = $('#search-field');
         this.$form = $('#form-search');
         this.$reset = this.$form.find('.search-reset');
