@@ -145,7 +145,7 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 				if( _interactive){
 					Backbone.history.navigate('profile/'+_data.accountname, {trigger:true});
 					setSelected(_data.number);
-                    messageBus.emit('map:gotoFaceNumber', {number: _data.number+1, directly: false});
+                    messageBus.emit('map:gotoFaceNumber', {number: _data.number, directly: false});
 				}
 			}, _timerBeforeClickAction);
 
@@ -318,7 +318,7 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 			this.setShare(main.currentUser && !_data.accountname);
 
 			updateRectColor(_id);
-			_itemText.setText(_txt*1+1);
+			_itemText.setText(_txt*1);
 			_item.texture.destroy();
 			_item.texture = new PIXI.Texture(new PIXI.BaseTexture());
 		};
