@@ -470,6 +470,7 @@ router.route('/faces')
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 publicRouter.get('/', function(req, res) {
+    console.log('REQ GET URL', config.getUrl());
     res.render('home', {data:{'config': config, 'currentUser': req.user}});
     //res.sendfile(path.resolve('./public/register.html'));
 });
@@ -492,7 +493,7 @@ publicRouter.get('/', function(req, res) {
 /**/
 
 var CronJob = require('cron').CronJob;
-new CronJob('*/15 * * * * *', function() {
+/*new CronJob('*15 * * * * *', function() {
 
   console.log('You will see this message every 30 second');
 
@@ -555,7 +556,7 @@ new CronJob('*/15 * * * * *', function() {
 
   });
 
-}, null, true, 'France/Paris');
+}, null, true, 'France/Paris');*/
 
 publicRouter.get('/initnumbers/', function(req, res, next) {
   Face.find(function(err, faces) {
@@ -1175,9 +1176,15 @@ publicRouter.get('/share/:number', function(req, res, next) {
   //res.json(faces);
 
 });
-
+app.use(function(req, res, next) {
+    config.getUrl = function() {
+      return req.protocol + "://" + req.get('host') + req.originalUrl;
+    }
+    return next();
+  });
 app.use('/api', router);
 app.use('/', publicRouter);
+
 
 
 
