@@ -14,8 +14,8 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
         var ITEM_HEIGHT = 154;
         var MIN_SPEED = 1;
         var MAX_SPEED = 13;
-        var MIN_FACES = 1;
-        var MAX_FACES = 1000000;
+        var MIN_FACES = 1-1;
+        var MAX_FACES = 1000000-1;
 		// nb col to display
 		// Must be modified with screen size
 		var _c = 2;
@@ -49,7 +49,6 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 
 			var i;
 			var j;
-            var uriIdSegment = getIdUriSegment();
 
 			for (i = 0; i < _rangeLinge; i++) {
 				for (j = 0; j < _rangeColonne; j++) {
@@ -355,7 +354,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 
             number = Math.max(MIN_FACES, Math.min(MAX_FACES, number));
 
-            number-=1;
+            //number-=1;
 
             x = Math.round(number%1000);
 
@@ -442,7 +441,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 			y = _scrollObject.position.y > 0 ? yRatio-y : y;
 
 			x+=xDecal;
-			y+=yDecal
+			y+=yDecal;
 
 			x = x >= xRatio ? x-xRatio : x;
 			y = y >= yRatio ? y-yRatio : y;
