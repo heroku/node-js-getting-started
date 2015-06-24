@@ -10,8 +10,8 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 		var _w;
 		var _h;
 		var _coefPage = window.screen.width > 1600 ? 0.5 :  (Tools.getDevice() == "desktop")  ? 1 : 2;
-        var ITEM_WIDTH = 154;
-        var ITEM_HEIGHT = 154;
+        var ITEM_WIDTH = Tools.getDevice() === 'desktop' ? 180 : 190;
+        var ITEM_HEIGHT = Tools.getDevice() === 'desktop' ? 180 : 190;
         var MIN_SPEED = 1;
         var MAX_SPEED = 13;
         var MIN_FACES = 1-1;
@@ -21,7 +21,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 		var _c = 2;
 		// nb line to display
 		// Must be modified with screen size
-		var _l = 6;
+		var _l = window.screen.width > 1600 ? 8 : window.screen.width > 1024 ? 5 : 4;
 		var _id = 0;
 		var _maxWidth = 0;
 		var _maxHeight = 0;
