@@ -5,8 +5,8 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 	var _blocIthem = function(ITEM_WIDTH, ITEM_HEIGHT) {
 
 		// CONST
-		var PICTURE_WIDTH = ITEM_WIDTH-4;
-		var PICTURE_HEIGHT = ITEM_HEIGHT-4;
+		var PICTURE_WIDTH = ITEM_WIDTH-20;
+		var PICTURE_HEIGHT = ITEM_HEIGHT-20;
 
 		var _scope;
 		var _container;
@@ -50,15 +50,18 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 			_item.x = Math.round((ITEM_WIDTH-PICTURE_WIDTH)/2);
 			_item.y = Math.round((ITEM_HEIGHT-PICTURE_HEIGHT)/2);
 
-			_itemText = new PIXI.Text("#", {font : "25px Proxima", fill : "#ffffff"});
+			_itemText = new PIXI.Text("#", {font : "11px Proxima", fill : "#aaaaaa"});
+			_itemText.rotation = Math.PI*90/180;
+			_itemText.x = ITEM_WIDTH+1;
+			_itemText.y = 10;
 
-			_fb = new BtnSocial(fontello.FACEBOOK_SQUARED, "#3a5795", onFBCLick);
-			_fb.x = ITEM_WIDTH/2-35;
-			_fb.y = (ITEM_HEIGHT+30)/2-15;
+			_fb = new BtnSocial(fontello.FACEBOOK_SQUARED, "#3a5795", onFBCLick, null, null, 40);
+			_fb.x = 10;
+			_fb.y = ITEM_HEIGHT-10-_fb.height;
 
-			_tw = new BtnSocial(fontello.TWITTER_SQUARED, "#55acee", onTWCLick);
-			_tw.x = ITEM_WIDTH/2+5;
-			_tw.y = (ITEM_HEIGHT+30)/2-15;
+			_tw = new BtnSocial(fontello.TWITTER_SQUARED, "#55acee", onTWCLick, null, null, 40);
+			_tw.x = ITEM_WIDTH-10-_tw.width;
+			_tw.y = ITEM_HEIGHT-10-_tw.height;
 
 			_share = new BtnSocial(fontello.HOME, "#00FFFF", onShareCLick);
             _share.x = ITEM_WIDTH/2-15;
@@ -113,7 +116,6 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 		 * @param event
 		 */
 		function onShareCLick(event) {
-			console.log(">>" + "/auth/twitter/register/" + _id);
 			Backbone.history.navigate("/share/"+_id, {trigger: true});
 		}
 
@@ -122,7 +124,6 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 		 * @param event
 		 */
 		function onTWCLick(event) {
-			console.log(">>" + "/auth/twitter/register/" + _id);
 			parent.location = "/auth/twitter/register/" + _id;
 		}
 
@@ -131,7 +132,6 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 		 * @param event
 		 */
 		function onFBCLick(event) {
-			console.log(">>"+"/auth/facebook/register/" + _id);
 			parent.location = "/auth/facebook/register/" + _id;
 		}
 
@@ -196,6 +196,12 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 			}
 		}
 
+		function pad(n){
+			n = ""+n;
+			var pad = "000000";
+			return pad.substring(0, pad.length- n.length)+n;
+		}
+
 		function updateRectColor(id){
 
 			var color = colorMapping.getColorByBoxNumber(id);
@@ -212,7 +218,6 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
          * @param event
          */
 		function onClaimCLick(event) {
-			console.log(">>" + "/auth/twitter/claim/" + _data.accountname);
 			parent.location = "/auth/twitter/claim/" + _data.accountname;
 		}
 
@@ -221,7 +226,6 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
          * @param event
          */
 		function onDeclineCLick(event) {
-			console.log(">>" + "/auth/twitter/decline/" + _data.accountname);
 			parent.location = "/auth/twitter/decline/" + _data.accountname;
 		}
 
@@ -308,17 +312,13 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 
 			_id = _txt = _data.number;
 
-			if(_data.number == 1003){
-				console.log('BLOC ITEM DATA', _data);
-			}
-
 			this.setInteractive(_data.accountname && !(_data.claim === false && !main.currentUser));
 			this.setSocials(typeof _data.claim === 'undefined' && !main.currentUser);
 			this.setClaim(_data.claim === false && !main.currentUser);
 			this.setShare(main.currentUser && !_data.accountname);
 
 			updateRectColor(_id);
-			_itemText.setText(_txt*1);
+			_itemText.setText(pad(_txt*1));
 			_item.texture.destroy();
 			_item.texture = new PIXI.Texture(new PIXI.BaseTexture());
 		};
@@ -335,18 +335,15 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 			// Methode 3
 			var loader = new PIXI.ImageLoader(img);
 			loader.onLoaded = function(){
-				var texture = PIXI.TextureCache[img];
-				_item.texture = texture;
+				var texture = new PIXI.Texture(PIXI.Texture.fromImage(img));
+				_item.texture.destroy();
+				_item.setTexture(texture);
 
 				_item.width = PICTURE_WIDTH;
 				_item.height = PICTURE_HEIGHT;
 			};
 			loader.load();
 
-			// _item.visible = false;
-			// console.log(((_scope !== null)? _scope.x:"") + "," + (
-			// (_scope.parent !==null) ? _scope.parent.x: "" )+ "," +(
-			// (_scope.parent.parent !==null) ? _scope.parent.parent .x: ""));
 		};
 
 

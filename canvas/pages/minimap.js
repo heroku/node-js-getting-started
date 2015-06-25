@@ -149,7 +149,7 @@ define('minimap', ['fontIcons', 'messageBus', 'btnSocial', 'mapCursor'], functio
         var ratioX = position.x/_width;
         var ratioY = position.y/_height;
 
-        var x = Math.round(_gridWidth/_ITEM_WIDTH*ratioX);
+        var x = Math.round(_gridWidth/_ITEM_WIDTH*ratioX)-1;
         var y = Math.round(_gridHeight/_ITEM_HEIGHT*ratioY);
 
         var number = y > 0 ? (y * (_gridHeight/_ITEM_HEIGHT) + x) - _gridHeight/_ITEM_HEIGHT : x;

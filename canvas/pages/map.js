@@ -10,18 +10,18 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 		var _w;
 		var _h;
 		var _coefPage = window.screen.width > 1600 ? 0.5 :  (Tools.getDevice() == "desktop")  ? 1 : 2;
-        var ITEM_WIDTH = 154;
-        var ITEM_HEIGHT = 154;
+        var ITEM_WIDTH = Tools.getDevice() === 'desktop' ? 180 : 190;
+        var ITEM_HEIGHT = Tools.getDevice() === 'desktop' ? 180 : 190;
         var MIN_SPEED = 1;
         var MAX_SPEED = 13;
-        var MIN_FACES = 1;
-        var MAX_FACES = 1000000;
+        var MIN_FACES = 1-1;
+        var MAX_FACES = 1000000-1;
 		// nb col to display
 		// Must be modified with screen size
 		var _c = 2;
 		// nb line to display
 		// Must be modified with screen size
-		var _l = 6;
+		var _l = window.screen.width > 1600 ? 8 : window.screen.width > 1024 ? 5 : 4;
 		var _id = 0;
 		var _maxWidth = 0;
 		var _maxHeight = 0;
@@ -40,6 +40,22 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 		var _ID = 0;
 		var _hideTimer = null;
 		var _services = new Services();
+		var _mapMoved = false;
+
+		var thottleUpdateMinimap = _.throttle(function(){
+				_minimap.updateCursorPosition(getCenterNumber());
+			}, 1000);
+
+		var thottleUpdateGrid = _.throttle(function(){
+				updateGrid();
+			}, 1000);
+
+		messageBus.on('ScrollContainer:StartMoving', function(){
+			_mapMoved = true;
+		});
+		messageBus.on('ScrollContainer:StopMoving', function(){
+			_mapMoved = false;
+		});
 
 		PIXI.DisplayObjectContainer.call(this);
 		_scope = this;
@@ -49,7 +65,6 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 
 			var i;
 			var j;
-            var uriIdSegment = getIdUriSegment();
 
 			for (i = 0; i < _rangeLinge; i++) {
 				for (j = 0; j < _rangeColonne; j++) {
@@ -64,9 +79,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 					_ranges[j + "," + i] = _tmp;
 				}
 			}
-			//console.log('_ID', _ID);
-			//console.log('_ranges', _ranges['0,0']);
-			//console.log('main.martixRange', main.martixRange);
+
 
 			_scrollObject = new ScrollContainer(ScrollContainerType.SCROLL, main.stage);
 			_minimap = new Minimap(_minimapWidth, _minimapHeight, ITEM_WIDTH, ITEM_HEIGHT, maxGridWidth, maxGridHeight);
@@ -118,7 +131,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 
 
             messageBus.on('map:gotoFaceNumber', gotoFaceNumber);
-            messageBus.on('map:updateGrid', updateGrid);
+            //messageBus.on('map:updateGrid', updateGrid);
 
 		}
 
@@ -134,7 +147,6 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 		function updateMinimapPosition(){
 			var x, y;
 
-			console.log("update minimap");
 			x = 20;
 
 			y = window.innerHeight-_minimapHeight-20;
@@ -233,7 +245,9 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
                 getFacesByRanges(rangesPos);
             }
 
-			_minimap.updateCursorPosition(getCenterNumber());
+			if( _mapMoved ){
+				thottleUpdateMinimap();
+			}
 
 		}
 
@@ -302,9 +316,6 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
             iterate.x.n = Math[x>=0 ? "floor" : "ceil"](x/maxGridWidth);
             iterate.y.n = Math[y>=0 ? "floor" : "ceil"](x/maxGridWidth);
 
-            //console.log(x, maxGridWidth, iterate.x.n);
-            //console.log(y, maxGridHeight, iterate.y.n);
-
             var minx = Math.min(
                 x+(iterate.x.n)*maxGridWidth-maxGridWidth,
                 x+(iterate.x.n)*maxGridWidth,
@@ -355,7 +366,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 
             number = Math.max(MIN_FACES, Math.min(MAX_FACES, number));
 
-            number-=1;
+            //number-=1;
 
             x = Math.round(number%1000);
 
@@ -416,7 +427,8 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 			}
 
             if( range.length ){
-				updateGrid();
+				//updateGrid();
+				thottleUpdateGrid();
                 _services.getFacesByRange(range, onGetFacesByRange);
             }
 
@@ -442,7 +454,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 			y = _scrollObject.position.y > 0 ? yRatio-y : y;
 
 			x+=xDecal;
-			y+=yDecal
+			y+=yDecal;
 
 			x = x >= xRatio ? x-xRatio : x;
 			y = y >= yRatio ? y-yRatio : y;
