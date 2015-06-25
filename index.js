@@ -23,8 +23,6 @@ var Twitter = require('twitter');
 var fbgraph = require('fbgraph');
 var _ = require('underscore');
 
-//path.resolve('../omf-client/public/index.html');
-
 //PASSPORT
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
@@ -37,6 +35,7 @@ var imgDestPath = path.resolve('./public/img');
 var publicPath = path.resolve('./public');
 var gm = require('gm');
 var os = require('os');
+
 console.log('HOSTNAME', os.hostname());
 
 passport.use(new FacebookStrategy({
@@ -57,7 +56,7 @@ passport.use(new FacebookStrategy({
 
             if(userExist == false){
               console.log('ERRORS', userExist);
-              var face = new Face();      // create a new instance of the Face model
+              var face = new Face();
               /**
               { id: '10153295122599265',
                 first_name: 'Jérémie',
@@ -70,8 +69,6 @@ passport.use(new FacebookStrategy({
                 updated_time: '2014-05-28T20:08:41+0000',
                 verified: true
               **/
-              // Or with cookies
-              // var request = require('request').defaults({jar: true});
 
               request.get({url: 'https://graph.facebook.com/' + profile._json.id + '/picture?type=large', encoding: 'binary'}, function (err, response, body) {
                 fs.writeFile(imgDestPath + '/' + profile._json.id + '.jpeg', body, 'binary', function(error) {
@@ -124,13 +121,8 @@ passport.use(new TwitterStrategy({
     callbackURL: config.TWITTER_CALLBACK_URL
   },
   function(token, tokenSecret, profile, done) {
-    // asynchronous verification, for effect...
-    setTimeout(function () {
 
-      // To keep the example simple, the user's Twitter profile is returned to
-      // represent the logged-in user.  In a typical application, you would want
-      // to associate the Twitter account with a user record in your database,
-      // and return that user instead.
+    setTimeout(function () {
 
       var userExist = false;
 
@@ -169,8 +161,9 @@ passport.use(new TwitterStrategy({
             console.log('PROFILE TWITTER', profile);
             // save the face and check for errors
               face.save(function(err) {
-                  if (err)
-                      res.send(err);
+                  if (err){
+                    res.send(err);
+                  }
 
 
                       return done(null, face);
@@ -199,16 +192,13 @@ passport.use(new TwitterStrategy({
 ));
 
 passport.serializeUser(function(user, done) {
-  console.log('SERIALIZE', user);
   done(null, user);
 });
 
 passport.deserializeUser(function(obj, done) {
-  //console.log('DESERIALIZE', user);
   done(null, obj);
 });
 
-//console.log('PASSPORT', passport);
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -221,6 +211,9 @@ app.use(methodOverride());
 app.use(session({ secret: 'keyboard cat' }));
 app.use(passport.initialize());
 app.use(passport.session());
+
+/***** HANDLEBARS HELPERS ******/
+
 app.engine('handlebars',
   exphbs({
     defaultLayout: 'main',
@@ -275,7 +268,10 @@ app.engine('handlebars',
 
 }));
 app.set('view engine', 'handlebars');
+
+//set public folder to static >> but now host in amazon s3
 app.use(express.static('public'));
+
 app.use(flash());
 
 var port = process.env.PORT || 80;        // set our port
@@ -477,21 +473,6 @@ publicRouter.get('/', function(req, res) {
 
 /****** SCRAPING **********/
 
-/*Scrap.remove({
-    occurs: 2
-}, function(err, face) {
-    if (err){
-      res.send(err);
-    }else{
-
-    }
-});*/
-
-  // connect to localhost:21 as anonymous
-
-
-/**/
-
 var CronJob = require('cron').CronJob;
 /*new CronJob('*15 * * * * *', function() {
 
@@ -631,7 +612,6 @@ publicRouter.get('/delete/:number', function(req, res, next) {
         res.send(err);
       }
       res.render('register', {'faces': faces, 'nbFaces': (faces.length + 1)});
-      //res.json(faces);
   });
 });
 
@@ -641,7 +621,6 @@ publicRouter.get('/moderate', function(req, res, next) {
         res.send(err);
       }
       res.render('register', {'faces': faces, 'nbFaces': (faces.length + 1)});
-      //res.json(faces);
   });
 
 });
@@ -656,15 +635,11 @@ publicRouter.get('/populate/', function(req, res, next) {
     access_token_secret: config.TWITTER_ACCESS_TOKEN_SECRET
   });
 
-  /*client.get('users/search', {q: req.params.query }, function(error, tweets, response){
-     res.render('scraping', {'tweets': tweets});
-  });*/
 
 
 
 
     Scrap.distinct('twitter_id').limit(1000).exec(function(err, scrapes) {
-      //console.log('POPULATE', scrapes);
 
       for(var i = 0; i < scrapes.length; i++){
 
@@ -730,12 +705,8 @@ publicRouter.get('/scraping/:query', function(req, res, next) {
     access_token_secret: config.TWITTER_ACCESS_TOKEN_SECRET
   });
 
-  /*client.get('users/search', {q: req.params.query }, function(error, tweets, response){
-     res.render('scraping', {'tweets': tweets});
-  });*/
 
   client.get('search/tweets', {q: /*req.params.query + */'rt since:2015-06-08', /*lang:'en',*/ count:100}, function(error, tweets, response){
-     //console.log('TWEETS', tweets);
 
      for(var i= 0; i < tweets.statuses.length; i++){
 
@@ -814,7 +785,6 @@ publicRouter.get('/register', function(req, res, next) {
         res.send(err);
       }
       res.render('register', {'faces': faces, 'nbFaces': (faces.length + 1), currentUser: req.user });
-      //res.json(faces);
   });
 });
 
@@ -1177,9 +1147,7 @@ publicRouter.get('/share/:number', function(req, res, next) {
 
 });
 app.use(function(req, res, next) {
-    config.getUrl = function() {
-      return req.protocol + "://" + req.get('host') + req.originalUrl;
-    }
+    config.root_url = req.protocol + "://" + req.get('host') + req.originalUrl;
     return next();
   });
 app.use('/api', router);
