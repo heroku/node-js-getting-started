@@ -265,7 +265,7 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 		}
 
 		function showSharePopin(number){
-			$('.js-share-url').val(data.config.root_url + number);
+			$('.js-share-url').val(_data.config.root_url + number);
 			$('.js-share-iframe').attr('src', '/share/'+ number);
 			$('.modal-share').modal('show');
 		}
