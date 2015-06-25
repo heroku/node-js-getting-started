@@ -466,7 +466,7 @@ router.route('/faces')
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 publicRouter.get('/', function(req, res) {
-    console.log('REQ GET URL', config.getUrl());
+    console.log('REQ GET URL', config.root_url);
     res.render('home', {data:{'config': config, 'currentUser': req.user}});
     //res.sendfile(path.resolve('./public/register.html'));
 });
