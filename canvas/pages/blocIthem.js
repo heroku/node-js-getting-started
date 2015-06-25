@@ -335,8 +335,9 @@ define('blocIthem', ['fontIcons', 'btnSocial', 'messageBus', 'colorMapping'], fu
 			// Methode 3
 			var loader = new PIXI.ImageLoader(img);
 			loader.onLoaded = function(){
-				var texture = PIXI.TextureCache[img];
-				_item.texture = texture;
+				var texture = new PIXI.Texture(PIXI.Texture.fromImage(img));
+				_item.texture.destroy();
+				_item.setTexture(texture);
 
 				_item.width = PICTURE_WIDTH;
 				_item.height = PICTURE_HEIGHT;
