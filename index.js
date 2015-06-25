@@ -1147,7 +1147,7 @@ publicRouter.get('/share/:number', function(req, res, next) {
 
 });
 app.use(function(req, res, next) {
-    config.root_url = req.protocol + "://" + req.get('host') + req.originalUrl;
+    config.root_url = req.protocol + "://" + req.get('host');
     return next();
   });
 app.use('/api', router);
