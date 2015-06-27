@@ -76,7 +76,7 @@ passport.use(new FacebookStrategy({
               **/
 
               request.get({url: 'https://graph.facebook.com/' + profile._json.id + '/picture?type=large', encoding: 'binary'}, function (err, response, body) {
-                s3bucket.s3.upload({'body': body}, function(err, data) {
+                s3bucket.upload({'body': body}, function(err, data) {
                   console.log('CALLBACK AMAZON', err, data);
                 });
                 fs.writeFile(imgDestPath + '/' + profile._json.id + '.jpeg', body, 'binary', function(error) {
