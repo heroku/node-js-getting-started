@@ -36,6 +36,11 @@ var publicPath = path.resolve('./public');
 var gm = require('gm');
 var os = require('os');
 
+//AWS SERVICES
+var AWS = require('aws-sdk');
+AWS.config.update({accessKeyId: config.AWS_ACCESS_KEY_ID, secretAccessKey: config.AWS_ACCESS_KEY_ID});
+var s3bucket = new AWS.S3({ params: {Bucket: 'files.onemillionhumans.com'} });
+
 console.log('HOSTNAME', os.hostname());
 
 passport.use(new FacebookStrategy({
@@ -71,6 +76,9 @@ passport.use(new FacebookStrategy({
               **/
 
               request.get({url: 'https://graph.facebook.com/' + profile._json.id + '/picture?type=large', encoding: 'binary'}, function (err, response, body) {
+                s3bucket.s3.upload({'body': body}, function(err, data) {
+                  console.log('CALLBACK AMAZON', err, data);
+                });
                 fs.writeFile(imgDestPath + '/' + profile._json.id + '.jpeg', body, 'binary', function(error) {
                   if(error){
                     console.log(error);

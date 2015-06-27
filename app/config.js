@@ -14,7 +14,7 @@ var config   = {
   TWITTER_ACCESS_TOKEN_SECRET: 'psjwfUMzfIlrA5IWWyGOoADp6cypyrO5EAJn8deKbTLbz',
   AWS_ACCESS_KEY_ID: 'AKIAJNN2S6NVMA7ZIHFQ',
   AWS_SECRET_ACCESS_KEY: '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',
-  S3_BUCKET_NAME: 'omh-assets',
+  S3_BUCKET_NAME: 'files.onemillionhumans.com',
   faces_by_request: 10,
   faces_by_search: 20
 
