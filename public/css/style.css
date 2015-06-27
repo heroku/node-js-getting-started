@@ -1,11 +1,11 @@
 /* fontello */
 @font-face {
 	font-family: 'fontello';
-	src: url('../fonts/fontello.eot?11626639');
-	src: url('../fonts/fontello.eot?11626639#iefix') format('embedded-opentype'),
-	url('../fonts/fontello.woff?11626639') format('woff'),
-	url('../fonts/fontello.ttf?11626639') format('truetype'),
-	url('../fonts/fontello.svg?11626639#fontello') format('svg');
+	src: url('../fonts/fontello.eot?2697550');
+	src: url('../fonts/fontello.eot?2697550#iefix') format('embedded-opentype'),
+	url('../fonts/fontello.woff?2697550') format('woff'),
+	url('../fonts/fontello.ttf?2697550') format('truetype'),
+	url('../fonts/fontello.svg?2697550#fontello') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -15,7 +15,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'fontello';
-    src: url('../font/fontello.svg?11626639#fontello') format('svg');
+    src: url('../font/fontello.svg?2697550#fontello') format('svg');
   }
 }
 */
@@ -55,62 +55,114 @@
 	/* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
 
-.icon-facebook-squared:before { content: '\e800'; } /* '' */
-.icon-facebook-circled:before { content: '\e801'; } /* '' */
-.icon-facebook:before { content: '\e802'; } /* '' */
-.icon-twitter:before { content: '\e803'; } /* '' */
-.icon-twitter-squared:before { content: '\e804'; } /* '' */
-.icon-twitter-circled:before { content: '\e805'; } /* '' */
-.icon-twitter-1:before { content: '\e806'; } /* '' */
-.icon-twitter-2:before { content: '\e807'; } /* '' */
-.icon-twitter-rect:before { content: '\e808'; } /* '' */
-.icon-facebook-1:before { content: '\e809'; } /* '' */
-.icon-home:before { content: '\e80a'; } /* '' */
-.icon-mail-alt:before { content: '\e80b'; } /* '' */
-.icon-mail:before { content: '\e80c'; } /* '' */
-.icon-mail-1:before { content: '\e80d'; } /* '' */
-.icon-mail-2:before { content: '\e80e'; } /* '' */
-.icon-right-open-big:before { content: '\e80f'; } /* '' */
-.icon-left-open-big:before { content: '\e810'; } /* '' */
-.icon-up-open-big:before { content: '\e811'; } /* '' */
-.icon-down-open-big:before { content: '\e812'; } /* '' */
-.icon-down-open:before { content: '\e813'; } /* '' */
-.icon-left-open:before { content: '\e814'; } /* '' */
-.icon-right-open:before { content: '\e815'; } /* '' */
-.icon-up-open:before { content: '\e816'; } /* '' */
-.icon-down:before { content: '\e817'; } /* '' */
-.icon-left:before { content: '\e818'; } /* '' */
-.icon-right:before { content: '\e819'; } /* '' */
-.icon-up:before { content: '\e81a'; } /* '' */
-.icon-down-circle:before { content: '\e81b'; } /* '' */
-.icon-left-circle:before { content: '\e81c'; } /* '' */
-.icon-right-circle:before { content: '\e81d'; } /* '' */
-.icon-up-circle:before { content: '\e81e'; } /* '' */
-.icon-down-circle-1:before { content: '\e81f'; } /* '' */
-.icon-left-circle-1:before { content: '\e820'; } /* '' */
-.icon-right-circle-1:before { content: '\e821'; } /* '' */
-.icon-up-circle-1:before { content: '\e822'; } /* '' */
-.icon-search:before { content: '\e823'; } /* '' */
-.icon-search-1:before { content: '\e824'; } /* '' */
-.icon-search-2:before { content: '\e825'; } /* '' */
-.icon-search-outline:before { content: '\e826'; } /* '' */
-.icon-search-3:before { content: '\e827'; } /* '' */
-.icon-search-4:before { content: '\e828'; } /* '' */
-.icon-food:before { content: '\e829'; } /* '' */
-.icon-ok-squared:before { content: '\e82a'; } /* '' */
-.icon-cancel-squared:before { content: '\e82b'; } /* '' */
-.icon-map:before { content: '\e82c'; } /* '' */
-.icon-map-1:before { content: '\e82d'; } /* '' */
-.icon-location:before { content: '\e82e'; } /* '' */
-.icon-location-circled:before { content: '\e82f'; } /* '' */
+.icon-facebook:before { content: '\e800'; } /* '' */
+.icon-twitter:before { content: '\e801'; } /* '' */
+.icon-geek-mouse:before { content: '\e802'; } /* '' */
+.icon-athlete-basketball:before { content: '\e803'; } /* '' */
+.icon-hype-tie:before { content: '\e804'; } /* '' */
+.icon-worker-briefcase:before { content: '\e805'; } /* '' */
+.icon-explorer-rocket:before { content: '\e806'; } /* '' */
+.icon-parent:before { content: '\e807'; } /* '' */
+.icon-scientist:before { content: '\e808'; } /* '' */
+.icon-student:before { content: '\e809'; } /* '' */
+.icon-undisclosed:before { content: '\e80a'; } /* '' */
+.icon-circle_arrow_down:before { content: '\e80b'; } /* '' */
+.icon-noun__artist:before { content: '\e80c'; } /* '' */
+.icon-circle_close:before { content: '\e80d'; } /* '' */
+.icon-login:before { content: '\e80e'; } /* '' */
+.icon-logout:before { content: '\e80f'; } /* '' */
+.icon-help:before { content: '\e810'; } /* '' */
+.icon-setting_edit:before { content: '\e811'; } /* '' */
+.icon-caution:before { content: '\e812'; } /* '' */
+.icon-coordinates:before { content: '\e813'; } /* '' */
+.icon-user:before { content: '\e814'; } /* '' */
+.icon-home:before { content: '\e815'; } /* '' */
+.icon-search:before { content: '\e816'; } /* '' */
 
+
+@font-face {
+	font-family: 'montserrat-black';
+	src: url('../fonts/montserrat-black-webfont.eot?11626639');
+	src: url('../fonts/montserrat-black-webfont.eot?11626639#iefix') format('embedded-opentype'),
+	url('../fonts/montserrat-black-webfont.woff?11626639') format('woff'),
+	url('../fonts/montserrat-black-webfont.ttf?11626639') format('truetype'),
+	url('../fonts/montserrat-black-webfont.svg?11626639#fontello') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'montserrat-bold';
+	src: url('../fonts/montserrat-bold-webfont.eot?11626639');
+	src: url('../fonts/montserrat-bold-webfont.eot?11626639#iefix') format('embedded-opentype'),
+	url('../fonts/montserrat-bold-webfont.woff?11626639') format('woff'),
+	url('../fonts/montserrat-bold-webfont.ttf?11626639') format('truetype'),
+	url('../fonts/montserrat-bold-webfont.svg?11626639#fontello') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'montserrat-extrabold';
+	src: url('../fonts/montserrat-extrabold-webfont.eot?11626639');
+	src: url('../fonts/montserrat-extrabold-webfont.eot?11626639#iefix') format('embedded-opentype'),
+	url('../fonts/montserrat-extrabold-webfont.woff?11626639') format('woff'),
+	url('../fonts/montserrat-extrabold-webfont.ttf?11626639') format('truetype'),
+	url('../fonts/montserrat-extrabold-webfont.svg?11626639#fontello') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'montserrat-light';
+	src: url('../fonts/montserrat-light-webfont.eot?11626639');
+	src: url('../fonts/montserrat-light-webfont.eot?11626639#iefix') format('embedded-opentype'),
+	url('../fonts/montserrat-light-webfont.woff?11626639') format('woff'),
+	url('../fonts/montserrat-light-webfont.ttf?11626639') format('truetype'),
+	url('../fonts/montserrat-light-webfont.svg?11626639#fontello') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'montserrat-regular';
+	src: url('../fonts/montserrat-regular-webfont.eot?11626639');
+	src: url('../fonts/montserrat-regular-webfont.eot?11626639#iefix') format('embedded-opentype'),
+	url('../fonts/montserrat-regular-webfont.woff?11626639') format('woff'),
+	url('../fonts/montserrat-regular-webfont.ttf?11626639') format('truetype'),
+	url('../fonts/montserrat-regular-webfont.svg?11626639#fontello') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'montserrat-semibold';
+	src: url('../fonts/montserrat-semibold-webfont.eot?11626639');
+	src: url('../fonts/montserrat-semibold-webfont.eot?11626639#iefix') format('embedded-opentype'),
+	url('../fonts/montserrat-semibold-webfont.woff?11626639') format('woff'),
+	url('../fonts/montserrat-semibold-webfont.ttf?11626639') format('truetype'),
+	url('../fonts/montserrat-semibold-webfont.svg?11626639#fontello') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'montserrat-ultralight';
+	src: url('../fonts/montserrat-ultralight-webfont.eot?11626639');
+	src: url('../fonts/montserrat-ultralight-webfont.eot?11626639#iefix') format('embedded-opentype'),
+	url('../fonts/montserrat-ultralight-webfont.woff?11626639') format('woff'),
+	url('../fonts/montserrat-ultralight-webfont.ttf?11626639') format('truetype'),
+	url('../fonts/montserrat-ultralight-webfont.svg?11626639#fontello') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
 
 @font-face {
 	font-family: 'Proxima';
 	src: url("../fonts/proxima-regular.woff") format("woff");
 }
 .font0 {
-	font-family: Proxima;
+	font-family: 'montserrat-regular';
 }
 .invisible{
 	overflow: hidden;
@@ -126,6 +178,7 @@ body{
 	margin: 0;
 	padding: 0;
 	background-color: #000000;
+	font-family: 'montserrat-ultralight' !important;
 }
 
 .loading-container {
@@ -242,7 +295,7 @@ body{
 }
 
 .legals-footer ul li a {
-	font-family: Proxima;
+	font-family: 'montserrat-regular';
 	font-size: 10px;
 	color: #000;
 	text-decoration: none;
