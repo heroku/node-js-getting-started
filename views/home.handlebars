@@ -205,10 +205,10 @@
 <h1 class="main-logo"><a href="/"><img src="/img/one_million_faces_logo.png" alt="One Million Human Faces"/></a></h1>
 
 {{#if data.currentUser}}
-		<a href="/#edit/" class="profile-button-edit icon-search-outline"></a>
-		<a href="/logout" class="profile-button-logout icon-food"></a>
+		<a href="/#edit/" class="profile-button-edit icon-user"></a>
+		<a href="/logout" class="profile-button-logout">logout</a>
 {{else}}
-		<a href="/#login/" class="profile-button-login icon-mail"></a>
+		<a href="/#login/" class="profile-button-login">login</a>
 {{/if}}
 
 <div class="legals-footer">
@@ -231,11 +231,11 @@
 										</span>
 								</div>
 								<div class="search-toolbar">
-										<div class="search-reset icon-cancel-squared"></div>
+										<div class="search-reset icon-circle_close"></div>
 										<div id="search-field-pagination" class="search-pagination">
 												<div class="search-pagination-label"></div>
-												<div class="search-pagination-button-prev icon-left"></div>
-												<div class="search-pagination-button-next icon-right"></div>
+												<div class="search-pagination-button-prev icon-arrow_left"></div>
+												<div class="search-pagination-button-next icon-arrow_right"></div>
 										</div>
 								</div>
 						</div>

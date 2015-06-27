@@ -1,4 +1,4 @@
-define('minimap', ['fontIcons', 'messageBus', 'btnSocial', 'mapCursor'], function(fontello, messageBus, Button, MapCursor){
+define('minimap', ['constantes', 'messageBus', 'btnSocial', 'mapCursor', 'colorMapping'], function(constantes, messageBus, Button, MapCursor, colorMapping){
 
     var _width, _height, _gridWidth, _gridHeight, _ITEM_WIDTH, _ITEM_HEIGHT, _event, _lastNumber;
 
@@ -38,21 +38,16 @@ define('minimap', ['fontIcons', 'messageBus', 'btnSocial', 'mapCursor'], functio
         this.map.y = ITEM_HEIGHT-40;
         this.map.pivot.y = ITEM_HEIGHT;
 
-        this.bgIcon = new PIXI.Graphics();
-        this.bgIcon.clear();
-        this.bgIcon.beginFill(0x0000FF, 1);
-        this.bgIcon.drawRect(0, 0, 40, 40);
-        this.bgIcon.endFill();
-
-        this.icon = new Button(fontello.MAP_1, "#FFFFFF", _.bind(this.toggleMap, this));
+        this.icon = new Button(constantes.icons.COORDINATES, "#FFFFFF", _.bind(this.toggleMap, this));
         this.icon.x = 5;
         this.icon.y = 5;
 
         this.background = new PIXI.Graphics();
-        this.background.clear();
-        this.background.beginFill(0x00FF00, 1);
-        this.background.drawRect(0, 0, _width, _height);
-        this.background.endFill();
+        this.updateBackgroundMap();
+
+        this.home = new Button(constantes.icons.HOME, "#FFFFFF", _.bind(this.goToMe, this));
+        this.home.interactive = this.home.buttonMode = true;
+        this.home.visible = !!_app.currentUser;
 
         this.map.interactive = true;
         this.cursor.cursorIcon.interactive = this.cursor.cursorIcon.buttonMode = true;
@@ -67,18 +62,46 @@ define('minimap', ['fontIcons', 'messageBus', 'btnSocial', 'mapCursor'], functio
         this.cursor.position.x = 0;
         this.cursor.position.y = 0;
 
+        this.home.position = this.getHomePosition();
+        this.home.pivot.x = this.home.width/2;
+        this.home.pivot.y = this.home.height/2;
+
         this.addChild(this.button);
         this.addChild(this.map);
         this.addChild(this.cursor);
 
-        this.button.addChild(this.bgIcon);
+        messageBus.on('all:colorChange', _.bind(this.updateBackgroundMap, this));
+        messageBus.on('all:colorChange', _.bind(this.updateIconsColor, this));
+
+
+
         this.button.addChild(this.icon);
         this.map.addChild(this.background);
+        this.map.addChild(this.home);
 
     };
 
     Minimap.prototype = Object.create(PIXI.DisplayObjectContainer.prototype);
     Minimap.constructor = Minimap.prototype.constructor;
+
+    Minimap.prototype.updateIconsColor= function(event){
+        var color = event && event.data ? event.data.color : 0xFFFFFF;
+        this.icon._text.tint = color;
+    };
+
+    Minimap.prototype.updateNumberColor = function(){
+
+    };
+
+    Minimap.prototype.updateBackgroundMap = function(event){
+        var color = event && event.data ? event.data.color : 0x000000;
+
+        this.background.clear();
+        this.background.beginFill(0x000000, 0.5);
+        this.background.lineStyle(1, color);
+        this.background.drawRect(0, 0, _width, _height);
+        this.background.endFill();
+    };
 
     /**
      *
@@ -94,6 +117,9 @@ define('minimap', ['fontIcons', 'messageBus', 'btnSocial', 'mapCursor'], functio
             this.cursor.setNumber(number);
             this.setCursorPositionByNumber(number);
         }
+
+        messageBus.emit('all:colorChange', {color:colorMapping.getColorByBoxNumber(number)});
+
         _lastNumber = number
     };
 
@@ -106,8 +132,6 @@ define('minimap', ['fontIcons', 'messageBus', 'btnSocial', 'mapCursor'], functio
 
         this.isDragging = true;
         this.cursor.dragging();
-
-
     };
 
     /**
@@ -162,6 +186,13 @@ define('minimap', ['fontIcons', 'messageBus', 'btnSocial', 'mapCursor'], functio
      * @param number
      */
     Minimap.prototype.setCursorPositionByNumber = function(number){
+        var position = this.calcPositionByNumber(number);
+
+        this.cursor.position.x = position.x;
+        this.cursor.position.y = position.y;
+    };
+
+    Minimap.prototype.calcPositionByNumber = function(number){
         var position = {x:0, y:0};
 
         var xRatio = _gridWidth/_ITEM_WIDTH;
@@ -173,8 +204,23 @@ define('minimap', ['fontIcons', 'messageBus', 'btnSocial', 'mapCursor'], functio
         position.x = x/xRatio*_width;
         position.y = y/yRatio*_height;
 
-        this.cursor.position.x = position.x;
-        this.cursor.position.y = position.y;
+        return position;
+
+    };
+
+    Minimap.prototype.getHomePosition = function(){
+        if(_app.currentUser){
+            return this.calcPositionByNumber(_app.currentUser.number);
+        }else{
+            return {x: 0, y:0};
+        }
+    };
+
+    /**
+     *
+     */
+    Minimap.prototype.goToMe = function(){
+        messageBus.emit('map:gotoFaceNumber', {number: _app.currentUser.number, directly: false});
     };
 
     /**
@@ -185,7 +231,8 @@ define('minimap', ['fontIcons', 'messageBus', 'btnSocial', 'mapCursor'], functio
         TweenLite.to(this.map.scale, 0.25, {x: 1, y:1});
         TweenLite.to(this.map, 0.25, {alpha: 1});
         TweenLite.to(this.cursor, 0.25, {alpha:1, delay:0.15});
-        //TweenLite.to(this.cursor.position, 0.25, {y:0, delay:0.15});
+        //TweenLite.to(this.button, 0.25,{alpha:0});
+        this.icon._text.setText(constantes.icons.CIRCLE_CLOSE);
     };
 
     /**
@@ -196,7 +243,9 @@ define('minimap', ['fontIcons', 'messageBus', 'btnSocial', 'mapCursor'], functio
         TweenLite.to(this.map.scale, 0.25, {x: 0, y:0, delay:0.15});
         TweenLite.to(this.map, 0.25, {alpha: 0, delay:0.15});
         TweenLite.to(this.cursor, 0.25, {alpha:0});
+        //TweenLite.to(this.button, 0.25,{alpha:1});
         //TweenLite.fromTo(this.cursor.position, 0.25, {y:-10});
+        this.icon._text.setText(constantes.icons.COORDINATES);
     };
 
     /**
