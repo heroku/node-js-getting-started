@@ -274,7 +274,7 @@ app.use(express.static('public'));
 
 app.use(flash());
 
-var port = process.env.PORT || 3000;        // set our port
+var port = process.env.PORT || 80;        // set our port
 
 // ROUTES FOR OUR API
 // =============================================================================
@@ -1148,6 +1148,7 @@ publicRouter.get('/share/:number', function(req, res, next) {
 });
 app.use(function(req, res, next) {
     config.root_url = req.protocol + "://" + req.get('host');
+    config.assets_url = req.protocol + "://files." + req.get('host');
     return next();
   });
 app.use('/api', router);
