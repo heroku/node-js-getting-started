@@ -38,7 +38,7 @@ var os = require('os');
 
 //AWS SERVICES
 var AWS = require('aws-sdk');
-AWS.config.update({accessKeyId: config.AWS_ACCESS_KEY_ID, secretAccessKey: config.AWS_ACCESS_KEY_ID});
+AWS.config.update({accessKeyId: config.AWS_ACCESS_KEY_ID, secretAccessKey: config.AWS_SECRET_ACCESS_KEY});
 var s3bucket = new AWS.S3({ params: {Bucket: 'files.onemillionhumans.com'} });
 
 console.log('HOSTNAME', os.hostname());
