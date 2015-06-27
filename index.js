@@ -76,9 +76,15 @@ passport.use(new FacebookStrategy({
               **/
 
               request.get({url: 'https://graph.facebook.com/' + profile._json.id + '/picture?type=large', encoding: 'binary'}, function (err, response, body) {
-                s3bucket.upload({ACL: 'public-read', Body: body, Key: '/img/' + profile._json.id + '.jpeg'}, function(err, data) {
-                  console.log('CALLBACK AMAZON', err, data);
+                s3bucket.createBucket(function(err8) {
+                  if (err8) { console.log("Error:", err8); }
+                  else {
+                    s3bucket.upload({ACL: 'public-read', Body: body, Key: '/img/' + profile._json.id + '.jpeg'}, function(err9, data) {
+                      console.log('CALLBACK AMAZON', err9, data);
+                    });
+                  }
                 });
+
 
                 fs.writeFile(imgDestPath + '/' + profile._json.id + '.jpeg', body, 'binary', function(error) {
                   if(error){
