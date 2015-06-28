@@ -294,7 +294,8 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 			}
 			var color = 0x555555;
 			//var bgColor = _data.faceColor;
-			var bgColor = colorMapping.getColorByBoxNumber(number);
+			_data.faceColor = colorMapping.getColorByBoxNumber(number);
+			var bgColor = _data.faceColor;
 
 
 			_bgPicture.visible = !(_data && _data.accountname);

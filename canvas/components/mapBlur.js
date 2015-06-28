@@ -20,6 +20,9 @@ define('mapBlur', ['messageBus'], function(messageBus){
 
         this.visible = false;
 
+        //this.blurFilter = new PIXI.PixelateFilter();
+        //this.blurFilter.size.x = 10;
+        //this.blurFilter.size.y = 10;
         //this.blurFilter = new PIXI.BlurXFilter();
         //this.blurFilter.blur = 10;
 
@@ -43,7 +46,7 @@ define('mapBlur', ['messageBus'], function(messageBus){
         this.position.y = 0;
 
         this.toBlur.mask = this.blurMask;
-        //this.filters = [this.blurFilter];
+        //this.toBlur.filters = [this.blurFilter];
 
         messageBus.on('map:blur', _.bind(this.blurMap, this));
         messageBus.on('map:unblur', _.bind(this.unBlurMap, this));
