@@ -80,7 +80,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 						//_tmp.push({number : _ID, picture : "img/" + ((_ID === 0) ? "logo.jpg" : parseInt(MathUtils.randomMinMax(0, 15)) + ".jpg")});
 						//obj = {number : _ID, picture : "img/FREESTATE0" + parseInt(MathUtils.randomMinMax(1, 4)) + ".png", faceColor: colorMapping.getColorByBoxNumber(_ID)};
 						obj = {number : _ID, picture : "img/FREESTATE0" + parseInt(MathUtils.randomMinMax(1, 4)) + ".png", faceColor: 0xFF0000};
-						obj.faceColor = colorMapping.getColorByBoxNumber(_ID);
+						//obj.faceColor = colorMapping.getColorByBoxNumber(_ID);
 						_tmp.push(obj);
 						main.martixRange[_ID] = obj;
 						_ID++;
@@ -281,8 +281,6 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
          */
         function setGridPosition(x, y, directly){
 
-            // @TODO: determiner le chemin le plus court vers une case
-
             var distance, speed, path, isTooFar, timeline, decal={x:0,y:0};
 
             var windowDecalX = Math.round(-window.innerWidth/2)+Math.round(ITEM_WIDTH/2);
@@ -309,13 +307,13 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 
                 timeline = new TimelineLite();
                 timeline
-                    .to(_scrollObject, 0.5, {alpha: 0}, 0)
+                    .to(_scrollObjectContainer, 0.5, {alpha: 0}, 0)
                     //.to(_blurFilter, 0.5, {blur: 10}, 0)
                     .to(_scrollObject.position, 1, {x: "+="+decal.x, y: "+="+decal.y, ease: Cubic.easeOut}, 0)
                     .to(_scrollObject, 0, {x:path.x-decal.x,y:path.y-decal.y, ease: Cubic.easeOut})
                     .to(_scrollObject, 2, {x:path.x,y:path.y, delay:1, ease: Cubic.easeOut})
                     //.to(_blurFilter, 0.5, {blur: 0}, "-=1")
-                    .to(_scrollObject, 0.5, {alpha: 1}, "-=1");
+                    .to(_scrollObjectContainer, 0.5, {alpha: 1}, "-=1");
 
             }else{
                 TweenLite.to(_scrollObject, speed, {x:path.x,y:path.y, ease: Cubic.easeOut});

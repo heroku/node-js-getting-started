@@ -8,6 +8,8 @@ define('mapBlur', ['messageBus'], function(messageBus){
     var MapBlur = function(objectToBlur, itemWidth, itemHeight){
         PIXI.DisplayObjectContainer.call(this);
 
+        this.alphaLevel = 0.5;
+
         this.toBlur = new PIXI.DisplayObjectContainer();
 
         this.innerWidth = window.innerWidth;
@@ -17,6 +19,9 @@ define('mapBlur', ['messageBus'], function(messageBus){
         this.itemHeight = itemHeight;
 
         this.visible = false;
+
+        //this.blurFilter = new PIXI.BlurXFilter();
+        //this.blurFilter.blur = 10;
 
         this.objectToBlur = objectToBlur;
 
@@ -32,27 +37,13 @@ define('mapBlur', ['messageBus'], function(messageBus){
 
         this.blurMask = new PIXI.Graphics();
 
-        //this.mask = new PIXI.Graphics();
-        //this.mask.clear();
-        //this.mask.beginFill(0x000000, 1);
-        //this.mask.drawRect(0, 0, this.width/2, this.height/2);
-        //this.mask.endFill();
-
-        //this.mask.position.x = this.width/2;
-        //this.mask.position.y = this.height/2;
-
         this.resize();
 
         this.position.x = 0;
         this.position.y = 0;
 
-        //this.toBlur.filters = [new PIXI.BlurFilter()];
         this.toBlur.mask = this.blurMask;
-
-        //console.log('blur filter',  this.filterBlur);
-        //this.scale.x = 1;
-        //this.scale.y = 1;
-
+        //this.filters = [this.blurFilter];
 
         messageBus.on('map:blur', _.bind(this.blurMap, this));
         messageBus.on('map:unblur', _.bind(this.unBlurMap, this));
@@ -80,15 +71,16 @@ define('mapBlur', ['messageBus'], function(messageBus){
      *
      */
     MapBlur.prototype.blurMap = function() {
+        this.alpha = 0;
         this.visible = true;
-        TweenLite.fromTo(this, 0.5, {alpha: 0}, {alpha:1});
+        TweenLite.to(this, 0.25, {alpha:this.alphaLevel, delay: 0.5});
     };
 
     /**
      *
      */
     MapBlur.prototype.unBlurMap = function(){
-        TweenLite.fromTo(this, 0.5, {alpha:1}, {alpha:0, onComplete: function(){
+        TweenLite.fromTo(this, 0.25, {alpha:this.alphaLevel}, {alpha:0, onComplete: function(){
             this.visible = false;
         }});
     };
@@ -98,6 +90,7 @@ define('mapBlur', ['messageBus'], function(messageBus){
      */
     MapBlur.prototype.process = function(){
         if( this.visible ){
+            this.renderTexture.clear();
             this.renderTexture.render(this.objectToBlur);
         }
     };

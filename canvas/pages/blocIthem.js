@@ -1,4 +1,4 @@
-define('blocIthem', ['constantes', 'btnSocial', 'messageBus'], function(constantes, BtnSocial, messageBus) {
+define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], function(constantes, BtnSocial, messageBus, colorMapping) {
 
     var _lastSelected;
 
@@ -293,7 +293,8 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus'], function(constant
 				return;
 			}
 			var color = 0x555555;
-			var bgColor = _data.faceColor;
+			//var bgColor = _data.faceColor;
+			var bgColor = colorMapping.getColorByBoxNumber(number);
 
 
 			_bgPicture.visible = !(_data && _data.accountname);
