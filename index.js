@@ -41,6 +41,25 @@ var AWS = require('aws-sdk');
 AWS.config.update({accessKeyId: config.AWS_ACCESS_KEY_ID, secretAccessKey: config.AWS_SECRET_ACCESS_KEY});
 var s3bucket = new AWS.S3({ params: {Bucket: 'files.onemillionhumans.com'} });
 
+var s3 = new AWS.S3();
+
+ s3.createBucket({Bucket: 'myBucket'}, function() {
+
+  var params = {Bucket: 'myBucket', Key: 'myKey', Body: 'Hello!'};
+
+  s3.putObject(params, function(err, data) {
+
+      if (err)
+
+          console.log(err)
+
+      else console.log("Successfully uploaded data to myBucket/myKey");
+
+   });
+
+});
+
+
 console.log('HOSTNAME', os.hostname());
 
 passport.use(new FacebookStrategy({
