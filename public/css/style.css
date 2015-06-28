@@ -479,14 +479,23 @@ input[type=checkbox]:checked + label:after {
 	display: table-cell;
 }
 
+.menu-container{
+	padding:5px 10px 5px 10px;
+	background:#000;
+	opacity: 0.6;
+	position: absolute;
+	right: 125px;
+	top:20px;
+}
+
 .profile-button-login,
 .profile-button-edit,
 .profile-button-logout {
-	position: absolute;
-	right: 125px;
-	top:30px;
+
 	color:white;
-	font-size: 25px;
+	font-size: 12px;
+	font-family: montserrat-light;
+
 }
 
 .profile-button-logout {
@@ -570,4 +579,3 @@ input[type=checkbox]:checked + label:after {
 	font-size: 0.75em;
 	opacity: 0.5;
 }
-

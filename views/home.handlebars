@@ -204,12 +204,14 @@
 </div>
 <h1 class="main-logo"><a href="/"><img src="/img/one_million_faces_logo.png" alt="One Million Human Faces"/></a></h1>
 
-{{#if data.currentUser}}
-		<a href="/#edit/" class="profile-button-edit icon-user"></a>
-		<a href="/logout" class="profile-button-logout">logout</a>
-{{else}}
-		<a href="/#login/" class="profile-button-login">login</a>
-{{/if}}
+<div class="menu-container">
+	{{#if data.currentUser}}
+			<a href="/#edit/" class="profile-button-edit icon-user"></a>
+			<a href="/logout" class="profile-button-logout">logout</a>
+	{{else}}
+			<a href="/#login/" class="profile-button-login">login</a>
+	{{/if}}
+</div>
 
 <div class="legals-footer">
 		<ul>
