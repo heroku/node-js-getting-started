@@ -15,6 +15,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 		var _item;
 		var _itemText;
 		var _itemName;
+		var _bgPicture;
 		var _txt;
 		var _fb;
 		var _tw;
@@ -50,7 +51,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 			_contextualInfo = new PIXI.DisplayObjectContainer();
 
 			_rect = new PIXI.Graphics();
-			updateRectColor(0);
+			_bgPicture = new PIXI.Graphics();
 
 			_item = new PIXI.Sprite(new PIXI.Texture(new PIXI.BaseTexture()));
 			_item.x = Math.round((ITEM_WIDTH-PICTURE_WIDTH)/2);
@@ -140,10 +141,13 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 			_selectedAnimation = getAnimation();
 			_scope.mousedown = _scope.touchstart = onFaceClick;
 
+			updateRectColor(0);
+
 			_scope.addChild(_rect);
 			_scope.addChild(_container);
 			_scope.addChild(_itemText);
 
+			_container.addChild(_bgPicture);
 			_container.addChild(_item);
 			_container.addChild(_fb);
 			_container.addChild(_tw);
@@ -271,6 +275,8 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 				this.updateColors({data:{color:colorMapping.getColorByBoxNumber(_data.number)}});
 				_itemName.setText(_data.accountname|| "");
 				_selectedAnimation.play();
+
+				messageBus.emit('all:colorChange', {color:colorMapping.getColorByBoxNumber(_data.number)});
 				messageBus.emit("map:blur");
 			}
 		}
@@ -281,9 +287,17 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 			return pad.substring(0, pad.length- n.length)+n;
 		}
 
-		function updateRectColor(id){
+		function updateRectColor(number){
 
 			var color = 0x555555;
+			var bgColor = colorMapping.getColorByBoxNumber(number);
+
+			_bgPicture.clear();
+			_bgPicture.beginFill(bgColor, 1);
+			_bgPicture.drawRect(0, 0, _item.width-6, _item.height-6);
+			_bgPicture.endFill();
+			_bgPicture.position.x = _item.position.x+3;
+			_bgPicture.position.y = _item.position.y+3;
 
 			_rect.clear();
 			_rect.beginFill(color, 1);

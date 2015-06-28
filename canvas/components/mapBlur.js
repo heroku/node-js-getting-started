@@ -19,42 +19,18 @@ define('mapBlur', ['messageBus'], function(messageBus){
         this.visible = false;
 
         this.objectToBlur = objectToBlur;
+
         this.renderTexture = new PIXI.RenderTexture(this.innerWidth, this.innerHeight);
+
         this.sprite = new PIXI.Sprite(this.renderTexture);
-        this.sprite.width = window.innerWidth;
-        this.sprite.height = window.innerHeight;
 
         this.tint = new PIXI.Graphics();
-        this.tint.clear();
-        this.tint.beginFill(0xFF0000, 1);
-        this.tint.drawRect(0, 0, this.innerWidth, this.innerHeight);
-        this.tint.endFill();
 
         this.tintBlack = new PIXI.Graphics();
-        this.tintBlack.clear();
-        this.tintBlack.beginFill(0x000000, 1);
-        this.tintBlack.drawRect(0, 0, this.itemWidth, this.itemHeight);
-        this.tintBlack.endFill();
-
-        this.tintBlack.position.x = this.innerWidth/2-this.itemWidth/2;
-        this.tintBlack.position.y = this.innerHeight/2-this.itemHeight/2;
 
         this.tint.blendMode = PIXI.blendModes.MULTIPLY;
 
         this.blurMask = new PIXI.Graphics();
-        this.blurMask.beginFill(0x000000, 1);
-        this.blurMask.moveTo(0, 0);
-        this.blurMask.lineTo(this.tintBlack.position.x, 0);
-        this.blurMask.lineTo(this.tintBlack.position.x, this.tintBlack.position.y+this.tintBlack.height);
-        this.blurMask.lineTo(this.tintBlack.position.x+this.tintBlack.width, this.tintBlack.position.y+this.tintBlack.height);
-        this.blurMask.lineTo(this.tintBlack.position.x+this.tintBlack.width, this.tintBlack.position.y);
-        this.blurMask.lineTo(this.tintBlack.position.x, this.tintBlack.position.y);
-        this.blurMask.lineTo(this.tintBlack.position.x, 0);
-        this.blurMask.lineTo(this.innerWidth, 0);
-        this.blurMask.lineTo(this.innerWidth, this.innerHeight);
-        this.blurMask.lineTo(0, this.innerHeight);
-        this.blurMask.lineTo(0, 0);
-        this.blurMask.endFill();
 
         //this.mask = new PIXI.Graphics();
         //this.mask.clear();
@@ -64,6 +40,8 @@ define('mapBlur', ['messageBus'], function(messageBus){
 
         //this.mask.position.x = this.width/2;
         //this.mask.position.y = this.height/2;
+
+        this.resize();
 
         this.position.x = 0;
         this.position.y = 0;
@@ -103,14 +81,14 @@ define('mapBlur', ['messageBus'], function(messageBus){
      */
     MapBlur.prototype.blurMap = function() {
         this.visible = true;
-        TweenLite.to(this, 0.5, {alpha:1});
+        TweenLite.fromTo(this, 0.5, {alpha: 0}, {alpha:1});
     };
 
     /**
      *
      */
     MapBlur.prototype.unBlurMap = function(){
-        TweenLite.to(this, 0.5, {alpha:0, onComplete: function(){
+        TweenLite.fromTo(this, 0.5, {alpha:1}, {alpha:0, onComplete: function(){
             this.visible = false;
         }});
     };
@@ -128,6 +106,43 @@ define('mapBlur', ['messageBus'], function(messageBus){
      * resize sprite
      */
     MapBlur.prototype.resize = function(){
+        this.innerWidth = window.innerWidth;
+        this.innerHeight = window.innerHeight;
+
+        this.renderTexture.resize(this.innerWidth, this.innerHeight);
+
+        this.sprite.width = this.innerWidth;
+        this.sprite.height = this.innerHeight;
+
+        this.tint.clear();
+        this.tint.beginFill(0xFF0000, 1);
+        this.tint.drawRect(0, 0, this.innerWidth, this.innerHeight);
+        this.tint.endFill();
+
+        this.tintBlack.clear();
+        this.tintBlack.beginFill(0x000000, 1);
+        this.tintBlack.drawRect(0, 0, this.itemWidth, this.itemHeight);
+        this.tintBlack.endFill();
+
+        this.tintBlack.position.x = this.innerWidth/2-this.itemWidth/2;
+        this.tintBlack.position.y = this.innerHeight/2-this.itemHeight/2;
+
+        this.blurMask.clear();
+        this.blurMask.beginFill(0x000000, 1);
+        this.blurMask.moveTo(0, 0);
+        this.blurMask.lineTo(this.tintBlack.position.x, 0);
+        this.blurMask.lineTo(this.tintBlack.position.x, this.tintBlack.position.y+this.tintBlack.height);
+        this.blurMask.lineTo(this.tintBlack.position.x+this.tintBlack.width, this.tintBlack.position.y+this.tintBlack.height);
+        this.blurMask.lineTo(this.tintBlack.position.x+this.tintBlack.width, this.tintBlack.position.y);
+        this.blurMask.lineTo(this.tintBlack.position.x, this.tintBlack.position.y);
+        this.blurMask.lineTo(this.tintBlack.position.x, 0);
+        this.blurMask.lineTo(this.innerWidth, 0);
+        this.blurMask.lineTo(this.innerWidth, this.innerHeight);
+        this.blurMask.lineTo(0, this.innerHeight);
+        this.blurMask.lineTo(0, 0);
+        this.blurMask.endFill();
+
+        this.process();
 
     };
 

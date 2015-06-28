@@ -52,5 +52,42 @@ define('colorMapping', function(){
         return color;
     };
 
+    ColorMapping.prototype.getRgbByPosition = function(x, y, maxX, maxY){
+        var r, g, b;
+
+        r = g = b = 0;
+        //var rgb = {
+        //    r: 255,
+        //    g: 255,
+        //    b: 255
+        //};
+        //
+        //var maxX = maxX/2;
+        //var maxY = maxY/2;
+        //
+        //if( x > maxX ){
+        //    x = maxX-x;
+        //}
+        //
+        //if( y > maxY ){
+        //    y = maxY-y;
+        //}
+
+        return this.rgbToHex(r, g, b);
+    };
+
+    ColorMapping.prototype.rgbToHex = function(r,g,b){
+        return _rgbToHex(r,g,b);
+    };
+
+    function _componentToHex(c) {
+        var hex = c.toString(16);
+        return hex.length == 1 ? "0" + hex : hex;
+    }
+
+    function _rgbToHex(r, g, b) {
+        return "#" + _componentToHex(r) + _componentToHex(g) + _componentToHex(b);
+    }
+
     return new ColorMapping();
 });

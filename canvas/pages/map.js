@@ -74,8 +74,8 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 					var _tmp = [];
 					for (var k = 0; k < _rangePage; k++) {
 						//_tmp.push({number : _ID, picture : "img/" + ((_ID === 0) ? "logo.jpg" : parseInt(MathUtils.randomMinMax(0, 15)) + ".jpg")});
-						_tmp.push({number : _ID, picture : "img/" + parseInt(MathUtils.randomMinMax(1, 10)) + ".jpg"});
-						main.martixRange[_ID] = {number : _ID, picture : "/img/"+parseInt(MathUtils.randomMinMax(1, 10))+".jpg"};
+						_tmp.push({number : _ID, picture : "img/FREESTATE0" + parseInt(MathUtils.randomMinMax(1, 4)) + ".png"});
+						main.martixRange[_ID] = {number : _ID, picture : "/img/FREESTATE0"+parseInt(MathUtils.randomMinMax(1, 4))+".png"};
 						_ID++;
 					}
 					// _ranges => "getFaces(x,y) => [12]"
@@ -538,6 +538,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 		this.resize = function(w, h) {
 
 			_mapBlur.resize();
+			messageBus.emit('blocItem:setUnselected');
 			updateMinimapPosition();
 			_w = w;
 			_h = h;
