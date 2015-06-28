@@ -1,4 +1,4 @@
-define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], function(constantes, BtnSocial, messageBus, colorMapping) {
+define('blocIthem', ['constantes', 'btnSocial', 'messageBus'], function(constantes, BtnSocial, messageBus) {
 
     var _lastSelected;
 
@@ -272,11 +272,11 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 				_isSelected = true;
 				this.setLangs(_data.lang ? [_data.lang] : []);
 				this.setOccupations(_data.occupations ? $.parseJSON(_data.occupations) : []);
-				this.updateColors({data:{color:colorMapping.getColorByBoxNumber(_data.number)}});
+				this.updateColors({data:{color:_data.faceColor}});
 				_itemName.setText(_data.accountname|| "");
 				_selectedAnimation.play();
 
-				messageBus.emit('all:colorChange', {color:colorMapping.getColorByBoxNumber(_data.number)});
+				messageBus.emit('all:colorChange', {color:_data.faceColor});
 				messageBus.emit("map:blur");
 			}
 		}
@@ -289,8 +289,12 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 
 		function updateRectColor(number){
 
+			if( !_data ){
+				return;
+			}
 			var color = 0x555555;
-			var bgColor = colorMapping.getColorByBoxNumber(number);
+			var bgColor = _data.faceColor;
+
 
 			_bgPicture.visible = !(_data && _data.accountname);
 

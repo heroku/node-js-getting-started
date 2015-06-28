@@ -1,4 +1,4 @@
-define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', 'minimap', 'mapBlur'], function(ScrollContainer, Bloc, Services, messageBus, Minimap, MapBlur) {
+define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', 'minimap', 'mapBlur', 'colorMapping'], function(ScrollContainer, Bloc, Services, messageBus, Minimap, MapBlur, colorMapping) {
 
 	var _map = function() {
 
@@ -44,6 +44,8 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 		var _mapMoved = false;
 		var _mapBlur;
 
+		colorMapping.setReferences(ITEM_WIDTH, ITEM_HEIGHT, maxGridWidth, maxGridHeight);
+
 		var thottleUpdateMinimap = _.throttle(function(){
 				_minimap.updateCursorPosition(getCenterNumber());
 			}, 1000);
@@ -61,12 +63,14 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 
 		PIXI.DisplayObjectContainer.call(this);
 		_scope = this;
+
 		build();
 
 		function build() {
 
 			var i;
 			var j;
+			var obj;
 
 
 			for (i = 0; i < _rangeLinge; i++) {
@@ -74,8 +78,11 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 					var _tmp = [];
 					for (var k = 0; k < _rangePage; k++) {
 						//_tmp.push({number : _ID, picture : "img/" + ((_ID === 0) ? "logo.jpg" : parseInt(MathUtils.randomMinMax(0, 15)) + ".jpg")});
-						_tmp.push({number : _ID, picture : "img/FREESTATE0" + parseInt(MathUtils.randomMinMax(1, 4)) + ".png"});
-						main.martixRange[_ID] = {number : _ID, picture : "/img/FREESTATE0"+parseInt(MathUtils.randomMinMax(1, 4))+".png"};
+						//obj = {number : _ID, picture : "img/FREESTATE0" + parseInt(MathUtils.randomMinMax(1, 4)) + ".png", faceColor: colorMapping.getColorByBoxNumber(_ID)};
+						obj = {number : _ID, picture : "img/FREESTATE0" + parseInt(MathUtils.randomMinMax(1, 4)) + ".png", faceColor: 0xFF0000};
+						obj.faceColor = colorMapping.getColorByBoxNumber(_ID);
+						_tmp.push(obj);
+						main.martixRange[_ID] = obj;
 						_ID++;
 					}
 					// _ranges => "getFaces(x,y) => [12]"
@@ -496,6 +503,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
         function updateMatrix(data){
             for (var i = 0; i < data.length; i++) {
                 if (data[i].picture) {
+					data[i].faceColor = main.martixRange[data[i].number].faceColor;
 					main.martixRange[data[i].number] = data[i];
                 }
             }
