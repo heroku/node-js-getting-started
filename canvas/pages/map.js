@@ -392,14 +392,22 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
         function numberIsVisible(number){
             var isOnGrid = false;
 
-            _.each(_blocs, function(bloc){
-                var faces = getRange(bloc.idX, bloc.idY);
-                _.each(faces, function(face){
-                    if( face.number === number ){
+			for(var i= 0,l=_blocs.length;i<l;i++){
+				if( isOnGrid ){
+					continue;
+				}
+
+                var faces = getRange(_blocs[i].idX, _blocs[i].idY);
+				for(var j= 0,k=faces.length;j<k;j++){
+					if( isOnGrid ){
+						continue;
+					}
+
+                    if( faces[j].number === number ){
                         isOnGrid = true;
                     }
-                });
-            });
+				}
+			}
 
             return isOnGrid;
         }
@@ -435,7 +443,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 			}
 
             if( range.length ){
-				//thottleUpdateGrid();
+				thottleUpdateGrid();
                 _services.getFacesByRange(range, onGetFacesByRange);
             }
 
@@ -484,9 +492,9 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
          * Update faces grid
          */
         function updateGrid(){
-            _.each(_blocs, function(blocId){
-                blocId.setValue(getRange(blocId.idX, blocId.idY));
-            });
+			for( var i = 0, l = _blocs.length; i<l; i++){
+				_blocs[i].setValue(getRange(_blocs[i].idX, _blocs[i].idY));
+			}
         }
 
         /**

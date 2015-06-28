@@ -59,7 +59,7 @@ define('mapCursor', ['btnSocial', 'constantes', 'messageBus'], function(Button, 
     MapCursor.prototype.setNumber = function(number){
         this.numberFace = number;
         this.numberText.setText(this.numberFace);
-        this.numberText.pivot.x = this.numberText.width/2;
+        this.numberText.pivot.x = this.numberText.width/(2*this.numberText.scale.x);
     };
 
     return MapCursor;
