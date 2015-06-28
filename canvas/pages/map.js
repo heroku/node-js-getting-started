@@ -80,7 +80,6 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 						//_tmp.push({number : _ID, picture : "img/" + ((_ID === 0) ? "logo.jpg" : parseInt(MathUtils.randomMinMax(0, 15)) + ".jpg")});
 						//obj = {number : _ID, picture : "img/FREESTATE0" + parseInt(MathUtils.randomMinMax(1, 4)) + ".png", faceColor: colorMapping.getColorByBoxNumber(_ID)};
 						obj = {number : _ID, picture : "img/FREESTATE0" + parseInt(MathUtils.randomMinMax(1, 4)) + ".png", faceColor: 0xFF0000};
-						//obj.faceColor = colorMapping.getColorByBoxNumber(_ID);
 						_tmp.push(obj);
 						main.martixRange[_ID] = obj;
 						_ID++;
@@ -146,7 +145,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 
 
             messageBus.on('map:gotoFaceNumber', gotoFaceNumber);
-            //messageBus.on('map:updateGrid', updateGrid);
+			updateGrid();
 
 		}
 
@@ -378,13 +377,10 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 
             number = Math.max(MIN_FACES, Math.min(MAX_FACES, number));
 
-            //number-=1;
-
             x = Math.round(number%1000);
-
             y = Math.floor(number/1000);
 
-            setGridPosition(x,y, numberIsVisible(number) ? false : directly);
+            setGridPosition(Math.floor(x), Math.floor(y), numberIsVisible(number) ? false : directly);
 
         }
 
@@ -439,8 +435,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 			}
 
             if( range.length ){
-				//updateGrid();
-				thottleUpdateGrid();
+				//thottleUpdateGrid();
                 _services.getFacesByRange(range, onGetFacesByRange);
             }
 

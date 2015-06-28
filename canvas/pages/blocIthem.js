@@ -135,11 +135,12 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 
 
 			messageBus.on('blocItem:setUnselected', _.bind(setUnselected, _this));
-			messageBus.on('blocItem:setSelected', _.bind(setSelected, _this));
+			//messageBus.on('blocItem:setSelected', _.bind(setSelected, _this));
 			messageBus.on('ScrollContainer:StartMoving', clearTimer);
 
 			_selectedAnimation = getAnimation();
-			_scope.mousedown = _scope.touchstart = onFaceClick;
+			_item.mousedown = _item.touchstart = onFaceClick;
+
 
 			updateRectColor(0);
 
@@ -195,8 +196,6 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 		 *
 		 */
 		function onFaceClick(){
-			console.log("onFaceClick");
-			console.log(_data);
 			clearTimer();
 
 			_timer = setTimeout(function(){
@@ -331,7 +330,6 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 		}
 
 		this.updateColors = function(event) {
-			console.log('updateColors');
 			var color = event && event.data ? event.data.color : 0xFFFFFF;
 			_itemText.tint = color;
 			_itemName.tint = color;
@@ -392,8 +390,8 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 		 */
 		this.setInteractive = function(isInteractive){
 			_interactive = isInteractive;
-			_scope.interactive = isInteractive;
-			_scope.buttonMode = isInteractive;
+			_item.interactive = isInteractive;
+			_item.buttonMode = isInteractive;
 		};
 
         /**
@@ -500,14 +498,24 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 		};
 
 		this.update = function(data) {
+
 			_data = data;
 
 			_id = _txt = _data.number;
 
-			this.setInteractive(_data.accountname && !(_data.claim === false && !main.currentUser));
-			this.setSocials(typeof _data.claim === 'undefined' && !main.currentUser);
-			this.setClaim(_data.claim === false && !main.currentUser);
-			this.setShare(main.currentUser && !_data.accountname);
+			var interactiveEnable = !!(_data.accountname && !(_data.claim === false && !main.currentUser));
+			var socialEnable = !!(typeof _data.claim === 'undefined' && !main.currentUser);
+			var claimEnable = !!(_data.claim === false && !main.currentUser);
+			var shareEnable = !!(main.currentUser && !_data.accountname);
+
+			this.setInteractive(interactiveEnable);
+			this.setSocials(socialEnable);
+			this.setClaim(claimEnable);
+			this.setShare(shareEnable);
+
+			//if( _data.accountname ){
+			//	console.log(_data.accountname, _data.number, 'interactive:', interactiveEnable, 'social:', socialEnable, 'claim:',claimEnable, 'share:',shareEnable);
+			//}
 
 			updateRectColor(_id);
 			_itemText.setText(pad(_txt*1));

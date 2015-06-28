@@ -83,8 +83,9 @@ define('mapBlur', ['messageBus'], function(messageBus){
      *
      */
     MapBlur.prototype.unBlurMap = function(){
+        var _this = this;
         TweenLite.fromTo(this, 0.25, {alpha:this.alphaLevel}, {alpha:0, onComplete: function(){
-            this.visible = false;
+            _this.visible = false;
         }});
     };
 
