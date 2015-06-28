@@ -331,6 +331,7 @@ router.route('/faces')
         face.firstname = req.body.firstname;  // set the faces name (comes from the request)
         face.lastname = req.body.lastname;  // set the faces name (comes from the request)
         face.number = req.body.number;  // set the faces name (comes from the request)
+        face.number_id = parseInt(req.body.number, 10) - 1;  // set the faces name (comes from the request)
         face.picture = req.body.picture;  // set the faces name (comes from the request)
         face.network = req.body.network;  // set the faces name (comes from the request)
 
@@ -1029,9 +1030,10 @@ publicRouter.get('/success/:id', function(req, res, next) {
       if (err){
         console.log('UTILISATEUR NON TROUVE', err);
       }else{
-          if(!face.number > 0){
+          if(!face.number){
             face.number = req.params.id == 0 ? 1 : req.params.id;
             req.user.number = req.params.id == 0 ? 1 : req.params.id;
+            face.number_id = parseInt(face.number, 10) - 1;
           }
 
           face.save(function(err) {

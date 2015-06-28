@@ -8,6 +8,7 @@ var FaceSchema   = new Schema({
     lastname: String,
     accountname: String,
     number: { type: Number, min: 0, max: 1000000 }, //registration number
+    number_id: { type: Number, min: 0, max: 1000000 }, //registration number
     range: { type: Number, min: 0, max: 1000000 }, //to find by query language
     picture: String,
     network: String,
