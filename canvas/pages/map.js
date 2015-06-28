@@ -1,4 +1,4 @@
-define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', 'minimap'], function(ScrollContainer, Bloc, Services, messageBus, Minimap) {
+define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', 'minimap', 'mapBlur'], function(ScrollContainer, Bloc, Services, messageBus, Minimap, MapBlur) {
 
 	var _map = function() {
 
@@ -6,6 +6,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 		var _blocs = [];
 		var _bloc;
 		var _scrollObject;
+		var _scrollObjectContainer = new PIXI.DisplayObjectContainer();
 		var _minimap;
 		var _w;
 		var _h;
@@ -41,6 +42,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 		var _hideTimer = null;
 		var _services = new Services();
 		var _mapMoved = false;
+		var _mapBlur;
 
 		var thottleUpdateMinimap = _.throttle(function(){
 				_minimap.updateCursorPosition(getCenterNumber());
@@ -66,13 +68,14 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 			var i;
 			var j;
 
+
 			for (i = 0; i < _rangeLinge; i++) {
 				for (j = 0; j < _rangeColonne; j++) {
 					var _tmp = [];
 					for (var k = 0; k < _rangePage; k++) {
 						//_tmp.push({number : _ID, picture : "img/" + ((_ID === 0) ? "logo.jpg" : parseInt(MathUtils.randomMinMax(0, 15)) + ".jpg")});
-						_tmp.push({number : _ID, picture : "img/" + parseInt(MathUtils.randomMinMax(1, 10)) + ".jpg"});
-						main.martixRange[_ID] = {number : _ID, picture : "/img/"+parseInt(MathUtils.randomMinMax(1, 10))+".jpg"};
+						_tmp.push({number : _ID, picture : "img/FREESTATE0" + parseInt(MathUtils.randomMinMax(1, 4)) + ".png"});
+						main.martixRange[_ID] = {number : _ID, picture : "/img/FREESTATE0"+parseInt(MathUtils.randomMinMax(1, 4))+".png"};
 						_ID++;
 					}
 					// _ranges => "getFaces(x,y) => [12]"
@@ -82,11 +85,15 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 
 
 			_scrollObject = new ScrollContainer(ScrollContainerType.SCROLL, main.stage);
+			_mapBlur = new MapBlur(_scrollObjectContainer, ITEM_WIDTH, ITEM_HEIGHT);
 			_minimap = new Minimap(_minimapWidth, _minimapHeight, ITEM_WIDTH, ITEM_HEIGHT, maxGridWidth, maxGridHeight);
 			_scrollObject.addEventListener("down", onScrollMouseDown);
 			_scrollObject.addEventListener("up", onScrollMouseUp);
-			_scope.addChild(_scrollObject);
+
+			_scope.addChild(_scrollObjectContainer);
+			_scope.addChild(_mapBlur);
 			_scope.addChild(_minimap);
+			_scrollObjectContainer.addChild(_scrollObject);
 
 			updateMinimapPosition();
 
@@ -128,6 +135,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 			initPosItems();
 
 			getFacesByRanges(rangesPos);
+			thottleUpdateMinimap();
 
 
             messageBus.on('map:gotoFaceNumber', gotoFaceNumber);
@@ -307,7 +315,6 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
             }
 
         }
-
 
         function findSmallerPath(x, y){
 
@@ -523,12 +530,15 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 			if (_scrollObject) {
 				_scrollObject.scroll();
 				_minimap.process();
+				_mapBlur.process();
 				replaceItem();
 			}
 		};
 
 		this.resize = function(w, h) {
 
+			_mapBlur.resize();
+			messageBus.emit('blocItem:setUnselected');
 			updateMinimapPosition();
 			_w = w;
 			_h = h;
