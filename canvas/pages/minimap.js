@@ -152,7 +152,6 @@ define('minimap', ['constantes', 'messageBus', 'btnSocial', 'mapCursor', 'colorM
             this.canDrag = true;
         }, this), 5000);
 
-        messageBus.emit('all:colorChange', {color:colorMapping.getColorByBoxNumber(this.cursor.numberFace)});
         messageBus.emit('map:gotoFaceNumber', {number: this.cursor.numberFace, directly:false});
     };
 

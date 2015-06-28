@@ -261,6 +261,8 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 
 			if( _mapMoved ){
 				thottleUpdateMinimap();
+				// @TODO: active only if absolutely necessary - slow fps
+				//thottleUpdateGrid();
 			}
 
 		}
@@ -381,6 +383,8 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
             y = Math.floor(number/1000);
 
             setGridPosition(Math.floor(x), Math.floor(y), numberIsVisible(number) ? false : directly);
+			messageBus.emit('all:colorChange', {color:colorMapping.getColorByBoxNumber(number)});
+			_minimap.updateCursorPosition(number);
 
         }
 
