@@ -33,6 +33,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 		var _slotLang1,_slotLang2,_slotLang3;
 		var _contextualInfo;
 		var _isSelected = false;
+		var _canClick = true;
 
 		PIXI.DisplayObjectContainer.call(this);
 		_scope = this;
@@ -123,6 +124,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 				_fb.disable(0.25, 0);
                 _claim.disable(0.25, 0);
                 _decline.disable(0.25, 0);
+				_canClick = false;
 			});
 
 			messageBus.addEventListener('ScrollContainer:StopMoving', function(){
@@ -131,6 +133,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 				_fb.enable(0.25, delay);
                 _claim.enable(0.25, delay);
                 _decline.enable(0.25, delay);
+				_canClick = true;
 			});
 
 
@@ -196,6 +199,10 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 		 *
 		 */
 		function onFaceClick(){
+			if( !_canClick ){
+				return;
+			}
+
 			clearTimer();
 
 			_timer = setTimeout(function(){

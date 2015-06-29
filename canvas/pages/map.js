@@ -386,6 +386,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 			messageBus.emit('all:colorChange', {color:colorMapping.getColorByBoxNumber(number)});
 			_minimap.updateCursorPosition(number);
 
+
         }
 
         /**

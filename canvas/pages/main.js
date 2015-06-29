@@ -194,10 +194,10 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 
 			  routes: {
 			    "edit/": "edit",  // #search/kiwis
-					"success/": "success",  // #search/kiwis
+				"success/": "success",  // #search/kiwis
 			    "share/:number": "share",   // #search/kiwis/p7
 			    "number/:number": "number",   // #search/kiwis/p7
-					"login/": "login"   // #search/kiwis/p7
+				"login/": "login"   // #search/kiwis/p7
 			  },
 
 			  edit: function(number) {

@@ -215,23 +215,35 @@ body{
 
 .btn.btn-custom-blue {
 	color: #fff;
-	background-color: #286090;
-	border-color: #1a3655;
 	z-index: 2;
+	border: 1px solid rgb(100, 100, 100);
+	background-color: rgba(0,0,0,0.75);
+	border-left: 0;
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.btn.btn-custom-blue:before {
+	font-size: 22px;
+	line-height: 14px;
 }
 
 .btn.btn-custom-blue:focus,
 .btn.btn-custom-blue:hover {
 	color: #fff;
-	background-color: #307db6;
-	border-color: #234d75;
+	background-color: #414141;
+	border: 1px solid rgb(100, 100, 100);
+	border-left:0;
 }
 
 .btn.btn-custom-blue:active {
 	color: #fff;
-	background-color: #1c4165;
-	border-color: #1a3655;
+	background-color: #303030;
+	border: 1px solid rgb(100, 100, 100);
+	border-left:0;
 }
+
+
 
 /*.modal{
 	width:200px;
@@ -309,6 +321,12 @@ body{
 }
 
 /* Search bar */
+#form-search .form-control {
+	background-color: rgba(0, 0, 0, 0.75);
+	border: 1px solid rgb(100, 100, 100);
+	color: rgb(205, 205, 205);
+}
+
 .search-bar {
 	position: absolute;
 	top: 20px;
@@ -472,13 +490,12 @@ input[type=checkbox]:checked + label:after {
 /* Pagination search */
 .search-toolbar {
 	position: absolute;
-	right: 46px;
+	right: 36px;
 	top: 1px;
 	white-space: nowrap;
 	font-size: 12px;
-	color: #AAA;
+	color: rgb(205, 205, 205);
 	height: 25px;
-	background: white;
 	padding: 0 5px;
 	display: table;
 	z-index: 2;
@@ -513,7 +530,7 @@ input[type=checkbox]:checked + label:after {
 .search-reset:hover,
 .search-pagination-button-prev:hover,
 .search-pagination-button-next:hover {
-	color:#333;
+	color:white;
 }
 
 .search-reset.is-active,
@@ -530,6 +547,15 @@ input[type=checkbox]:checked + label:after {
 	position: absolute;
 	right: 125px;
 	top:20px;
+	-webkit-transition:0.25s;
+	-moz-transition:0.25s;
+	-ms-transition:0.25s;
+	-o-transition:0.25s;
+	transition:0.25s;
+}
+
+.menu-container:hover {
+	opacity: 0.75;
 }
 
 .menu-container .dropdown-menu{
@@ -537,7 +563,6 @@ input[type=checkbox]:checked + label:after {
 	width:90px;
 	left:-10px;
 	background:#000;
-	opacity:0.6;
 }
 
 .menu-container .dropdown-menu li a{
@@ -636,4 +661,21 @@ input[type=checkbox]:checked + label:after {
 .typeahead-number {
 	font-size: 0.75em;
 	opacity: 0.5;
+}
+
+.typeahead.dropdown-menu {
+	background:rgba(0, 0, 0, 0.75);
+}
+
+.typeahead.dropdown-menu > .active > a,
+.typeahead.dropdown-menu > .active > a:hover,
+.typeahead.dropdown-menu > .active > a:focus{
+	background: rgba(73, 73, 73, 0.75);
+	color: rgb(255, 255, 255);
+}
+
+.typeahead.dropdown-menu > li > a{
+	color: #cccccc;
+	font-size: 14px;
+	font-family: 'montserrat-light';
 }

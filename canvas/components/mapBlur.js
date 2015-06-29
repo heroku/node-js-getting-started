@@ -26,11 +26,11 @@ define('mapBlur', ['messageBus'], function(messageBus){
         //this.blurFilter = new PIXI.BlurXFilter();
         //this.blurFilter.blur = 10;
 
-        this.objectToBlur = objectToBlur;
+        //this.objectToBlur = objectToBlur;
 
-        this.renderTexture = new PIXI.RenderTexture(this.innerWidth, this.innerHeight);
+        //this.renderTexture = new PIXI.RenderTexture(this.innerWidth, this.innerHeight);
 
-        this.sprite = new PIXI.Sprite(this.renderTexture);
+        //this.sprite = new PIXI.Sprite(this.renderTexture);
 
         this.tint = new PIXI.Graphics();
 
@@ -53,7 +53,7 @@ define('mapBlur', ['messageBus'], function(messageBus){
         messageBus.on('all:colorChange', _.bind(this.updateBlurColor, this));
 
         this.addChild(this.toBlur);
-        this.toBlur.addChild(this.sprite);
+        //this.toBlur.addChild(this.sprite);
         this.toBlur.addChild(this.tint);
         this.toBlur.addChild(this.tintBlack);
 
@@ -84,7 +84,7 @@ define('mapBlur', ['messageBus'], function(messageBus){
      */
     MapBlur.prototype.unBlurMap = function(){
         var _this = this;
-        TweenLite.fromTo(this, 0.25, {alpha:this.alphaLevel}, {alpha:0, onComplete: function(){
+        TweenLite.fromTo(this, 0.1, {alpha:this.alphaLevel}, {alpha:0, onComplete: function(){
             _this.visible = false;
         }});
     };
@@ -94,8 +94,8 @@ define('mapBlur', ['messageBus'], function(messageBus){
      */
     MapBlur.prototype.process = function(){
         if( this.visible ){
-            this.renderTexture.clear();
-            this.renderTexture.render(this.objectToBlur);
+            //this.renderTexture.clear();
+            //this.renderTexture.render(this.objectToBlur);
         }
     };
 
@@ -106,10 +106,10 @@ define('mapBlur', ['messageBus'], function(messageBus){
         this.innerWidth = window.innerWidth;
         this.innerHeight = window.innerHeight;
 
-        this.renderTexture.resize(this.innerWidth, this.innerHeight);
+        //this.renderTexture.resize(this.innerWidth, this.innerHeight);
 
-        this.sprite.width = this.innerWidth;
-        this.sprite.height = this.innerHeight;
+        //this.sprite.width = this.innerWidth;
+        //this.sprite.height = this.innerHeight;
 
         this.tint.clear();
         this.tint.beginFill(0xFF0000, 1);
