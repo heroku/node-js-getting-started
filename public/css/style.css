@@ -350,12 +350,6 @@ body{
 	width: 25em;
 }
 
-@media screen and (max-width: 480px){
-	.search-bar #form-search.extended .input-group {
-		width: 15em;
-	}
-}
-
 .modal-container .modal-dialog {
   position:absolute;
   top:50% !important;
@@ -678,4 +672,32 @@ input[type=checkbox]:checked + label:after {
 	color: #cccccc;
 	font-size: 14px;
 	font-family: 'montserrat-light';
+}
+
+/** MOBILE **/
+@media only screen and (max-width: 640px){
+	.search-bar .input-group {
+		width: 12em;
+	}
+
+	.search-bar .search-pagination {
+		display: none;
+	}
+
+	.search-bar .typeahead.dropdown-menu {
+		width: 280px;
+	}
+
+	.search-bar #form-search.extended .input-group {
+		width: 12em;
+	}
+
+	.menu-container {
+		right: 24px;
+		top: 125px;
+	}
+
+	.legals-footer ul li a {
+		font-size: 8px;
+	}
 }
