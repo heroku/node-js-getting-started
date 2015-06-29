@@ -348,8 +348,16 @@ body{
   width:90%;
   height:80%;
 }
+
+.modal-container .modal-header {
+	background:#1a1a1a;
+	font-family:'montserrat-light';
+	padding:25px 40px 25px 40px;
+	color:#ccc;
+	font-size:18px;
+}
+
 .modal-container .modal-content {
-  min-height:100%;
   position:absolute;
   top:0;
   bottom:0;
@@ -357,14 +365,26 @@ body{
   right:0;
 	width:500px;
 	margin:auto;
+	border-radius:0px;
 }
 .modal-container .modal-body {
-  position:absolute;
+  /*position:absolute;
   top:45px;
-  bottom:45px;
+  bottom:45px;*/
   left:0;
   right:0;
   overflow-y:auto;
+	background:#ededed;
+}
+
+.modal-login .modal-content{
+	height:200px;
+}
+.modal-login .modal-body{
+	height:130px;
+}
+.modal-login .modal-footer{
+	display:none;
 }
 .modal-container .modal-footer {
   position:absolute;
@@ -375,6 +395,30 @@ body{
 
 .action-links a{
 	font-size:30px;
+}
+
+.modal-login .social-links-container{
+	margin:auto;
+	width:300px;
+	padding-top:30px;
+}
+
+.modal-login .social-links-container a{
+	font-family:'montserrat-light';
+	font-size:14px;
+	color:#4d4d4d;
+}
+.modal-login .social-links-container a:before{
+	position:relative;
+	top:7px;
+	font-size:34px;
+}
+.modal-login .social-links-container a:hover{
+	text-decoration:none;
+}
+
+.modal-login .social-links-container .icon-twitter{
+	margin-left:50px;
 }
 
 /***** CHECKBOX *****/
@@ -494,7 +538,7 @@ input[type=checkbox]:checked + label:after {
 
 	color:white;
 	font-size: 12px;
-	font-family: montserrat-light;
+	font-family: 'montserrat-light';
 
 }
 

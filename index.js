@@ -49,18 +49,17 @@ var s3 = new AWS.S3();
 
   s3.putObject(params, function(err, data) {
 
-      if (err)
-
-          console.log(err)
-
-      else console.log("Successfully uploaded data to myBucket/myKey");
+      if (err){
+        console.log(err)
+      }
+      else{
+        console.log("Successfully uploaded data to myBucket/myKey");
+      }
 
    });
 
 });
 
-
-console.log('HOSTNAME', os.hostname());
 
 passport.use(new FacebookStrategy({
   clientID: config.FACEBOOK_APP_ID,
@@ -141,10 +140,6 @@ passport.use(new FacebookStrategy({
 
         });
 
-
-
-
-
       }, 0);
 
 }));
@@ -186,9 +181,7 @@ passport.use(new TwitterStrategy({
             face.accountname = profile._json.name;  // set the faces name (comes from the request)
             face.firstname = profile._json.screen_name;  // set the faces name (comes from the request)
             face.lastname = profile._json.screen_name;  // set the faces name (comes from the request)
-            //face.number = 1;  // set the faces name (comes from the request)
             face.picture = '/img/' + profile._json.id + '.jpeg';  // set the faces name (comes from the request)
-            //face.picture = face.picture.replace('_normal','');  // set the faces name (comes from the request)
             face.network = 'twitter';  // set the faces name (comes from the request)
             face.network_id = profile._json.id;  // set the faces name (comes from the request)
             face.lang = profile._json.lang;  // set the faces name (comes from the request)
@@ -417,7 +410,6 @@ router.route('/faces')
                 var number = req.params.number;
                 Face.find({number:{$gt:(number - 1),$lt:(number + config.faces_by_request)}}).sort('number').limit(config.faces_by_request).exec(function(err, faces) {
 
-                      //console.log('FACES BY NUMBER', faces);
                       var tempFaces = _.clone(faces);
 
                       if (err){
@@ -444,13 +436,11 @@ router.route('/faces')
                 Face.find({number:{$in:range}}).sort('number').exec(function(err, faces) {
 
                     var tempFaces = _.clone(faces);
-                    //var randomPicture;
 
                       if (err){
                         res.send(err);
                       }
                       for(var i = 0; i < range.length; i++){
-                        //randomPicture = Math.round(Math.random()*config.nbFreeSlotFacesPictures-1)+1;
 
                         if( ! _.find(tempFaces, function(currentFace){ return currentFace.number == range[i]; }) ){
                             tempFaces.push({'number': range[i]});
@@ -503,7 +493,7 @@ router.route('/faces')
 publicRouter.get('/', function(req, res) {
     console.log('REQ GET URL', config.root_url);
     res.render('home', {data:{'config': config, 'currentUser': req.user}});
-    //res.sendfile(path.resolve('./public/register.html'));
+
 });
 
 /****** SCRAPING **********/
@@ -626,7 +616,7 @@ publicRouter.get('/put_to_scrap/:number', function(req, res, next) {
         res.send(err);
       }
       res.render('register', {'faces': faces, 'nbFaces': (faces.length + 1)});
-      //res.json(faces);
+
   });
 
 });
@@ -702,7 +692,6 @@ publicRouter.get('/populate/', function(req, res, next) {
                     face.lastname = user.screen_name;  // set the faces name (comes from the request)
                     face.number = number;  // set the faces name (comes from the request)
                     face.picture = '/img/' + user.id + '.jpeg';  // set the faces name (comes from the request)
-                    //face.picture = face.picture.replace('_normal','');  // set the faces name (comes from the request)
                     face.network = 'twitter';  // set the faces name (comes from the request)
                     face.network_id = user.id;  // set the faces name (comes from the request)
                     face.lang = user.lang;  // set the faces name (comes from the request)
@@ -775,10 +764,7 @@ publicRouter.get('/scraping/:query', function(req, res, next) {
                Verified: {{this.user.verified}}
                Status_count: {{this.user.statuses_count}}
                Last update: {{this.user.status.created_at}}*/
-               //scrap.accountname= tweets.statuses[i].user.name;
-               //console.log('TWEET STATUS', currentTweet);
                scrap.twitter_id= currentTweet.user.id;
-               //scrap.img_path= tweets.statuses[i].user.profile_image_url;
                scrap.location= currentTweet.user.location;
                scrap.followers_count= currentTweet.user.followers_count;
                scrap.created_at= currentTweet.created_at;
@@ -805,18 +791,17 @@ publicRouter.get('/scraping/:query', function(req, res, next) {
        var closure = closureAddScrap();
        closure();
 
-
      }
 
      res.render('scraping', {'tweets': tweets});
   });
-
 
 });
 
 publicRouter.get('/register', function(req, res, next) {
   Face.find(function(err, faces) {
       if (err){
+        console.log('ERROR', err);
         res.send(err);
       }
       res.render('register', {'faces': faces, 'nbFaces': (faces.length + 1), currentUser: req.user });
@@ -852,14 +837,14 @@ app.get('/login/twitter/callback',
   function(req, res) {
     // Successful authentication, redirect home.
     res.redirect('/#number/' + req.user.number);
-  });
+});
 
-  app.get('/logout', function(req, res){
-      console.log("logging out");
-      console.log(req.user);
-      req.logout();
-      res.redirect('/');
-  });
+app.get('/logout', function(req, res){
+    console.log("logging out");
+    console.log(req.user);
+    req.logout();
+    res.redirect('/');
+});
 
 /****** END LOGIN / LOGOUT *********/
 
@@ -977,12 +962,7 @@ publicRouter.get('/claim/:id', function(req, res, next) {
           }
         }
 
-        //res.json(faces);
     });
-
-
-
-
 
 });
 
@@ -1012,12 +992,7 @@ publicRouter.get('/decline/:id', function(req, res, next) {
           }
         }
 
-        //res.json(faces);
     });
-
-
-
-
 
 });
 
@@ -1040,23 +1015,11 @@ publicRouter.get('/success/:id', function(req, res, next) {
               if (err){
                 console.log('ERROR SAVE NUMBER', err);
               }
-              /*fbgraph.setAccessToken(req.user.access_token);
-
-              var wallPost = {
-                message: 'Test inscription one millions humans'
-              };
-
-              fbgraph.post("/feed", wallPost, function(err, res) {
-                // returns the post id
-                console.log(res); // { id: xxxxx}
-              });*/
               res.redirect('/#success/');
-              //res.render('home', {'data':{'config': config, 'editedFace': face, 'currentUser': req.user, 'register': true}});
 
           });
       }
 
-      //res.json(faces);
   });
 
 });
@@ -1069,14 +1032,12 @@ publicRouter.get('/edit/:number', function(req, res, next) {
         res.send(err);
       }
       if(face.number == req.user.number){
-        //face.occupations = JSON.parse(face.occupations);
         console.log('OCCUPATIONS', face.occupations);
         res.render('home', {data:{'config': config, 'editedFace': face, 'currentUser': req.user}});
       }else{
         res.send(err);
       }
 
-      //res.json(faces);
   });
 });
 
@@ -1089,13 +1050,11 @@ publicRouter.get('/number/:number', function(req, res, next) {
   Face.find({number:{$in:numberArray}}).sort('number').exec(function(err, faces) {
 
       var tempFaces = _.clone(faces);
-      //var randomPicture;
 
         if (err){
           res.send(err);
         }
         for(var i = 0; i < numberArray.length; i++){
-          //randomPicture = Math.round(Math.random()*config.nbFreeSlotFacesPictures-1)+1;
 
           if( ! _.find(tempFaces, function(currentFace){ return currentFace.number == numberArray[i]; }) ){
               tempFaces.push({'number': numberArray[i], picture: '/img/noimage.jpg'});
@@ -1128,8 +1087,6 @@ publicRouter.get('/number/:number', function(req, res, next) {
             var imgFinal = im(imgDestPath + '/' + number + '-temp-1.jpg');
             imgFinal.append(imgDestPath + '/' + number + '-temp-2.jpg', imgDestPath + '/' + number + '-temp-3.jpg', false);
 
-            //.append(publicPath + tempFaces[3].picture,false);
-            //Pas de boucle trop compliqué
 
             imgFinal.write(imgDestPath + '/' + number + '-mozaic.jpg'
             , function(stdout4){
@@ -1148,16 +1105,6 @@ publicRouter.get('/number/:number', function(req, res, next) {
 
       });
 
-
-
-
-      /*im(imgDestPath + '/logo.jpg')
-      .append(imgDestPath + '/logo.jpg', true)
-      .write(imgDestPath + '/logo-test.jpg'
-      , function(stdout){
-        console.log('STD OUT', stdout);
-      });*/
-
   });
 
   /******************************/
@@ -1169,19 +1116,14 @@ publicRouter.get('/number/:number', function(req, res, next) {
 /***********************/
 
 publicRouter.get('/error', function(req, res, next) {
-  //console.log('FLASH', req.flash());
   var errors = req.flash();
   res.render('home', {data:{'config': config, 'error' : errors.error[0]}});
-  //res.json(faces);
-
 });
 
 publicRouter.get('/share/:number', function(req, res, next) {
-  //console.log('FLASH', req.flash());
   res.render('share', {data:{'config': config, 'number' : req.params.number}});
-  //res.json(faces);
-
 });
+
 app.use(function(req, res, next) {
     config.root_url = req.protocol + "://" + req.get('host');
     config.assets_url = req.protocol + "://files." + req.get('host');
@@ -1189,8 +1131,6 @@ app.use(function(req, res, next) {
   });
 app.use('/api', router);
 app.use('/', publicRouter);
-
-
 
 
 // START THE SERVER
