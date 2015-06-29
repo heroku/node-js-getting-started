@@ -137,6 +137,8 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 			});
 
 
+			messageBus.on('map:endSkipAnimation', _.bind(showBackgroundColor, this));
+			messageBus.on('map:startSkipAnimation', _.bind(hideBackgroundColor, this));
 			messageBus.on('blocItem:setUnselected', _.bind(setUnselected, _this));
 			//messageBus.on('blocItem:setSelected', _.bind(setSelected, _this));
 			messageBus.on('ScrollContainer:StartMoving', clearTimer);
@@ -218,6 +220,14 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 				}
 			}, _timerBeforeClickAction);
 
+		}
+
+		function showBackgroundColor(){
+			TweenLite.to(_bgPicture, 0.5, {alpha:1});
+		}
+
+		function hideBackgroundColor(){
+			TweenLite.to(_bgPicture, 0.1, {alpha:0});
 		}
 
 		/**

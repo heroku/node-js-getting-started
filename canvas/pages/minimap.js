@@ -130,6 +130,8 @@ define('minimap', ['constantes', 'messageBus', 'btnSocial', 'mapCursor', 'colorM
     Minimap.prototype.onDown = function(event){
         _event = event;
 
+        messageBus.emit("blocItem:setUnselected");
+
         this.isDragging = true;
         this.cursor.dragging();
     };

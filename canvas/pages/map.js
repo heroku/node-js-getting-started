@@ -306,6 +306,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
                 decal.x = (path.x-_scrollObject.position.x)*0.05;
                 decal.y = (path.y-_scrollObject.position.y)*0.05;
 
+				messageBus.emit('map:startSkipAnimation');
                 timeline = new TimelineLite();
                 timeline
                     .to(_scrollObjectContainer, 0.5, {alpha: 0}, 0)
@@ -314,7 +315,9 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
                     .to(_scrollObject, 0, {x:path.x-decal.x,y:path.y-decal.y, ease: Cubic.easeOut})
                     .to(_scrollObject, 2, {x:path.x,y:path.y, delay:1, ease: Cubic.easeOut})
                     //.to(_blurFilter, 0.5, {blur: 0}, "-=1")
-                    .to(_scrollObjectContainer, 0.5, {alpha: 1}, "-=1");
+                    .to(_scrollObjectContainer, 0.5, {alpha: 1, onComplete:function(){
+						messageBus.emit('map:endSkipAnimation');
+					}}, "-=1");
 
             }else{
                 TweenLite.to(_scrollObject, speed, {x:path.x,y:path.y, ease: Cubic.easeOut});
