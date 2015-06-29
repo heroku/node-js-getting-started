@@ -8,6 +8,17 @@ define('mapCursor', ['btnSocial', 'constantes', 'messageBus'], function(Button, 
         this.number = new PIXI.DisplayObjectContainer();
         this.cursor = new PIXI.DisplayObjectContainer();
 
+        // Stop event propagation
+        this.stopPropagation = new PIXI.Graphics();
+        this.stopPropagation.clear();
+        this.stopPropagation.beginFill(0x000000, 0);
+        this.stopPropagation.drawRect(0, 0, 30, 50);
+        this.stopPropagation.endFill();
+        this.stopPropagation.x = -15;
+
+        this.stopPropagation.interactive = true;
+        this.stopPropagation.mousedown = this.stopPropagation.touchstart = function(){};
+
         this.numberText = new PIXI.Text("1", {font : "22px montserrat-light", fill : "#FFFFFF"});
         this.numberText.scale.x = this.numberText.scale.y = 0.5;
 
@@ -28,6 +39,7 @@ define('mapCursor', ['btnSocial', 'constantes', 'messageBus'], function(Button, 
         messageBus.on('all:colorChange', _.bind(this.updateCursorColor, this));
         messageBus.on('all:colorChange', _.bind(this.updateNumberColor, this));
 
+        this.number.addChild(this.stopPropagation);
         this.number.addChild(this.numberText);
     };
 
