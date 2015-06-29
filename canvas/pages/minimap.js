@@ -178,7 +178,11 @@ define('minimap', ['constantes', 'messageBus', 'btnSocial', 'mapCursor', 'colorM
 
         var number = y > 0 ? (y * (_gridHeight/_ITEM_HEIGHT) + x) - _gridHeight/_ITEM_HEIGHT : x;
 
-        this.cursor.setNumber(Math.max(0, number));
+        number = Math.max(0, number);
+
+        this.cursor.setNumber(number);
+
+        messageBus.emit('all:colorChange', {color:colorMapping.getColorByBoxNumber(number)});
     };
 
     /**
