@@ -532,6 +532,20 @@ input[type=checkbox]:checked + label:after {
 	top:20px;
 }
 
+.menu-container .dropdown-menu{
+	min-width:60px;
+	width:90px;
+	left:-10px;
+	background:#000;
+	opacity:0.6;
+}
+
+.menu-container .dropdown-menu li a{
+	color:#cccccc;
+	font-size: 14px;
+	font-family: 'montserrat-light';
+}
+
 .profile-button-login,
 .profile-button-edit,
 .profile-button-logout {

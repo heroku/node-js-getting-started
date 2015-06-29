@@ -208,10 +208,20 @@
 
 <div class="menu-container">
 	{{#if data.currentUser}}
-			<a href="/#edit/" class="profile-button-edit icon-user"></a>
-			<a href="/logout" class="profile-button-logout">logout</a>
+	<div class="dropdown">
+		<a href="{{data.config.root_url}}/#number/{{data.currentUser.number}}"><img src="{{data.currentUser.picture}}" width="32" height="32" /></a>
+		<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+		<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+			<li><a href="/#edit/">Edit</a></li>
+			<li><a href="/logout">logout</a></li>
+		</ul>
+	</div>
+			<!--a href="/#edit/" class="profile-button-edit icon-user"></a>
+			<a href="/logout" class="profile-button-logout">logout</a-->
 	{{else}}
-			<a href="/#login/" class="profile-button-login">login</a>
+			<a href="/#login/" class="icon-user profile-button-login">login</a>
 	{{/if}}
 </div>
 
