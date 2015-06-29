@@ -38,6 +38,8 @@ define('searchBar', ['messageBus', "components/services", 'pagination', 'autocom
         this.$form.on('submit', function(e){
             e.preventDefault();
 
+            messageBus.emit("blocItem:setUnselected");
+
             var value = _this.$field.val();
 
             if( _lastValue === value && !(value*1 >= 0) ){

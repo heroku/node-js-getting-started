@@ -34,9 +34,13 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 		var _contextualInfo;
 		var _isSelected = false;
 		var _canClick = true;
+		var _pictureLoader;
+		var _timerPictureUpdate;
 
 		PIXI.DisplayObjectContainer.call(this);
 		_scope = this;
+
+		this.currentNumber;
 
 		this.process = function() {
 
@@ -53,6 +57,9 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 
 			_rect = new PIXI.Graphics();
 			_bgPicture = new PIXI.Graphics();
+
+
+			//_pictureLoader = new PIXI.Sprite(new PIXI.Texture.fromImage("/img/spinner.png"));
 
 			_item = new PIXI.Sprite(new PIXI.Texture(new PIXI.BaseTexture()));
 			_item.x = Math.round((ITEM_WIDTH-PICTURE_WIDTH)/2);
@@ -154,6 +161,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 			_scope.addChild(_itemText);
 
 			_container.addChild(_bgPicture);
+			//_container.addChild(_pictureLoader);
 			_container.addChild(_item);
 			_container.addChild(_fb);
 			_container.addChild(_tw);
@@ -518,7 +526,10 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 
 			_data = data;
 
+
 			_id = _txt = _data.number;
+
+			this.currentNumber = _id;
 
 			var interactiveEnable = !!(_data.accountname && !(_data.claim === false && !main.currentUser));
 			var socialEnable = !!(typeof _data.claim === 'undefined' && !main.currentUser);
@@ -551,13 +562,20 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 
 			// Methode 3
 			var loader = new PIXI.ImageLoader(img);
+			//clearInterval(_timerPictureUpdate);
 			loader.onLoaded = function(){
-				var texture = new PIXI.Texture(PIXI.Texture.fromImage(img));
-				_item.texture.destroy();
-				_item.setTexture(texture);
+				//_timerPictureUpdate = setTimeout(function(){
+					var texture = new PIXI.Texture(PIXI.Texture.fromImage(img));
+					_item.texture.destroy();
+					_item.setTexture(texture);
 
-				_item.width = PICTURE_WIDTH;
-				_item.height = PICTURE_HEIGHT;
+					_item.width = PICTURE_WIDTH;
+					_item.height = PICTURE_HEIGHT;
+
+					if( _data.accountname ){
+						TweenLite.fromTo(_item, 0.25, {alpha: 0}, {alpha: 1});
+					}
+				//}, _data.accountname ? 300 : 0);
 			};
 			loader.load();
 
