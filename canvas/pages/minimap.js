@@ -43,7 +43,6 @@ define('minimap', ['constantes', 'messageBus', 'btnSocial', 'mapCursor', 'colorM
         this.icon.y = 5;
 
         this.background = new PIXI.Graphics();
-        this.updateBackgroundMap();
 
         this.home = new Button(constantes.icons.HOME, "#55acee", _.bind(this.goToMe, this));
         this.home.interactive = this.home.buttonMode = true;
@@ -58,6 +57,9 @@ define('minimap', ['constantes', 'messageBus', 'btnSocial', 'mapCursor', 'colorM
         window.addEventListener('mouseleave', _.bind(this.onUp, this));
 
         this.hideMap();
+        this.updateBackgroundMap();
+
+        this.background.interactive = true;
 
         this.cursor.position.x = 0;
         this.cursor.position.y = 0;

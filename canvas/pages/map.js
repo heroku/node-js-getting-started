@@ -1,4 +1,4 @@
-define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', 'minimap', 'mapBlur'], function(ScrollContainer, Bloc, Services, messageBus, Minimap, MapBlur) {
+define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', 'minimap', 'mapBlur', 'colorMapping'], function(ScrollContainer, Bloc, Services, messageBus, Minimap, MapBlur, colorMapping) {
 
 	var _map = function() {
 
@@ -44,6 +44,8 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 		var _mapMoved = false;
 		var _mapBlur;
 
+		colorMapping.setReferences(ITEM_WIDTH, ITEM_HEIGHT, maxGridWidth, maxGridHeight);
+
 		var thottleUpdateMinimap = _.throttle(function(){
 				_minimap.updateCursorPosition(getCenterNumber());
 			}, 1000);
@@ -61,12 +63,14 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 
 		PIXI.DisplayObjectContainer.call(this);
 		_scope = this;
+
 		build();
 
 		function build() {
 
 			var i;
 			var j;
+			var obj;
 
 
 			for (i = 0; i < _rangeLinge; i++) {
@@ -74,8 +78,10 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 					var _tmp = [];
 					for (var k = 0; k < _rangePage; k++) {
 						//_tmp.push({number : _ID, picture : "img/" + ((_ID === 0) ? "logo.jpg" : parseInt(MathUtils.randomMinMax(0, 15)) + ".jpg")});
-						_tmp.push({number : _ID, picture : "img/FREESTATE0" + parseInt(MathUtils.randomMinMax(1, 4)) + ".png"});
-						main.martixRange[_ID] = {number : _ID, picture : "/img/FREESTATE0"+parseInt(MathUtils.randomMinMax(1, 4))+".png"};
+						//obj = {number : _ID, picture : "img/FREESTATE0" + parseInt(MathUtils.randomMinMax(1, 4)) + ".png", faceColor: colorMapping.getColorByBoxNumber(_ID)};
+						obj = {number : _ID, picture : "img/FREESTATE0" + parseInt(MathUtils.randomMinMax(1, 4)) + ".png", faceColor: 0xFF0000};
+						_tmp.push(obj);
+						main.martixRange[_ID] = obj;
 						_ID++;
 					}
 					// _ranges => "getFaces(x,y) => [12]"
@@ -139,7 +145,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 
 
             messageBus.on('map:gotoFaceNumber', gotoFaceNumber);
-            //messageBus.on('map:updateGrid', updateGrid);
+			updateGrid();
 
 		}
 
@@ -255,6 +261,8 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 
 			if( _mapMoved ){
 				thottleUpdateMinimap();
+				// @TODO: active only if absolutely necessary - slow fps
+				//thottleUpdateGrid();
 			}
 
 		}
@@ -273,8 +281,6 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
          * @param directly set speed to 0
          */
         function setGridPosition(x, y, directly){
-
-            // @TODO: determiner le chemin le plus court vers une case
 
             var distance, speed, path, isTooFar, timeline, decal={x:0,y:0};
 
@@ -302,13 +308,13 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 
                 timeline = new TimelineLite();
                 timeline
-                    .to(_scrollObject, 0.5, {alpha: 0}, 0)
+                    .to(_scrollObjectContainer, 0.5, {alpha: 0}, 0)
                     //.to(_blurFilter, 0.5, {blur: 10}, 0)
                     .to(_scrollObject.position, 1, {x: "+="+decal.x, y: "+="+decal.y, ease: Cubic.easeOut}, 0)
                     .to(_scrollObject, 0, {x:path.x-decal.x,y:path.y-decal.y, ease: Cubic.easeOut})
                     .to(_scrollObject, 2, {x:path.x,y:path.y, delay:1, ease: Cubic.easeOut})
                     //.to(_blurFilter, 0.5, {blur: 0}, "-=1")
-                    .to(_scrollObject, 0.5, {alpha: 1}, "-=1");
+                    .to(_scrollObjectContainer, 0.5, {alpha: 1}, "-=1");
 
             }else{
                 TweenLite.to(_scrollObject, speed, {x:path.x,y:path.y, ease: Cubic.easeOut});
@@ -373,13 +379,12 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 
             number = Math.max(MIN_FACES, Math.min(MAX_FACES, number));
 
-            //number-=1;
-
             x = Math.round(number%1000);
-
             y = Math.floor(number/1000);
 
-            setGridPosition(x,y, numberIsVisible(number) ? false : directly);
+            setGridPosition(Math.floor(x), Math.floor(y), numberIsVisible(number) ? false : directly);
+			messageBus.emit('all:colorChange', {color:colorMapping.getColorByBoxNumber(number)});
+			_minimap.updateCursorPosition(number);
 
         }
 
@@ -391,14 +396,22 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
         function numberIsVisible(number){
             var isOnGrid = false;
 
-            _.each(_blocs, function(bloc){
-                var faces = getRange(bloc.idX, bloc.idY);
-                _.each(faces, function(face){
-                    if( face.number === number ){
+			for(var i= 0,l=_blocs.length;i<l;i++){
+				if( isOnGrid ){
+					continue;
+				}
+
+                var faces = getRange(_blocs[i].idX, _blocs[i].idY);
+				for(var j= 0,k=faces.length;j<k;j++){
+					if( isOnGrid ){
+						continue;
+					}
+
+                    if( faces[j].number === number ){
                         isOnGrid = true;
                     }
-                });
-            });
+				}
+			}
 
             return isOnGrid;
         }
@@ -434,7 +447,6 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 			}
 
             if( range.length ){
-				//updateGrid();
 				thottleUpdateGrid();
                 _services.getFacesByRange(range, onGetFacesByRange);
             }
@@ -484,9 +496,9 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
          * Update faces grid
          */
         function updateGrid(){
-            _.each(_blocs, function(blocId){
-                blocId.setValue(getRange(blocId.idX, blocId.idY));
-            });
+			for( var i = 0, l = _blocs.length; i<l; i++){
+				_blocs[i].setValue(getRange(_blocs[i].idX, _blocs[i].idY));
+			}
         }
 
         /**
@@ -496,6 +508,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
         function updateMatrix(data){
             for (var i = 0; i < data.length; i++) {
                 if (data[i].picture) {
+					data[i].faceColor = main.martixRange[data[i].number].faceColor;
 					main.martixRange[data[i].number] = data[i];
                 }
             }
