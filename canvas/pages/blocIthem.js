@@ -56,8 +56,12 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 			_contextualInfo = new PIXI.DisplayObjectContainer();
 
 			_rect = new PIXI.Graphics();
-			_bgPicture = new PIXI.Graphics();
+			_rect.clear();
+			_rect.beginFill(0x555555, 1);
+			_rect.drawRect(0, 0, ITEM_WIDTH, ITEM_HEIGHT);
+			_rect.endFill();
 
+			_bgPicture = new PIXI.Graphics();
 
 			//_pictureLoader = new PIXI.Sprite(new PIXI.Texture.fromImage("/img/spinner.png"));
 
@@ -312,29 +316,18 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 		}
 
 		function updateRectColor(number){
-
-			if( !_data ){
+			if( !_data || !_bgPicture.visible ){
 				return;
 			}
-			var color = 0x555555;
-			//var bgColor = _data.faceColor;
+
 			_data.faceColor = colorMapping.getColorByBoxNumber(number);
-			var bgColor = _data.faceColor;
-
-
-			_bgPicture.visible = !(_data && _data.accountname);
 
 			_bgPicture.clear();
-			_bgPicture.beginFill(bgColor, 1);
-			_bgPicture.drawRect(0, 0, _item.width-6, _item.height-6);
+			_bgPicture.beginFill(_data.faceColor, 1);
+			_bgPicture.drawRect(0, 0, PICTURE_WIDTH-6, PICTURE_HEIGHT-6);
 			_bgPicture.endFill();
 			_bgPicture.position.x = _item.position.x+3;
 			_bgPicture.position.y = _item.position.y+3;
-
-			_rect.clear();
-			_rect.beginFill(color, 1);
-			_rect.drawRect(0, 0, ITEM_WIDTH, ITEM_HEIGHT);
-			_rect.endFill();
 
 		}
 
@@ -443,14 +436,14 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
         };
 
 		this.setLangs = function(langs){
-			var slot = 1;
+			var slot = 1, lang, s, icon;
 
 			_slotLang1.visible = false;
 			_slotLang2.visible = false;
 			_slotLang3.visible = false;
 
-			_.each(langs, function(lang){
-				var s, icon;
+			for(var i = 0, l = langs.length;i<l; i++){
+				lang = langs[i];
 
 				lang = lang.substr(0, 2).toUpperCase();
 
@@ -481,18 +474,19 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 				}
 
 				slot++;
-			});
+			}
 		};
 
 		this.setOccupations = function(occupations){
-			var slot = 1;
+			var slot = 1, occupation, s, icon;
 
 			_slotOccupation1.visible = false;
 			_slotOccupation2.visible = false;
 			_slotOccupation3.visible = false;
 
-			_.each(occupations, function(occupation){
-				var s, icon;
+			for(var i = 0, l = occupations.length;i<l; i++){
+				occupation = occupations[i];
+
 				switch(slot){
 					case 1:
 						s = _slotOccupation1;
@@ -519,7 +513,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 				}
 
 				slot++;
-			});
+			}
 		};
 
 		this.update = function(data) {
@@ -541,14 +535,13 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 			this.setClaim(claimEnable);
 			this.setShare(shareEnable);
 
-			//if( _data.accountname ){
-			//	console.log(_data.accountname, _data.number, 'interactive:', interactiveEnable, 'social:', socialEnable, 'claim:',claimEnable, 'share:',shareEnable);
-			//}
-
-			updateRectColor(_id);
+			_bgPicture.visible = !(_data.accountname);
 			_itemText.setText(pad(_txt*1));
 			_item.texture.destroy();
 			_item.texture = new PIXI.Texture(new PIXI.BaseTexture());
+
+			updateRectColor(_id);
+
 		};
 
 		this.updateImage = function(img) {
@@ -560,22 +553,19 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 
 			// @TODO: display loader while image loading
 
-			// Methode 3
+			// Methode 3 slow fps ???
 			var loader = new PIXI.ImageLoader(img);
-			//clearInterval(_timerPictureUpdate);
 			loader.onLoaded = function(){
-				//_timerPictureUpdate = setTimeout(function(){
 					var texture = new PIXI.Texture(PIXI.Texture.fromImage(img));
 					_item.texture.destroy();
 					_item.setTexture(texture);
 
-					_item.width = PICTURE_WIDTH;
-					_item.height = PICTURE_HEIGHT;
+					_item.width = PICTURE_WIDTH; // @TODO : remove - fps optimisation
+					_item.height = PICTURE_HEIGHT; // @TODO : remove - fps optimisiation
 
 					if( _data.accountname ){
 						TweenLite.fromTo(_item, 0.25, {alpha: 0}, {alpha: 1});
 					}
-				//}, _data.accountname ? 300 : 0);
 			};
 			loader.load();
 

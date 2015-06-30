@@ -36,8 +36,10 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 		this.currentUser = _data.currentUser;
 
 		function init() {
+			// @TODO: fps optimize
+			var resolution = window.devicePixelRatio ? 1.5 : 1;
 			_stage = new PIXI.Stage(0x000000);
-			_rendererOptions = {view : _canvas, transparent : false, resolution : window.devicePixelRatio || 1};
+			_rendererOptions = {view : _canvas, transparent : false, resolution : resolution};
 			// _renderer = new PIXI.CanvasRenderer(0, 0, _rendererOptions);
 			_renderer = PIXI.autoDetectRecommendedRenderer(0, 0, _rendererOptions);
 			if (!_canvas) {
