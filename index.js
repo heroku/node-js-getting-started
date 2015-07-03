@@ -663,20 +663,27 @@ publicRouter.get('/populate/', function(req, res, next) {
 
       for(var i = 0; i < scrapes.length; i++){
         if(typeof scrapes[i].scraped != 'undefined')continue;
-        
+
         function closureScrapToFace() {
           var currentScrape = scrapes[i];
           var number = i + 3;
-          currentScrape.scraped = true;
+
 
           function insertScrapToFace() {
             console.log('TIMEOUT',i, currentScrape);
+            /*currentScrape.scraped = true;
+            currentScrape.save(function(err) {
+                if (err){
+                  console.log(err);
+                }
+
+            });*/
 
             client.get('users/show', {user_id: currentScrape}, function(error, currentUser, response){
               var user = currentUser;
 
               console.log('USER TWITTER', user);
-
+              if(user.profile_image_url){
               request.get({url: user.profile_image_url.replace('_normal',''), encoding: 'binary'}, function (err, response, body) {
                 fs.writeFile(imgDestPath + '/' + user.id + '.jpeg', body, 'binary', function(error) {
                   if(error){
@@ -702,11 +709,11 @@ publicRouter.get('/populate/', function(req, res, next) {
 
                       });
 
-
                   }
 
                 });
               });
+            }
             });
           }
           return insertScrapToFace;
