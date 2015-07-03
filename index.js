@@ -659,10 +659,11 @@ publicRouter.get('/populate/', function(req, res, next) {
     access_token_secret: config.TWITTER_ACCESS_TOKEN_SECRET
   });
 
-    Scrap.find({$exists:{"scraped": false}}).distinct('twitter_id').exec(function(err, scrapes) {
+    Scrap.distinct('twitter_id').exec(function(err, scrapes) {
 
       for(var i = 0; i < scrapes.length; i++){
-
+        if(typeof scrapes[i].scraped != 'undefined')continue;
+        
         function closureScrapToFace() {
           var currentScrape = scrapes[i];
           var number = i + 3;
