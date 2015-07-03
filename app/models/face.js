@@ -17,6 +17,7 @@ var FaceSchema   = new Schema({
     website: String,
     occupations: String,
     claim: {type: Boolean, default: true},
+    non_human: {type: Boolean, default: false},
     access_token: String,
     refresh_token: String
 });

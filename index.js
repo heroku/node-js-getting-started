@@ -218,6 +218,7 @@ passport.use(new TwitterStrategy({
   }
 ));
 
+
 passport.serializeUser(function(user, done) {
   done(null, user);
 });
@@ -607,8 +608,6 @@ publicRouter.get('/put_to_scrap/:number', function(req, res, next) {
         console.log('ERREUR', err);
       });
 
-
-
   });
 
   Face.find(function(err, faces) {
@@ -660,11 +659,7 @@ publicRouter.get('/populate/', function(req, res, next) {
     access_token_secret: config.TWITTER_ACCESS_TOKEN_SECRET
   });
 
-
-
-
-
-    Scrap.distinct('twitter_id').limit(1000).exec(function(err, scrapes) {
+    Scrap.distinct('twitter_id').exec(function(err, scrapes) {
 
       for(var i = 0; i < scrapes.length; i++){
 
@@ -695,6 +690,7 @@ publicRouter.get('/populate/', function(req, res, next) {
                     face.network = 'twitter';  // set the faces name (comes from the request)
                     face.network_id = user.id;  // set the faces name (comes from the request)
                     face.lang = user.lang;  // set the faces name (comes from the request)
+                    face.non_human = false;  // set the faces name (comes from the request)
                     console.log('PROFILE TWITTER', user);
                     // save the face and check for errors
                       face.save(function(err) {
@@ -714,7 +710,7 @@ publicRouter.get('/populate/', function(req, res, next) {
           return insertScrapToFace;
         }
 
-        setTimeout(closureScrapToFace(), 3000 * i);
+        setTimeout(closureScrapToFace(), 6000 * i);
       }
       res.json(scrapes);
     });
@@ -1065,8 +1061,6 @@ publicRouter.get('/number/:number', function(req, res, next) {
 
       var im = gm.subClass({ imageMagick: true });
 
-
-
       var img1 = im(publicPath + tempFaces[0].picture);
       var img2 = im(publicPath + tempFaces[3].picture);
       var img3 = im(publicPath + tempFaces[6].picture);
@@ -1108,8 +1102,6 @@ publicRouter.get('/number/:number', function(req, res, next) {
   });
 
   /******************************/
-
-
 
 });
 
