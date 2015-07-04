@@ -33,6 +33,7 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 		var _loaded = false;
 		var _loader = $('.loading-container').get(0);
 
+		this.config = _data.con;
 		this.currentUser = _data.currentUser;
 
 		function init() {
