@@ -176,7 +176,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 			_scope.addChild(_itemText);
 
 			_container.addChild(_bgPicture);
-			_container.addChild(_pictureLoader);
+			//_container.addChild(_pictureLoader);
 			_container.addChild(_item);
 			_container.addChild(_maskPicture);
 			_container.addChild(_fb);
@@ -474,7 +474,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 				}
 
 				if( s ){
-					icon = "/img/lang/"+lang+".png";
+					icon = _app.static_files("img/lang/"+lang+".png");
 
 					if( typeof icon === "undefined"){
 						console.log('Unknown flag in constante langs : '+icon+" - "+ lang.toUpperCase());
