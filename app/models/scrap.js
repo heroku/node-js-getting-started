@@ -13,6 +13,7 @@ var ScrapSchema   = new Schema({
     lang: String,
     time_zone: String,
     verified: String,
+    scraped: {type: Boolean, default: false},
     statuses_count: Number,
     occurs: {type: Number, default: 1}
 });

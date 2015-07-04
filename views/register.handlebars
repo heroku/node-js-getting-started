@@ -7,20 +7,34 @@
   <a href="/auth/twitter/claim/lenoirjeremie">Claim</a>
   <a href="/auth/twitter/claim/lenoirjeremie">Decline</a>
 </div-->
+<script>
+$(document).ready(function(){
+  $('.not-human').on('click', function(e){
+    e.preventDefault();
+    $.get( $(this).attr('href'), function( data ) {
+      console.log('DELETE', data);
+    });
+    $(this).parent().parent().parent().remove();
+  });
+});
+</script>
+<div style="width:100%;height:100%;color:#000;font-size:24px;text-align:center;height:60px;"> <a href="/moderate/{{previous}}">Previous</a> {{faces.length}} <a href="/moderate/{{next}}">Next</a></div>
 {{#each faces}}
   <div class="cards">
     <img class="profile" src="{{this.picture}}" />
       <div class="info">
-        <div>{{this.accountname}}</div>
+        <!--div>{{this.accountname}}</div>
         <div>{{this.occupation}}</div>
         <div>{{this.lang}}</div>
         <div>{{this.website}}</div>
-        <div>{{this.number}}</div>
+        <div>{{this.number}}</div-->
 
         <div class="action-links">
-          <a href="/delete/{{this.number}}">Delete</a>
+          <!--a href="/delete/{{this.number}}">Delete</a>
             <br />
-          <a href="/put_to_scrap/{{this.number}}">Put to scrap</a>
+          <a href="/put_to_scrap/{{this.number}}">Put to scrap</a-->
+          <a class="not-human" href="{{config.ROOT_URL}}/api/not_human/{{this.number}}">Not human</a>
+
         </div>
 
       </div>

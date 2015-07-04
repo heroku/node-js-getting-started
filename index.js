@@ -402,6 +402,24 @@ router.route('/faces')
             });
         });
 
+        router.route('/not_human/:number').get(function(req, res) {
+          Face.findOne({"number": req.params.number}, function(err, face) {
+              if (err){
+                res.send(err);
+              }
+              face.not_human = true;
+
+              face.save(function(err) {
+                  if (err)
+                      res.send(err);
+
+                  res.json({ 'message': 'Face Not Human saved!', 'face': face});
+              });
+
+
+          });
+        });
+
         // on routes that end in /faces/:face_id
         // ----------------------------------------------------
         router.route('/faces_by_number/:number')
@@ -639,12 +657,15 @@ publicRouter.get('/delete/:number', function(req, res, next) {
   });
 });
 
-publicRouter.get('/moderate', function(req, res, next) {
-  Face.find(function(err, faces) {
+publicRouter.get('/moderate/:offset', function(req, res, next) {
+
+  var currentOffset = req.params.offset ? parseInt(req.params.offset, 10) : 0;
+
+  Face.find().skip(req.params.offset).limit(1000).exec(function(err, faces) {
       if (err){
         res.send(err);
       }
-      res.render('register', {'faces': faces, 'nbFaces': (faces.length + 1)});
+      res.render('register', {'next': currentOffset + 1000,'config':config, 'previous': currentOffset - 1000, 'faces': faces, 'nbFaces': (faces.length + 1)});
   });
 
 });
@@ -659,10 +680,10 @@ publicRouter.get('/populate/', function(req, res, next) {
     access_token_secret: config.TWITTER_ACCESS_TOKEN_SECRET
   });
 
-    Scrap.distinct('twitter_id').exec(function(err, scrapes) {
+    Scrap.find(function(err, scrapes) {
 
       for(var i = 0; i < scrapes.length; i++){
-        if(typeof scrapes[i].scraped != 'undefined')continue;
+        if(scrapes[i].scraped == true)continue;
 
         function closureScrapToFace() {
           var currentScrape = scrapes[i];
@@ -671,13 +692,13 @@ publicRouter.get('/populate/', function(req, res, next) {
 
           function insertScrapToFace() {
             console.log('TIMEOUT',i, currentScrape);
-            /*currentScrape.scraped = true;
+            currentScrape.scraped = true;
             currentScrape.save(function(err) {
                 if (err){
                   console.log(err);
                 }
 
-            });*/
+            });
 
             client.get('users/show', {user_id: currentScrape}, function(error, currentUser, response){
               var user = currentUser;
@@ -719,7 +740,7 @@ publicRouter.get('/populate/', function(req, res, next) {
           return insertScrapToFace;
         }
 
-        setTimeout(closureScrapToFace(), 6000 * i);
+        setTimeout(closureScrapToFace(), 5005 * i);
       }
       res.json(scrapes);
     });
