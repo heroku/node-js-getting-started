@@ -50,7 +50,7 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 		function init() {
 			// @TODO: fps optimize
 			var resolution = window.devicePixelRatio ? 1.5 : 1;
-			_stage = new PIXI.Stage(0x000000);
+			_stage = new PIXI.Stage(0x555555);
 			_rendererOptions = {view : _canvas, transparent : false, resolution : resolution};
 
 			if( isWebglRecommand() ){

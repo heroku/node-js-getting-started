@@ -90,11 +90,11 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 			_itemName.position.y = Math.round(_margin-32);
 
 			_fb = new BtnSocial(constantes.icons.FACEBOOK, "#3a5795", onFBCLick, null, null, 60);
-			_fb.x = 20;
+			_fb.x = 25;
 			_fb.y = ITEM_HEIGHT-20-_fb.height;
 
 			_tw = new BtnSocial(constantes.icons.TWITTER, "#55acee", onTWCLick, null, null, 60);
-			_tw.x = ITEM_WIDTH-20-_tw.width;
+			_tw.x = ITEM_WIDTH-25-_tw.width;
 			_tw.y = ITEM_HEIGHT-20-_tw.height;
 
 			_share = new BtnSocial(constantes.icons.SHARE, "#00FFFF", onShareCLick);
