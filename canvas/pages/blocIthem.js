@@ -36,6 +36,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 		var _canClick = true;
 		var _pictureLoader;
 		var _timerPictureUpdate;
+		var _maskPicture;
 
 		PIXI.DisplayObjectContainer.call(this);
 		_scope = this;
@@ -69,6 +70,16 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 			_item.x = Math.round((ITEM_WIDTH-PICTURE_WIDTH)/2);
 			_item.y = Math.round((ITEM_HEIGHT-PICTURE_HEIGHT)/2);
 
+			_maskPicture = new PIXI.Graphics();
+			_maskPicture.clear();
+			_maskPicture.beginFill(0x000000, 1);
+			_maskPicture.drawRect(0, 0, PICTURE_WIDTH, PICTURE_HEIGHT);
+			_maskPicture.endFill();
+			_maskPicture.x = _item.x;
+			_maskPicture.y = _item.y;
+
+			_item.mask = _maskPicture;
+
 			_itemText = new PIXI.Text("#", {font : "11px montserrat-light", fill : "#aaaaaa"});
 			_itemText.rotation = Math.PI*90/180;
 			_itemText.x = ITEM_WIDTH-8;
@@ -79,11 +90,11 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 			_itemName.position.y = Math.round(_margin-32);
 
 			_fb = new BtnSocial(constantes.icons.FACEBOOK, "#3a5795", onFBCLick, null, null, 60);
-			_fb.x = 20;
+			_fb.x = 25;
 			_fb.y = ITEM_HEIGHT-20-_fb.height;
 
 			_tw = new BtnSocial(constantes.icons.TWITTER, "#55acee", onTWCLick, null, null, 60);
-			_tw.x = ITEM_WIDTH-20-_tw.width;
+			_tw.x = ITEM_WIDTH-25-_tw.width;
 			_tw.y = ITEM_HEIGHT-20-_tw.height;
 
 			_share = new BtnSocial(constantes.icons.SHARE, "#00FFFF", onShareCLick);
@@ -167,6 +178,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 			_container.addChild(_bgPicture);
 			//_container.addChild(_pictureLoader);
 			_container.addChild(_item);
+			_container.addChild(_maskPicture);
 			_container.addChild(_fb);
 			_container.addChild(_tw);
 			_container.addChild(_share);
@@ -462,7 +474,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 				}
 
 				if( s ){
-					icon = "/img/lang/"+lang+".png";
+					icon = _app.static_files("img/lang/"+lang+".png");
 
 					if( typeof icon === "undefined"){
 						console.log('Unknown flag in constante langs : '+icon+" - "+ lang.toUpperCase());
@@ -560,8 +572,8 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 					_item.texture.destroy();
 					_item.setTexture(texture);
 
-					_item.width = PICTURE_WIDTH; // @TODO : remove - fps optimisation
-					_item.height = PICTURE_HEIGHT; // @TODO : remove - fps optimisiation
+					//_item.width = PICTURE_WIDTH; // @TODO : remove - fps optimisation
+					//_item.height = PICTURE_HEIGHT; // @TODO : remove - fps optimisiation
 
 					if( _data.accountname ){
 						TweenLite.fromTo(_item, 0.25, {alpha: 0}, {alpha: 1});

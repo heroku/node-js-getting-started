@@ -10,7 +10,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 		var _minimap;
 		var _w;
 		var _h;
-		var _coefPage = window.screen.width > 1600 ? 0.5 :  (Tools.getDevice() == "desktop")  ? 1 : 2;
+		var _coefPage = window.screen.width > 1600 ? 0.5 :  (Tools.getDevice() == "desktop")  ? 1 : (Tools.getDevice() == "tablet") ? 2 : 5;
         var ITEM_WIDTH = Tools.getDevice() === 'desktop' ? 180 : 190;
         var ITEM_HEIGHT = Tools.getDevice() === 'desktop' ? 180 : 190;
         var MIN_SPEED = 1;
@@ -79,7 +79,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 					for (var k = 0; k < _rangePage; k++) {
 						//_tmp.push({number : _ID, picture : "img/" + ((_ID === 0) ? "logo.jpg" : parseInt(MathUtils.randomMinMax(0, 15)) + ".jpg")});
 						//obj = {number : _ID, picture : "img/FREESTATE0" + parseInt(MathUtils.randomMinMax(1, 4)) + ".png", faceColor: colorMapping.getColorByBoxNumber(_ID)};
-						obj = {number : _ID, picture : "img/FREESTATE0" + parseInt(MathUtils.randomMinMax(1, 4)) + ".png", faceColor: 0xFF0000};
+						obj = {number : _ID, picture : _app.static_files("img/FREESTATE0" + parseInt(MathUtils.randomMinMax(1, 4)) + ".png"), faceColor: 0xFF0000};
 						_tmp.push(obj);
 						main.martixRange[_ID] = obj;
 						_ID++;

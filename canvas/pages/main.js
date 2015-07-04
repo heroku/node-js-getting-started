@@ -33,15 +33,31 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 		var _loaded = false;
 		var _loader = $('.loading-container').get(0);
 
+		this.config = _data.config;
 		this.currentUser = _data.currentUser;
+
+		this.static_files = function(path){
+			var baseUrl = "http://"+_data.config.S3_BUCKET_NAME+"/";
+
+			if( path.match(/^\//)){
+				path = path.substr(1, path.length-1);
+			}
+
+			return path.indexOf(baseUrl) > -1 ? path : baseUrl+path;
+		};
+
 
 		function init() {
 			// @TODO: fps optimize
 			var resolution = window.devicePixelRatio ? 1.5 : 1;
-			_stage = new PIXI.Stage(0x000000);
+			_stage = new PIXI.Stage(0x555555);
 			_rendererOptions = {view : _canvas, transparent : false, resolution : resolution};
-			// _renderer = new PIXI.CanvasRenderer(0, 0, _rendererOptions);
-			_renderer = PIXI.autoDetectRecommendedRenderer(0, 0, _rendererOptions);
+
+			if( isWebglRecommand() ){
+				_renderer = PIXI.autoDetectRecommendedRenderer(0, 0, _rendererOptions);
+			}else{
+				 _renderer = new PIXI.CanvasRenderer(0, 0, _rendererOptions);
+			}
 			if (!_canvas) {
 				document.body.appendChild(_renderer.view);
 			}
@@ -120,6 +136,10 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 			$('.modal').on('hide.bs.modal', function (e) {
 			  // do something...
 			});
+		}
+
+		function isWebglRecommand(){
+			return navigator.userAgent.match(/ipad|iphone/i) ? false : true;
 		}
 
 
