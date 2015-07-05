@@ -167,6 +167,7 @@ define('minimap', ['constantes', 'messageBus', 'btnSocial', 'mapCursor', 'colorM
         }
 
         var position = event.getLocalPosition(this.background);
+
         this.cursor.position.x = Math.min(_width, Math.max(0,position.x));
         this.cursor.position.y = Math.min(_height, Math.max(0,position.y));
 
@@ -175,7 +176,7 @@ define('minimap', ['constantes', 'messageBus', 'btnSocial', 'mapCursor', 'colorM
         var ratioX = position.x/_width;
         var ratioY = position.y/_height;
 
-        var x = Math.round(_gridWidth/_ITEM_WIDTH*ratioX)-1;
+        var x = Math.max(0, Math.round(_gridWidth/_ITEM_WIDTH*ratioX)-1);
         var y = Math.round(_gridHeight/_ITEM_HEIGHT*ratioY);
 
         var number = y > 0 ? (y * (_gridHeight/_ITEM_HEIGHT) + x) - _gridHeight/_ITEM_HEIGHT : x;

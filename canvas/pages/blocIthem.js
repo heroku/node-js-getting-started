@@ -89,51 +89,51 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 			_itemName.position.x = Math.round(_margin/2);
 			_itemName.position.y = Math.round(_margin-32);
 
-			_fb = new BtnSocial(constantes.icons.FACEBOOK, "#3a5795", onFBCLick, null, null, 60);
-			_fb.x = 25;
-			_fb.y = ITEM_HEIGHT-20-_fb.height;
+			_fb = new BtnSocial(constantes.icons.FACEBOOK, "#3a5795", onFBCLick, null, null, 30);
+			_fb.x = Math.round(25);
+			_fb.y = Math.round(ITEM_HEIGHT-20-_fb.height/_fb.resolution);
 
-			_tw = new BtnSocial(constantes.icons.TWITTER, "#55acee", onTWCLick, null, null, 60);
-			_tw.x = ITEM_WIDTH-25-_tw.width;
-			_tw.y = ITEM_HEIGHT-20-_tw.height;
+			_tw = new BtnSocial(constantes.icons.TWITTER, "#55acee", onTWCLick, null, null, 30);
+			_tw.x = Math.round(ITEM_WIDTH-25-_tw.width/_tw.resolution);
+			_tw.y = Math.round(ITEM_HEIGHT-20-_tw.height/_tw.resolution);
 
 			_share = new BtnSocial(constantes.icons.SHARE, "#00FFFF", onShareCLick);
-            _share.x = ITEM_WIDTH/2-15;
-            _share.y = (ITEM_HEIGHT+30)/2-15;
+            _share.x = Math.round(ITEM_WIDTH/2-15);
+            _share.y = Math.round((ITEM_HEIGHT+30)/2-15);
 
 			_claim = new BtnSocial(constantes.icons.CIRCLE_ARROW_DOWN, "#00EE00", onClaimCLick);
-            _claim.x = ITEM_WIDTH/2-35;
-            _claim.y = (ITEM_HEIGHT+30)/2-15;
+            _claim.x = Math.round(ITEM_WIDTH/2-35);
+            _claim.y = Math.round((ITEM_HEIGHT+30)/2-15);
 
 			_decline = new BtnSocial(constantes.icons.CIRCLE_CLOSE, "#EE0000", onDeclineCLick);
-            _decline.x = ITEM_WIDTH/2+5;
-            _decline.y = (ITEM_HEIGHT+30)/2-15;
+            _decline.x = Math.round(ITEM_WIDTH/2+5);
+            _decline.y = Math.round((ITEM_HEIGHT+30)/2-15);
 
 			_slotLang1 = new PIXI.Sprite(new PIXI.Texture(new PIXI.BaseTexture()));
 			_slotLang2 = new PIXI.Sprite(new PIXI.Texture(new PIXI.BaseTexture()));
 			_slotLang3 = new PIXI.Sprite(new PIXI.Texture(new PIXI.BaseTexture()));
 
-			_slotOccupation1 = new PIXI.Text("#", {font : "32px fontello", fill : "#aaaaaa"});
-			_slotOccupation2 = new PIXI.Text("#", {font : "32px fontello", fill : "#aaaaaa"});
-			_slotOccupation3 = new PIXI.Text("#", {font : "32px fontello", fill : "#aaaaaa"});
+			_slotOccupation1 = new PIXI.Text("#", {font : "16px fontello", fill : "#aaaaaa"});
+			_slotOccupation2 = new PIXI.Text("#", {font : "16px fontello", fill : "#aaaaaa"});
+			_slotOccupation3 = new PIXI.Text("#", {font : "16px fontello", fill : "#aaaaaa"});
 
-			_slotOccupation1.scale.x = _slotOccupation1.scale.y = 0.5;
-			_slotOccupation2.scale.x = _slotOccupation2.scale.y = 0.5;
-			_slotOccupation3.scale.x = _slotOccupation3.scale.y = 0.5;
+			_slotOccupation1.resolution = _app.canvas.renderer.resolution;
+			_slotOccupation2.resolution = _app.canvas.renderer.resolution;
+			_slotOccupation3.resolution = _app.canvas.renderer.resolution;
 
-			_slotOccupation1.position.x = _margin/2;
-			_slotOccupation1.position.y = PICTURE_HEIGHT+_margin/2+2;
-			_slotOccupation2.position.x = _margin/2+22;
-			_slotOccupation2.position.y = PICTURE_HEIGHT+_margin/2+2;
-			_slotOccupation3.position.x = _margin/2+44;
-			_slotOccupation3.position.y = PICTURE_HEIGHT+_margin/2+2;
+			_slotOccupation1.position.x = Math.round(_margin/2);
+			_slotOccupation1.position.y = Math.round(PICTURE_HEIGHT+_margin/2+2);
+			_slotOccupation2.position.x = Math.round(_margin/2+22);
+			_slotOccupation2.position.y = Math.round(PICTURE_HEIGHT+_margin/2+2);
+			_slotOccupation3.position.x = Math.round(_margin/2+44);
+			_slotOccupation3.position.y = Math.round(PICTURE_HEIGHT+_margin/2+2);
 
-			_slotLang1.position.x = PICTURE_WIDTH;
-			_slotLang1.position.y = PICTURE_HEIGHT+_margin/2+4;
-			_slotLang2.position.x = PICTURE_WIDTH-25;
-			_slotLang2.position.y = PICTURE_HEIGHT+_margin/2+4;
-			_slotLang3.position.x = PICTURE_WIDTH-50;
-			_slotLang3.position.y = PICTURE_HEIGHT+_margin/2+4;
+			_slotLang1.position.x = Math.round(PICTURE_WIDTH);
+			_slotLang1.position.y = Math.round(PICTURE_HEIGHT+_margin/2+4);
+			_slotLang2.position.x = Math.round(PICTURE_WIDTH-25);
+			_slotLang2.position.y = Math.round(PICTURE_HEIGHT+_margin/2+4);
+			_slotLang3.position.x = Math.round(PICTURE_WIDTH-50);
+			_slotLang3.position.y = Math.round(PICTURE_HEIGHT+_margin/2+4);
 
 			_slotLang1.visible = _slotLang2.visible =_slotLang3.visible = false;
 			_slotLang1.scale = _slotLang2.scale =_slotLang3.scale = {x: 0.25, y:0.25};
@@ -166,7 +166,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 			messageBus.on('ScrollContainer:StartMoving', clearTimer);
 
 			_selectedAnimation = getAnimation();
-			_item.mousedown = _item.touchstart = onFaceClick;
+			_container.mousedown = _container.touchstart = onFaceClick;
 
 
 			updateRectColor(0);
@@ -420,8 +420,8 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 		 */
 		this.setInteractive = function(isInteractive){
 			_interactive = isInteractive;
-			_item.interactive = isInteractive;
-			_item.buttonMode = isInteractive;
+			_container.interactive = isInteractive;
+			_container.buttonMode = isInteractive;
 		};
 
         /**
@@ -547,7 +547,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 			this.setClaim(claimEnable);
 			this.setShare(shareEnable);
 
-			_bgPicture.visible = !(_data.accountname);
+			//_bgPicture.visible = !(_data.accountname);
 			_itemText.setText(pad(_txt*1));
 			_item.texture.destroy();
 			_item.texture = new PIXI.Texture(new PIXI.BaseTexture());

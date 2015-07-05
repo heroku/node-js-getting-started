@@ -12,9 +12,7 @@ define('btnSocial', function(){
 
         var _btn, _text;
 
-        this.isHide = false;
-
-        fontSize = fontSize || 60;
+        fontSize = fontSize || 30;
 
         _btn = new PIXI.Graphics();
         _btn.beginFill(0xFF0000, 0);
@@ -25,11 +23,10 @@ define('btnSocial', function(){
         _btn.tap = _btn.click = clickCallback;
 
         _text = new PIXI.Text(glyph, {font : fontSize+"px fontello", fill : color || "#FFFFFF"});
-        _text.x = _btn.width/2 - _text.width/2;
-        _text.y = _btn.height/2 - _text.width/2;
-        _text.pivot.x = _text.pivot.y = -_text.width/2;
-        _text.scale.x = _text.scale.y = 0.5;
 
+        _text.resolution = _app.canvas.renderer.resolution;
+
+        this.resolution = _text.resolution;
         this._btn = _btn;
         this._text = _text;
 
@@ -48,10 +45,6 @@ define('btnSocial', function(){
      */
     BtnSocial.prototype.enable = function(speed, delay){
 
-        //if( this.isHide ){
-        //    return;
-        //}
-
         var speed, delay;
 
         speed = speed || 0.25;
@@ -66,7 +59,6 @@ define('btnSocial', function(){
      */
     BtnSocial.prototype.hideElement = function(){
         this.visible = false;
-        this.isHide = true;
     };
 
     /**
@@ -74,7 +66,6 @@ define('btnSocial', function(){
      */
     BtnSocial.prototype.showElement = function(){
         this.visible = true;
-        this.isHide = false;
     };
 
     /**
@@ -83,10 +74,6 @@ define('btnSocial', function(){
      * @param delay
      */
     BtnSocial.prototype.disable = function(speed, delay){
-
-        //if( this.isHide ){
-        //    return;
-        //}
 
         var speed, delay;
 

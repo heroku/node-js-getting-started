@@ -1,5 +1,5 @@
 	<div class="loading-container">
-		<img id="loading" class="loading" src="/img/square.gif">
+		<img id="loading" class="loading" src="http://{{data.config.S3_BUCKET_NAME}}/img/square.gif">
 	</div>
 	<canvas id="canvas" class="canvas"></canvas>
 	<script type="text/javascript">
@@ -82,7 +82,7 @@
 
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	          <h4 class="modal-title" id="myModalLabel"Share this free human slot</h4>
+	          <h4 class="modal-title" id="myModalLabel">Share this free human slot</h4>
 	        </div>
         	<div class="modal-body">
 						<div class="input-group input-group">
@@ -204,12 +204,12 @@
 		</div>
 	{{/if}}
 </div>
-<h1 class="main-logo"><a href="/"><img src="/img/one_million_faces_logo.png" alt="One Million Human Faces"/></a></h1>
+<h1 class="main-logo"><a href="/"><img src="http://{{data.config.S3_BUCKET_NAME}}/img/one_million_faces_logo.png" alt="One Million Human Faces"/></a></h1>
 
 <div class="menu-container">
 	{{#if data.currentUser}}
 	<div class="dropdown">
-		<a href="{{data.config.root_url}}/#number/{{data.currentUser.number}}"><img src="{{data.currentUser.picture}}" width="32" height="32" /></a>
+		<a href="{{data.config.root_url}}/#number/{{data.currentUser.number}}"><img src="http://{{data.config.S3_BUCKET_NAME}}{{data.currentUser.picture}}" width="32" height="32" /></a>
 		<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 		<span class="caret"></span>
 		</button>
