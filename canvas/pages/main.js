@@ -39,6 +39,9 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 		this.currentUser = _data.currentUser;
 
 		this.static_files = function(path){
+			if( _app.config.mock ){
+				return path;
+			}
 			var baseUrl = "http://"+_data.config.S3_BUCKET_NAME+"/";
 
 			if( path.match(/^\//)){

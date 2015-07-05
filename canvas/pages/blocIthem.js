@@ -140,6 +140,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 			_slotOccupation1.visible = _slotOccupation2.visible =_slotOccupation3.visible = false;
 
 			_contextualInfo.alpha = 0;
+			_contextualInfo.visible = false;
 
 			messageBus.addEventListener('ScrollContainer:StartMoving', function(){
 				_tw.disable(0.25, 0);
@@ -147,6 +148,8 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
                 _claim.disable(0.25, 0);
                 _decline.disable(0.25, 0);
 				_canClick = false;
+
+				_itemText.visible = false;
 			});
 
 			messageBus.addEventListener('ScrollContainer:StopMoving', function(){
@@ -156,6 +159,10 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
                 _claim.enable(0.25, delay);
                 _decline.enable(0.25, delay);
 				_canClick = true;
+
+				_itemText.alpha = 0;
+				_itemText.visible = true;
+				TweenLite.to(_itemText, 0.25, {alpha:1, delay:delay});
 			});
 
 
@@ -261,11 +268,9 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 		function getAnimation(){
 			var tw = new TimelineLite()
 
-			//tw.to(_container, 0.5, {alpha: 0.3});
-			//tw.to(_container.scale, 0.5, {x: 0.5, y:0.5}, 0);
-			//tw.to(_container.position, 0.5, {x: PICTURE_WIDTH/4, y: PICTURE_WIDTH/4}, 0);
 			tw.to(_contextualInfo,0.5, {alpha: 1, onReverseComplete: function(){
 				_this.updateColors({data:{color:0xFFFFFF}});
+				_contextualInfo.visible = false;
 			}});
 			tw.pause();
 			return tw;
@@ -316,6 +321,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 				_itemName.setText(_data.accountname|| "");
 				_selectedAnimation.play();
 
+				_contextualInfo.visible = true;
 				messageBus.emit('all:colorChange', {color:_data.faceColor});
 				messageBus.emit("map:blur");
 			}
@@ -565,21 +571,29 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 
 			// @TODO: display loader while image loading
 
-			// Methode 3 slow fps ???
-			var loader = new PIXI.ImageLoader(img);
-			loader.onLoaded = function(){
-					var texture = new PIXI.Texture(PIXI.Texture.fromImage(img));
-					_item.texture.destroy();
-					_item.setTexture(texture);
+			(function(saveId){
 
-					//_item.width = PICTURE_WIDTH; // @TODO : remove - fps optimisation
-					//_item.height = PICTURE_HEIGHT; // @TODO : remove - fps optimisiation
+				// Methode 3 slow fps ???
+				var loader = new PIXI.ImageLoader(img);
+				loader.onLoaded = function(){
+						if( saveId !== _id ){
+							return;
+						}
 
-					if( _data.accountname ){
-						TweenLite.fromTo(_item, 0.25, {alpha: 0}, {alpha: 1});
-					}
-			};
-			loader.load();
+						var texture = new PIXI.Texture(PIXI.Texture.fromImage(img));
+						_item.texture.destroy();
+						_item.setTexture(texture);
+
+						//_item.width = PICTURE_WIDTH; // @TODO : remove - fps optimisation
+						//_item.height = PICTURE_HEIGHT; // @TODO : remove - fps optimisiation
+
+						//if( _data.accountname ){
+						//	TweenLite.fromTo(_item, 0.25, {alpha: 0}, {alpha: 1});
+						//}
+				};
+				loader.load();
+
+			})(_id);
 
 		};
 

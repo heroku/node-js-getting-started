@@ -26,6 +26,7 @@ define('btnSocial', function(){
 
         _text.resolution = _app.canvas.renderer.resolution;
 
+        this.disabled = false;
         this.resolution = _text.resolution;
         this._btn = _btn;
         this._text = _text;
@@ -50,6 +51,7 @@ define('btnSocial', function(){
         speed = speed || 0.25;
         delay = delay || 0;
 
+        this.visible = !this.disabled;
         this._btn.interactive = this._btn.buttonMode = true;
         TweenLite.to(this, speed, {alpha: 1, delay: delay});
     };
@@ -58,6 +60,7 @@ define('btnSocial', function(){
      * Hide button
      */
     BtnSocial.prototype.hideElement = function(){
+        this.disabled = true;
         this.visible = false;
     };
 
@@ -65,6 +68,7 @@ define('btnSocial', function(){
      * Show button
      */
     BtnSocial.prototype.showElement = function(){
+        this.disabled = false;
         this.visible = true;
     };
 
@@ -75,13 +79,15 @@ define('btnSocial', function(){
      */
     BtnSocial.prototype.disable = function(speed, delay){
 
-        var speed, delay;
+        var _this = this, speed, delay;
 
         speed = speed || 0.25;
         delay = delay || 0;
 
         this._btn.interactive = this._btn.buttonMode = false;
-        TweenLite.to(this, speed, {alpha: 0.1, delay: delay});
+        TweenLite.to(this, speed, {alpha: 0, delay: delay, onComplete: function(){
+            _this.visible = false;
+        }});
     };
 
     return BtnSocial;

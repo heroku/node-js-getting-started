@@ -42,6 +42,10 @@ define('ScrollContainer', ['Gesture', 'messageBus'], function(Gesture, messageBu
 		var _scope;
 		var _stage;
 
+		var _throttledStopMoving = _.throttle(function(){
+			messageBus.emit('ScrollContainer:StopMoving');
+		}, 400);
+
 		PIXI.DisplayObjectContainer.call(this);
 		PIXI.EventTarget.call(this);
 
@@ -177,7 +181,7 @@ define('ScrollContainer', ['Gesture', 'messageBus'], function(Gesture, messageBu
 			}
 
 			if( Math.abs(_velocitx) <= 0 && Math.abs(_velocity) <= 0 && moved === true ){
-				messageBus.emit('ScrollContainer:StopMoving');
+				_throttledStopMoving();
 				moved = false;
 			}
 		};
@@ -251,7 +255,7 @@ define('ScrollContainer', ['Gesture', 'messageBus'], function(Gesture, messageBu
 
 			setTimeout(function(){
 				if( !moved ){
-					messageBus.emit('ScrollContainer:StopMoving');
+					_throttledStopMoving();
 				}
 			}, 100);
 

@@ -1,4 +1,4 @@
-define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', 'minimap', 'mapBlur', 'colorMapping'], function(ScrollContainer, Bloc, Services, messageBus, Minimap, MapBlur, colorMapping) {
+define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', 'minimap', 'mapBlur', 'colorMapping', 'mock/faces'], function(ScrollContainer, Bloc, Services, messageBus, Minimap, MapBlur, colorMapping, mockFaces) {
 
 	var _map = function() {
 
@@ -452,7 +452,11 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 
             if( range.length ){
 				thottleUpdateGrid();
-                _services.getFacesByRange(range, onGetFacesByRange);
+				if( _app.config.mock){
+					onGetFacesByRange(mockFaces.getFacesByRange(range));
+				}else{
+                	_services.getFacesByRange(range, onGetFacesByRange);
+				}
             }
 
 		}

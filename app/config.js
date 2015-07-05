@@ -16,7 +16,8 @@ var config   = {
   AWS_SECRET_ACCESS_KEY: 'tJCXUt7DFPhCc127bF0kLAUGe39F4pCdYxr5lkzK',
   S3_BUCKET_NAME: 'files.onemillionhumans.com',
   faces_by_request: 10,
-  faces_by_search: 20
+  faces_by_search: 20,
+  mock: false
 
 };
 
