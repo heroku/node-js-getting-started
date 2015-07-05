@@ -1,4 +1,4 @@
-define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], function(constantes, BtnSocial, messageBus, colorMapping) {
+define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'components/spinner'], function(constantes, BtnSocial, messageBus, colorMapping, Spinner) {
 
     var _lastSelected;
 
@@ -37,6 +37,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 		var _pictureLoader;
 		var _timerPictureUpdate;
 		var _maskPicture;
+		var _spinner = new Spinner();
 
 		PIXI.DisplayObjectContainer.call(this);
 		_scope = this;
@@ -139,6 +140,9 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 			_slotLang1.scale = _slotLang2.scale =_slotLang3.scale = {x: 0.25, y:0.25};
 			_slotOccupation1.visible = _slotOccupation2.visible =_slotOccupation3.visible = false;
 
+			_spinner.position.x = ITEM_WIDTH/2;
+			_spinner.position.y = ITEM_HEIGHT/2;
+
 			_contextualInfo.alpha = 0;
 			_contextualInfo.visible = false;
 
@@ -183,6 +187,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 			_scope.addChild(_itemText);
 
 			_container.addChild(_bgPicture);
+			_container.addChild(_spinner);
 			//_container.addChild(_pictureLoader);
 			_container.addChild(_item);
 			_container.addChild(_maskPicture);
@@ -346,6 +351,8 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 			_bgPicture.endFill();
 			_bgPicture.position.x = _item.position.x+3;
 			_bgPicture.position.y = _item.position.y+3;
+
+			_spinner.updateColor(_data.faceColor);
 
 		}
 
@@ -575,6 +582,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 
 				// Methode 3 slow fps ???
 				var loader = new PIXI.ImageLoader(img);
+				_spinner.show();
 				loader.onLoaded = function(){
 						if( saveId !== _id ){
 							return;
@@ -583,6 +591,8 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 						var texture = new PIXI.Texture(PIXI.Texture.fromImage(img));
 						_item.texture.destroy();
 						_item.setTexture(texture);
+
+						_spinner.hide();
 
 						//_item.width = PICTURE_WIDTH; // @TODO : remove - fps optimisation
 						//_item.height = PICTURE_HEIGHT; // @TODO : remove - fps optimisiation
@@ -606,6 +616,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 
 	_blocIthem.prototype.process = function() {
 		this.process();
+		_spinner.process();
 	};
 
 	_blocIthem.prototype.resize = function(w, h) {
