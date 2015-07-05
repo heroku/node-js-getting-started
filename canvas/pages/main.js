@@ -139,6 +139,7 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 		}
 
 		function isWebglRecommand(){
+			return false;
 			return navigator.userAgent.match(/ipad|iphone/i) ? false : true;
 		}
 
