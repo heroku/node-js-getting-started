@@ -553,7 +553,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 			this.setClaim(claimEnable);
 			this.setShare(shareEnable);
 
-			//_bgPicture.visible = !(_data.accountname);
+			_bgPicture.visible = !(_data.accountname);
 			_itemText.setText(pad(_txt*1));
 			_item.texture.destroy();
 			_item.texture = new PIXI.Texture(new PIXI.BaseTexture());
