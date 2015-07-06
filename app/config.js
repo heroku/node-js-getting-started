@@ -12,12 +12,13 @@ var config   = {
   TWITTER_CALLBACK_URL: 'http://onemillionhumans.com/auth/twitter/callback',
   TWITTER_ACCESS_TOKEN_KEY: '12637422-ODXi8fY4g6PmVr9Qfdn32U5Gtd3F0EwK1fs7A6gb3',
   TWITTER_ACCESS_TOKEN_SECRET: 'psjwfUMzfIlrA5IWWyGOoADp6cypyrO5EAJn8deKbTLbz',
-  AWS_ACCESS_KEY_ID: 'AKIAJNN2S6NVMA7ZIHFQ',
-  AWS_SECRET_ACCESS_KEY: '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',
+  AWS_ACCESS_KEY_ID: 'AKIAJGKBEORSU7NCL3PA',
+  AWS_SECRET_ACCESS_KEY: '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',
   S3_BUCKET_NAME: 'files.onemillionhumans.com',
   faces_by_request: 10,
   faces_by_search: 20,
-  mock: false
+  mock: false,
+  PORT: 80
 
 };
 
