@@ -1,4 +1,4 @@
-define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], function(constantes, BtnSocial, messageBus, colorMapping) {
+define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'components/spinner'], function(constantes, BtnSocial, messageBus, colorMapping, Spinner) {
 
     var _lastSelected;
 
@@ -37,6 +37,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 		var _pictureLoader;
 		var _timerPictureUpdate;
 		var _maskPicture;
+		var _spinner = new Spinner();
 
 		PIXI.DisplayObjectContainer.call(this);
 		_scope = this;
@@ -89,57 +90,61 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 			_itemName.position.x = Math.round(_margin/2);
 			_itemName.position.y = Math.round(_margin-32);
 
-			_fb = new BtnSocial(constantes.icons.FACEBOOK, "#3a5795", onFBCLick, null, null, 60);
-			_fb.x = 25;
-			_fb.y = ITEM_HEIGHT-20-_fb.height;
+			_fb = new BtnSocial(constantes.icons.FACEBOOK, "#3a5795", onFBCLick, null, null, 30);
+			_fb.x = Math.round(25);
+			_fb.y = Math.round(ITEM_HEIGHT-20-_fb.height/_fb.resolution);
 
-			_tw = new BtnSocial(constantes.icons.TWITTER, "#55acee", onTWCLick, null, null, 60);
-			_tw.x = ITEM_WIDTH-25-_tw.width;
-			_tw.y = ITEM_HEIGHT-20-_tw.height;
+			_tw = new BtnSocial(constantes.icons.TWITTER, "#55acee", onTWCLick, null, null, 30);
+			_tw.x = Math.round(ITEM_WIDTH-25-_tw.width/_tw.resolution);
+			_tw.y = Math.round(ITEM_HEIGHT-20-_tw.height/_tw.resolution);
 
 			_share = new BtnSocial(constantes.icons.SHARE, "#00FFFF", onShareCLick);
-            _share.x = ITEM_WIDTH/2-15;
-            _share.y = (ITEM_HEIGHT+30)/2-15;
+            _share.x = Math.round(ITEM_WIDTH/2-15);
+            _share.y = Math.round((ITEM_HEIGHT+30)/2-15);
 
 			_claim = new BtnSocial(constantes.icons.CIRCLE_ARROW_DOWN, "#00EE00", onClaimCLick);
-            _claim.x = ITEM_WIDTH/2-35;
-            _claim.y = (ITEM_HEIGHT+30)/2-15;
+            _claim.x = Math.round(ITEM_WIDTH/2-35);
+            _claim.y = Math.round((ITEM_HEIGHT+30)/2-15);
 
 			_decline = new BtnSocial(constantes.icons.CIRCLE_CLOSE, "#EE0000", onDeclineCLick);
-            _decline.x = ITEM_WIDTH/2+5;
-            _decline.y = (ITEM_HEIGHT+30)/2-15;
+            _decline.x = Math.round(ITEM_WIDTH/2+5);
+            _decline.y = Math.round((ITEM_HEIGHT+30)/2-15);
 
 			_slotLang1 = new PIXI.Sprite(new PIXI.Texture(new PIXI.BaseTexture()));
 			_slotLang2 = new PIXI.Sprite(new PIXI.Texture(new PIXI.BaseTexture()));
 			_slotLang3 = new PIXI.Sprite(new PIXI.Texture(new PIXI.BaseTexture()));
 
-			_slotOccupation1 = new PIXI.Text("#", {font : "32px fontello", fill : "#aaaaaa"});
-			_slotOccupation2 = new PIXI.Text("#", {font : "32px fontello", fill : "#aaaaaa"});
-			_slotOccupation3 = new PIXI.Text("#", {font : "32px fontello", fill : "#aaaaaa"});
+			_slotOccupation1 = new PIXI.Text("#", {font : "16px fontello", fill : "#aaaaaa"});
+			_slotOccupation2 = new PIXI.Text("#", {font : "16px fontello", fill : "#aaaaaa"});
+			_slotOccupation3 = new PIXI.Text("#", {font : "16px fontello", fill : "#aaaaaa"});
 
-			_slotOccupation1.scale.x = _slotOccupation1.scale.y = 0.5;
-			_slotOccupation2.scale.x = _slotOccupation2.scale.y = 0.5;
-			_slotOccupation3.scale.x = _slotOccupation3.scale.y = 0.5;
+			_slotOccupation1.resolution = _app.canvas.renderer.resolution;
+			_slotOccupation2.resolution = _app.canvas.renderer.resolution;
+			_slotOccupation3.resolution = _app.canvas.renderer.resolution;
 
-			_slotOccupation1.position.x = _margin/2;
-			_slotOccupation1.position.y = PICTURE_HEIGHT+_margin/2+2;
-			_slotOccupation2.position.x = _margin/2+22;
-			_slotOccupation2.position.y = PICTURE_HEIGHT+_margin/2+2;
-			_slotOccupation3.position.x = _margin/2+44;
-			_slotOccupation3.position.y = PICTURE_HEIGHT+_margin/2+2;
+			_slotOccupation1.position.x = Math.round(_margin/2);
+			_slotOccupation1.position.y = Math.round(PICTURE_HEIGHT+_margin/2+2);
+			_slotOccupation2.position.x = Math.round(_margin/2+22);
+			_slotOccupation2.position.y = Math.round(PICTURE_HEIGHT+_margin/2+2);
+			_slotOccupation3.position.x = Math.round(_margin/2+44);
+			_slotOccupation3.position.y = Math.round(PICTURE_HEIGHT+_margin/2+2);
 
-			_slotLang1.position.x = PICTURE_WIDTH;
-			_slotLang1.position.y = PICTURE_HEIGHT+_margin/2+4;
-			_slotLang2.position.x = PICTURE_WIDTH-25;
-			_slotLang2.position.y = PICTURE_HEIGHT+_margin/2+4;
-			_slotLang3.position.x = PICTURE_WIDTH-50;
-			_slotLang3.position.y = PICTURE_HEIGHT+_margin/2+4;
+			_slotLang1.position.x = Math.round(PICTURE_WIDTH);
+			_slotLang1.position.y = Math.round(PICTURE_HEIGHT+_margin/2+4);
+			_slotLang2.position.x = Math.round(PICTURE_WIDTH-25);
+			_slotLang2.position.y = Math.round(PICTURE_HEIGHT+_margin/2+4);
+			_slotLang3.position.x = Math.round(PICTURE_WIDTH-50);
+			_slotLang3.position.y = Math.round(PICTURE_HEIGHT+_margin/2+4);
 
 			_slotLang1.visible = _slotLang2.visible =_slotLang3.visible = false;
 			_slotLang1.scale = _slotLang2.scale =_slotLang3.scale = {x: 0.25, y:0.25};
 			_slotOccupation1.visible = _slotOccupation2.visible =_slotOccupation3.visible = false;
 
+			_spinner.position.x = ITEM_WIDTH/2;
+			_spinner.position.y = ITEM_HEIGHT/2;
+
 			_contextualInfo.alpha = 0;
+			_contextualInfo.visible = false;
 
 			messageBus.addEventListener('ScrollContainer:StartMoving', function(){
 				_tw.disable(0.25, 0);
@@ -147,6 +152,8 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
                 _claim.disable(0.25, 0);
                 _decline.disable(0.25, 0);
 				_canClick = false;
+
+				_itemText.visible = false;
 			});
 
 			messageBus.addEventListener('ScrollContainer:StopMoving', function(){
@@ -156,6 +163,10 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
                 _claim.enable(0.25, delay);
                 _decline.enable(0.25, delay);
 				_canClick = true;
+
+				_itemText.alpha = 0;
+				_itemText.visible = true;
+				TweenLite.to(_itemText, 0.25, {alpha:1, delay:delay});
 			});
 
 
@@ -166,7 +177,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 			messageBus.on('ScrollContainer:StartMoving', clearTimer);
 
 			_selectedAnimation = getAnimation();
-			_item.mousedown = _item.touchstart = onFaceClick;
+			_container.mousedown = _container.touchstart = onFaceClick;
 
 
 			updateRectColor(0);
@@ -176,6 +187,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 			_scope.addChild(_itemText);
 
 			_container.addChild(_bgPicture);
+			_container.addChild(_spinner);
 			//_container.addChild(_pictureLoader);
 			_container.addChild(_item);
 			_container.addChild(_maskPicture);
@@ -261,11 +273,9 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 		function getAnimation(){
 			var tw = new TimelineLite()
 
-			//tw.to(_container, 0.5, {alpha: 0.3});
-			//tw.to(_container.scale, 0.5, {x: 0.5, y:0.5}, 0);
-			//tw.to(_container.position, 0.5, {x: PICTURE_WIDTH/4, y: PICTURE_WIDTH/4}, 0);
 			tw.to(_contextualInfo,0.5, {alpha: 1, onReverseComplete: function(){
 				_this.updateColors({data:{color:0xFFFFFF}});
+				_contextualInfo.visible = false;
 			}});
 			tw.pause();
 			return tw;
@@ -316,6 +326,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 				_itemName.setText(_data.accountname|| "");
 				_selectedAnimation.play();
 
+				_contextualInfo.visible = true;
 				messageBus.emit('all:colorChange', {color:_data.faceColor});
 				messageBus.emit("map:blur");
 			}
@@ -340,6 +351,8 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 			_bgPicture.endFill();
 			_bgPicture.position.x = _item.position.x+3;
 			_bgPicture.position.y = _item.position.y+3;
+
+			_spinner.updateColor(_data.faceColor);
 
 		}
 
@@ -420,8 +433,8 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 		 */
 		this.setInteractive = function(isInteractive){
 			_interactive = isInteractive;
-			_item.interactive = isInteractive;
-			_item.buttonMode = isInteractive;
+			_container.interactive = isInteractive;
+			_container.buttonMode = isInteractive;
 		};
 
         /**
@@ -565,21 +578,32 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 
 			// @TODO: display loader while image loading
 
-			// Methode 3 slow fps ???
-			var loader = new PIXI.ImageLoader(img);
-			loader.onLoaded = function(){
-					var texture = new PIXI.Texture(PIXI.Texture.fromImage(img));
-					_item.texture.destroy();
-					_item.setTexture(texture);
+			(function(saveId){
 
-					//_item.width = PICTURE_WIDTH; // @TODO : remove - fps optimisation
-					//_item.height = PICTURE_HEIGHT; // @TODO : remove - fps optimisiation
+				// Methode 3 slow fps ???
+				var loader = new PIXI.ImageLoader(img);
+				_spinner.show();
+				loader.onLoaded = function(){
+						if( saveId !== _id ){
+							return;
+						}
 
-					if( _data.accountname ){
-						TweenLite.fromTo(_item, 0.25, {alpha: 0}, {alpha: 1});
-					}
-			};
-			loader.load();
+						var texture = new PIXI.Texture(PIXI.Texture.fromImage(img));
+						_item.texture.destroy();
+						_item.setTexture(texture);
+
+						_spinner.hide();
+
+						//_item.width = PICTURE_WIDTH; // @TODO : remove - fps optimisation
+						//_item.height = PICTURE_HEIGHT; // @TODO : remove - fps optimisiation
+
+						//if( _data.accountname ){
+						//	TweenLite.fromTo(_item, 0.25, {alpha: 0}, {alpha: 1});
+						//}
+				};
+				loader.load();
+
+			})(_id);
 
 		};
 
@@ -592,6 +616,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping'], f
 
 	_blocIthem.prototype.process = function() {
 		this.process();
+		_spinner.process();
 	};
 
 	_blocIthem.prototype.resize = function(w, h) {

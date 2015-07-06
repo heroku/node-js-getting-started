@@ -12,9 +12,7 @@ define('btnSocial', function(){
 
         var _btn, _text;
 
-        this.isHide = false;
-
-        fontSize = fontSize || 60;
+        fontSize = fontSize || 30;
 
         _btn = new PIXI.Graphics();
         _btn.beginFill(0xFF0000, 0);
@@ -25,11 +23,11 @@ define('btnSocial', function(){
         _btn.tap = _btn.click = clickCallback;
 
         _text = new PIXI.Text(glyph, {font : fontSize+"px fontello", fill : color || "#FFFFFF"});
-        _text.x = _btn.width/2 - _text.width/2;
-        _text.y = _btn.height/2 - _text.width/2;
-        _text.pivot.x = _text.pivot.y = -_text.width/2;
-        _text.scale.x = _text.scale.y = 0.5;
 
+        _text.resolution = _app.canvas.renderer.resolution;
+
+        this.disabled = false;
+        this.resolution = _text.resolution;
         this._btn = _btn;
         this._text = _text;
 
@@ -48,15 +46,12 @@ define('btnSocial', function(){
      */
     BtnSocial.prototype.enable = function(speed, delay){
 
-        //if( this.isHide ){
-        //    return;
-        //}
-
         var speed, delay;
 
         speed = speed || 0.25;
         delay = delay || 0;
 
+        this.visible = !this.disabled;
         this._btn.interactive = this._btn.buttonMode = true;
         TweenLite.to(this, speed, {alpha: 1, delay: delay});
     };
@@ -65,16 +60,16 @@ define('btnSocial', function(){
      * Hide button
      */
     BtnSocial.prototype.hideElement = function(){
+        this.disabled = true;
         this.visible = false;
-        this.isHide = true;
     };
 
     /**
      * Show button
      */
     BtnSocial.prototype.showElement = function(){
+        this.disabled = false;
         this.visible = true;
-        this.isHide = false;
     };
 
     /**
@@ -84,17 +79,15 @@ define('btnSocial', function(){
      */
     BtnSocial.prototype.disable = function(speed, delay){
 
-        //if( this.isHide ){
-        //    return;
-        //}
-
-        var speed, delay;
+        var _this = this, speed, delay;
 
         speed = speed || 0.25;
         delay = delay || 0;
 
         this._btn.interactive = this._btn.buttonMode = false;
-        TweenLite.to(this, speed, {alpha: 0.1, delay: delay});
+        TweenLite.to(this, speed, {alpha: 0, delay: delay, onComplete: function(){
+            _this.visible = false;
+        }});
     };
 
     return BtnSocial;

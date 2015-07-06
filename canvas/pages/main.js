@@ -6,6 +6,8 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 
 		console.log("<< Kamal::main >>");
 
+		var _this = this;
+
 		// CONFIG
 		var _statEnabled = true;
 		var _centerDesktop = false;
@@ -37,6 +39,9 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 		this.currentUser = _data.currentUser;
 
 		this.static_files = function(path){
+			if( _app.config.mock ){
+				return path;
+			}
 			var baseUrl = "http://"+_data.config.S3_BUCKET_NAME+"/";
 
 			if( path.match(/^\//)){
@@ -72,6 +77,12 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 					messageBus.emit('renderer:mouseleave');
 				//}
 			});
+
+			_this.canvas = {
+				stage: _stage,
+				renderer: _renderer,
+				rendererOptions: _rendererOptions
+			};
 		}
 
 		function hideLoader(){
@@ -139,6 +150,7 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 		}
 
 		function isWebglRecommand(){
+			return true;
 			return navigator.userAgent.match(/ipad|iphone/i) ? false : true;
 		}
 
