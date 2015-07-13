@@ -3,3 +3,4 @@ node_modules
 public/js/scripts.js.map
 public/js/vendor.js.map
 app/config.js
+app/env.js
