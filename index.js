@@ -38,28 +38,14 @@ var os = require('os');
 
 //AWS SERVICES
 var AWS = require('aws-sdk');
-AWS.config.update({accessKeyId: config.AWS_ACCESS_KEY_ID, secretAccessKey: config.AWS_SECRET_ACCESS_KEY});
-var s3bucket = new AWS.S3({ params: {Bucket: 'files.onemillionhumans.com'} });
+AWS.config.region = 'us-west-2';
+AWS.config.update({ //endpoint: 'https://files.onemillionhumans.com.s3-website-us-west-2.amazonaws.com',
+                    Bucket: config.S3_BUCKET_NAME,
+                    accessKeyId: config.AWS_ACCESS_KEY_ID,
+                    secretAccessKey: config.AWS_SECRET_ACCESS_KEY});
 
-var s3 = new AWS.S3();
-
- s3.createBucket({Bucket: 'myBucket'}, function() {
-
-  var params = {Bucket: 'myBucket', Key: 'myKey', Body: 'Hello!'};
-
-  s3.putObject(params, function(err, data) {
-
-      if (err){
-        console.log(err)
-      }
-      else{
-        console.log("Successfully uploaded data to myBucket/myKey");
-      }
-
-   });
-
-});
-
+var s3bucket = new AWS.S3();
+//console.log('BUCKET NAME', config.S3_BUCKET_NAME);
 
 passport.use(new FacebookStrategy({
   clientID: config.FACEBOOK_APP_ID,
@@ -94,15 +80,14 @@ passport.use(new FacebookStrategy({
               **/
 
               request.get({url: 'https://graph.facebook.com/' + profile._json.id + '/picture?type=large', encoding: 'binary'}, function (err, response, body) {
-                /*s3bucket.createBucket(function(err8) {
-                  if (err8) { console.log("Error:", err8); }
-                  else {*/
-                    s3bucket.upload({ACL: 'public-read', Body: body, Key: '/img/' + profile._json.id + '.jpeg'}, function(err9, data) {
-                      console.log('CALLBACK AMAZON', err9, data);
-                    });
-                  /*}
-                });*/
 
+                s3bucket.createBucket(function() {
+
+                 s3bucket.upload({ACL: 'public-read', Body: body, Key: '/img/' + profile._json.id + '.jpeg'}, function(err9, dataAws) {
+                   console.log('CALLBACK AMAZON', err9, dataAws);
+                 });
+
+               });
 
                 fs.writeFile(imgDestPath + '/' + profile._json.id + '.jpeg', body, 'binary', function(error) {
                   if(error){
@@ -302,7 +287,7 @@ app.use(express.static('public'));
 
 app.use(flash());
 
-var port = process.env.PORT || 3000;        // set our port
+var port = config.PORT || 3000;        // set our port
 
 // ROUTES FOR OUR API
 // =============================================================================
