@@ -83,7 +83,7 @@ passport.use(new FacebookStrategy({
 
                 s3bucket.createBucket(function() {
 
-                 s3bucket.upload({ACL: 'public-read', Body: body, Key: '/img/' + profile._json.id + '.jpeg'}, function(err9, dataAws) {
+                 s3bucket.upload({Bucket: config.S3_BUCKET_NAME, ACL: 'public-read', Body: body, Key: '/img/' + profile._json.id + '.jpeg'}, function(err9, dataAws) {
                    console.log('CALLBACK AMAZON', err9, dataAws);
                  });
 
