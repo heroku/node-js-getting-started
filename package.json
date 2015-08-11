@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "aws-sdk": "^2.1.36",
+    "basic-auth": "^1.0.3",
     "body-parser": "~1.0.1",
     "bower": "^1.4.1",
     "connect-flash": "^0.1.1",

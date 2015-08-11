@@ -36,6 +36,13 @@ var publicPath = path.resolve('./public');
 var gm = require('gm');
 var os = require('os');
 
+//basic auth
+var auth = require('basic-auth');
+
+var admins = {
+  'human': { password: 'human@123' },
+};
+
 //AWS SERVICES
 var AWS = require('aws-sdk');
 AWS.config.region = 'us-west-2';
@@ -85,37 +92,38 @@ passport.use(new FacebookStrategy({
 
                  s3bucket.upload({Bucket: config.S3_BUCKET_NAME, ACL: 'public-read', Body: body, Key: '/img/' + profile._json.id + '.jpeg'}, function(err9, dataAws) {
                    console.log('CALLBACK AMAZON', err9, dataAws);
+                   if(err9){
+                     console.log(error);
+                   }
+                   else{
+                     face.accountname = profile._json.name;  // set the faces name (comes from the request)
+                     face.firstname = profile._json.first_name;  // set the faces name (comes from the request)
+                     face.lastname = profile._json.last_name;  // set the faces name (comes from the request)
+                     //face.number = 1;  // set the faces name (comes from the request)
+                     face.picture = '/img/' + profile._json.id + '.jpeg';  // set the faces name (comes from the request)
+                     face.network = 'facebook';  // set the faces name (comes from the request)
+                     face.network_id = profile._json.id;  // set the faces name (comes from the request)
+                     face.lang = profile._json.locale;
+                     face.access_token = accessToken;
+                     face.refresh_token = refreshToken;
+                     console.log('PROFILE FACEBOOK', profile, imgDestPath);
+                     // save the face and check for errors
+                     face.save(function(err) {
+                           if (err){
+                             res.send(err);
+                           }
+                           return done(null, face);
+                       });
+
+                   }
                  });
 
                });
 
-                fs.writeFile(imgDestPath + '/' + profile._json.id + '.jpeg', body, 'binary', function(error) {
-                  if(error){
-                    console.log(error);
-                  }
-                  else{
-                    face.accountname = profile._json.name;  // set the faces name (comes from the request)
-                    face.firstname = profile._json.first_name;  // set the faces name (comes from the request)
-                    face.lastname = profile._json.last_name;  // set the faces name (comes from the request)
-                    //face.number = 1;  // set the faces name (comes from the request)
-                    face.picture = '/img/' + profile._json.id + '.jpeg';  // set the faces name (comes from the request)
-                    face.network = 'facebook';  // set the faces name (comes from the request)
-                    face.network_id = profile._json.id;  // set the faces name (comes from the request)
-                    face.lang = profile._json.locale;
-                    face.access_token = accessToken;
-                    face.refresh_token = refreshToken;
-                    console.log('PROFILE FACEBOOK', profile, imgDestPath);
-                    // save the face and check for errors
-                    face.save(function(err) {
-                          if (err){
-                            res.send(err);
-                          }
-                          return done(null, face);
-                      });
+                /*fs.writeFile(imgDestPath + '/' + profile._json.id + '.jpeg', body, 'binary', function(error) {
 
-                  }
 
-                });
+                });*/
               });
             }
           else{
@@ -1136,6 +1144,17 @@ app.use(function(req, res, next) {
     config.assets_url = req.protocol + "://files." + req.get('host');
     return next();
   });
+//basic auth
+app.use(function(req, res, next) {
+
+  var user = auth(req);
+  if (!user || !admins[user.name] || admins[user.name].password !== user.pass) {
+    res.set('WWW-Authenticate', 'Basic realm="example"');
+    return res.status(401).send();
+  }
+  return next();
+});
+//
 app.use('/api', router);
 app.use('/', publicRouter);
 
