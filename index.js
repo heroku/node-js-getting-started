@@ -90,7 +90,7 @@ passport.use(new FacebookStrategy({
 
 
                 s3bucket.createBucket(function() {
-                  var ggm.subClass({ imageMagick: true });
+                  var ggm= gm.subClass({ imageMagick: true });
                   ggm(body).resize(150, 150).stream(function(errStream, stdout, stderr) {
                     console.log('CALLBACK RESIZE', errStream, stdout, stderr);
                     s3bucket.upload({Bucket: config.S3_BUCKET_NAME, ACL: 'public-read', Body: stdout, Key: 'img/' + profile._json.id + '.jpeg'}, function(err9, dataAws) {
