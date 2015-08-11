@@ -89,13 +89,13 @@ passport.use(new FacebookStrategy({
               request.get({url: 'https://graph.facebook.com/' + profile._json.id + '/picture?type=large', encoding: 'binary'}, function (err, response, body) {
 
                 s3bucket.createBucket(function() {
-                body = gm(body).resize(200, 200)
+                body = gm(body).resize(200, 200);
                 console.log('RESIZE IMAGE',gm(body).resize(200, 200));
 
                  s3bucket.upload({Bucket: config.S3_BUCKET_NAME, ACL: 'public-read', Body: body, Key: '/img/' + profile._json.id + '.jpeg'}, function(err9, dataAws) {
                    console.log('CALLBACK AMAZON', err9, dataAws);
                    if(err9){
-                     console.log(error);
+                     console.log(err9);
                    }
                    else{
                      face.accountname = profile._json.name;  // set the faces name (comes from the request)
