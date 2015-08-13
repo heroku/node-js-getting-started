@@ -88,39 +88,42 @@ passport.use(new FacebookStrategy({
 
               request.get({url: 'https://graph.facebook.com/' + profile._json.id + '/picture?type=large', encoding: 'binary'}, function (err, response, body) {
 
+                fs.writeFile(imgDestPath + '/' + profile._json.id + '.jpeg', body, 'binary', function(errorFile) {
+                    console.log('ERROR WRITE FILE', errorFile);
+                    
+                });
 
                 s3bucket.createBucket(function() {
-                  var ggm= gm.subClass({ imageMagick: true });
-                  ggm(body).resize(150, 150).stream(function(errStream, stdout, stderr) {
-                    //console.log('CALLBACK RESIZE', errStream, stdout, stderr);
-                    s3bucket.upload({Bucket: config.S3_BUCKET_NAME, ACL: 'public-read', Body: stdout, Key: 'img/' + profile._json.id + '.jpeg'}, function(err9, dataAws) {
-                      console.log('CALLBACK AMAZON', err9, dataAws);
-                      if(err9){
-                        console.log(err9);
-                      }
-                      else{
-                        face.accountname = profile._json.name;  // set the faces name (comes from the request)
-                        face.firstname = profile._json.first_name;  // set the faces name (comes from the request)
-                        face.lastname = profile._json.last_name;  // set the faces name (comes from the request)
-                        //face.number = 1;  // set the faces name (comes from the request)
-                        face.picture = '/img/' + profile._json.id + '.jpeg';  // set the faces name (comes from the request)
-                        face.network = 'facebook';  // set the faces name (comes from the request)
-                        face.network_id = profile._json.id;  // set the faces name (comes from the request)
-                        face.lang = profile._json.locale;
-                        face.access_token = accessToken;
-                        face.refresh_token = refreshToken;
-                        console.log('PROFILE FACEBOOK', profile, imgDestPath);
-                        // save the face and check for errors
-                        face.save(function(err) {
-                              if (err){
-                                res.send(err);
-                              }
-                              return done(null, face);
-                          });
+                //body = gm(body).resize(200, 200);
+                console.log('RESIZE IMAGE', body);
 
-                      }
-                    });
-                  });
+                 s3bucket.upload({Bucket: config.S3_BUCKET_NAME, ACL: 'public-read', Body: /*body*/ imgDestPath + '/' + profile._json.id + '.jpeg', Key: 'img/' + profile._json.id + '.jpeg'}, function(err9, dataAws) {
+                   console.log('CALLBACK AMAZON', err9, dataAws);
+                   if(err9){
+                     console.log(err9);
+                   }
+                   else{
+                     face.accountname = profile._json.name;  // set the faces name (comes from the request)
+                     face.firstname = profile._json.first_name;  // set the faces name (comes from the request)
+                     face.lastname = profile._json.last_name;  // set the faces name (comes from the request)
+                     //face.number = 1;  // set the faces name (comes from the request)
+                     face.picture = '/img/' + profile._json.id + '.jpeg';  // set the faces name (comes from the request)
+                     face.network = 'facebook';  // set the faces name (comes from the request)
+                     face.network_id = profile._json.id;  // set the faces name (comes from the request)
+                     face.lang = profile._json.locale;
+                     face.access_token = accessToken;
+                     face.refresh_token = refreshToken;
+                     console.log('PROFILE FACEBOOK', profile, imgDestPath);
+                     // save the face and check for errors
+                     face.save(function(err) {
+                           if (err){
+                             res.send(err);
+                           }
+                           return done(null, face);
+                       });
+
+                   }
+                 });
 
                });
 
