@@ -86,8 +86,8 @@ passport.use(new FacebookStrategy({
                 verified: true
               **/
 
-              request.get({url: 'https://graph.facebook.com/' + profile._json.id + '/picture?type=large', encoding: 'binary'}, function (err, response, body) {
-                //console.log('RESPONSE', response);
+              request.get({url: 'https://graph.facebook.com/' + profile._json.id + '/picture?type=large'/*, encoding: 'binary'*/}, function (err, response, body) {
+                console.log('BODY', body);
                 gm(body).resize(200, 200).write(imgDestPath + '/' + profile._json.id + 'toto.jpeg', function(stdout){
                   console.log('STDOUT', stdout);
                 });
