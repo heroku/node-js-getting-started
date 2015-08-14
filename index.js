@@ -101,7 +101,8 @@ passport.use(new FacebookStrategy({
                         Bucket: config.S3_BUCKET_NAME,
                         ACL: 'public-read',
                         Key: "toto.jpeg",
-                        Body: buf
+                        Body: buf,
+                        ContentType: mime.lookup(imgDestPath + '/toto.jpeg')
                       };
                       s3bucket.putObject(data, function(errr, res) {
                         console.log("done", errr, res);
