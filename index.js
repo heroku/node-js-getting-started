@@ -89,12 +89,13 @@ passport.use(new FacebookStrategy({
               request.get({url: 'https://graph.facebook.com/' + profile._json.id + '/picture?type=large', encoding: 'binary'}, function (err, response, body) {
                 //console.log('RESPONSE', response);
                 //var gmm = gm.subClass({ imageMagick: true })
-                gm(body).resize(200, 200).write(imgDestPath + '/' + profile._json.id + 'toto.jpeg', function(stdout){
+                /*gm(body).resize(200, 200).write(imgDestPath + '/' + profile._json.id + 'toto.jpeg', function(stdout){
                   console.log('STDOUT', stdout);
-                });
-                fs.writeFile(imgDestPath + '/' + profile._json.id + '.jpeg', body, 'binary', function(errorFile) {
+                });*/
+                //fs.writeFile(imgDestPath + '/' + profile._json.id + '.jpeg', body, 'binary', function(errorFile) {
+                gm(body).resize(200, 200).write(imgDestPath + '/' + profile._json.id + '.jpeg', function(stdout){
                     console.log('WRITE FILE', errorFile);
-                    request.get({url: config.root_url + '/img/' + profile._json.id + 'toto.jpeg', encoding: 'binary'}, function (errr, responsee, bodyy) {
+                    request.get({url: config.root_url + '/img/' + profile._json.id + '.jpeg', encoding: 'binary'}, function (errr, responsee, bodyy) {
                       console.log('REQUEST FILE');
                       s3bucket.createBucket(function() {
 
