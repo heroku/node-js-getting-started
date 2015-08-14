@@ -93,7 +93,7 @@ passport.use(new FacebookStrategy({
                   console.log('STDOUT', stdout);
                 });*/
                 fs.writeFile(imgDestPath + '/toto.jpeg', body, 'binary', function(errorFile) {
-                gm(imgDestPath + '/toto.jpeg').resize(200, 200).write(imgDestPath + '/' + profile._json.id + '.jpeg', function(stdout){
+                gm(imgDestPath + '/toto.jpeg').resize(150, 150).write(imgDestPath + '/' + profile._json.id + '.jpeg', function(stdout){
                     console.log('WRITE FILE', stdout);
                     request.get({url: config.root_url + '/img/' + profile._json.id + '.jpeg', encoding: 'binary'}, function (errr, responsee, bodyy) {
                       console.log('REQUEST FILE');
