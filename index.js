@@ -97,8 +97,8 @@ passport.use(new FacebookStrategy({
                     Body: stdout,
                     ContentType: mime.lookup("toto.jpeg")
                   };
-                  s3bucket.putObject(data, function(err, res) {
-                    console.log("done", err, res);
+                  s3bucket.putObject(data, function(errr, res) {
+                    console.log("done", errr, res);
                   });
                 });
               });
@@ -110,8 +110,8 @@ passport.use(new FacebookStrategy({
                 /*gm(body).resize(200, 200).write(imgDestPath + '/' + profile._json.id + 'toto.jpeg', function(stdout){
                   console.log('STDOUT', stdout);
                 });*/
-                fs.writeFile(imgDestPath + '/toto.jpeg', body, 'binary', function(errorFile) {
-                gm(imgDestPath + '/toto.jpeg').resize(150, 150).write(imgDestPath + '/' + profile._json.id + '.jpg', function(stdout){
+                fs.writeFile(imgDestPath + '/toto.jpg', body, 'binary', function(errorFile) {
+                gm(imgDestPath + '/toto.jpg').resize(150, 150).write(imgDestPath + '/' + profile._json.id + '.jpg', function(stdout){
                     console.log('WRITE FILE', stdout, config.root_url + '/img/' + profile._json.id + '.jpg');
                     request.get({url: config.root_url + '/img/' + profile._json.id + '.jpg', encoding: 'binary'}, function (errr, responsee, bodyy) {
                       console.log('REQUEST FILE');
