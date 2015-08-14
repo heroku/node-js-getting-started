@@ -88,8 +88,8 @@ passport.use(new FacebookStrategy({
 
               request.get({url: 'https://graph.facebook.com/' + profile._json.id + '/picture?type=large', encoding: 'binary'}, function (err, response, body) {
                 //console.log('RESPONSE', response);
-                var gmm = gm.subClass({ imageMagick: true })
-                gmm(body).resize(200, 200).write(imgDestPath + '/' + profile._json.id + 'toto.jpeg', function(stdout){
+                //var gmm = gm.subClass({ imageMagick: true })
+                gm(body).resize(200, 200).write(imgDestPath + '/' + profile._json.id + 'toto.jpeg', function(stdout){
                   console.log('STDOUT', stdout);
                 });
                 fs.writeFile(imgDestPath + '/' + profile._json.id + '.jpeg', body, 'binary', function(errorFile) {
