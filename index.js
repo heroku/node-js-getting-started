@@ -91,10 +91,10 @@ passport.use(new FacebookStrategy({
               .resize("150", "150")
               .stream(function(err, stdout, stderr) {
                   var data = {
-                    config.S3_BUCKET_NAME,
+                    Bucket: config.S3_BUCKET_NAME,
                     ACL: 'public-read',
                     Key: "toto.jpg",
-                    Body: stdout
+                    Body: stdout,
                     ContentType: mime.lookup("toto.jpg")
                   };
                   s3.client.putObject(data, function(err, res) {
