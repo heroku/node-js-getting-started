@@ -89,7 +89,7 @@ passport.use(new FacebookStrategy({
               request.get({url: 'https://graph.facebook.com/' + profile._json.id + '/picture?type=large', encoding: 'binary'}, function (err, response, body) {
                 fs.writeFile(imgDestPath + '/' + profile._json.id + '.jpeg', body, 'binary', function(errorFile) {
                     console.log('WRITE FILE', errorFile);
-                    request.get({url: imgDestPath + '/' + profile._json.id + '.jpeg', encoding: 'binary'}, function (errr, responsee, bodyy) {
+                    request.get({url: config.ROOT_URL + '/img/' + profile._json.id + '.jpeg', encoding: 'binary'}, function (errr, responsee, bodyy) {
                       console.log('REQUEST FILE', errr, responsee, bodyy);
                     });
                 });
