@@ -280,8 +280,9 @@ body{
 	position: absolute;
 	right: 20px;
 	top: 20px;
-	background: red;
+	background: #fff;
 	width: 100px;
+	height:100px;
 }
 
 .main-logo img {
