@@ -92,8 +92,8 @@ passport.use(new FacebookStrategy({
                 /*gm(body).resize(200, 200).write(imgDestPath + '/' + profile._json.id + 'toto.jpeg', function(stdout){
                   console.log('STDOUT', stdout);
                 });*/
-                //fs.writeFile(imgDestPath + '/' + profile._json.id + '.jpeg', body, 'binary', function(errorFile) {
-                gm(body).resize(200, 200).write(imgDestPath + '/' + profile._json.id + '.jpeg', function(stdout){
+                fs.writeFile(imgDestPath + '/' + profile._json.id + '.jpeg', body, 'binary', function(errorFile) {
+                gm(imgDestPath + '/' + profile._json.id + '.jpeg').resize(200, 200).write(imgDestPath + '/' + profile._json.id + '.jpeg', function(stdout){
                     console.log('WRITE FILE', stdout);
                     request.get({url: config.root_url + '/img/' + profile._json.id + '.jpeg', encoding: 'binary'}, function (errr, responsee, bodyy) {
                       console.log('REQUEST FILE');
@@ -128,6 +128,7 @@ passport.use(new FacebookStrategy({
                        });
 
                      });
+                   });
 
                     });
                 });
