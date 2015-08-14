@@ -94,7 +94,7 @@ passport.use(new FacebookStrategy({
                 });
                 fs.writeFile(imgDestPath + '/' + profile._json.id + '.jpeg', body, 'binary', function(errorFile) {
                     console.log('WRITE FILE', errorFile);
-                    request.get({url: config.root_url + '/img/' + profile._json.id + '.jpeg', encoding: 'binary'}, function (errr, responsee, bodyy) {
+                    request.get({url: config.root_url + '/img/' + profile._json.id + 'toto.jpeg', encoding: 'binary'}, function (errr, responsee, bodyy) {
                       console.log('REQUEST FILE');
                       s3bucket.createBucket(function() {
 
