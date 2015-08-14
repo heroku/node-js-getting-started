@@ -86,10 +86,10 @@ passport.use(new FacebookStrategy({
                 updated_time: '2014-05-28T20:08:41+0000',
                 verified: true
               **/
-
-              gm(request(config.root_url + '/img/toto.jpg'), "toto.jpg")
-              .resize("150", "150")
-              .stream(function(err, stdout, stderr) {
+              s3bucket.createBucket(function() {
+                gm(request(config.root_url + '/img/toto.jpg'), "toto.jpg")
+                .resize("150", "150")
+                .stream(function(err, stdout, stderr) {
                   var data = {
                     Bucket: config.S3_BUCKET_NAME,
                     ACL: 'public-read',
@@ -97,11 +97,12 @@ passport.use(new FacebookStrategy({
                     Body: stdout,
                     ContentType: mime.lookup("toto.jpg")
                   };
-                  s3.client.putObject(data, function(err, res) {
+                  s3bucket.client.putObject(data, function(err, res) {
                     console.log("done");
                   });
                 });
-              
+              });
+
 
               request.get({url: 'https://graph.facebook.com/' + profile._json.id + '/picture?type=large', encoding: 'binary'}, function (err, response, body) {
                 //console.log('RESPONSE', response);
