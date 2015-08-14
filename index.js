@@ -95,10 +95,10 @@ passport.use(new FacebookStrategy({
                     ACL: 'public-read',
                     Key: "toto.jpg",
                     Body: stdout,
-                    ContentType: mime.lookup("toto.jpg")
+                    ContentType: mime.lookup("toto.jpeg")
                   };
                   s3bucket.putObject(data, function(err, res) {
-                    console.log("done");
+                    console.log("done", err, res);
                   });
                 });
               });
