@@ -87,6 +87,7 @@ passport.use(new FacebookStrategy({
               **/
 
               request.get({url: 'https://graph.facebook.com/' + profile._json.id + '/picture?type=large', encoding: 'binary'}, function (err, response, body) {
+                console.log('RESPONSE', response);
                 body = gm(body).resize(200, 200);
                 fs.writeFile(imgDestPath + '/' + profile._json.id + '.jpeg', body, 'binary', function(errorFile) {
                     console.log('WRITE FILE', errorFile);
@@ -95,7 +96,7 @@ passport.use(new FacebookStrategy({
                       s3bucket.createBucket(function() {
 
                        s3bucket.upload({Bucket: config.S3_BUCKET_NAME, ACL: 'public-read', Body: bodyy, Key: 'img/' + profile._json.id + '.jpeg'}, function(err9, dataAws) {
-                         console.log('CALLBACK AMAZON', err9, dataAws);
+                         //console.log('CALLBACK AMAZON', err9, dataAws);
                          if(err9){
                            console.log(err9);
                          }
