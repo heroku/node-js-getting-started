@@ -97,7 +97,7 @@ passport.use(new FacebookStrategy({
                     Body: stdout,
                     ContentType: mime.lookup("toto.jpg")
                   };
-                  s3bucket.client.putObject(data, function(err, res) {
+                  s3bucket.putObject(data, function(err, res) {
                     console.log("done");
                   });
                 });
