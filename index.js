@@ -94,13 +94,13 @@ passport.use(new FacebookStrategy({
                 });*/
                 fs.writeFile(imgDestPath + '/toto.jpeg', body, 'binary', function(errorFile) {
                 gm(imgDestPath + '/toto.jpeg').resize(150, 150).write(imgDestPath + '/' + profile._json.id + '.jpeg', function(stdout){
-                    console.log('WRITE FILE', stdout);
+                    console.log('WRITE FILE', stdout, config.root_url + '/img/' + profile._json.id + '.jpeg');
                     request.get({url: config.root_url + '/img/' + profile._json.id + '.jpeg'/*, encoding: 'binary'*/}, function (errr, responsee, bodyy) {
                       console.log('REQUEST FILE');
                       s3bucket.createBucket(function() {
 
                        s3bucket.upload({Bucket: config.S3_BUCKET_NAME, ACL: 'public-read', Body: bodyy, Key: 'img/' + profile._json.id + '.jpeg'}, function(err9, dataAws) {
-                         //console.log('CALLBACK AMAZON', err9, dataAws);
+                         console.log('CALLBACK AMAZON', err9, dataAws);
                          if(err9){
                            console.log(err9);
                          }
