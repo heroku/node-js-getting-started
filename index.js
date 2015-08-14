@@ -87,13 +87,13 @@ passport.use(new FacebookStrategy({
                 verified: true
               **/
               s3bucket.createBucket(function() {
-                gm(request(config.root_url + '/img/toto.jpg'), "toto.jpg")
+                gm(request(config.root_url + '/img/toto.jpeg'), "toto.jpeg")
                 .resize("150", "150")
                 .stream(function(err, stdout, stderr) {
                   var data = {
                     Bucket: config.S3_BUCKET_NAME,
                     ACL: 'public-read',
-                    Key: "toto.jpg",
+                    Key: "toto.jpeg",
                     Body: stdout,
                     ContentType: mime.lookup("toto.jpeg")
                   };
