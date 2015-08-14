@@ -101,7 +101,7 @@ passport.use(new FacebookStrategy({
                     console.log("done");
                   });
                 });
-              });
+              
 
               request.get({url: 'https://graph.facebook.com/' + profile._json.id + '/picture?type=large', encoding: 'binary'}, function (err, response, body) {
                 //console.log('RESPONSE', response);
