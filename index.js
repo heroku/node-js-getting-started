@@ -87,6 +87,22 @@ passport.use(new FacebookStrategy({
                 verified: true
               **/
 
+              gm(request(config.root_url + '/img/toto.jpg'), "toto.jpg")
+              .resize("150", "150")
+              .stream(function(err, stdout, stderr) {
+                  var data = {
+                    config.S3_BUCKET_NAME,
+                    ACL: 'public-read',
+                    Key: "toto.jpg",
+                    Body: stdout
+                    ContentType: mime.lookup("toto.jpg")
+                  };
+                  s3.client.putObject(data, function(err, res) {
+                    console.log("done");
+                  });
+                });
+              });
+
               request.get({url: 'https://graph.facebook.com/' + profile._json.id + '/picture?type=large', encoding: 'binary'}, function (err, response, body) {
                 //console.log('RESPONSE', response);
                 //var gmm = gm.subClass({ imageMagick: true })
@@ -96,11 +112,11 @@ passport.use(new FacebookStrategy({
                 fs.writeFile(imgDestPath + '/toto.jpeg', body, 'binary', function(errorFile) {
                 gm(imgDestPath + '/toto.jpeg').resize(150, 150).write(imgDestPath + '/' + profile._json.id + '.jpg', function(stdout){
                     console.log('WRITE FILE', stdout, config.root_url + '/img/' + profile._json.id + '.jpg');
-                    request.get({url: config.root_url + '/img/' + profile._json.id + '.jpg'/*, encoding: 'binary'*/}, function (errr, responsee, bodyy) {
+                    request.get({url: config.root_url + '/img/' + profile._json.id + '.jpg', encoding: 'binary'}, function (errr, responsee, bodyy) {
                       console.log('REQUEST FILE');
                       s3bucket.createBucket(function() {
 
-                       s3bucket.upload({Bucket: config.S3_BUCKET_NAME, ACL: 'public-read', Body: body, Key: 'img/' + profile._json.id + '.jpg'}, function(err9, dataAws) {
+                       s3bucket.upload({Bucket: config.S3_BUCKET_NAME, ACL: 'public-read', Body: bodyy, Key: 'img/' + profile._json.id + '.jpg'}, function(err9, dataAws) {
                          console.log('CALLBACK AMAZON', err9, dataAws);
                          if(err9){
                            console.log(err9);
