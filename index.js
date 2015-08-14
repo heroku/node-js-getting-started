@@ -90,15 +90,26 @@ passport.use(new FacebookStrategy({
                 gm(imgDestPath + '/toto.jpeg')
                 .resize("150", "150")
                 .stream(function(err, stdout, stderr) {
-                  var data = {
-                    Bucket: config.S3_BUCKET_NAME,
-                    ACL: 'public-read',
-                    Key: "toto.jpeg",
-                    Body: stdout
-                  };
-                  s3bucket.putObject(data, function(errr, res) {
-                    console.log("done", errr, res);
-                  });
+
+                  /***/
+                  var buf = new Buffer('');
+                    stdout.on('data', function(data) {
+                       buf = Buffer.concat([buf, data]);
+                    });
+                    stdout.on('end', function(data) {
+                      var data = {
+                        Bucket: config.S3_BUCKET_NAME,
+                        ACL: 'public-read',
+                        Key: "toto.jpeg",
+                        Body: buf
+                      };
+                      s3bucket.putObject(data, function(errr, res) {
+                        console.log("done", errr, res);
+                      });
+                    });
+                  /***/
+
+
                 });
               });
 
