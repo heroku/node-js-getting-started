@@ -52,6 +52,7 @@ define('bloc', ["blocIthem"], function(BlocIthem) {
 						}
 
 						_items[i].update(blocData);
+						console.log('PICTURE', _app.static_files(blocData.picture));
 						_items[i].updateImage(_app.static_files(blocData.picture));
 					}
 
