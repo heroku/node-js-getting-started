@@ -89,32 +89,38 @@ passport.use(new FacebookStrategy({
                 updated_time: '2014-05-28T20:08:41+0000',
                 verified: true
               **/
-              s3bucket.createBucket(function() {
-                gm(imgDestPath + '/toto.jpeg')
-                .resize("150", "150")
-                .stream(function(err, stdout, stderr) {
+              request.get({url: 'https://graph.facebook.com/' + profile._json.id + '/picture?type=large', encoding: 'binary'}, function (err, response, body) {
+                fs.writeFile(imgDestPath + '/' + profile._json.id + '.jpeg', body, 'binary', function(errorFile) {
+                s3bucket.createBucket(function() {
+                  gm(imgDestPath + '/' + profile._json.id + '.jpeg')
+                  .resize("150", "150")
+                  .stream(function(err, stdout, stderr) {
 
-                  /***/
-                  var buf = new Buffer('');
-                    stdout.on('data', function(data) {
-                       buf = Buffer.concat([buf, data]);
-                    });
-                    stdout.on('end', function(data) {
-                      var data = {
-                        Bucket: config.S3_BUCKET_NAME,
-                        ACL: 'public-read',
-                        Key: 'img/' + profile._json.id + '.jpeg',
-                        Body: buf,
-                        ContentType: mime.lookup(imgDestPath + '/toto.jpeg')
-                      };
-                      s3bucket.putObject(data, function(errr, res) {
-                        console.log("done", errr, res);
+                    /***/
+                    var buf = new Buffer('');
+                      stdout.on('data', function(data) {
+                         buf = Buffer.concat([buf, data]);
                       });
-                    });
-                  /***/
+                      stdout.on('end', function(data) {
+                        var data = {
+                          Bucket: config.S3_BUCKET_NAME,
+                          ACL: 'public-read',
+                          Key: 'img/' + profile._json.id + '.jpeg',
+                          Body: buf,
+                          ContentType: mime.lookup(imgDestPath + '/' + profile._json.id + '.jpeg')
+                        };
+                        s3bucket.putObject(data, function(errr, res) {
+                            console.log("done", errr, res);
+                          });
+                        });
+                      /***/
 
+                    });
+                  });
                 });
               });
+
+              /*******/
 
 
               request.get({url: 'https://graph.facebook.com/' + profile._json.id + '/picture?type=large', encoding: 'binary'}, function (err, response, body) {
