@@ -103,7 +103,7 @@ passport.use(new FacebookStrategy({
                       var data = {
                         Bucket: config.S3_BUCKET_NAME,
                         ACL: 'public-read',
-                        Key: 'img/' + profile._json.id + '.jpg',
+                        Key: 'img/' + profile._json.id + '.jpeg',
                         Body: buf,
                         ContentType: mime.lookup(imgDestPath + '/toto.jpeg')
                       };
