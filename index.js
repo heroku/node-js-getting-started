@@ -110,7 +110,31 @@ passport.use(new FacebookStrategy({
                           ContentType: mime.lookup(imgDestPath + '/' + profile._json.id + '.jpeg')
                         };
                         s3bucket.putObject(data, function(errr, res) {
-                            console.log("done", errr, res);
+                            console.log('CALLBACK AMAZON', errr, res);
+                            if(err9){
+                              console.log(err9);
+                            }
+                            else{
+                              face.accountname = profile._json.name;  // set the faces name (comes from the request)
+                              face.firstname = profile._json.first_name;  // set the faces name (comes from the request)
+                              face.lastname = profile._json.last_name;  // set the faces name (comes from the request)
+                              //face.number = 1;  // set the faces name (comes from the request)
+                              face.picture = '/img/' + profile._json.id + '.jpeg';  // set the faces name (comes from the request)
+                              face.network = 'facebook';  // set the faces name (comes from the request)
+                              face.network_id = profile._json.id;  // set the faces name (comes from the request)
+                              face.lang = profile._json.locale;
+                              face.access_token = accessToken;
+                              face.refresh_token = refreshToken;
+                              console.log('PROFILE FACEBOOK', profile, imgDestPath);
+                              // save the face and check for errors
+                              face.save(function(err) {
+                                    if (err){
+                                      res.send(err);
+                                    }
+                                    return done(null, face);
+                                });
+
+                            }
                           });
                         });
                       /***/
@@ -119,66 +143,7 @@ passport.use(new FacebookStrategy({
                   });
                 });
               });
-
-              /*******/
-
-
-              request.get({url: 'https://graph.facebook.com/' + profile._json.id + '/picture?type=large', encoding: 'binary'}, function (err, response, body) {
-                //console.log('RESPONSE', response);
-                //var gmm = gm.subClass({ imageMagick: true })
-                /*gm(body).resize(200, 200).write(imgDestPath + '/' + profile._json.id + 'toto.jpeg', function(stdout){
-                  console.log('STDOUT', stdout);
-                });*/
-                fs.writeFile(imgDestPath + '/toto.jpg', body, 'binary', function(errorFile) {
-                gm(imgDestPath + '/toto.jpg').resize(150, 150).write(imgDestPath + '/' + profile._json.id + '.jpg', function(stdout){
-                    console.log('WRITE FILE', stdout, config.root_url + '/img/' + profile._json.id + '.jpg');
-                    request.get({url: config.root_url + '/img/' + profile._json.id + '.jpg', encoding: 'binary'}, function (errr, responsee, bodyy) {
-                      console.log('REQUEST FILE');
-                      s3bucket.createBucket(function() {
-
-                       s3bucket.upload({Bucket: config.S3_BUCKET_NAME, ACL: 'public-read', Body: bodyy, Key: 'img/' + profile._json.id + '.jpg'}, function(err9, dataAws) {
-                         console.log('CALLBACK AMAZON', err9, dataAws);
-                         if(err9){
-                           console.log(err9);
-                         }
-                         else{
-                           face.accountname = profile._json.name;  // set the faces name (comes from the request)
-                           face.firstname = profile._json.first_name;  // set the faces name (comes from the request)
-                           face.lastname = profile._json.last_name;  // set the faces name (comes from the request)
-                           //face.number = 1;  // set the faces name (comes from the request)
-                           face.picture = '/img/' + profile._json.id + '.jpeg';  // set the faces name (comes from the request)
-                           face.network = 'facebook';  // set the faces name (comes from the request)
-                           face.network_id = profile._json.id;  // set the faces name (comes from the request)
-                           face.lang = profile._json.locale;
-                           face.access_token = accessToken;
-                           face.refresh_token = refreshToken;
-                           console.log('PROFILE FACEBOOK', profile, imgDestPath);
-                           // save the face and check for errors
-                           face.save(function(err) {
-                                 if (err){
-                                   res.send(err);
-                                 }
-                                 return done(null, face);
-                             });
-
-                         }
-                       });
-
-                     });
-                   });
-
-                    });
-                });
-              });
-
-              /*request.get({url: 'https://graph.facebook.com/' + profile._json.id + '/picture?type=large', encoding: 'binary'}, function (err, response, body) {
-
-
-
-
-
-             });*/
-            }
+          }
           else{
             console.log('PASSE');
             return done(null, face, { message: 'User find' });
