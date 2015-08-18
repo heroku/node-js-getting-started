@@ -455,7 +455,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 				if( _app.config.mock){
 					onGetFacesByRange(mockFaces.getFacesByRange(range));
 				}else{
-                	_services.getFacesByRange(range, onGetFacesByRange);
+          _services.getFacesByRange(range, onGetFacesByRange);
 				}
             }
 
