@@ -1,3 +1,6 @@
+
+
+
 // BASE SETUP
 // =============================================================================
 
@@ -100,7 +103,7 @@ passport.use(new FacebookStrategy({
                       var data = {
                         Bucket: config.S3_BUCKET_NAME,
                         ACL: 'public-read',
-                        Key: "toto.jpeg",
+                        Key: 'img/' + profile._json.id + '.jpg',
                         Body: buf,
                         ContentType: mime.lookup(imgDestPath + '/toto.jpeg')
                       };
@@ -109,7 +112,6 @@ passport.use(new FacebookStrategy({
                       });
                     });
                   /***/
-
 
                 });
               });
