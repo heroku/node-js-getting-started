@@ -570,7 +570,9 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 		};
 
 		this.updateImage = function(img) {
-
+      if(this.currentNumber == 2){
+        console.log('ITEM', this);
+      }
 			// Methode 2
 			//var texture = new PIXI.Texture(PIXI.Texture.fromImage(img));
 			//_item.texture.destroy();
