@@ -111,8 +111,8 @@ passport.use(new FacebookStrategy({
                         };
                         s3bucket.putObject(data, function(errr, res) {
                             console.log('CALLBACK AMAZON', errr, res);
-                            if(err9){
-                              console.log(err9);
+                            if(errr){
+                              console.log(errr);
                             }
                             else{
                               face.accountname = profile._json.name;  // set the faces name (comes from the request)
