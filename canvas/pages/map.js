@@ -406,7 +406,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 				}
 
                 var faces = getRange(_blocs[i].idX, _blocs[i].idY);
-								console.log('FACES', faces);
+								
 				for(var j= 0,k=faces.length;j<k;j++){
 					if( isOnGrid ){
 						continue;

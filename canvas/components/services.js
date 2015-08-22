@@ -16,6 +16,7 @@ define('components/services', ['cacheControl', 'messageBus'], function(CacheCont
 			}else{
 
 				xhr = $.getJSON(serviceQuery).done(function(json) {
+					console.log('JSON', json);
 					callback(json);
 
                     //doneXHR(_xhr.ranges, xhr);
