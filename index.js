@@ -461,7 +461,6 @@ router.route('/faces')
 
             // get the face with that id (accessed at GET http://localhost:8080/api/faces/:face_id)
             .get(function(req, res) {
-                console.log('RANGE', req.params.range);
                 var range = JSON.parse('[' + req.params.range + ']');
 
                 Face.find({number:{$in:range}}).sort('number').exec(function(err, faces) {
@@ -479,7 +478,6 @@ router.route('/faces')
                       }
 
                     tempFaces = _.sortBy(tempFaces, 'number');
-                    console.log('TEMP FACES', tempFaces);
                     res.json(tempFaces);
                 });
             });
