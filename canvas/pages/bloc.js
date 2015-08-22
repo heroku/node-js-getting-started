@@ -41,7 +41,7 @@ define('bloc', ["blocIthem"], function(BlocIthem) {
 		}
 
 		this.setValue = function(data) {
-			console.log('DATA', data);
+			//console.log('DATA', data);
 			for (var i = 0; i < data.length; i++) {
 				if (data[i].number >= 0) {
 					if( _items[i] ){
