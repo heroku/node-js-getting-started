@@ -508,6 +508,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
          */
         function updateGrid(){
 			for( var i = 0, l = _blocs.length; i<l; i++){
+				console.log('GET RANGE', getRange(_blocs[i].idX, _blocs[i].idY));
 				_blocs[i].setValue(getRange(_blocs[i].idX, _blocs[i].idY));
 			}
         }
@@ -519,12 +520,12 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
         function updateMatrix(data){
             for (var i = 0; i < data.length; i++) {
                 if (data[i].picture) {
-									console.log('PICTURE DATA');
+									//console.log('PICTURE DATA');
 									data[i].faceColor = main.martixRange[data[i].number].faceColor;
 									main.martixRange[data[i].number] = data[i];
                 }
             }
-						console.log('MATRIX', data, main.martixRange);
+						//console.log('MATRIX', data, main.martixRange);
         }
 
         /**
