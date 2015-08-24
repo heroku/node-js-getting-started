@@ -53,7 +53,7 @@ define('bloc', ["blocIthem"], function(BlocIthem) {
 							console.log('TEST DATA', id, data[i], blocData);
 						}
 						if( _items[i].currentNumber && _items[i].currentNumber === blocData.number){
-							continue;
+							//continue;
 						}
 
 						_items[i].update(blocData);
