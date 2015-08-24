@@ -519,8 +519,9 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
         function updateMatrix(data){
             for (var i = 0; i < data.length; i++) {
                 if (data[i].picture) {
-					data[i].faceColor = main.martixRange[data[i].number].faceColor;
-					main.martixRange[data[i].number] = data[i];
+									console.log('PICTURE DATA');
+									data[i].faceColor = main.martixRange[data[i].number].faceColor;
+									main.martixRange[data[i].number] = data[i];
                 }
             }
         }
