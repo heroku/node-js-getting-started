@@ -508,7 +508,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
          */
         function updateGrid(){
 			for( var i = 0, l = _blocs.length; i<l; i++){
-				console.log('GET RANGE', getRange(_blocs[i].idX, _blocs[i].idY));
+				//console.log('GET RANGE', getRange(_blocs[i].idX, _blocs[i].idY));
 				_blocs[i].setValue(getRange(_blocs[i].idX, _blocs[i].idY));
 			}
         }
