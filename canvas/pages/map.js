@@ -406,7 +406,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 				}
 
                 var faces = getRange(_blocs[i].idX, _blocs[i].idY);
-								
+
 				for(var j= 0,k=faces.length;j<k;j++){
 					if( isOnGrid ){
 						continue;
@@ -454,8 +454,10 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
             if( range.length ){
 				thottleUpdateGrid();
 				if( _app.config.mock){
+					console.log('Mock');
 					onGetFacesByRange(mockFaces.getFacesByRange(range));
 				}else{
+					console.log('no Mock');
           _services.getFacesByRange(range, onGetFacesByRange);
 				}
             }
