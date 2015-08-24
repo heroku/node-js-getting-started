@@ -524,7 +524,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 									main.martixRange[data[i].number] = data[i];
                 }
             }
-						console.log('MATRIX', data, main.matrixRange);
+						console.log('MATRIX', data, main.martixRange);
         }
 
         /**
