@@ -44,7 +44,11 @@ define('bloc', ["blocIthem"], function(BlocIthem) {
 			//console.log('DATA', data);
 			for (var i = 0; i < data.length; i++) {
 				if (data[i].number >= 0) {
+					if(data[i].number == 2){
+						console.log('TEST DATA', data[i]);
+					}
 					if( _items[i] ){
+						console.log('TEST ITEM', data[i]);
 						var id = data[i].number;
 						var blocData = main.martixRange[id];
 
