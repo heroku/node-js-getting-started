@@ -690,13 +690,41 @@ publicRouter.get('/populate/', function(req, res, next) {
     access_token_key: config.TWITTER_ACCESS_TOKEN_KEY,
     access_token_secret: config.TWITTER_ACCESS_TOKEN_SECRET
   });
-
-    Scrap.find(function(err, scrapes) {
+    console.log('BOUCLE');
+    console.log('BOUCLE2');
+    Scrap.find().limit(300).exec(function(err, scrapes) {
+      var scrapList = [];
+      var j = 0;
 
       for(var i = 0; i < scrapes.length; i++){
         if(scrapes[i].scraped == true)continue;
 
-        function closureScrapToFace() {
+        if(j > 99){
+          //console.log('TEST I', i);
+
+          function closureScrapToFace() {
+            var currentList = _.uniq(scrapList);
+            console.log('LIST LENGTH', currentList.length, currentList);
+            function insertScrapToFace() {
+              console.log('TWITTER CLIENT', client);
+              client.get('users/lookup', {user_id: currentList}, function(error, currentUser, response){
+                  console.log('TWITTER RESULT', error, currentUser);
+              });
+            }
+            return insertScrapToFace;
+          }
+          setTimeout(closureScrapToFace(), 1000 + (i * 10));
+
+          scrapList.splice(0,scrapList.length);
+
+          j = 0;
+        }
+
+        scrapList.push(scrapes[i].twitter_id);
+
+
+
+        /*function closureScrapToFace() {
           var currentScrape = scrapes[i];
           var number = i + 3;
 
@@ -746,16 +774,17 @@ publicRouter.get('/populate/', function(req, res, next) {
                 });
               });
             }
-            });
+          });
           }
           return insertScrapToFace;
-        }
+        }*/
 
-        setTimeout(closureScrapToFace(), 5005 * i);
+        //setTimeout(closureScrapToFace(), 5005 * i);
+        j++;
       }
-      res.json(scrapes);
-    });
 
+    });
+    res.json('works');
 });
 
 publicRouter.get('/scraping/:query', function(req, res, next) {
@@ -1157,11 +1186,11 @@ publicRouter.get('/share/:number', function(req, res, next) {
   res.render('share', {data:{'config': config, 'number' : req.params.number}});
 });
 
-app.use(function(req, res, next) {
+/*app.use(function(req, res, next) {
     config.root_url = req.protocol + "://" + req.get('host');
     config.assets_url = req.protocol + "://files." + req.get('host');
     return next();
-  });
+});*/
 //basic auth
 app.use(function(req, res, next) {
 
