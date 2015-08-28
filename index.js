@@ -681,6 +681,98 @@ publicRouter.get('/moderate/:offset', function(req, res, next) {
 
 });
 
+function createUserFromTwitter(twitterUserData, number){
+  console.log('USER TWITTER', twitterUserData.id);
+    if(twitterUserData.profile_image_url){
+    /****************REFACTOR**********************/
+    request.get({url: twitterUserData.profile_image_url.replace('_normal',''), encoding: 'binary'}, function (err, response, body) {
+      fs.writeFile(imgDestPath + '/' + twitterUserData.id + '.jpeg', body, 'binary', function(errorFile) {
+        s3bucket.createBucket(function() {
+          gm(imgDestPath + '/' + twitterUserData.id + '.jpeg')
+          .resize("150", "150")
+          .stream(function(err, stdout, stderr) {
+            /***/
+            var buf = new Buffer('');
+              stdout.on('data', function(data) {
+                 buf = Buffer.concat([buf, data]);
+              });
+              stdout.on('end', function(data) {
+                var data = {
+                  Bucket: config.S3_BUCKET_NAME,
+                  ACL: 'public-read',
+                  Key: 'img/' + twitterUserData.id + '.jpeg',
+                  Body: buf,
+                  ContentType: mime.lookup(imgDestPath + '/' + twitterUserData.id + '.jpeg')
+                };
+                s3bucket.putObject(data, function(errr, res) {
+                    console.log('CALLBACK AMAZON', errr, res);
+                    if(errr){
+                      console.log(errr);
+                    }
+                    else{
+                      var face = new Face();
+                      face.accountname = twitterUserData.name;  // set the faces name (comes from the request)
+                      face.firstname = twitterUserData.screen_name;  // set the faces name (comes from the request)
+                      face.lastname = twitterUserData.screen_name;  // set the faces name (comes from the request)
+                      face.number = number;  // set the faces name (comes from the request)
+                      face.picture = '/img/' + twitterUserData.id + '.jpeg';  // set the faces name (comes from the request)
+                      face.network = 'twitter';  // set the faces name (comes from the request)
+                      face.network_id = twitterUserData.id;  // set the faces name (comes from the request)
+                      face.lang = twitterUserData.lang;  // set the faces name (comes from the request)
+                      face.non_human = false;  // set the faces name (comes from the request)
+                      console.log('PROFILE TWITTER', twitterUserData.id);
+                      // save the face and check for errors
+                        face.save(function(err) {
+                            if (err){
+                              console.log(err);
+                            }
+
+                        });
+
+                    }
+                  });
+                });
+              /***/
+          });
+        });
+      });
+    });
+
+    /**************************************/
+
+
+    /*request.get({url: twitterUserData.profile_image_url.replace('_normal',''), encoding: 'binary'}, function (err, response, body) {
+      fs.writeFile(imgDestPath + '/' + twitterUserData.id + '.jpeg', body, 'binary', function(error) {
+        if(error){
+          console.log(error);
+        }
+        else{
+          var face = new Face();
+          face.accountname = twitterUserData.name;  // set the faces name (comes from the request)
+          face.firstname = twitterUserData.screen_name;  // set the faces name (comes from the request)
+          face.lastname = twitterUserData.screen_name;  // set the faces name (comes from the request)
+          face.number = number;  // set the faces name (comes from the request)
+          face.picture = '/img/' + twitterUserData.id + '.jpeg';  // set the faces name (comes from the request)
+          face.network = 'twitter';  // set the faces name (comes from the request)
+          face.network_id = twitterUserData.id;  // set the faces name (comes from the request)
+          face.lang = twitterUserData.lang;  // set the faces name (comes from the request)
+          face.non_human = false;  // set the faces name (comes from the request)
+          console.log('PROFILE TWITTER', twitterUserData.id);
+          // save the face and check for errors
+            face.save(function(err) {
+                if (err){
+                  console.log(err);
+                }
+
+            });
+
+        }
+
+      });
+    });*/
+  }
+}
+
 
 publicRouter.get('/populate/', function(req, res, next) {
 
@@ -690,9 +782,8 @@ publicRouter.get('/populate/', function(req, res, next) {
     access_token_key: config.TWITTER_ACCESS_TOKEN_KEY,
     access_token_secret: config.TWITTER_ACCESS_TOKEN_SECRET
   });
-    console.log('BOUCLE');
-    console.log('BOUCLE2');
-    Scrap.find().limit(300).exec(function(err, scrapes) {
+
+    Scrap.find().limit(10000).exec(function(err, scrapes) {
       var scrapList = [];
       var j = 0;
 
@@ -700,21 +791,23 @@ publicRouter.get('/populate/', function(req, res, next) {
         if(scrapes[i].scraped == true)continue;
 
         if(j > 99){
-          //console.log('TEST I', i);
 
           function closureScrapToFace() {
             var currentList = _.uniq(scrapList);
-            console.log('LIST LENGTH', currentList.length, currentList);
+            var number = i + 3;
+            //console.log('LIST LENGTH', currentList.length, currentList);
             function insertScrapToFace() {
-              console.log('TWITTER CLIENT', client);
-              client.get('users/lookup', {user_id: currentList}, function(error, currentUser, response){
-                  console.log('TWITTER RESULT', error, currentUser);
+              client.get('users/lookup', {user_id: currentList.join(',')}, function(error, users, response){
+                  for(var k = 0; k < users.length; k++){
+                    createUserFromTwitter(users[k], number);
+                    number += 3;
+                  }
               });
             }
             return insertScrapToFace;
           }
-          setTimeout(closureScrapToFace(), 1000 + (i * 10));
 
+          setTimeout(closureScrapToFace(), 1000 + (i * 10));
           scrapList.splice(0,scrapList.length);
 
           j = 0;
@@ -722,64 +815,6 @@ publicRouter.get('/populate/', function(req, res, next) {
 
         scrapList.push(scrapes[i].twitter_id);
 
-
-
-        /*function closureScrapToFace() {
-          var currentScrape = scrapes[i];
-          var number = i + 3;
-
-
-          function insertScrapToFace() {
-            console.log('TIMEOUT',i, currentScrape);
-            currentScrape.scraped = true;
-            currentScrape.save(function(err) {
-                if (err){
-                  console.log(err);
-                }
-
-            });
-
-            client.get('users/show', {user_id: currentScrape}, function(error, currentUser, response){
-              var user = currentUser;
-
-              console.log('USER TWITTER', user);
-              if(user.profile_image_url){
-              request.get({url: user.profile_image_url.replace('_normal',''), encoding: 'binary'}, function (err, response, body) {
-                fs.writeFile(imgDestPath + '/' + user.id + '.jpeg', body, 'binary', function(error) {
-                  if(error){
-                    console.log(error);
-                  }
-                  else{
-                    var face = new Face();
-                    face.accountname = user.name;  // set the faces name (comes from the request)
-                    face.firstname = user.screen_name;  // set the faces name (comes from the request)
-                    face.lastname = user.screen_name;  // set the faces name (comes from the request)
-                    face.number = number;  // set the faces name (comes from the request)
-                    face.picture = '/img/' + user.id + '.jpeg';  // set the faces name (comes from the request)
-                    face.network = 'twitter';  // set the faces name (comes from the request)
-                    face.network_id = user.id;  // set the faces name (comes from the request)
-                    face.lang = user.lang;  // set the faces name (comes from the request)
-                    face.non_human = false;  // set the faces name (comes from the request)
-                    console.log('PROFILE TWITTER', user);
-                    // save the face and check for errors
-                      face.save(function(err) {
-                          if (err){
-                            console.log(err);
-                          }
-
-                      });
-
-                  }
-
-                });
-              });
-            }
-          });
-          }
-          return insertScrapToFace;
-        }*/
-
-        //setTimeout(closureScrapToFace(), 5005 * i);
         j++;
       }
 
