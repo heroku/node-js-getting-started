@@ -693,6 +693,7 @@ function createUserFromTwitter(twitterUserData, number){
           .stream(function(err, stdout, stderr) {
             /***/
             var buf = new Buffer('');
+            if(stdout){
               stdout.on('data', function(data) {
                  buf = Buffer.concat([buf, data]);
               });
@@ -732,6 +733,7 @@ function createUserFromTwitter(twitterUserData, number){
                     }
                   });
                 });
+              }
               /***/
           });
         });
