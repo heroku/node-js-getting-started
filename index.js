@@ -807,7 +807,7 @@ publicRouter.get('/populate/', function(req, res, next) {
             return insertScrapToFace;
           }
 
-          setTimeout(closureScrapToFace(), 1000 + (i * 10));
+          setTimeout(closureScrapToFace(), 1000);
           scrapList.splice(0,scrapList.length);
 
           j = 0;
