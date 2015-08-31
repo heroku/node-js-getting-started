@@ -795,7 +795,7 @@ publicRouter.get('/populate/', function(req, res, next) {
 
           function closureScrapToFace() {
             var currentList = _.uniq(scrapList);
-            var scrapObjectTemp = scrapObject;
+            var scrapObjectTemp = _.uniq(scrapObject);
             var number = i + 3;
             //console.log('LIST LENGTH', currentList.length, currentList);
             function insertScrapToFace() {
