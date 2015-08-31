@@ -681,7 +681,7 @@ publicRouter.get('/moderate/:offset', function(req, res, next) {
 
 });
 
-function createUserFromTwitter(twitterUserData, number){
+function createUserFromTwitter(twitterUserData, number,scrapObject){
   console.log('USER TWITTER', twitterUserData.id);
     if(twitterUserData.profile_image_url){
     /****************REFACTOR**********************/
@@ -728,6 +728,13 @@ function createUserFromTwitter(twitterUserData, number){
                             }
 
                         });
+                      scrapObject.scraped = true;
+                      scrapObject.save(function(err) {
+                          if (err){
+                            console.log(err);
+                          }
+
+                      });
 
                     }
                   });
@@ -785,6 +792,7 @@ publicRouter.get('/populate/', function(req, res, next) {
 
     Scrap.find().limit(100000).exec(function(err, scrapes) {
       var scrapList = [];
+      var scrapObject = [];
       var j = 0, boucle = 1;
 
       for(var i = 0; i < scrapes.length; i++){
@@ -800,7 +808,7 @@ publicRouter.get('/populate/', function(req, res, next) {
               client.get('users/lookup', {user_id: currentList.join(',')}, function(error, users, response){
                   if(users){
                     for(var k = 0; k < users.length; k++){
-                      createUserFromTwitter(users[k], number);
+                      createUserFromTwitter(users[k], number, scrapObject[k]);
                       number += 3;
                     }
                   }
@@ -812,12 +820,14 @@ publicRouter.get('/populate/', function(req, res, next) {
 
           setTimeout(closureScrapToFace(), (boucle * 15000));
           scrapList.splice(0,scrapList.length);
+          scrapObject.splice(0,scrapObject.length);
 
           j = 0;
           boucle++;
         }
 
         scrapList.push(scrapes[i].twitter_id);
+        scrapObject.push(scrapes[i]);
 
         j++;
       }
