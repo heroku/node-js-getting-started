@@ -681,7 +681,7 @@ publicRouter.get('/moderate/:offset', function(req, res, next) {
 
 });
 
-function createUserFromTwitter(twitterUserData, number,scrapObject){
+function createUserFromTwitter(twitterUserData, number){
   console.log('USER TWITTER', twitterUserData.id);
     if(twitterUserData.profile_image_url){
     /****************REFACTOR**********************/
@@ -728,13 +728,6 @@ function createUserFromTwitter(twitterUserData, number,scrapObject){
                             }
 
                         });
-                      scrapObject.scraped = true;
-                      scrapObject.save(function(err) {
-                          if (err){
-                            console.log(err);
-                          }
-
-                      });
 
                     }
                   });
@@ -802,15 +795,25 @@ publicRouter.get('/populate/', function(req, res, next) {
 
           function closureScrapToFace() {
             var currentList = _.uniq(scrapList);
+            var scrapObjectTemp = scrapObject;
             var number = i + 3;
             //console.log('LIST LENGTH', currentList.length, currentList);
             function insertScrapToFace() {
               client.get('users/lookup', {user_id: currentList.join(',')}, function(error, users, response){
                   if(users){
                     for(var k = 0; k < users.length; k++){
-                      createUserFromTwitter(users[k], number, scrapObject[k]);
+                      createUserFromTwitter(users[k], number);
                       number += 3;
                     }
+                  }
+
+                  for(var s = 0; s < scrapObjectTemp.length; s++){
+                    scrapObjectTemp[s].scraped = true;
+                    scrapObjectTemp[s].save(function(erreur){
+                      if(erreur){
+                        console.log('ERREUR SAVE SCRAPED', this);
+                      }
+                    });
                   }
 
               });
