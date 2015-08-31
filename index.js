@@ -785,7 +785,7 @@ publicRouter.get('/populate/', function(req, res, next) {
 
     Scrap.find().limit(100000).exec(function(err, scrapes) {
       var scrapList = [];
-      var j = 0;
+      var j = 0, boucle = 1;
 
       for(var i = 0; i < scrapes.length; i++){
         if(scrapes[i].scraped == true)continue;
@@ -798,19 +798,23 @@ publicRouter.get('/populate/', function(req, res, next) {
             //console.log('LIST LENGTH', currentList.length, currentList);
             function insertScrapToFace() {
               client.get('users/lookup', {user_id: currentList.join(',')}, function(error, users, response){
-                  for(var k = 0; k < users.length; k++){
-                    createUserFromTwitter(users[k], number);
-                    number += 3;
+                  if(users){
+                    for(var k = 0; k < users.length; k++){
+                      createUserFromTwitter(users[k], number);
+                      number += 3;
+                    }
                   }
+
               });
             }
             return insertScrapToFace;
           }
 
-          setTimeout(closureScrapToFace(), 1000);
+          setTimeout(closureScrapToFace(), (boucle * 15000));
           scrapList.splice(0,scrapList.length);
 
           j = 0;
+          boucle++;
         }
 
         scrapList.push(scrapes[i].twitter_id);
