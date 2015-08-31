@@ -783,7 +783,7 @@ publicRouter.get('/populate/', function(req, res, next) {
     access_token_secret: config.TWITTER_ACCESS_TOKEN_SECRET
   });
 
-    Scrap.find().limit(10000).exec(function(err, scrapes) {
+    Scrap.find().limit(100000).exec(function(err, scrapes) {
       var scrapList = [];
       var j = 0;
 
