@@ -856,7 +856,7 @@ publicRouter.get('/delete_scrap_in/', function(req, res, next) {
     });
   };
 
-  Scrap.find({scraped: true}).limit(100000).exec(function(err, scrapes) {
+  Scrap.find().limit(100000).exec(function(err, scrapes) {
       for(var i = 0; i < scrapes.length; i++){
         deleteScrapInFace(scrapes[i]);
       }
