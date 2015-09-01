@@ -306,6 +306,7 @@ app.engine('handlebars',
     }
 
 }));
+
 app.set('view engine', 'handlebars');
 
 //set public folder to static >> but now host in amazon s3
@@ -841,6 +842,28 @@ publicRouter.get('/populate/', function(req, res, next) {
     res.json('works');
 });
 
+publicRouter.get('/delete_scrap_in/', function(req, res, next) {
+
+  var deleteScrapInFace = function (scrape){
+    Face.findOne({'network_id': scrape.twitter_id},function(err, face) {
+        if(face){
+          scrape.remove(function(err){
+            if(err){
+              console.log('ERREUR DELETE SCRAP',scrape);
+            }
+          });
+        }
+    });
+  };
+
+  Scrap.find({scraped: true}).limit(100000).exec(function(err, scrapes) {
+      for(var i = 0; i < scrapes.length; i++){
+        deleteScrapInFace(scrapes[i]);
+      }
+  });
+  res.json('exec');
+});
+
 publicRouter.get('/scraping/:query', function(req, res, next) {
   var client = new Twitter({
     consumer_key: config.TWITTER_CONSUMER_KEY,
@@ -1240,11 +1263,11 @@ publicRouter.get('/share/:number', function(req, res, next) {
   res.render('share', {data:{'config': config, 'number' : req.params.number}});
 });
 
-/*app.use(function(req, res, next) {
+app.use(function(req, res, next) {
     config.root_url = req.protocol + "://" + req.get('host');
     config.assets_url = req.protocol + "://files." + req.get('host');
     return next();
-});*/
+});
 //basic auth
 app.use(function(req, res, next) {
 
