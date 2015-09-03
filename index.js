@@ -1291,4 +1291,5 @@ app.use(function(req, res, next) {
 // START THE SERVER
 // =============================================================================
 app.listen(port);
-console.log('Magic happens on port ' + port);
+console.log('Magic happens on port ' + port );
+console.log('ENV', ,process.env);
