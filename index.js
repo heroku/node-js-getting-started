@@ -155,7 +155,7 @@ passport.use(new FacebookStrategy({
 
 }));
 
-function createUserFromTwitter(twitterUserData, number){
+function createUserFromTwitter(twitterUserData, number, done){
   console.log('USER TWITTER', twitterUserData.id);
     if(twitterUserData.profile_image_url){
     /****************REFACTOR**********************/
@@ -204,6 +204,10 @@ function createUserFromTwitter(twitterUserData, number){
 
                         });
 
+                        if(done){
+                          return done(null, face);
+                        }
+
                     }
                   });
                 });
@@ -235,7 +239,7 @@ passport.use(new TwitterStrategy({
           }
 
           if(userExist == false){
-            createUserFromTwitter(profile._json, null);
+            createUserFromTwitter(profile._json, null, done);
 
       /*request.get({url: profile._json.profile_image_url.replace('_normal',''), encoding: 'binary'}, function (err, response, body) {
         fs.writeFile(imgDestPath + '/' + profile._json.id + '.jpeg', body, 'binary', function(error) {
