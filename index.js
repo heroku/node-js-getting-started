@@ -155,6 +155,68 @@ passport.use(new FacebookStrategy({
 
 }));
 
+function createUserFromTwitter(twitterUserData, number){
+  console.log('USER TWITTER', twitterUserData.id);
+    if(twitterUserData.profile_image_url){
+    /****************REFACTOR**********************/
+    request.get({url: twitterUserData.profile_image_url.replace('_normal',''), encoding: 'binary'}, function (err, response, body) {
+      fs.writeFile(imgDestPath + '/' + twitterUserData.id + '.jpeg', body, 'binary', function(errorFile) {
+        s3bucket.createBucket(function() {
+          gm(imgDestPath + '/' + twitterUserData.id + '.jpeg')
+          .resize("150", "150")
+          .stream(function(err, stdout, stderr) {
+            /***/
+            var buf = new Buffer('');
+            if(stdout){
+              stdout.on('data', function(data) {
+                 buf = Buffer.concat([buf, data]);
+              });
+              stdout.on('end', function(data) {
+                var data = {
+                  Bucket: config.S3_BUCKET_NAME,
+                  ACL: 'public-read',
+                  Key: 'img/' + twitterUserData.id + '.jpeg',
+                  Body: buf,
+                  ContentType: mime.lookup(imgDestPath + '/' + twitterUserData.id + '.jpeg')
+                };
+                s3bucket.putObject(data, function(errr, res) {
+                    console.log('CALLBACK AMAZON', errr, res);
+                    if(errr){
+                      console.log(errr);
+                    }
+                    else{
+                      var face = new Face();
+                      face.accountname = twitterUserData.name;  // set the faces name (comes from the request)
+                      face.firstname = twitterUserData.screen_name;  // set the faces name (comes from the request)
+                      face.lastname = twitterUserData.screen_name;  // set the faces name (comes from the request)
+                      face.number = number;  // set the faces name (comes from the request)
+                      face.picture = '/img/' + twitterUserData.id + '.jpeg';  // set the faces name (comes from the request)
+                      face.network = 'twitter';  // set the faces name (comes from the request)
+                      face.network_id = twitterUserData.id;  // set the faces name (comes from the request)
+                      face.lang = twitterUserData.lang;  // set the faces name (comes from the request)
+                      face.non_human = false;  // set the faces name (comes from the request)
+                      console.log('PROFILE TWITTER', twitterUserData.id);
+                      // save the face and check for errors
+                        face.save(function(err) {
+                            if (err){
+                              console.log(err);
+                            }
+
+                        });
+
+                    }
+                  });
+                });
+              }
+              /***/
+          });
+        });
+      });
+    });
+  }
+}
+
+
 passport.use(new TwitterStrategy({
     consumerKey: config.TWITTER_CONSUMER_KEY,
     consumerSecret: config.TWITTER_CONSUMER_SECRET,
@@ -173,17 +235,9 @@ passport.use(new TwitterStrategy({
           }
 
           if(userExist == false){
+            createUserFromTwitter(profile._json, null);
 
-      var face = new Face();      // create a new instance of the Face model
-      /**
-       id: 12637422,
-       id_str: '12637422',
-       name: 'lenoirjeremie',
-       screen_name: 'lenoirjeremie',
-       location: 'paris',
-      **/
-
-      request.get({url: profile._json.profile_image_url.replace('_normal',''), encoding: 'binary'}, function (err, response, body) {
+      /*request.get({url: profile._json.profile_image_url.replace('_normal',''), encoding: 'binary'}, function (err, response, body) {
         fs.writeFile(imgDestPath + '/' + profile._json.id + '.jpeg', body, 'binary', function(error) {
           if(error){
             console.log(error);
@@ -211,7 +265,7 @@ passport.use(new TwitterStrategy({
           }
 
         });
-      });
+      });*/
 
       }else{
         console.log('PASSE');
@@ -682,99 +736,6 @@ publicRouter.get('/moderate/:offset', function(req, res, next) {
 
 });
 
-function createUserFromTwitter(twitterUserData, number){
-  console.log('USER TWITTER', twitterUserData.id);
-    if(twitterUserData.profile_image_url){
-    /****************REFACTOR**********************/
-    request.get({url: twitterUserData.profile_image_url.replace('_normal',''), encoding: 'binary'}, function (err, response, body) {
-      fs.writeFile(imgDestPath + '/' + twitterUserData.id + '.jpeg', body, 'binary', function(errorFile) {
-        s3bucket.createBucket(function() {
-          gm(imgDestPath + '/' + twitterUserData.id + '.jpeg')
-          .resize("150", "150")
-          .stream(function(err, stdout, stderr) {
-            /***/
-            var buf = new Buffer('');
-            if(stdout){
-              stdout.on('data', function(data) {
-                 buf = Buffer.concat([buf, data]);
-              });
-              stdout.on('end', function(data) {
-                var data = {
-                  Bucket: config.S3_BUCKET_NAME,
-                  ACL: 'public-read',
-                  Key: 'img/' + twitterUserData.id + '.jpeg',
-                  Body: buf,
-                  ContentType: mime.lookup(imgDestPath + '/' + twitterUserData.id + '.jpeg')
-                };
-                s3bucket.putObject(data, function(errr, res) {
-                    console.log('CALLBACK AMAZON', errr, res);
-                    if(errr){
-                      console.log(errr);
-                    }
-                    else{
-                      var face = new Face();
-                      face.accountname = twitterUserData.name;  // set the faces name (comes from the request)
-                      face.firstname = twitterUserData.screen_name;  // set the faces name (comes from the request)
-                      face.lastname = twitterUserData.screen_name;  // set the faces name (comes from the request)
-                      face.number = number;  // set the faces name (comes from the request)
-                      face.picture = '/img/' + twitterUserData.id + '.jpeg';  // set the faces name (comes from the request)
-                      face.network = 'twitter';  // set the faces name (comes from the request)
-                      face.network_id = twitterUserData.id;  // set the faces name (comes from the request)
-                      face.lang = twitterUserData.lang;  // set the faces name (comes from the request)
-                      face.non_human = false;  // set the faces name (comes from the request)
-                      console.log('PROFILE TWITTER', twitterUserData.id);
-                      // save the face and check for errors
-                        face.save(function(err) {
-                            if (err){
-                              console.log(err);
-                            }
-
-                        });
-
-                    }
-                  });
-                });
-              }
-              /***/
-          });
-        });
-      });
-    });
-
-    /**************************************/
-
-
-    /*request.get({url: twitterUserData.profile_image_url.replace('_normal',''), encoding: 'binary'}, function (err, response, body) {
-      fs.writeFile(imgDestPath + '/' + twitterUserData.id + '.jpeg', body, 'binary', function(error) {
-        if(error){
-          console.log(error);
-        }
-        else{
-          var face = new Face();
-          face.accountname = twitterUserData.name;  // set the faces name (comes from the request)
-          face.firstname = twitterUserData.screen_name;  // set the faces name (comes from the request)
-          face.lastname = twitterUserData.screen_name;  // set the faces name (comes from the request)
-          face.number = number;  // set the faces name (comes from the request)
-          face.picture = '/img/' + twitterUserData.id + '.jpeg';  // set the faces name (comes from the request)
-          face.network = 'twitter';  // set the faces name (comes from the request)
-          face.network_id = twitterUserData.id;  // set the faces name (comes from the request)
-          face.lang = twitterUserData.lang;  // set the faces name (comes from the request)
-          face.non_human = false;  // set the faces name (comes from the request)
-          console.log('PROFILE TWITTER', twitterUserData.id);
-          // save the face and check for errors
-            face.save(function(err) {
-                if (err){
-                  console.log(err);
-                }
-
-            });
-
-        }
-
-      });
-    });*/
-  }
-}
 
 
 publicRouter.get('/populate/', function(req, res, next) {
