@@ -1292,4 +1292,4 @@ app.use(function(req, res, next) {
 // =============================================================================
 app.listen(port);
 console.log('Magic happens on port ' + port );
-console.log('ENV', ,process.env);
+console.log('ENV', process.env);
