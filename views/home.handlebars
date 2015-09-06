@@ -35,8 +35,8 @@
             url: $form.attr('action'),
             data: $form.serializeArray(),
             success: function(data){
-              //console.log('DATA', data);
-							if($(this).data('register') == 'true'){
+              console.log('DATA FORM EDIT', $form.data('register'));
+							if($form.data('register') == 'true'){
 								$('.edit-human').hide();
 								$('.modal-footer').hide();
 								$('.share-register').removeClass('hide');

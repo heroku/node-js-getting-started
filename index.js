@@ -238,39 +238,8 @@ passport.use(new TwitterStrategy({
             userExist = true;
           }
 
-          if(userExist == false){
-            createUserFromTwitter(profile._json, null, done);
-
-      /*request.get({url: profile._json.profile_image_url.replace('_normal',''), encoding: 'binary'}, function (err, response, body) {
-        fs.writeFile(imgDestPath + '/' + profile._json.id + '.jpeg', body, 'binary', function(error) {
-          if(error){
-            console.log(error);
-          }
-          else{
-            face.accountname = profile._json.name;  // set the faces name (comes from the request)
-            face.firstname = profile._json.screen_name;  // set the faces name (comes from the request)
-            face.lastname = profile._json.screen_name;  // set the faces name (comes from the request)
-            face.picture = '/img/' + profile._json.id + '.jpeg';  // set the faces name (comes from the request)
-            face.network = 'twitter';  // set the faces name (comes from the request)
-            face.network_id = profile._json.id;  // set the faces name (comes from the request)
-            face.lang = profile._json.lang;  // set the faces name (comes from the request)
-            console.log('PROFILE TWITTER', profile);
-            // save the face and check for errors
-              face.save(function(err) {
-                  if (err){
-                    res.send(err);
-                  }
-
-
-                      return done(null, face);
-              });
-
-
-          }
-
-        });
-      });*/
-
+      if(userExist == false){
+        createUserFromTwitter(profile._json, null, done);
       }else{
         console.log('PASSE');
         if(faces[0].claim === false){
@@ -973,7 +942,7 @@ function(req,res,next) {
      , successRedirect:"/success/" + req.params.id
      , failureRedirect:"/error"
      , failureFlash: true
-     , scope: ['publish_actions']
+     //, scope: ['publish_actions']
      }
    ) (req,res,next);
   }
@@ -1193,17 +1162,43 @@ publicRouter.get('/number/:number', function(req, res, next) {
             var imgFinal = im(imgDestPath + '/' + number + '-temp-1.jpg');
             imgFinal.append(imgDestPath + '/' + number + '-temp-2.jpg', imgDestPath + '/' + number + '-temp-3.jpg', false);
 
+            imgFinal.stream(function(err, stdout, stderr) {
 
-            imgFinal.write(imgDestPath + '/' + number + '-mozaic.jpg'
-            , function(stdout4){
-              console.log('IMG DEST PATH', imgDestPath + '/' + number + '-mozaic.jpg');
+              var buf = new Buffer('');
 
-              Face.findOne({'number': req.params.number}, function(err, face) {
-                  if (err){
-                    res.send(err);
-                  }
-                  res.render('home', {data:{'config': config, 'showFace': face, 'currentUser': req.user}});
-              });
+              if(stdout){
+
+                stdout.on('data', function(data) {
+                   buf = Buffer.concat([buf, data]);
+                });
+
+                stdout.on('end', function(data) {
+
+                  var data = {
+                    Bucket: config.S3_BUCKET_NAME,
+                    ACL: 'public-read',
+                    Key: 'img/' + number + '-mozaic.jpeg',
+                    Body: buf,
+                    ContentType: mime.lookup(imgDestPath + '/' + number + '-temp-1.jpg')
+                  };
+
+                  s3bucket.putObject(data, function(errr, ress) {
+                      console.log('CALLBACK AMAZON', errr, ress);
+                      if(errr){
+                        console.log(errr);
+                      }
+                      else{
+                        Face.findOne({'number': req.params.number}, function(err, face) {
+                            if (err){
+                              res.send(err);
+                            }
+                            //res.send('test');
+                            res.render('home', {data:{'config': config, 'showFace': face, 'currentUser': req.user}});
+                        });
+                      }
+                    });
+                  });
+                }
             });
 
           });
