@@ -150,7 +150,8 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 		}
 
 		function isWebglRecommand(){
-			return navigator.userAgent.match(/ipad|iphone/i) ? false : true;
+            return false; // force canvas renderer
+			//return navigator.userAgent.match(/ipad|iphone/i) ? false : true;
 		}
 
 
