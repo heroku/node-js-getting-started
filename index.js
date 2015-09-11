@@ -1162,7 +1162,7 @@ var getImagesForMozaic = function(number, callback){
         }
 
       tempFaces = _.sortBy(tempFaces, 'number');
-      console.log('NBDOWNLOADS START', nbDownloads);
+      console.log('NBDOWNLOADS START', nbDownloads, tempFaces.length);
       for(var i = 0; i < tempFaces.length; i++){
 
         if(!tempFaces[i].downloaded){
