@@ -1164,8 +1164,12 @@ var getImagesForMozaic = function(number, callback){
       tempFaces = _.sortBy(tempFaces, 'number');
       console.log('NBDOWNLOADS START', nbDownloads);
       for(var i = 0; i < tempFaces.length; i++){
+
         if(!tempFaces[i].downloaded){
-          download('http://files.onemillionhumans.com' + tempFaces[i].picture, publicPath + tempFaces[i].picture, function(errDownload,filename){
+          nbDownloads++;
+          console.log('NBDOWNLOADS', nbDownloads);
+          callback(null, tempFaces);
+          /*download('http://files.onemillionhumans.com' + tempFaces[i].picture, publicPath + tempFaces[i].picture, function(errDownload,filename){
             console.log('PICTURE FILENAME', errDownload, filename);
             if(!errDownload){
               nbDownloads++;
@@ -1175,7 +1179,7 @@ var getImagesForMozaic = function(number, callback){
               }
             }
             //res.json(images);
-          });
+          });*/
         }
       }
 
