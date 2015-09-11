@@ -1164,10 +1164,10 @@ var getImagesForMozaic = function(number, callback){
       tempFaces = _.sortBy(tempFaces, 'number');
       console.log('NBDOWNLOADS START', nbDownloads, tempFaces.length);
       for(var i = 0; i < tempFaces.length; i++){
-
+        console.log('NBDOWNLOADS', nbDownloads, tempFaces[i].number);
         if(!tempFaces[i].downloaded){
           nbDownloads++;
-          console.log('NBDOWNLOADS', nbDownloads);
+
           //callback(null, tempFaces);
           /*download('http://files.onemillionhumans.com' + tempFaces[i].picture, publicPath + tempFaces[i].picture, function(errDownload,filename){
             console.log('PICTURE FILENAME', errDownload, filename);
