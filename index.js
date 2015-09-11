@@ -1150,15 +1150,35 @@ var getImagesForMozaic = function(number, callback){
         if (err){
           callback(err, null);
         }
+
+        var nbDownloads = 0;
+
         for(var i = 0; i < numberArray.length; i++){
 
           if( ! _.find(tempFaces, function(currentFace){ return currentFace.number == numberArray[i]; }) ){
-              tempFaces.push({'number': numberArray[i], picture: '/img/noimage.jpg'});
+              tempFaces.push({'number': numberArray[i], picture: '/img/noimage.jpg', downloaded: true});
+              nbDownloads++;
           }
         }
 
       tempFaces = _.sortBy(tempFaces, 'number');
-      callback(null, tempFaces);
+
+      for(var i = 0; i < tempFaces.length; i++){
+        if(!tempFaces[i].downloaded){
+          download('http://files.onemillionhumans.com' + tempFaces[i].picture, publicPath + tempFaces[i].picture, function(errDownload,filename){
+            console.log('PICTURE FILENAME', errDownload, filename);
+            if(filename){
+              nbDownloads++;
+              if(nbDownloads == 9){
+                callback(null, tempFaces);
+              }
+            }
+            //res.json(images);
+          });
+        }
+      }
+
+
     });
 
 };
@@ -1168,12 +1188,8 @@ publicRouter.get('/number/:number', function(req, res, next) {
   /***** IMAGE manipulation *****/
   var number = parseInt(req.params.number, 10);
   getImagesForMozaic(number, function(err, images){
-    console.log('PICTURE', images[6].picture);
-    download('http://files.onemillionhumans.com' + images[6].picture, publicPath + images[6].picture, function(errDownload,filename){
-      console.log('PICTURE FILENAME', errDownload, filename);
-      res.json(images);
-    });
-
+    console.log('PICTURE', images);
+    res.json(images);
   });
   /*
   Face.find({number:{$in:numberArray}}).sort('number').exec(function(err, faces) {
