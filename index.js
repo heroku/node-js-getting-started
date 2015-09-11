@@ -1159,12 +1159,18 @@ publicRouter.get('/number/:number', function(req, res, next) {
           img3.write(imgDestPath + '/' + number + '-temp-3.jpg'
           , function(stdout3){
             console.log('IMG DEST PATH 3', imgDestPath + '/' + number + '-temp-3.jpg');
+
             var imgFinal = im(imgDestPath + '/' + number + '-temp-1.jpg');
             imgFinal.append(imgDestPath + '/' + number + '-temp-2.jpg', imgDestPath + '/' + number + '-temp-3.jpg', false);
 
-            console.log('IMG FINAL', imgFinal);
 
-            imgFinal.stream(function(err, stdout, stderr) {
+
+            imgFinal.write(imgDestPath + '/' + number + '-temp-final.jpg'
+            , function(stdoutFinal){
+              console.log('IMG FINAL', imgFinal);
+
+            var imgFinalMozaic = im(imgDestPath + '/' + number + '-temp-final.jpg');
+            imgFinalMozaic.stream(function(err, stdout, stderr) {
 
               var buf = new Buffer('');
 
@@ -1181,7 +1187,7 @@ publicRouter.get('/number/:number', function(req, res, next) {
                     ACL: 'public-read',
                     Key: 'img/mozaic/' + number + '-mozaic.jpeg',
                     Body: buf,
-                    ContentType: mime.lookup(imgDestPath + '/' + number + '-temp-1.jpg')
+                    ContentType: mime.lookup(imgDestPath + '/' + number + '-temp-final.jpg')
                   };
 
                   s3bucket.putObject(data, function(errr, ress) {
@@ -1202,6 +1208,8 @@ publicRouter.get('/number/:number', function(req, res, next) {
                   });
                 }
             });
+
+          });
 
           });
         });
