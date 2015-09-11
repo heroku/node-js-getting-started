@@ -1168,7 +1168,7 @@ publicRouter.get('/number/:number', function(req, res, next) {
   /***** IMAGE manipulation *****/
   var number = parseInt(req.params.number, 10);
   getImagesForMozaic(number, function(err, images){
-
+    res.json(images);
   });
   /*
   Face.find({number:{$in:numberArray}}).sort('number').exec(function(err, faces) {
