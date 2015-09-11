@@ -1183,106 +1183,102 @@ var getImagesForMozaic = function(number, callback){
 
 };
 
+var createMozaic = function(number, tempFaces, callback){
+  var im = gm;//.subClass({ imageMagick: true });
+
+  var img1 = im(publicPath + tempFaces[0].picture).resize("150", "150");
+  var img2 = im(publicPath + tempFaces[3].picture).resize("150", "150");
+  var img3 = im(publicPath + tempFaces[6].picture).resize("150", "150");
+
+  img1.append(publicPath + tempFaces[1].picture, publicPath + tempFaces[2].picture,  true);
+  img2.append(publicPath + tempFaces[4].picture, publicPath + tempFaces[5].picture,  true);
+  img3.append(publicPath + tempFaces[7].picture, publicPath + tempFaces[8].picture,  true);
+
+  img1.write(imgDestPath + '/' + number + '-temp-1.jpg'
+  , function(stdout1){
+    console.log('IMG DEST PATH 1', imgDestPath + '/' + number + '-temp-1.jpg');
+    img2.write(imgDestPath + '/' + number + '-temp-2.jpg'
+    , function(stdout2){
+      console.log('IMG DEST PATH 2', imgDestPath + '/' + number + '-temp-2.jpg');
+      img3.write(imgDestPath + '/' + number + '-temp-3.jpg'
+      , function(stdout3){
+        console.log('IMG DEST PATH 3', imgDestPath + '/' + number + '-temp-3.jpg');
+
+        var imgFinal = im(imgDestPath + '/' + number + '-temp-1.jpg');
+        imgFinal.append(imgDestPath + '/' + number + '-temp-2.jpg', imgDestPath + '/' + number + '-temp-3.jpg', false);
+
+        imgFinal.write(imgDestPath + '/' + number + '-temp-final.jpg'
+        , function(stdoutFinal){
+          console.log('IMG FINAL', imgFinal);
+
+        var imgFinalMozaic = im(imgDestPath + '/' + number + '-temp-final.jpg');
+        imgFinalMozaic.stream(function(err, stdout, stderr) {
+
+          var buf = new Buffer('');
+
+          if(stdout){
+
+            stdout.on('data', function(data) {
+               buf = Buffer.concat([buf, data]);
+            });
+
+            stdout.on('end', function(data) {
+
+              var data = {
+                Bucket: config.S3_BUCKET_NAME,
+                ACL: 'public-read',
+                Key: 'img/mozaic/' + number + '-mozaic.jpeg',
+                Body: buf,
+                ContentType: mime.lookup(imgDestPath + '/' + number + '-temp-final.jpg')
+              };
+
+              s3bucket.putObject(data, function(errr, ress) {
+                  console.log('CALLBACK AMAZON', errr, ress);
+                  if(errr){
+                    console.log(errr);
+                    callback(errr, null);
+                  }
+                  else{
+                    callback(null, imgDestPath + '/' + number + '-temp-final.jpg');
+                  }
+                });
+              });
+            }
+        });
+
+      });
+
+      });
+    });
+
+  });
+
+};
+
 publicRouter.get('/number/:number', function(req, res, next) {
 
   /***** IMAGE manipulation *****/
   var number = parseInt(req.params.number, 10);
   getImagesForMozaic(number, function(err, images){
     console.log('PICTURE', images);
-    res.json(images);
-  });
-  /*
-  Face.find({number:{$in:numberArray}}).sort('number').exec(function(err, faces) {
+    createMozaic(number, images, function(err1){
 
-      var tempFaces = _.clone(faces);
-
-        if (err){
-          res.send(err);
-        }
-        for(var i = 0; i < numberArray.length; i++){
-
-          if( ! _.find(tempFaces, function(currentFace){ return currentFace.number == numberArray[i]; }) ){
-              tempFaces.push({'number': numberArray[i], picture: '/img/noimage.jpg'});
+      Face.findOne({'number': req.params.number}, function(err, face) {
+          if (err){
+            res.send(err);
           }
-        }
-
-      tempFaces = _.sortBy(tempFaces, 'number');
-
-      var im = gm;//.subClass({ imageMagick: true });
-
-      var img1 = im(publicPath + tempFaces[0].picture).resize("150", "150");
-      var img2 = im(publicPath + tempFaces[3].picture).resize("150", "150");
-      var img3 = im(publicPath + tempFaces[6].picture).resize("150", "150");
-
-      img1.append(publicPath + tempFaces[1].picture, publicPath + tempFaces[2].picture,  true);
-      img2.append(publicPath + tempFaces[4].picture, publicPath + tempFaces[5].picture,  true);
-      img3.append(publicPath + tempFaces[7].picture, publicPath + tempFaces[8].picture,  true);
-
-      img1.write(imgDestPath + '/' + number + '-temp-1.jpg'
-      , function(stdout1){
-        console.log('IMG DEST PATH 1', imgDestPath + '/' + number + '-temp-1.jpg');
-        img2.write(imgDestPath + '/' + number + '-temp-2.jpg'
-        , function(stdout2){
-          console.log('IMG DEST PATH 2', imgDestPath + '/' + number + '-temp-2.jpg');
-          img3.write(imgDestPath + '/' + number + '-temp-3.jpg'
-          , function(stdout3){
-            console.log('IMG DEST PATH 3', imgDestPath + '/' + number + '-temp-3.jpg');
-
-            var imgFinal = im(imgDestPath + '/' + number + '-temp-1.jpg');
-            imgFinal.append(imgDestPath + '/' + number + '-temp-2.jpg', imgDestPath + '/' + number + '-temp-3.jpg', false);
-
-            imgFinal.write(imgDestPath + '/' + number + '-temp-final.jpg'
-            , function(stdoutFinal){
-              console.log('IMG FINAL', imgFinal);
-
-            var imgFinalMozaic = im(imgDestPath + '/' + number + '-temp-final.jpg');
-            imgFinalMozaic.stream(function(err, stdout, stderr) {
-
-              var buf = new Buffer('');
-
-              if(stdout){
-
-                stdout.on('data', function(data) {
-                   buf = Buffer.concat([buf, data]);
-                });
-
-                stdout.on('end', function(data) {
-
-                  var data = {
-                    Bucket: config.S3_BUCKET_NAME,
-                    ACL: 'public-read',
-                    Key: 'img/mozaic/' + number + '-mozaic.jpeg',
-                    Body: buf,
-                    ContentType: mime.lookup(imgDestPath + '/' + number + '-temp-final.jpg')
-                  };
-
-                  s3bucket.putObject(data, function(errr, ress) {
-                      console.log('CALLBACK AMAZON', errr, ress);
-                      if(errr){
-                        console.log(errr);
-                      }
-                      else{
-                        Face.findOne({'number': req.params.number}, function(err, face) {
-                            if (err){
-                              res.send(err);
-                            }
-                            //res.send('test');
-                            res.render('home', {data:{'config': config, 'showFace': face, 'currentUser': req.user}});
-                        });
-                      }
-                    });
-                  });
-                }
-            });
-
-          });
-
-          });
-        });
-
+          //res.send('test');
+          res.render('home', {data:{'config': config, 'showFace': face, 'currentUser': req.user}});
       });
+    });
 
-  });*/
+  });
+
+
+
+
+
+
 
   /******************************/
 
