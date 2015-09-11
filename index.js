@@ -1151,7 +1151,7 @@ publicRouter.get('/number/:number', function(req, res, next) {
       img3.append(publicPath + tempFaces[7].picture, publicPath + tempFaces[8].picture,  true);
 
       img1.write(imgDestPath + '/' + number + '-temp-1.jpg'
-      , function(stdout){
+      , function(stdout1){
         console.log('IMG DEST PATH 1', imgDestPath + '/' + number + '-temp-1.jpg');
         img2.write(imgDestPath + '/' + number + '-temp-2.jpg'
         , function(stdout2){
