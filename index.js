@@ -1142,9 +1142,9 @@ publicRouter.get('/number/:number', function(req, res, next) {
 
       var im = gm;//.subClass({ imageMagick: true });
 
-      var img1 = im(publicPath + tempFaces[0].picture);
-      var img2 = im(publicPath + tempFaces[3].picture);
-      var img3 = im(publicPath + tempFaces[6].picture);
+      var img1 = im(publicPath + tempFaces[0].picture).resize("150", "150");
+      var img2 = im(publicPath + tempFaces[3].picture).resize("150", "150");
+      var img3 = im(publicPath + tempFaces[6].picture).resize("150", "150");
 
       img1.append(publicPath + tempFaces[1].picture, publicPath + tempFaces[2].picture,  true);
       img2.append(publicPath + tempFaces[4].picture, publicPath + tempFaces[5].picture,  true);
