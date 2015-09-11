@@ -1179,7 +1179,7 @@ publicRouter.get('/number/:number', function(req, res, next) {
                   var data = {
                     Bucket: config.S3_BUCKET_NAME,
                     ACL: 'public-read',
-                    Key: 'img/' + number + '-mozaic.jpeg',
+                    Key: 'img/mozaic/' + number + '-mozaic.jpeg',
                     Body: buf,
                     ContentType: mime.lookup(imgDestPath + '/' + number + '-temp-1.jpg')
                   };
