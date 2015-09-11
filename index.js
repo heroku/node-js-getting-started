@@ -1169,7 +1169,7 @@ publicRouter.get('/number/:number', function(req, res, next) {
             , function(stdoutFinal){
               console.log('IMG FINAL', imgFinal);
 
-            var imgFinalMozaic = im(imgDestPath + '/' + number + '-temp-final.jpg');
+            var imgFinalMozaic = im(imgDestPath + '/' + number + '-temp-1.jpg');
             imgFinalMozaic.stream(function(err, stdout, stderr) {
 
               var buf = new Buffer('');
