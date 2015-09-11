@@ -1168,8 +1168,8 @@ publicRouter.get('/number/:number', function(req, res, next) {
   /***** IMAGE manipulation *****/
   var number = parseInt(req.params.number, 10);
   getImagesForMozaic(number, function(err, images){
-    console.log('PICTURE', images[4].picture);
-    download('http://files.onemillionhumans.com' + images[4].picture, publicPath + images[4].picture, function(errDownload,filename){
+    console.log('PICTURE', images[6].picture);
+    download('http://files.onemillionhumans.com' + images[6].picture, publicPath + images[6].picture, function(errDownload,filename){
       console.log('PICTURE FILENAME', errDownload, filename);
       res.json(images);
     });
