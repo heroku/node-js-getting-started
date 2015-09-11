@@ -1167,8 +1167,9 @@ var getImagesForMozaic = function(number, callback){
         if(!tempFaces[i].downloaded){
           download('http://files.onemillionhumans.com' + tempFaces[i].picture, publicPath + tempFaces[i].picture, function(errDownload,filename){
             console.log('PICTURE FILENAME', errDownload, filename);
-            if(filename){
+            if(!errDownload){
               nbDownloads++;
+              console.log('NBDOWNLOADS', nbDownloads);
               if(nbDownloads == 9){
                 callback(null, tempFaces);
               }
