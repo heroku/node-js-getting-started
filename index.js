@@ -1164,7 +1164,7 @@ publicRouter.get('/number/:number', function(req, res, next) {
 
             console.log('IMG FINAL', imgFinal);
 
-            imgFinal.stream(function(err, stdout, stderr) {
+            img3.stream(function(err, stdout, stderr) {
 
               var buf = new Buffer('');
 
