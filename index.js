@@ -1160,7 +1160,7 @@ var getImagesForMozaic = function(number, callback){
         for(var i = 0; i < numberArray.length; i++){
 
           if( ! _.find(tempFaces, function(currentFace){ return currentFace.number == numberArray[i]; }) ){
-              var tempPicture = 'FREESTATE0' + getRandomInt(1,4) + '.png';
+              var tempPicture = '/img/FREESTATE0' + getRandomInt(1,4) + '.png';
               tempFaces.push({'number': numberArray[i], picture: tempPicture, downloaded: true});
               nbDownloads++;
           }
