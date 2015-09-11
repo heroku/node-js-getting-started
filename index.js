@@ -1140,7 +1140,7 @@ publicRouter.get('/number/:number', function(req, res, next) {
 
       tempFaces = _.sortBy(tempFaces, 'number');
 
-      var im = gm.subClass({ imageMagick: true });
+      var im = gm;//.subClass({ imageMagick: true });
 
       var img1 = im(publicPath + tempFaces[0].picture);
       var img2 = im(publicPath + tempFaces[3].picture);
