@@ -40,6 +40,27 @@ var publicPath = path.resolve('./public');
 var gm = require('gm');
 var os = require('os');
 
+
+//download helper function
+var download = function(uri, filename, callback){
+  request.head(uri, function(err, res, body){
+    if (err) callback(err, filename);
+    else {
+        var stream = request(uri);
+        stream.pipe(
+            fs.createWriteStream(filename)
+                .on('error', function(err){
+                    callback(error, filename);
+                    stream.read();
+                })
+            )
+        .on('close', function() {
+            callback(null, filename);
+        });
+    }
+  });
+};
+
 //basic auth
 var auth = require('basic-auth');
 
@@ -1118,12 +1139,38 @@ publicRouter.get('/edit/:number', function(req, res, next) {
   });
 });
 
+var getImagesForMozaic = function(number, callback){
+
+  var numberArray = [number - 1001, number - 1000, number - 999, number - 1, number, number + 1, number + 999, number + 1000, number + 1001];
+
+  Face.find({number:{$in:numberArray}}).sort('number').exec(function(err, faces) {
+
+      var tempFaces = _.clone(faces);
+
+        if (err){
+          callback(err, null);
+        }
+        for(var i = 0; i < numberArray.length; i++){
+
+          if( ! _.find(tempFaces, function(currentFace){ return currentFace.number == numberArray[i]; }) ){
+              tempFaces.push({'number': numberArray[i], picture: '/img/noimage.jpg'});
+          }
+        }
+
+      tempFaces = _.sortBy(tempFaces, 'number');
+      callback(null, tempFaces);
+    });
+
+};
+
 publicRouter.get('/number/:number', function(req, res, next) {
 
   /***** IMAGE manipulation *****/
   var number = parseInt(req.params.number, 10);
-  var numberArray = [number - 1001, number - 1000, number - 999, number - 1, number, number + 1, number + 999, number + 1000, number + 1001];
+  getImagesForMozaic(number, function(err, images){
 
+  });
+  /*
   Face.find({number:{$in:numberArray}}).sort('number').exec(function(err, faces) {
 
       var tempFaces = _.clone(faces);
@@ -1162,8 +1209,6 @@ publicRouter.get('/number/:number', function(req, res, next) {
 
             var imgFinal = im(imgDestPath + '/' + number + '-temp-1.jpg');
             imgFinal.append(imgDestPath + '/' + number + '-temp-2.jpg', imgDestPath + '/' + number + '-temp-3.jpg', false);
-
-
 
             imgFinal.write(imgDestPath + '/' + number + '-temp-final.jpg'
             , function(stdoutFinal){
@@ -1216,7 +1261,7 @@ publicRouter.get('/number/:number', function(req, res, next) {
 
       });
 
-  });
+  });*/
 
   /******************************/
 
