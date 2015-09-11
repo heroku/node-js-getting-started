@@ -1139,8 +1139,8 @@ publicRouter.get('/edit/:number', function(req, res, next) {
   });
 });
 
-var getRandomArbitrary = function(min, max) {
-  return Math.random() * (max - min) + min;
+var getRandomInt = function(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
 };
 
 var getImagesForMozaic = function(number, callback){
@@ -1160,7 +1160,7 @@ var getImagesForMozaic = function(number, callback){
         for(var i = 0; i < numberArray.length; i++){
 
           if( ! _.find(tempFaces, function(currentFace){ return currentFace.number == numberArray[i]; }) ){
-              var tempPicture = 'FREESTATE0' + getRandomArbitrary(1,4) + '.png';
+              var tempPicture = 'FREESTATE0' + getRandomInt(1,4) + '.png';
               tempFaces.push({'number': numberArray[i], picture: tempPicture, downloaded: true});
               nbDownloads++;
           }
