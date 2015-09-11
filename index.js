@@ -1139,6 +1139,10 @@ publicRouter.get('/edit/:number', function(req, res, next) {
   });
 });
 
+var getRandomArbitrary = function(min, max) {
+  return Math.random() * (max - min) + min;
+};
+
 var getImagesForMozaic = function(number, callback){
 
   var numberArray = [number - 1001, number - 1000, number - 999, number - 1, number, number + 1, number + 999, number + 1000, number + 1001];
@@ -1156,7 +1160,7 @@ var getImagesForMozaic = function(number, callback){
         for(var i = 0; i < numberArray.length; i++){
 
           if( ! _.find(tempFaces, function(currentFace){ return currentFace.number == numberArray[i]; }) ){
-              tempFaces.push({'number': numberArray[i], picture: '/img/noimage.jpg', downloaded: true});
+              tempFaces.push({'number': numberArray[i], picture: 'FREESTATE0' + getRandomArbitrary(1,4) + '.png', downloaded: true});
               nbDownloads++;
           }
         }
