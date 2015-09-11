@@ -1184,6 +1184,7 @@ var getImagesForMozaic = function(number, callback){
 };
 
 var createMozaic = function(number, tempFaces, callback){
+  console.log('TEMPFACES', tempFaces);
   var im = gm;//.subClass({ imageMagick: true });
 
   var img1 = im(publicPath + tempFaces[0].picture).resize("150", "150");
