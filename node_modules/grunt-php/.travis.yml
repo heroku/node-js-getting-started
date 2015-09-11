@@ -1,0 +1,7 @@
+language: php
+php:
+  - 5.4
+script:
+  - npm install
+  - npm install -g grunt-cli
+  - npm test
