@@ -1169,8 +1169,8 @@ publicRouter.get('/number/:number', function(req, res, next) {
   var number = parseInt(req.params.number, 10);
   getImagesForMozaic(number, function(err, images){
     console.log('PICTURE', images[4].picture);
-    download('http://files.onemillionhumans.com' + images[4].picture, publicPath + images[4].picture, function(filename){
-      console.log('PICTURE FILENAME', filename);
+    download('http://files.onemillionhumans.com' + images[4].picture, publicPath + images[4].picture, function(errDownload,filename){
+      console.log('PICTURE FILENAME', errDownload, filename);
       res.json(images);
     });
 
