@@ -1,0 +1,8 @@
+.git*
+docs/
+examples/
+samples/
+support/
+test/
+testing.js
+.DS_Store

@@ -1,0 +1,112 @@
+{
+  "name": "grunt-contrib-uglify",
+  "description": "Minify files with UglifyJS.",
+  "version": "0.5.1",
+  "homepage": "https://github.com/gruntjs/grunt-contrib-uglify",
+  "author": {
+    "name": "Grunt Team",
+    "url": "http://gruntjs.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/gruntjs/grunt-contrib-uglify.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gruntjs/grunt-contrib-uglify/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/gruntjs/grunt-contrib-uglify/blob/master/LICENSE-MIT"
+    }
+  ],
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "dependencies": {
+    "chalk": "^0.5.1",
+    "lodash": "^2.4.1",
+    "maxmin": "^0.2.0",
+    "uglify-js": "^2.4.0"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.2",
+    "grunt-contrib-clean": "^0.5.0",
+    "grunt-contrib-internal": "^0.4.2",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-nodeunit": "^0.4.0"
+  },
+  "peerDependencies": {
+    "grunt": "~0.4.0"
+  },
+  "keywords": [
+    "gruntplugin"
+  ],
+  "files": [
+    "tasks",
+    "LICENSE-MIT"
+  ],
+  "contributors": [
+    {
+      "name": "\"Cowboy\" Ben Alman",
+      "url": "http://benalman.com"
+    },
+    {
+      "name": "Tyler Kellen",
+      "url": "http://goingslowly.com"
+    },
+    {
+      "name": "Jarrod Overson",
+      "url": "http://jarrodoverson.com"
+    }
+  ],
+  "gitHead": "dfd721b5a5dabd4266e411d171a8670744f152ff",
+  "_id": "grunt-contrib-uglify@0.5.1",
+  "_shasum": "15f0aa5e8e8ba421aea980879ee505bc712b6cde",
+  "_from": "grunt-contrib-uglify@>=0.5.0 <0.6.0",
+  "_npmVersion": "2.0.0-alpha-5",
+  "_npmUser": {
+    "name": "vladikoff",
+    "email": "vlad@vladikoff.com"
+  },
+  "maintainers": [
+    {
+      "name": "tkellen",
+      "email": "tyler@sleekcode.net"
+    },
+    {
+      "name": "cowboy",
+      "email": "cowboy@rj3.net"
+    },
+    {
+      "name": "shama",
+      "email": "kyle@dontkry.com"
+    },
+    {
+      "name": "jsoverson",
+      "email": "jsoverson@gmail.com"
+    },
+    {
+      "name": "jmeas",
+      "email": "jellyes2@gmail.com"
+    },
+    {
+      "name": "vladikoff",
+      "email": "vlad@vladikoff.com"
+    },
+    {
+      "name": "sindresorhus",
+      "email": "sindresorhus@gmail.com"
+    }
+  ],
+  "dist": {
+    "shasum": "15f0aa5e8e8ba421aea980879ee505bc712b6cde",
+    "tarball": "http://registry.npmjs.org/grunt-contrib-uglify/-/grunt-contrib-uglify-0.5.1.tgz"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/grunt-contrib-uglify/-/grunt-contrib-uglify-0.5.1.tgz",
+  "readme": "ERROR: No README data found!"
+}

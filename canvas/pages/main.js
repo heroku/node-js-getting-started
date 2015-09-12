@@ -1,6 +1,6 @@
 var main = main || {};
 
-define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, SearchBar) {
+define('main', ['map', 'messageBus', 'searchBar', 'components/checkbox-limiter'], function(Map, messageBus, SearchBar, CheckboxLimiter) {
 
 	var _main = function(args) {
 
@@ -34,6 +34,7 @@ define('main', ['map', 'messageBus', 'searchBar'], function(Map, messageBus, Sea
 		var _data = args[1];
 		var _loaded = false;
 		var _loader = $('.loading-container').get(0);
+		var checkboxLimiter = new CheckboxLimiter(".js-checkbox-limiter");
 
 		this.config = _data.config;
 		this.currentUser = _data.currentUser;

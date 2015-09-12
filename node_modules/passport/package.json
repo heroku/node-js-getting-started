@@ -1,0 +1,72 @@
+{
+  "name": "passport",
+  "version": "0.2.2",
+  "description": "Simple, unobtrusive authentication for Node.js.",
+  "keywords": [
+    "express",
+    "connect",
+    "auth",
+    "authn",
+    "authentication"
+  ],
+  "author": {
+    "name": "Jared Hanson",
+    "email": "jaredhanson@gmail.com",
+    "url": "http://www.jaredhanson.net/"
+  },
+  "homepage": "http://passportjs.org/",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jaredhanson/passport.git"
+  },
+  "bugs": {
+    "url": "http://github.com/jaredhanson/passport/issues"
+  },
+  "license": "MIT",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://www.opensource.org/licenses/MIT"
+    }
+  ],
+  "main": "./lib",
+  "dependencies": {
+    "passport-strategy": "1.x.x",
+    "pause": "0.0.1"
+  },
+  "devDependencies": {
+    "mocha": "2.x.x",
+    "chai": "2.x.x",
+    "chai-connect-middleware": "0.3.x",
+    "chai-passport-strategy": "0.2.x",
+    "proxyquire": "1.x.x"
+  },
+  "engines": {
+    "node": ">= 0.4.0"
+  },
+  "scripts": {
+    "test": "mocha --reporter spec --require test/bootstrap/node test/*.test.js test/**/*.test.js"
+  },
+  "gitHead": "bc68044826ce97e9ac1afa97cf71bce64033858f",
+  "_id": "passport@0.2.2",
+  "_shasum": "9c38f17beb929f3d81af7b8838e8430db8703f2b",
+  "_from": "passport@>=0.2.1 <0.3.0",
+  "_npmVersion": "1.4.23",
+  "_npmUser": {
+    "name": "jaredhanson",
+    "email": "jaredhanson@gmail.com"
+  },
+  "maintainers": [
+    {
+      "name": "jaredhanson",
+      "email": "jaredhanson@gmail.com"
+    }
+  ],
+  "dist": {
+    "shasum": "9c38f17beb929f3d81af7b8838e8430db8703f2b",
+    "tarball": "http://registry.npmjs.org/passport/-/passport-0.2.2.tgz"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/passport/-/passport-0.2.2.tgz",
+  "readme": "ERROR: No README data found!"
+}

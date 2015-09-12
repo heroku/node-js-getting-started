@@ -1,0 +1,58 @@
+{
+  "name": "requirejs",
+  "description": "Node adapter for RequireJS, for loading AMD modules. Includes RequireJS optimizer",
+  "version": "2.1.20",
+  "homepage": "http://github.com/jrburke/r.js",
+  "author": {
+    "name": "James Burke",
+    "email": "jrburke@gmail.com",
+    "url": "http://github.com/jrburke"
+  },
+  "licenses": [
+    {
+      "type": "BSD",
+      "url": "https://github.com/jrburke/r.js/blob/master/LICENSE"
+    },
+    {
+      "type": "MIT",
+      "url": "https://github.com/jrburke/r.js/blob/master/LICENSE"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jrburke/r.js.git"
+  },
+  "main": "./bin/r.js",
+  "bin": {
+    "r.js": "./bin/r.js"
+  },
+  "engines": {
+    "node": ">=0.4.0"
+  },
+  "bugs": {
+    "url": "https://github.com/jrburke/r.js/issues"
+  },
+  "_id": "requirejs@2.1.20",
+  "scripts": {},
+  "_shasum": "114822c917ec8793450b2daaa1eb9bbf1101e931",
+  "_from": "requirejs@>=2.1.0 <2.2.0",
+  "_npmVersion": "2.12.1",
+  "_nodeVersion": "0.10.36",
+  "_npmUser": {
+    "name": "jrburke",
+    "email": "jrburke@gmail.com"
+  },
+  "maintainers": [
+    {
+      "name": "jrburke",
+      "email": "jrburke@gmail.com"
+    }
+  ],
+  "dist": {
+    "shasum": "114822c917ec8793450b2daaa1eb9bbf1101e931",
+    "tarball": "http://registry.npmjs.org/requirejs/-/requirejs-2.1.20.tgz"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/requirejs/-/requirejs-2.1.20.tgz",
+  "readme": "ERROR: No README data found!"
+}
