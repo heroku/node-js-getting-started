@@ -40,6 +40,27 @@ var publicPath = path.resolve('./public');
 var gm = require('gm');
 var os = require('os');
 
+
+//download helper function
+var download = function(uri, filename, callback){
+  request.head(uri, function(err, res, body){
+    if (err) callback(err, filename);
+    else {
+        var stream = request(uri);
+        stream.pipe(
+            fs.createWriteStream(filename)
+                .on('error', function(err){
+                    callback(error, filename);
+                    stream.read();
+                })
+            )
+        .on('close', function() {
+            callback(null, filename);
+        });
+    }
+  });
+};
+
 //basic auth
 var auth = require('basic-auth');
 
@@ -1118,10 +1139,12 @@ publicRouter.get('/edit/:number', function(req, res, next) {
   });
 });
 
-publicRouter.get('/number/:number', function(req, res, next) {
+var getRandomInt = function(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+};
 
-  /***** IMAGE manipulation *****/
-  var number = parseInt(req.params.number, 10);
+var getImagesForMozaic = function(number, callback){
+
   var numberArray = [number - 1001, number - 1000, number - 999, number - 1, number, number + 1, number + 999, number + 1000, number + 1001];
 
   Face.find({number:{$in:numberArray}}).sort('number').exec(function(err, faces) {
@@ -1129,84 +1152,142 @@ publicRouter.get('/number/:number', function(req, res, next) {
       var tempFaces = _.clone(faces);
 
         if (err){
-          res.send(err);
+          callback(err, null);
         }
+
+        var nbDownloads = 0;
+
         for(var i = 0; i < numberArray.length; i++){
 
           if( ! _.find(tempFaces, function(currentFace){ return currentFace.number == numberArray[i]; }) ){
-              tempFaces.push({'number': numberArray[i], picture: '/img/noimage.jpg'});
+              var tempPicture = '/img/FREESTATE0' + getRandomInt(1,4) + '.png';
+              tempFaces.push({'number': numberArray[i], picture: tempPicture, downloaded: true});
+              nbDownloads++;
           }
         }
 
       tempFaces = _.sortBy(tempFaces, 'number');
+      console.log('NBDOWNLOADS START', nbDownloads, tempFaces.length);
+      for(var i = 0; i < tempFaces.length; i++){
 
-      var im = gm.subClass({ imageMagick: true });
+        if(!tempFaces[i].downloaded){
+          //callback(null, tempFaces);
+          download('http://files.onemillionhumans.com' + tempFaces[i].picture, publicPath + tempFaces[i].picture, function(errDownload,filename){
+            console.log('PICTURE FILENAME', errDownload, filename);
+            if(!errDownload){
+              nbDownloads++;
+              console.log('NBDOWNLOADS', nbDownloads);
+              if(nbDownloads == 9){
+                callback(null, tempFaces);
+              }
+            }
+            //res.json(images);
+          });
+        }
+      }
 
-      var img1 = im(publicPath + tempFaces[0].picture);
-      var img2 = im(publicPath + tempFaces[3].picture);
-      var img3 = im(publicPath + tempFaces[6].picture);
 
-      img1.append(publicPath + tempFaces[1].picture, publicPath + tempFaces[2].picture,  true);
-      img2.append(publicPath + tempFaces[4].picture, publicPath + tempFaces[5].picture,  true);
-      img3.append(publicPath + tempFaces[7].picture, publicPath + tempFaces[8].picture,  true);
+    });
 
-      img1.write(imgDestPath + '/' + number + '-temp-1.jpg'
-      , function(stdout){
-        console.log('IMG DEST PATH 1', imgDestPath + '/' + number + '-temp-1.jpg');
-        img2.write(imgDestPath + '/' + number + '-temp-2.jpg'
-        , function(stdout2){
-          console.log('IMG DEST PATH 2', imgDestPath + '/' + number + '-temp-2.jpg');
-          img3.write(imgDestPath + '/' + number + '-temp-3.jpg'
-          , function(stdout3){
-            console.log('IMG DEST PATH 3', imgDestPath + '/' + number + '-temp-3.jpg');
-            var imgFinal = im(imgDestPath + '/' + number + '-temp-1.jpg');
-            imgFinal.append(imgDestPath + '/' + number + '-temp-2.jpg', imgDestPath + '/' + number + '-temp-3.jpg', false);
+};
 
-            imgFinal.stream(function(err, stdout, stderr) {
+var createMozaic = function(number, tempFaces, callback){
+  console.log('TEMPFACES', tempFaces);
+  var im = gm;//.subClass({ imageMagick: true });
 
-              var buf = new Buffer('');
+  var img1 = im(publicPath + tempFaces[0].picture).resize("150", "150");
+  var img2 = im(publicPath + tempFaces[3].picture).resize("150", "150");
+  var img3 = im(publicPath + tempFaces[6].picture).resize("150", "150");
 
-              if(stdout){
+  img1.append(publicPath + tempFaces[1].picture, publicPath + tempFaces[2].picture,  true);
+  img2.append(publicPath + tempFaces[4].picture, publicPath + tempFaces[5].picture,  true);
+  img3.append(publicPath + tempFaces[7].picture, publicPath + tempFaces[8].picture,  true);
 
-                stdout.on('data', function(data) {
-                   buf = Buffer.concat([buf, data]);
-                });
+  img1.write(imgDestPath + '/' + number + '-temp-1.jpg'
+  , function(stdout1){
+    console.log('IMG DEST PATH 1', imgDestPath + '/' + number + '-temp-1.jpg');
+    img2.write(imgDestPath + '/' + number + '-temp-2.jpg'
+    , function(stdout2){
+      console.log('IMG DEST PATH 2', imgDestPath + '/' + number + '-temp-2.jpg');
+      img3.write(imgDestPath + '/' + number + '-temp-3.jpg'
+      , function(stdout3){
+        console.log('IMG DEST PATH 3', imgDestPath + '/' + number + '-temp-3.jpg');
 
-                stdout.on('end', function(data) {
+        var imgFinal = im(imgDestPath + '/' + number + '-temp-1.jpg');
+        imgFinal.append(imgDestPath + '/' + number + '-temp-2.jpg', imgDestPath + '/' + number + '-temp-3.jpg', false);
 
-                  var data = {
-                    Bucket: config.S3_BUCKET_NAME,
-                    ACL: 'public-read',
-                    Key: 'img/' + number + '-mozaic.jpeg',
-                    Body: buf,
-                    ContentType: mime.lookup(imgDestPath + '/' + number + '-temp-1.jpg')
-                  };
+        imgFinal.write(imgDestPath + '/' + number + '-temp-final.jpg'
+        , function(stdoutFinal){
+          console.log('IMG FINAL', imgFinal);
 
-                  s3bucket.putObject(data, function(errr, ress) {
-                      console.log('CALLBACK AMAZON', errr, ress);
-                      if(errr){
-                        console.log(errr);
-                      }
-                      else{
-                        Face.findOne({'number': req.params.number}, function(err, face) {
-                            if (err){
-                              res.send(err);
-                            }
-                            //res.send('test');
-                            res.render('home', {data:{'config': config, 'showFace': face, 'currentUser': req.user}});
-                        });
-                      }
-                    });
-                  });
-                }
+        var imgFinalMozaic = im(imgDestPath + '/' + number + '-temp-final.jpg');
+        imgFinalMozaic.stream(function(err, stdout, stderr) {
+
+          var buf = new Buffer('');
+
+          if(stdout){
+
+            stdout.on('data', function(data) {
+               buf = Buffer.concat([buf, data]);
             });
 
-          });
+            stdout.on('end', function(data) {
+
+              var data = {
+                Bucket: config.S3_BUCKET_NAME,
+                ACL: 'public-read',
+                Key: 'img/mozaic/' + number + '-mozaic.jpeg',
+                Body: buf,
+                ContentType: mime.lookup(imgDestPath + '/' + number + '-temp-final.jpg')
+              };
+
+              s3bucket.putObject(data, function(errr, ress) {
+                  console.log('CALLBACK AMAZON', errr, ress);
+                  if(errr){
+                    console.log(errr);
+                    callback(errr, null);
+                  }
+                  else{
+                    callback(null, imgDestPath + '/' + number + '-temp-final.jpg');
+                  }
+                });
+              });
+            }
         });
 
       });
 
+      });
+    });
+
   });
+
+};
+
+publicRouter.get('/number/:number', function(req, res, next) {
+
+  /***** IMAGE manipulation *****/
+  var number = parseInt(req.params.number, 10);
+  getImagesForMozaic(number, function(err, images){
+    console.log('PICTURE', images);
+    createMozaic(number, images, function(err1){
+
+      Face.findOne({'number': req.params.number}, function(err, face) {
+          if (err){
+            res.send(err);
+          }
+          //res.send('test');
+          res.render('home', {data:{'config': config, 'showFace': face, 'currentUser': req.user}});
+      });
+    });
+
+  });
+
+
+
+
+
+
 
   /******************************/
 
@@ -1229,15 +1310,17 @@ app.use(function(req, res, next) {
     return next();
 });
 //basic auth
-app.use(function(req, res, next) {
+if(1/*config.need_auth*/){
+  app.use(function(req, res, next) {
 
-  var user = auth(req);
-  if (!user || !admins[user.name] || admins[user.name].password !== user.pass) {
-    res.set('WWW-Authenticate', 'Basic realm="example"');
-    return res.status(401).send();
-  }
-  return next();
-});
+    var user = auth(req);
+    if (!user || !admins[user.name] || admins[user.name].password !== user.pass) {
+      res.set('WWW-Authenticate', 'Basic realm="example"');
+      return res.status(401).send();
+    }
+    return next();
+  });
+}
 //
 app.use('/api', router);
 app.use('/', publicRouter);
