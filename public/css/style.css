@@ -899,6 +899,7 @@ input[type=checkbox]:checked + label:after {
 
 @keyframes animWizz{
   0% {
+    color:  red  ;
     transform:  translate(0px,0px)  ;
   }
   22% {
@@ -923,6 +924,7 @@ input[type=checkbox]:checked + label:after {
 
 @-moz-keyframes animWizz{
   0% {
+    color:  red  ;
     -moz-transform:  translate(0px,0px)  ;
   }
   22% {
@@ -947,6 +949,7 @@ input[type=checkbox]:checked + label:after {
 
 @-webkit-keyframes animWizz {
   0% {
+    color:  red  ;
     -webkit-transform:  translate(0px,0px)  ;
   }
   22% {
@@ -971,6 +974,7 @@ input[type=checkbox]:checked + label:after {
 
 @-o-keyframes animWizz {
   0% {
+    color:  red  ;
     -o-transform:  translate(0px,0px)  ;
   }
   22% {
@@ -995,6 +999,7 @@ input[type=checkbox]:checked + label:after {
 
 @-ms-keyframes animWizz {
   0% {
+    color:  red  ;
     -ms-transform:  translate(0px,0px)  ;
   }
   22% {
