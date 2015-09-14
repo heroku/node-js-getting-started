@@ -1310,7 +1310,7 @@ app.use(function(req, res, next) {
     return next();
 });
 //basic auth
-if(1/*config.need_auth*/){
+if(config.need_auth){
   app.use(function(req, res, next) {
 
     var user = auth(req);
