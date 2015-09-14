@@ -55,8 +55,8 @@ define('main', ['map', 'messageBus', 'searchBar', 'components/checkbox-limiter']
 
 		function init() {
 			// @TODO: fps optimize
-			var resolution = window.devicePixelRatio ? 1.5 : 1;
-			_stage = new PIXI.Stage(0x555555);
+			var resolution = window.devicePixelRatio ? 2 : 1;
+			_stage = new PIXI.Stage(0x262626);
 			_rendererOptions = {view : _canvas, transparent : false, resolution : resolution};
 
 			if( isWebglRecommand() ){

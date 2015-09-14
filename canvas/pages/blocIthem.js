@@ -6,7 +6,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 
 		var _this = this;
 		// CONST
-		var _margin = 40;
+		var _margin = 50;
 		var PICTURE_WIDTH = ITEM_WIDTH-_margin;
 		var PICTURE_HEIGHT = ITEM_HEIGHT-_margin;
 
@@ -54,12 +54,13 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 
 		function build() {
 
+console.log(PICTURE_WIDTH, PICTURE_HEIGHT);
 			_container = new PIXI.DisplayObjectContainer();
 			_contextualInfo = new PIXI.DisplayObjectContainer();
 
 			_rect = new PIXI.Graphics();
 			_rect.clear();
-			_rect.beginFill(0x555555, 1);
+			_rect.beginFill(0x262626, 1);
 			_rect.drawRect(0, 0, ITEM_WIDTH, ITEM_HEIGHT);
 			_rect.endFill();
 
@@ -79,24 +80,35 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 			_maskPicture.x = _item.x;
 			_maskPicture.y = _item.y;
 
-			_item.mask = _maskPicture;
+			_itemBorder = new PIXI.Graphics();
+			_itemBorder.clear();
+			_itemBorder.lineStyle("1px", 0x000000, 1);
+			_itemBorder.moveTo(0, 0);
+			_itemBorder.lineTo(PICTURE_WIDTH, 0);
+			_itemBorder.lineTo(PICTURE_WIDTH, PICTURE_HEIGHT);
+			_itemBorder.lineTo(0, PICTURE_HEIGHT);
+			_itemBorder.lineTo(0, 0);
+			_itemBorder.x = _item.x;
+			_itemBorder.y = _item.y;
 
-			_itemText = new PIXI.Text("#", {font : "11px montserrat-light", fill : "#aaaaaa"});
+			_item.mask = _maskPicture;	
+
+			_itemText = new PIXI.Text("#", {font : "13px montserrat-regular", fill : "#aaaaaa"});
 			_itemText.rotation = Math.PI*90/180;
-			_itemText.x = ITEM_WIDTH-8;
+			_itemText.x = ITEM_WIDTH-12;
 			_itemText.y = _margin/2;
 
-			_itemName = new PIXI.Text("Julien", {font : "11px montserrat-light", fill : "#aaaaaa"});
+			_itemName = new PIXI.Text("Julien", {font : "13px montserrat-regular", fill : "#aaaaaa"});
 			_itemName.position.x = Math.round(_margin/2);
-			_itemName.position.y = Math.round(_margin-32);
+			_itemName.position.y = Math.round(_margin-40);
 
 			_fb = new BtnSocial(constantes.icons.FACEBOOK, "#3a5795", onFBCLick, null, null, 30);
-			_fb.x = Math.round(25);
-			_fb.y = Math.round(ITEM_HEIGHT-20-_fb.height/_fb.resolution);
+			_fb.x = Math.round(30);
+			_fb.y = Math.round(ITEM_HEIGHT-30-_fb.height/_fb.resolution);
 
 			_tw = new BtnSocial(constantes.icons.TWITTER, "#55acee", onTWCLick, null, null, 30);
-			_tw.x = Math.round(ITEM_WIDTH-25-_tw.width/_tw.resolution);
-			_tw.y = Math.round(ITEM_HEIGHT-20-_tw.height/_tw.resolution);
+			_tw.x = Math.round(ITEM_WIDTH-30-_tw.width/_tw.resolution);
+			_tw.y = Math.round(ITEM_HEIGHT-30-_tw.height/_tw.resolution);
 
 			_share = new BtnSocial(constantes.icons.SHARE, "#00FFFF", onShareCLick);
             _share.x = Math.round(ITEM_WIDTH/2-15);
@@ -173,6 +185,8 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 			messageBus.on('map:endSkipAnimation', _.bind(showBackgroundColor, this));
 			messageBus.on('map:startSkipAnimation', _.bind(hideBackgroundColor, this));
 			messageBus.on('blocItem:setUnselected', _.bind(setUnselected, _this));
+			messageBus.on('map:blur', _.bind(mapBlur, _this));
+			messageBus.on('map:unblur', _.bind(mapUnblur, _this));
 			//messageBus.on('blocItem:setSelected', _.bind(setSelected, _this));
 			messageBus.on('ScrollContainer:StartMoving', clearTimer);
 
@@ -191,6 +205,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 			//_container.addChild(_pictureLoader);
 			_container.addChild(_item);
 			_container.addChild(_maskPicture);
+			_container.addChild(_itemBorder);
 			_container.addChild(_fb);
 			_container.addChild(_tw);
 			_container.addChild(_share);
@@ -207,6 +222,16 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 			_contextualInfo.addChild(_slotOccupation2);
 			_contextualInfo.addChild(_slotOccupation3);
 
+		}
+
+		function mapBlur(){
+			// _scope.alpha = 0.5;
+			// _bgPicture.alpha = 0;
+		}
+
+		function mapUnblur(){
+			// _scope.alpha = 1;
+			// _bgPicture.alpha = 1;
 		}
 
 		/**
@@ -560,6 +585,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 			this.setClaim(claimEnable);
 			this.setShare(shareEnable);
 
+			_itemBorder.visible = !!socialEnable;
 			_bgPicture.visible = !(_data.accountname);
 			_itemText.setText(pad(_txt*1));
 			_item.texture.destroy();
@@ -593,6 +619,8 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 						var texture = new PIXI.Texture(PIXI.Texture.fromImage(img));
 						_item.texture.destroy();
 						_item.setTexture(texture);
+						console.log(texture.width);
+
 
 						_spinner.hide();
 

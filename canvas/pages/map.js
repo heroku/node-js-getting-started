@@ -11,8 +11,8 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 		var _w;
 		var _h;
 		var _coefPage = window.screen.width > 1600 ? 0.5 :  (Tools.getDevice() == "desktop")  ? 1 : (Tools.getDevice() == "tablet") ? 2 : 5;
-        var ITEM_WIDTH = Tools.getDevice() === 'desktop' ? 180 : 190;
-        var ITEM_HEIGHT = Tools.getDevice() === 'desktop' ? 180 : 190;
+        var ITEM_WIDTH = Tools.getDevice() === 'desktop' ? 200 : 200;
+        var ITEM_HEIGHT = Tools.getDevice() === 'desktop' ? 200 : 200;
         var MIN_SPEED = 1;
         var MAX_SPEED = 13;
         var MIN_FACES = 1-1;

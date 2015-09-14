@@ -8,7 +8,7 @@ define('mapBlur', ['messageBus'], function(messageBus){
     var MapBlur = function(objectToBlur, itemWidth, itemHeight){
         PIXI.DisplayObjectContainer.call(this);
 
-        this.alphaLevel = 0.5;
+        this.alphaLevel = 0.4;
 
         this.toBlur = new PIXI.DisplayObjectContainer();
 
@@ -36,7 +36,7 @@ define('mapBlur', ['messageBus'], function(messageBus){
 
         this.tintBlack = new PIXI.Graphics();
 
-        this.tint.blendMode = PIXI.blendModes.MULTIPLY;
+        // this.tint.blendMode = PIXI.blendModes.MULTIPLY;
 
         this.blurMask = new PIXI.Graphics();
 

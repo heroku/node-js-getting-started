@@ -127,7 +127,7 @@ define('pagination', ['messageBus'], function(messageBus){
      */
     Pagination.prototype.setPaginationLabel = function(){
         if( this.length > 0 ){
-            this.$label.text((this.current+1)+"/"+this.length);
+            this.$label.text((this.current+1)+" / "+this.length);
         }else{
             this.$label.text('');
         }

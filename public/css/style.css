@@ -181,7 +181,7 @@ body{
 	margin: 0;
 	padding: 0;
 	background-color: #555555;
-	font-family: 'montserrat-ultralight' !important ;
+	font-family: 'montserrat-light' !important ;
 }
 
 .loading-container {
@@ -370,6 +370,23 @@ body{
 	position: absolute;
 	top: 20px;
 	left: 20px;
+}
+
+.form-control:focus {
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(0,0,0, .2) !important;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(0, 0, 0, .2) !important;
+}
+
+.chosen-container-multi .chosen-choices {
+	-webkit-box-shadow: none !important; 
+    box-shadow: none !important;
+    background: transparent !important;
+    border: 0 !important;
+}
+
+.chosen-container-active .chosen-choices {
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(0,0,0, .2) !important;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(0, 0, 0, .2) !important;
 }
 
 .search-bar .form-control {
@@ -564,7 +581,8 @@ input[type=checkbox]:checked + label:after {
 .search-pagination-label,
 .search-pagination-button-prev:before,
 .search-pagination-button-next:before {
-	line-height: 2.2em;
+	line-height: 1.6em;
+	font-size: 16px;
 }
 
 .search-reset:hover,
