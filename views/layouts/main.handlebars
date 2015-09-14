@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=no" />
 
     {{#if data.showFace}}
-      <meta property="og:title" content="#OneMillionHumans {{data.showFace.number}}" />
+      <meta property="og:title" content="#OneMillionHumans" />
       <meta property="og:site_name" content="One millions humans"/>
       <meta property="og:url" content="{{data.config.root_url}}/number/{{data.showFace.number}}" />
-      <meta property="og:description" content="I have a spot on the #OMH project :)" />
+      <meta property="og:description" content="I have spot number {{data.showFace.number}} on the #OMH project :)" />
       <meta property="fb:app_id" content="{{data.config.FACEBOOK_APP_ID}}" />
       <meta property="og:image" content="http://{{data.config.S3_BUCKET_NAME}}/img/mozaic/{{data.showFace.number}}-mozaic.jpeg" />
     {{else}}
