@@ -54,7 +54,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 
 		function build() {
 
-console.log(PICTURE_WIDTH, PICTURE_HEIGHT);
+
 			_container = new PIXI.DisplayObjectContainer();
 			_contextualInfo = new PIXI.DisplayObjectContainer();
 
@@ -619,7 +619,6 @@ console.log(PICTURE_WIDTH, PICTURE_HEIGHT);
 						var texture = new PIXI.Texture(PIXI.Texture.fromImage(img));
 						_item.texture.destroy();
 						_item.setTexture(texture);
-						console.log(texture.width);
 
 
 						_spinner.hide();
