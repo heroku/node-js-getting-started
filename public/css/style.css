@@ -45,7 +45,7 @@
 	margin-left: .2em;
 
 	/* you can be more comfortable with increased icons size */
-	/* font-size: 120%; */
+	 font-size: 1.3em;
 
 	/* Font smoothing. That was taken from TWBS */
 	-webkit-font-smoothing: antialiased;
@@ -164,6 +164,11 @@
 	font-family: 'Proxima';
 	src: url("../fonts/proxima-regular.woff") format("woff");
 }
+
+.font-icon {
+		font-family: "fontello";
+}
+
 .font0 {
 	font-family: 'montserrat-regular';
 }
@@ -216,6 +221,7 @@ body{
 }
 
 .btn.btn-custom-blue {
+    padding: 12px 12px;
 	color: #fff;
 	z-index: 2;
 	border: 1px solid rgb(100, 100, 100);
@@ -378,7 +384,7 @@ body{
 }
 
 .chosen-container-multi .chosen-choices {
-	-webkit-box-shadow: none !important; 
+	-webkit-box-shadow: none !important;
     box-shadow: none !important;
     background: transparent !important;
     border: 0 !important;
@@ -390,7 +396,7 @@ body{
 }
 
 .search-bar .form-control {
-	height:28px;
+	height:40px;
 }
 
 .search-bar .input-group {
@@ -581,7 +587,7 @@ input[type=checkbox]:checked + label:after {
 .search-pagination-label,
 .search-pagination-button-prev:before,
 .search-pagination-button-next:before {
-	line-height: 26px;
+	line-height: 40px;
 	font-size: 16px;
 }
 
@@ -599,7 +605,7 @@ input[type=checkbox]:checked + label:after {
 }
 
 .menu-container{
-	padding:5px 10px 5px 10px;
+	padding:5px 12px 5px 10px;
 	background:#000;
 	opacity: 0.6;
 	position: absolute;
@@ -634,7 +640,7 @@ input[type=checkbox]:checked + label:after {
 .profile-button-logout {
 
 	color:white;
-	font-size: 12px;
+	font-size: 14px;
 	font-family: 'montserrat-light';
 
 }
@@ -894,6 +900,12 @@ input[type=checkbox]:checked + label:after {
 	opacity: 0.6;
     font-size: 31px;
     line-height: 22px;
+}
+
+#dropdownMenu1 {
+	border: 0;
+	background: transparent;
+	color: white;
 }
 
 /** ANIMATION **/

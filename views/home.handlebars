@@ -56,150 +56,15 @@
 	</script>
 
 <div class="modal-container">
-	<div class="modal modal-login fade" id="modal-login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
 
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-	          <h4 class="modal-title" id="myModalLabel">Login</h4>
-	        </div>
-        	<div class="modal-body">
-						<div class="social-links-container">
-							<a href="/login/facebook" class="icon-facebook icon-facebook-squared">Facebook</a>
-							<a href="/login/twitter" class="icon-twitter icon-twitter-squared">Twitter</a>
-						</div>
-					</div>
-        	<div class="modal-footer">
-					</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="modal modal-share fade" id="modal-share" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	          <h4 class="modal-title" id="myModalLabel">Share this free human slot</h4>
-	        </div>
-        	<div class="modal-body">
-						<div class="input-group input-group">
-							<span class="input-group-addon" id="label-url">Url to share</span>
-							<input type="text" class="form-control js-share-url" placeholder="Url to share" aria-describedby="label-url" name="url" value="" />
-						</div>
-
-						<iframe border="0" class="js-share-iframe share-iframe" src="" height="200" width="100%"></iframe>
-
-					</div>
-        	<div class="modal-footer">
-					</div>
-			</div>
-		</div>
-	</div>
-
+	{{> modalView}}
+	{{> modalShare}}
+	{{> modalLogin}}
+	
 	{{#if data.currentUser}}
-
-	<div class="modal modal-edit fade" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	          <h4 class="modal-title" id="myModalLabel">Happy to be here?</h4>
-	        </div>
-        	<div class="modal-body">
-
-						<div class="edit-human">
-							<form id="edit-user" method="post" action="/api/faces/{{data.currentUser._id}}">
-		          <div class="input-group input-group">
-							  <span class="input-group-addon" id="label-name">Name</span>
-							  <input type="text" class="form-control" placeholder="Your name" aria-describedby="label-name" name="accountname" value="{{data.currentUser.accountname}}">
-							</div>
-
-							<div class="input-group input-group">
-							  <span class="input-group-addon" id="label-website">Personnal link</span>
-							  <input type="text" class="form-control" placeholder="your website" aria-describedby="label-website"  name="website" value="{{data.currentUser.website}}">
-							</div>
-
-							<div class="input-group input-group">
-							  <span class="input-group-addon" id="label-lang">Language (max. 3)</span>
-							  <select data-placeholder="Choose a language..." style="width:350px;" multiple class="lang-select" name="lang">
-									<option value="fr">French</option>
-									<option value="en">English</option>
-									<option value="de">German</option>
-									<option value="es">Spanish</option>
-									<option value="it">Italian</option>
-									<option value="cn">Chinese</option>
-								</select>
-                            </div>
-                            <div class="input-group input-group">
-                                <span class="input-group-addon" id="label-website">Occupations (max. 3)</span>
-                            </div>
-                            <div class="input-group input-group no-border">
-								<!--input type="text" class="form-control" placeholder="your website" aria-describedby="label-lang" name="lang" value="{{data.currentUser.lang}}">
-							</div>
-							<div class="input-group input-group">
-								<span class="input-group-addon" id="label-occupations">your occupation (max. 3)</span>
-								<!--option>student</option>
-	              <option>parent</option>
-	              <option>worker</option>
-	              <option>artist</option>
-	              <option>undisclosed</option>
-	              <option>geek</option>
-	              <option>athlete</option>
-	              <option>hype</option>
-	              <option>explorer</option>
-	              <option>scientist</option-->
-								<input name="occupations" type="checkbox" {{checked 'student' data.currentUser.occupations}} id="student" value="student" class="js-checkbox-limiter" />
-								<label for="student" class="icon-student col-sm-4 col-xs-6">Student</label>
-
-								<input name="occupations" type="checkbox" {{checked 'parent' data.currentUser.occupations}} id="parent" value="parent" class="js-checkbox-limiter" />
-								<label for="parent" class=" icon-parent col-sm-4 col-xs-6">Parent</label>
-
-								<input name="occupations" type="checkbox" {{checked 'worker' data.currentUser.occupations}} id="worker" value="worker" class="js-checkbox-limiter"/>
-								<label for="worker" class=" icon-worker-briefcase col-sm-4 col-xs-6">Worker</label>
-
-								<input name="occupations" type="checkbox" {{checked 'artist' data.currentUser.occupations}} id="artist" value="artist" class="js-checkbox-limiter"/>
-								<label for="artist" class=" icon-artist col-sm-4 col-xs-6">Artist</label>
-
-								<input name="occupations" type="checkbox" {{checked 'undisclosed' data.currentUser.occupations}} id="undisclosed" value="undisclosed" class="js-checkbox-limiter"/>
-								<label for="undisclosed" class=" icon-undisclosed col-sm-4 col-xs-6">undisclosed</label>
-
-								<input name="occupations" type="checkbox" {{checked 'geek' data.currentUser.occupations}} id="geek" value="geek" class="js-checkbox-limiter"/>
-								<label for="geek" class=" icon-geek-mouse col-sm-4 col-xs-6">Geek</label>
-
-								<input name="occupations" type="checkbox" {{checked 'athlete' data.currentUser.occupations}} id="athlete" value="athlete" class="js-checkbox-limiter"/>
-								<label for="athlete" class=" icon-athlete-basketball col-sm-4 col-xs-6">Athlete</label>
-
-								<input name="occupations" type="checkbox" {{checked 'hype' data.currentUser.occupations}} id="hype" value="hype" class="js-checkbox-limiter"/>
-								<label for="hype" class=" icon-hype-tie col-sm-4 col-xs-6">Hype</label>
-
-								<input name="occupations" type="checkbox" {{checked 'explorer' data.currentUser.occupations}} id="explorer" value="explorer" class="js-checkbox-limiter"/>
-								<label for="explorer" class=" icon-explorer-rocket col-sm-4 col-xs-6">Explorer</label>
-
-								<input name="occupations" type="checkbox" {{checked 'scientist' data.currentUser.occupations}} id="scientist" value="scientist" class="js-checkbox-limiter"/>
-								<label for="scientist" class=" icon-scientist col-sm-4 col-xs-6">Scientist</label>
-							</div>
-						</form>
-	        </div>
-					<div class="share-register hide">
-								<p>Help us out by Sharing/sharing on your wall about OMH or maybe even donate a little something to help the project.</p>
-								<div class="fb-share-button" data-href="{{data.config.root_url}}/number/{{data.currentUser.number}}" data-layout="button"></div>
-								<a class="twitter-share-button" href="https://twitter.com/intent/tweet?url={{data.config.root_url}}%2Fnumber%2F{{data.currentUser.number}}">
-									Tweet
-								</a>
-					</div>
-			</div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-black js-edit-user-submit" name="save">OK</button>
-        </div>
-
-			</div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
+		{{> modalEdit}}
 	{{/if}}
+	
 </div>
 <div class="alert-container">
 	{{#if data.error}}
@@ -220,7 +85,7 @@
 		</button>
 		<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
 			<li><a href="/#edit/">Edit</a></li>
-			<li><a href="/logout">logout</a></li>
+			<li><a href="/logout">Logout</a></li>
 		</ul>
 	</div>
 			<!--a href="/#edit/" class="profile-button-edit icon-user"></a>
@@ -244,7 +109,7 @@
 
 						<div class="search-input-item">
 								<div class="input-group">
-										<input type="text" id="search-field" class="form-control" placeholder="123401, Julien, ....">
+										<input type="text" id="search-field" class="form-control" placeholder="recherche">
 										<span class="input-group-btn">
 												<button class="search-submit btn btn-custom-blue icon-search" type="button"></button>
 										</span>
@@ -264,3 +129,5 @@
 				</div>
 		</form>
 </div>
+
+{{> templateModalViewFace}}
