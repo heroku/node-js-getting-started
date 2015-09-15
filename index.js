@@ -666,7 +666,7 @@ publicRouter.get('/initclaims/', function(req, res, next) {
     var nb = 1;
     var k = 1;
     for(var i = 0; i < faces.length; i++){
-      faces[i].claim = (k == -1) ? false:true;
+      faces[i].claim = false;
       faces[i].claim = (faces[i].network == 'facebook') ? true : faces[i].claim;
       faces[i].save(function(err){
         console.log('ERREUR', err);
