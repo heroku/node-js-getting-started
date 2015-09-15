@@ -572,7 +572,6 @@ router.route('/faces')
 publicRouter.get('/', function(req, res) {
     console.log('REQ GET URL', config.root_url);
     res.render('home', {data:{'config': config, 'currentUser': req.user}});
-
 });
 
 /****** SCRAPING **********/
@@ -1203,24 +1202,24 @@ var createMozaic = function(number, tempFaces, callback){
   img2.append(publicPath + tempFaces[4].picture, publicPath + tempFaces[5].picture,  true);
   img3.append(publicPath + tempFaces[7].picture, publicPath + tempFaces[8].picture,  true);
 
-  img1.write(imgDestPath + '/' + number + '-temp-1.jpg'
+  img1.write(imgDestPath + '/' + number + '-temp-1.png'
   , function(stdout1){
-    console.log('IMG DEST PATH 1', imgDestPath + '/' + number + '-temp-1.jpg');
-    img2.write(imgDestPath + '/' + number + '-temp-2.jpg'
+    console.log('IMG DEST PATH 1', imgDestPath + '/' + number + '-temp-1.png');
+    img2.write(imgDestPath + '/' + number + '-temp-2.png'
     , function(stdout2){
-      console.log('IMG DEST PATH 2', imgDestPath + '/' + number + '-temp-2.jpg');
-      img3.write(imgDestPath + '/' + number + '-temp-3.jpg'
+      console.log('IMG DEST PATH 2', imgDestPath + '/' + number + '-temp-2.png');
+      img3.write(imgDestPath + '/' + number + '-temp-3.png'
       , function(stdout3){
-        console.log('IMG DEST PATH 3', imgDestPath + '/' + number + '-temp-3.jpg');
+        console.log('IMG DEST PATH 3', imgDestPath + '/' + number + '-temp-3.png');
 
-        var imgFinal = im(imgDestPath + '/' + number + '-temp-1.jpg');
-        imgFinal.append(imgDestPath + '/' + number + '-temp-2.jpg', imgDestPath + '/' + number + '-temp-3.jpg', false);
+        var imgFinal = im(imgDestPath + '/' + number + '-temp-1.png');
+        imgFinal.append(imgDestPath + '/' + number + '-temp-2.png', imgDestPath + '/' + number + '-temp-3.png', false);
 
-        imgFinal.write(imgDestPath + '/' + number + '-temp-final.jpg'
+        imgFinal.write(imgDestPath + '/' + number + '-temp-final.png'
         , function(stdoutFinal){
           console.log('IMG FINAL', imgFinal);
 
-        var imgFinalMozaic = im(imgDestPath + '/' + number + '-temp-final.jpg');
+        var imgFinalMozaic = im(imgDestPath + '/' + number + '-temp-final.png');
         imgFinalMozaic.stream(function(err, stdout, stderr) {
 
           var buf = new Buffer('');
@@ -1236,9 +1235,9 @@ var createMozaic = function(number, tempFaces, callback){
               var data = {
                 Bucket: config.S3_BUCKET_NAME,
                 ACL: 'public-read',
-                Key: 'img/mozaic/' + number + '-mozaic.jpeg',
+                Key: 'img/mozaic/' + number + '-mozaic.png',
                 Body: buf,
-                ContentType: mime.lookup(imgDestPath + '/' + number + '-temp-final.jpg')
+                ContentType: mime.lookup(imgDestPath + '/' + number + '-temp-final.png')
               };
 
               s3bucket.putObject(data, function(errr, ress) {
@@ -1248,7 +1247,7 @@ var createMozaic = function(number, tempFaces, callback){
                     callback(errr, null);
                   }
                   else{
-                    callback(null, imgDestPath + '/' + number + '-temp-final.jpg');
+                    callback(null, imgDestPath + '/' + number + '-temp-final.png');
                   }
                 });
               });
