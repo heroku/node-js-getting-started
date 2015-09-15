@@ -17,6 +17,7 @@ function(
 		this.template = _.template($("#template-modal-view").html());
 
 		this.$el = $(".modal-view");
+		this.$close = this.$el.find(".close");
 		this.$title = this.$el.find('.modal-title');
 		this.$content = this.$el.find('.modal-body');
 
@@ -25,6 +26,7 @@ function(
 
 	modalView.prototype.setColor = function(event){
 			this.$title.css('color', event.data.color.replace("0x", "#"));
+			this.$close.css('color', event.data.color.replace("0x", "#"));
 			console.log('modalview', event.data.color);
 	};
 
