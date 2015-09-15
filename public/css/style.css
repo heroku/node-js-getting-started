@@ -581,7 +581,7 @@ input[type=checkbox]:checked + label:after {
 .search-pagination-label,
 .search-pagination-button-prev:before,
 .search-pagination-button-next:before {
-	line-height: 1.6em;
+	line-height: 26px;
 	font-size: 16px;
 }
 
