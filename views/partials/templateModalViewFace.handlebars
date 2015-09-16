@@ -1,0 +1,23 @@
+<script type="text/template" id="template-modal-view">
+	<div class="col-sm-4"><img src="http://{{data.config.S3_BUCKET_NAME}}<%= data.picture %>" /></div>
+	<div class="col-sm-8">
+		langs :
+		<% _.each(langs, function(lang){ %>
+			<img src="http://{{data.config.S3_BUCKET_NAME}}/img/lang/<%= lang.toUpperCase() %>.png" alt="<%= lang %>" /><br />
+		<% }); %>
+
+		<br />
+		occupations :
+
+		<% _.each(occupations, function(occupation){ %>
+				<span><span class="font-icon"><%= icons[occupation.toUpperCase()] %></span> <%= occupation %></span>
+		<% }); %>
+	</div>
+	<div class="col-sm-12">
+		Personnal link : <a href="<%= data.website %>" target="_blank"><%= data.website %></a>
+	</div>
+	<div class="col-sm-6"><div class="fb-share-button" data-href="{{data.config.root_url}}/number/<%= data.number %>" data-layout="button"></div></div>
+	<div class="col-sm-6"><a class="twitter-share-button" href="https://twitter.com/intent/tweet?url={{data.config.root_url}}%2Fnumber%2F<%= data.number %>">
+									Tweet
+								</a></div>
+</script>

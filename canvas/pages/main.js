@@ -1,6 +1,6 @@
 var main = main || {};
 
-define('main', ['map', 'messageBus', 'searchBar', 'components/checkbox-limiter'], function(Map, messageBus, SearchBar, CheckboxLimiter) {
+define('main', ['map', 'messageBus', 'searchBar', 'components/checkbox-limiter', 'pages/modalView'], function(Map, messageBus, SearchBar, CheckboxLimiter, modalView) {
 
 	var _main = function(args) {
 
@@ -229,6 +229,7 @@ define('main', ['map', 'messageBus', 'searchBar', 'components/checkbox-limiter']
 
 			  routes: {
 			    "edit/": "edit",  // #search/kiwis
+			    "view/:number": "view",  // #search/kiwis
 					"success/": "success",  // #search/kiwis
 			    "share/:number": "share",   // #search/kiwis/p7
 			    "number/:number": "number",   // #search/kiwis/p7
@@ -238,6 +239,10 @@ define('main', ['map', 'messageBus', 'searchBar', 'components/checkbox-limiter']
 			  edit: function(number) {
 					console.log('BACKBONE EDIT', number);
 					showEditFace();
+			  },
+			  view: function(number) {
+					console.log('BACKBONE EDIT', number);
+					showViewFace(number);
 			  },
 			  success: function(number) {
 					console.log('BACKBONE EDIT', number);
@@ -309,14 +314,17 @@ define('main', ['map', 'messageBus', 'searchBar', 'components/checkbox-limiter']
 			$('.modal-edit').modal('show');
 		}
 
+		function showViewFace(number){
+			if( number >= 0 ){
+				modalView.show(number);
+			}
+		}
+
 		function showSuccessFace(){
 			$('#edit-user').data('register', 'true');
 			$('.modal-edit').modal('show');
 		}
 
-		https://www.facebook.com/dialog/share?app_id=87741124305&href=https%3A//www.youtube.com/watch%3Fv%3D0RKRWogzVZ0%26feature%3Dshare&display=popup&redirect_uri=https://www.youtube.com/facebook_redirect
-
-		/***********************/
 
 		init();
 	};

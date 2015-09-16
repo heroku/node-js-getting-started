@@ -67,9 +67,16 @@ define('minimap', ['constantes', 'messageBus', 'btnSocial', 'mapCursor', 'colorM
         this.home.pivot.x = this.home.width/2;
         this.home.pivot.y = this.home.height/2;
 
+        this.mapContainer = new PIXI.DisplayObjectContainer();
+
+        this.mapContainer.x = 40;
+        this.mapContainer.y = 30;
+
         this.addChild(this.button);
-        this.addChild(this.map);
-        this.addChild(this.cursor);
+        this.addChild(this.mapContainer);
+
+        this.mapContainer.addChild(this.map);
+        this.mapContainer.addChild(this.cursor);
 
         messageBus.on('all:colorChange', _.bind(this.updateBackgroundMap, this));
         messageBus.on('all:colorChange', _.bind(this.updateIconsColor, this));

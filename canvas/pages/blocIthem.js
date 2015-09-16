@@ -91,22 +91,22 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 			_itemBorder.x = _item.x;
 			_itemBorder.y = _item.y;
 
-			_item.mask = _maskPicture;	
+			_item.mask = _maskPicture;
 
-			_itemText = new PIXI.Text("#", {font : "13px montserrat-regular", fill : "#aaaaaa"});
+			_itemText = new PIXI.Text("#", {font : "11px montserrat-regular", fill : "#666666"});
 			_itemText.rotation = Math.PI*90/180;
 			_itemText.x = ITEM_WIDTH-12;
 			_itemText.y = _margin/2;
 
-			_itemName = new PIXI.Text("Julien", {font : "13px montserrat-regular", fill : "#aaaaaa"});
+			_itemName = new PIXI.Text("Julien", {font : "12px montserrat-regular", fill : "#666666"});
 			_itemName.position.x = Math.round(_margin/2);
 			_itemName.position.y = Math.round(_margin-40);
 
-			_fb = new BtnSocial(constantes.icons.FACEBOOK, "#3a5795", onFBCLick, null, null, 30);
+			_fb = new BtnSocial(constantes.icons.FACEBOOK, "#7F7F7F", onFBCLick, null, null, 30);
 			_fb.x = Math.round(30);
 			_fb.y = Math.round(ITEM_HEIGHT-30-_fb.height/_fb.resolution);
 
-			_tw = new BtnSocial(constantes.icons.TWITTER, "#55acee", onTWCLick, null, null, 30);
+			_tw = new BtnSocial(constantes.icons.TWITTER, "#7F7F7F", onTWCLick, null, null, 30);
 			_tw.x = Math.round(ITEM_WIDTH-30-_tw.width/_tw.resolution);
 			_tw.y = Math.round(ITEM_HEIGHT-30-_tw.height/_tw.resolution);
 
@@ -185,8 +185,8 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 			messageBus.on('map:endSkipAnimation', _.bind(showBackgroundColor, this));
 			messageBus.on('map:startSkipAnimation', _.bind(hideBackgroundColor, this));
 			messageBus.on('blocItem:setUnselected', _.bind(setUnselected, _this));
-			messageBus.on('map:blur', _.bind(mapBlur, _this));
-			messageBus.on('map:unblur', _.bind(mapUnblur, _this));
+			// messageBus.on('map:blur', _.bind(mapBlur, _this));
+			// messageBus.on('map:unblur', _.bind(mapUnblur, _this));
 			//messageBus.on('blocItem:setSelected', _.bind(setSelected, _this));
 			messageBus.on('ScrollContainer:StartMoving', clearTimer);
 
@@ -344,16 +344,17 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 			}
 
 			if( number === _data.number ){
-				_isSelected = true;
-				this.setLangs(_data.lang ? [_data.lang] : []);
-				this.setOccupations(_data.occupations ? $.parseJSON(_data.occupations) : []);
-				this.updateColors({data:{color:_data.faceColor}});
-				_itemName.setText(_data.accountname|| "");
-				_selectedAnimation.play();
+				// _isSelected = true;
+				// this.setLangs(_data.lang ? [_data.lang] : []);
+				// this.setOccupations(_data.occupations ? $.parseJSON(_data.occupations) : []);
+				// this.updateColors({data:{color:_data.faceColor}});
+				// _itemName.setText(_data.accountname|| "");
+				// _selectedAnimation.play();
 
-				_contextualInfo.visible = true;
+				// _contextualInfo.visible = true;
 				messageBus.emit('all:colorChange', {color:_data.faceColor});
-				messageBus.emit("map:blur");
+				// messageBus.emit("map:blur");
+        Backbone.history.navigate('/view/'+_data.number, {trigger: true});
 			}
 		}
 
