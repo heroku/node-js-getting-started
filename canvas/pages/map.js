@@ -372,10 +372,12 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
         function gotoFaceNumber(arg){
             var directly = false;
             var number = arg;
+						var showClaim = false;
 
             if(typeof arg === "object"){
                 number = arg.data.number;
                 directly = arg.data.directly;
+								showClaim = arg.data.showClaim;
             }
 
             var x, y;
@@ -386,9 +388,8 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
             y = Math.floor(number/1000);
 
             setGridPosition(Math.floor(x), Math.floor(y), numberIsVisible(number) ? false : directly);
-			messageBus.emit('all:colorChange', {color:colorMapping.getColorByBoxNumber(number)});
-			_minimap.updateCursorPosition(number);
-
+						messageBus.emit('all:colorChange', {color:colorMapping.getColorByBoxNumber(number)});
+						_minimap.updateCursorPosition(number);
 
         }
 

@@ -261,10 +261,13 @@ define('main', ['map', 'messageBus', 'searchBar', 'components/checkbox-limiter',
 			  },
 
 			  number: function(number, claim) {
-					console.log('BACKBONE NUMBER', number, claim);
+
 					if(claim && claim == 'claim'){
 						claim = true;
+					}else{
+						claim = false;
 					}
+					console.log('BACKBONE NUMBER', number, claim);
 					messageBus.emit('map:gotoFaceNumber', {number: number, directly: false, showClaim: claim});
 			  }
 
