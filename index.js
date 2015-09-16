@@ -1301,7 +1301,7 @@ publicRouter.get('/error', function(req, res, next) {
 publicRouter.get('/share/:number', function(req, res, next) {
   res.render('share', {data:{'config': config, 'number' : req.params.number}});
 });
-
+var nodalytics = require('nodalytics');
 app.use(nodalytics('UA-67692075-1'));
 
 app.use(function(req, res, next) {
