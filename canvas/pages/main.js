@@ -232,7 +232,7 @@ define('main', ['map', 'messageBus', 'searchBar', 'components/checkbox-limiter',
 			    "view/:number": "view",  // #search/kiwis
 					"success/": "success",  // #search/kiwis
 			    "share/:number": "share",   // #search/kiwis/p7
-			    "number/:number": "number",   // #search/kiwis/p7
+			    "number/:number(/claim)": "number",   // #search/kiwis/p7
 					"login/": "login"   // #search/kiwis/p7
 			  },
 
@@ -260,9 +260,9 @@ define('main', ['map', 'messageBus', 'searchBar', 'components/checkbox-limiter',
 					console.log('BACKBONE EDIT', number);
 			  },
 
-			  number: function(number) {
-					console.log('BACKBONE NUMBER', number);
-					messageBus.emit('map:gotoFaceNumber', {number: number, directly: false});
+			  number: function(number, claim) {
+					console.log('BACKBONE NUMBER', number, claim);
+					messageBus.emit('map:gotoFaceNumber', {number: number, directly: false, showClaim: claim});
 			  }
 
 			});
