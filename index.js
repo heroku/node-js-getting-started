@@ -1212,7 +1212,7 @@ var createMozaic = function(number, tempFaces, callback){
         console.log('IMG DEST PATH 3', imgDestPath + '/' + number + '-temp-3.png');
 
         var imgFinal = im(imgDestPath + '/' + number + '-temp-1.png');
-        imgFinal.append(imgDestPath + '/' + number + '-temp-2.png', imgDestPath + '/' + number + '-temp-3.png', false).rotate('black',90);
+        imgFinal.append(imgDestPath + '/' + number + '-temp-2.png', imgDestPath + '/' + number + '-temp-3.png', false).background('red');
 
         imgFinal.write(imgDestPath + '/' + number + '-temp-final.png'
         , function(stdoutFinal){
