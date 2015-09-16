@@ -1193,13 +1193,13 @@ var createMozaic = function(number, tempFaces, callback){
   console.log('TEMPFACES', tempFaces);
   var im = gm;//.subClass({ imageMagick: true });
 
-  var img1 = im(publicPath + tempFaces[0].picture).resize("150", "150");
-  var img2 = im(publicPath + tempFaces[3].picture).resize("150", "150");
-  var img3 = im(publicPath + tempFaces[6].picture).resize("150", "150");
+  var img1 = im(publicPath + tempFaces[0].picture).resize("150", "150").background('red');
+  var img2 = im(publicPath + tempFaces[3].picture).resize("150", "150").background('red');
+  var img3 = im(publicPath + tempFaces[6].picture).resize("150", "150").background('red');
 
-  img1.append(publicPath + tempFaces[1].picture, publicPath + tempFaces[2].picture,  true);
-  img2.append(publicPath + tempFaces[4].picture, publicPath + tempFaces[5].picture,  true);
-  img3.append(publicPath + tempFaces[7].picture, publicPath + tempFaces[8].picture,  true);
+  img1.append(publicPath + tempFaces[1].picture, publicPath + tempFaces[2].picture,  true).background('red');
+  img2.append(publicPath + tempFaces[4].picture, publicPath + tempFaces[5].picture,  true).background('red');
+  img3.append(publicPath + tempFaces[7].picture, publicPath + tempFaces[8].picture,  true).background('red');
 
   img1.write(imgDestPath + '/' + number + '-temp-1.png'
   , function(stdout1){
