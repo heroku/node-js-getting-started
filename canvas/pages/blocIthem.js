@@ -483,7 +483,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
          * @param isClaimed
          */
         this.setClaim = function(isClaimed){
-            this[isClaimed ? 'showClaims' : 'hideClaims']();
+            this[window._app.claimNumber === _data.number && isClaimed ? 'showClaims' : 'hideClaims']();
         };
 
 		this.setLangs = function(langs){
@@ -519,7 +519,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 						console.log('Unknown flag in constante langs : '+icon+" - "+ lang.toUpperCase());
 						return;
 					}
-					console.log('flags', icon);
+
 					s.setTexture(new PIXI.Texture(PIXI.Texture.fromImage(icon)));
 					s.visible = true;
 				}
@@ -597,9 +597,6 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 		};
 
 		this.updateImage = function(img) {
-      if(this.currentNumber == 2){
-        console.log('ITEM', img, _data);
-      }
 			// Methode 2
 			//var texture = new PIXI.Texture(PIXI.Texture.fromImage(img));
 			//_item.texture.destroy();
@@ -618,6 +615,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 						}
 
 						var texture = new PIXI.Texture(PIXI.Texture.fromImage(img));
+
 						_item.texture.destroy();
 						_item.setTexture(texture);
 
