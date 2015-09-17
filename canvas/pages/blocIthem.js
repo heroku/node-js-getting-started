@@ -483,7 +483,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
          * @param isClaimed
          */
         this.setClaim = function(isClaimed){
-            this[window._app.claimNumber === _data.number && isClaimed ? 'showClaims' : 'hideClaims']();
+            this[isClaimed ? 'showClaims' : 'hideClaims']();
         };
 
 		this.setLangs = function(langs){
@@ -576,14 +576,14 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 
 			this.currentNumber = _id;
 
-			var interactiveEnable = !!(_data.accountname && !(_data.claim === false && !main.currentUser));
+			var interactiveEnable = !!(_data.accountname && window._app.claimNumber !== _data.number);
 			var socialEnable = !!(typeof _data.claim === 'undefined' && !main.currentUser);
 			var claimEnable = !!(_data.claim === false && !main.currentUser);
 			var shareEnable = !!(main.currentUser && !_data.accountname);
 
 			this.setInteractive(interactiveEnable);
 			this.setSocials(socialEnable);
-			this.setClaim(claimEnable);
+			this.setClaim(claimEnable && window._app.claimNumber === _data.number);
 			this.setShare(shareEnable);
 
 			_itemBorder.visible = !!socialEnable;
