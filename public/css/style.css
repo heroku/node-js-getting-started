@@ -846,6 +846,7 @@ input[type=checkbox]:checked + label:after {
 
 .edit-human {}
 
+#modal-view .modal-content,
 #modal-edit .modal-content {
 	position: relative;
 	background: #ededed;
@@ -862,6 +863,42 @@ input[type=checkbox]:checked + label:after {
 	text-align: center;
 	border: 0;
 	margin:0;
+}
+
+#modal-view .row {
+	margin-top: 15px;
+	border-bottom: 1px solid #666666;
+}
+
+#modal-view .col-xs-1,
+#modal-view .col-xs-2,
+#modal-view .col-xs-3,
+#modal-view .col-xs-4,
+#modal-view .col-xs-5,
+#modal-view .col-xs-6,
+#modal-view .col-xs-7,
+#modal-view .col-xs-8,
+#modal-view .col-xs-9,
+#modal-view .col-xs-10,
+#modal-view .col-xs-11,
+#modal-view .col-xs-12 {
+	margin-left:0;
+	padding-left: 0;
+	padding-right: 30px;
+}
+
+#modal-view .flags {
+	width: 25px;
+	margin-right:5px;
+}
+
+#modal-view .socials-wrapper .fb-share-button,
+#modal-view .socials-wrapper .twitter-share-button {
+	text-indent: -99999em;
+}
+
+#modal-view .socials-wrapper {
+	margin-top: 15px;
 }
 
 .edit-human .input-group {
@@ -906,6 +943,16 @@ input[type=checkbox]:checked + label:after {
 	border: 0;
 	background: transparent;
 	color: white;
+}
+
+.ellipsis {
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.no-wrap {
+	white-space: nowrap;
 }
 
 /** ANIMATION **/

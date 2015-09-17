@@ -51,11 +51,30 @@ function(
 	modalView.prototype.render = function(data){
 		var langs, occupations;
 
-		occupations = $.parseJSON(data.occupations);
-		langs = data.lang.split(',');
+		try {
+			occupations = $.parseJSON(data.occupations);	
+		}catch(e){
+			occupations = [];
+		}
+		
+		try {
+			langs = data.lang.split(',');	
+		}catch(e){
+			langs = [];
+		}
+		
 
 		this.$title.html(data.accountname);
 		this.$content.html(this.template({data:data, langs: langs, occupations: occupations, icons: constantes.icons}));
+		setTimeout(function(){
+			if( window.FB ){
+				FB.XFBML.parse();	
+			}	
+
+			if( window.twttr ){
+				twttr.widgets.load();	
+			}
+		}, 100);
 	};
 
 	return new modalView();
