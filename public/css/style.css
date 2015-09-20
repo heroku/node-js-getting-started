@@ -232,14 +232,14 @@ body{
 }
 
 .btn.btn-custom-blue:before {
-	font-size: 22px;
+	font-size: 28px;
 	line-height: 14px;
 }
 
 .btn.btn-custom-blue:focus,
 .btn.btn-custom-blue:hover {
-	color: #fff;
-	background-color: #414141;
+	color: black;
+	background-color: rgba(204, 204, 204, 0.75);
 	border: 1px solid rgb(100, 100, 100);
 	border-left:0;
 }
@@ -588,6 +588,10 @@ input[type=checkbox]:checked + label:after {
 .search-pagination-button-prev:before,
 .search-pagination-button-next:before {
 	line-height: 40px;
+	font-size: 19px;
+}
+
+.search-pagination-label {
 	font-size: 16px;
 }
 
@@ -734,8 +738,8 @@ input[type=checkbox]:checked + label:after {
 .typeahead.dropdown-menu > .active > a,
 .typeahead.dropdown-menu > .active > a:hover,
 .typeahead.dropdown-menu > .active > a:focus{
-	background: rgba(73, 73, 73, 0.75);
-	color: rgb(255, 255, 255);
+	background: rgba(204, 204, 204, 0.75);
+	color: black;
 }
 
 .typeahead.dropdown-menu > li > a{
@@ -895,6 +899,7 @@ input[type=checkbox]:checked + label:after {
 #modal-view .socials-wrapper .fb-share-button,
 #modal-view .socials-wrapper .twitter-share-button {
 	text-indent: -99999em;
+	color:transparent;
 }
 
 #modal-view .socials-wrapper {
