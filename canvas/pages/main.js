@@ -264,6 +264,7 @@ define('main', ['map', 'messageBus', 'searchBar', 'components/checkbox-limiter',
 
 					if(claim && claim == 'claim'){
 						claim = true;
+						window._app.claimNumber = number;
 					}else{
 						claim = false;
 					}

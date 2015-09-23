@@ -12,6 +12,7 @@ function(
 
 
 	var _services = new Services();
+	var _lastColorUsed;
 
 	var modalView = function(){
 		this.template = _.template($("#template-modal-view").html());
@@ -25,9 +26,19 @@ function(
 	};
 
 	modalView.prototype.setColor = function(event){
+			if( typeof event.data.color === "number"){
+				event.data.color = ""+event.data.color;
+			}
+			
+			if( event.data.color.indexOf("0x") === -1 && _lastColorUsed ){
+				event.data.color = _lastColorUsed;
+			}else if( event.data.color.indexOf("0x") === -1 ){
+				event.data.color = "0x"+(event.data.color.toString(16));
+			}
+
 			this.$title.css('color', event.data.color.replace("0x", "#"));
 			this.$close.css('color', event.data.color.replace("0x", "#"));
-			console.log('modalview', event.data.color);
+
 	};
 
 	modalView.prototype.show = function(number){
@@ -51,11 +62,30 @@ function(
 	modalView.prototype.render = function(data){
 		var langs, occupations;
 
-		occupations = $.parseJSON(data.occupations);
-		langs = data.lang.split(',');
+		try {
+			occupations = $.parseJSON(data.occupations);	
+		}catch(e){
+			occupations = [];
+		}
+		
+		try {
+			langs = data.lang.split(',');	
+		}catch(e){
+			langs = [];
+		}
+		
 
 		this.$title.html(data.accountname);
 		this.$content.html(this.template({data:data, langs: langs, occupations: occupations, icons: constantes.icons}));
+		setTimeout(function(){
+			if( window.FB ){
+				FB.XFBML.parse();	
+			}	
+
+			if( window.twttr ){
+				twttr.widgets.load();	
+			}
+		}, 100);
 	};
 
 	return new modalView();

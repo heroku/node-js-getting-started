@@ -6,7 +6,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 
 		var _this = this;
 		// CONST
-		var _margin = 50;
+		var _margin = 25;
 		var PICTURE_WIDTH = ITEM_WIDTH-_margin;
 		var PICTURE_HEIGHT = ITEM_HEIGHT-_margin;
 
@@ -14,7 +14,6 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 		var _container;
 		var _item;
 		var _itemText;
-		var _itemName;
 		var _bgPicture;
 		var _txt;
 		var _fb;
@@ -26,18 +25,18 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 		var _rect;
 		var _data;
 		var _interactive;
-		var _selectedAnimation;
 		var _timer;
 		var _timerBeforeClickAction = 500;
-		var _slotOccupation1,_slotOccupation2,_slotOccupation3;
-		var _slotLang1,_slotLang2,_slotLang3;
-		var _contextualInfo;
 		var _isSelected = false;
 		var _canClick = true;
 		var _pictureLoader;
 		var _timerPictureUpdate;
 		var _maskPicture;
 		var _spinner = new Spinner();
+		var _itemBorder;
+		var _itemBorderImage = new Image();
+
+		_itemBorderImage.src = _app.config.root_url+"/images/itemBorder@2x.png";
 
 		PIXI.DisplayObjectContainer.call(this);
 		_scope = this;
@@ -56,7 +55,6 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 
 
 			_container = new PIXI.DisplayObjectContainer();
-			_contextualInfo = new PIXI.DisplayObjectContainer();
 
 			_rect = new PIXI.Graphics();
 			_rect.clear();
@@ -65,8 +63,6 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 			_rect.endFill();
 
 			_bgPicture = new PIXI.Graphics();
-
-			//_pictureLoader = new PIXI.Sprite(new PIXI.Texture.fromImage("/img/spinner.png"));
 
 			_item = new PIXI.Sprite(new PIXI.Texture(new PIXI.BaseTexture()));
 			_item.x = Math.round((ITEM_WIDTH-PICTURE_WIDTH)/2);
@@ -80,35 +76,26 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 			_maskPicture.x = _item.x;
 			_maskPicture.y = _item.y;
 
-			_itemBorder = new PIXI.Graphics();
-			_itemBorder.clear();
-			_itemBorder.lineStyle("1px", 0x000000, 1);
-			_itemBorder.moveTo(0, 0);
-			_itemBorder.lineTo(PICTURE_WIDTH, 0);
-			_itemBorder.lineTo(PICTURE_WIDTH, PICTURE_HEIGHT);
-			_itemBorder.lineTo(0, PICTURE_HEIGHT);
-			_itemBorder.lineTo(0, 0);
+			_itemBorder = new PIXI.Sprite(new PIXI.Texture(new PIXI.BaseTexture(_itemBorderImage)));
 			_itemBorder.x = _item.x;
 			_itemBorder.y = _item.y;
+			_itemBorder.scale.x = 0.5;
+			_itemBorder.scale.y = 0.5;
 
 			_item.mask = _maskPicture;
 
 			_itemText = new PIXI.Text("#", {font : "11px montserrat-regular", fill : "#666666"});
 			_itemText.rotation = Math.PI*90/180;
-			_itemText.x = ITEM_WIDTH-12;
+			_itemText.x = ITEM_WIDTH+2;
 			_itemText.y = _margin/2;
 
-			_itemName = new PIXI.Text("Julien", {font : "12px montserrat-regular", fill : "#666666"});
-			_itemName.position.x = Math.round(_margin/2);
-			_itemName.position.y = Math.round(_margin-40);
-
 			_fb = new BtnSocial(constantes.icons.FACEBOOK, "#7F7F7F", onFBCLick, null, null, 30);
-			_fb.x = Math.round(30);
-			_fb.y = Math.round(ITEM_HEIGHT-30-_fb.height/_fb.resolution);
+			_fb.x = Math.round(20);
+			_fb.y = Math.round(ITEM_HEIGHT-20-_fb.height/_fb.resolution);
 
 			_tw = new BtnSocial(constantes.icons.TWITTER, "#7F7F7F", onTWCLick, null, null, 30);
-			_tw.x = Math.round(ITEM_WIDTH-30-_tw.width/_tw.resolution);
-			_tw.y = Math.round(ITEM_HEIGHT-30-_tw.height/_tw.resolution);
+			_tw.x = Math.round(ITEM_WIDTH-20-_tw.width/_tw.resolution);
+			_tw.y = Math.round(ITEM_HEIGHT-20-_tw.height/_tw.resolution);
 
 			_share = new BtnSocial(constantes.icons.SHARE, "#00FFFF", onShareCLick);
             _share.x = Math.round(ITEM_WIDTH/2-15);
@@ -122,41 +109,8 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
             _decline.x = Math.round(ITEM_WIDTH/2+5);
             _decline.y = Math.round((ITEM_HEIGHT+30)/2-15);
 
-			_slotLang1 = new PIXI.Sprite(new PIXI.Texture(new PIXI.BaseTexture()));
-			_slotLang2 = new PIXI.Sprite(new PIXI.Texture(new PIXI.BaseTexture()));
-			_slotLang3 = new PIXI.Sprite(new PIXI.Texture(new PIXI.BaseTexture()));
-
-			_slotOccupation1 = new PIXI.Text("#", {font : "16px fontello", fill : "#aaaaaa"});
-			_slotOccupation2 = new PIXI.Text("#", {font : "16px fontello", fill : "#aaaaaa"});
-			_slotOccupation3 = new PIXI.Text("#", {font : "16px fontello", fill : "#aaaaaa"});
-
-			_slotOccupation1.resolution = _app.canvas.renderer.resolution;
-			_slotOccupation2.resolution = _app.canvas.renderer.resolution;
-			_slotOccupation3.resolution = _app.canvas.renderer.resolution;
-
-			_slotOccupation1.position.x = Math.round(_margin/2);
-			_slotOccupation1.position.y = Math.round(PICTURE_HEIGHT+_margin/2+2);
-			_slotOccupation2.position.x = Math.round(_margin/2+22);
-			_slotOccupation2.position.y = Math.round(PICTURE_HEIGHT+_margin/2+2);
-			_slotOccupation3.position.x = Math.round(_margin/2+44);
-			_slotOccupation3.position.y = Math.round(PICTURE_HEIGHT+_margin/2+2);
-
-			_slotLang1.position.x = Math.round(PICTURE_WIDTH);
-			_slotLang1.position.y = Math.round(PICTURE_HEIGHT+_margin/2+4);
-			_slotLang2.position.x = Math.round(PICTURE_WIDTH-25);
-			_slotLang2.position.y = Math.round(PICTURE_HEIGHT+_margin/2+4);
-			_slotLang3.position.x = Math.round(PICTURE_WIDTH-50);
-			_slotLang3.position.y = Math.round(PICTURE_HEIGHT+_margin/2+4);
-
-			_slotLang1.visible = _slotLang2.visible =_slotLang3.visible = false;
-			_slotLang1.scale = _slotLang2.scale =_slotLang3.scale = {x: 0.25, y:0.25};
-			_slotOccupation1.visible = _slotOccupation2.visible =_slotOccupation3.visible = false;
-
 			_spinner.position.x = ITEM_WIDTH/2;
 			_spinner.position.y = ITEM_HEIGHT/2;
-
-			_contextualInfo.alpha = 0;
-			_contextualInfo.visible = false;
 
 			messageBus.addEventListener('ScrollContainer:StartMoving', function(){
 				_tw.disable(0.25, 0);
@@ -164,8 +118,6 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
                 _claim.disable(0.25, 0);
                 _decline.disable(0.25, 0);
 				_canClick = false;
-
-				_itemText.visible = false;
 			});
 
 			messageBus.addEventListener('ScrollContainer:StopMoving', function(){
@@ -175,22 +127,14 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
                 _claim.enable(0.25, delay);
                 _decline.enable(0.25, delay);
 				_canClick = true;
-
-				_itemText.alpha = 0;
-				_itemText.visible = true;
-				TweenLite.to(_itemText, 0.25, {alpha:1, delay:delay});
 			});
 
 
 			messageBus.on('map:endSkipAnimation', _.bind(showBackgroundColor, this));
 			messageBus.on('map:startSkipAnimation', _.bind(hideBackgroundColor, this));
 			messageBus.on('blocItem:setUnselected', _.bind(setUnselected, _this));
-			// messageBus.on('map:blur', _.bind(mapBlur, _this));
-			// messageBus.on('map:unblur', _.bind(mapUnblur, _this));
-			//messageBus.on('blocItem:setSelected', _.bind(setSelected, _this));
 			messageBus.on('ScrollContainer:StartMoving', clearTimer);
 
-			_selectedAnimation = getAnimation();
 			_container.mousedown = _container.touchstart = onFaceClick;
 
 
@@ -202,36 +146,15 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 
 			_container.addChild(_bgPicture);
 			_container.addChild(_spinner);
-			//_container.addChild(_pictureLoader);
+
 			_container.addChild(_item);
 			_container.addChild(_maskPicture);
-			_container.addChild(_itemBorder);
 			_container.addChild(_fb);
 			_container.addChild(_tw);
 			_container.addChild(_share);
 			_container.addChild(_claim);
 			_container.addChild(_decline);
-
-			_container.addChild(_contextualInfo);
-
-			_contextualInfo.addChild(_itemName);
-			_contextualInfo.addChild(_slotLang1);
-			_contextualInfo.addChild(_slotLang2);
-			_contextualInfo.addChild(_slotLang3);
-			_contextualInfo.addChild(_slotOccupation1);
-			_contextualInfo.addChild(_slotOccupation2);
-			_contextualInfo.addChild(_slotOccupation3);
-
-		}
-
-		function mapBlur(){
-			// _scope.alpha = 0.5;
-			// _bgPicture.alpha = 0;
-		}
-
-		function mapUnblur(){
-			// _scope.alpha = 1;
-			// _bgPicture.alpha = 1;
+			_container.addChild(_itemBorder);
 		}
 
 		/**
@@ -293,21 +216,6 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 
 		/**
 		 *
-		 * @returns {TweenLite.to}
-		 */
-		function getAnimation(){
-			var tw = new TimelineLite()
-
-			tw.to(_contextualInfo,0.5, {alpha: 1, onReverseComplete: function(){
-				_this.updateColors({data:{color:0xFFFFFF}});
-				_contextualInfo.visible = false;
-			}});
-			tw.pause();
-			return tw;
-		}
-
-		/**
-		 *
 		 */
 		function clearTimer(){
 			clearTimeout(_timer);
@@ -320,11 +228,6 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 		function setUnselected(){
 
 			_isSelected = false;
-
-			if( _contextualInfo.alpha === 1 ){
-				messageBus.emit("map:unblur");
-				_selectedAnimation.reverse();
-			}
 
 		}
 
@@ -344,17 +247,8 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 			}
 
 			if( number === _data.number ){
-				// _isSelected = true;
-				// this.setLangs(_data.lang ? [_data.lang] : []);
-				// this.setOccupations(_data.occupations ? $.parseJSON(_data.occupations) : []);
-				// this.updateColors({data:{color:_data.faceColor}});
-				// _itemName.setText(_data.accountname|| "");
-				// _selectedAnimation.play();
-
-				// _contextualInfo.visible = true;
 				messageBus.emit('all:colorChange', {color:_data.faceColor});
-				// messageBus.emit("map:blur");
-        Backbone.history.navigate('/view/'+_data.number, {trigger: true});
+		        Backbone.history.navigate('/view/'+_data.number, {trigger: true});
 			}
 		}
 
@@ -400,12 +294,6 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 
 		this.updateColors = function(event) {
 			var color = event && event.data ? event.data.color : 0xFFFFFF;
-			_itemText.tint = color;
-			_itemName.tint = color;
-			_slotOccupation1.tint = color;
-			_slotOccupation2.tint = color;
-			_slotOccupation3.tint = color;
-
 		};
 
         /**
@@ -486,86 +374,86 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
             this[isClaimed ? 'showClaims' : 'hideClaims']();
         };
 
-		this.setLangs = function(langs){
-			var slot = 1, lang, s, icon;
+		// this.setLangs = function(langs){
+		// 	var slot = 1, lang, s, icon;
 
-			_slotLang1.visible = false;
-			_slotLang2.visible = false;
-			_slotLang3.visible = false;
+		// 	_slotLang1.visible = false;
+		// 	_slotLang2.visible = false;
+		// 	_slotLang3.visible = false;
 
-			for(var i = 0, l = langs.length;i<l; i++){
-				lang = langs[i];
+		// 	for(var i = 0, l = langs.length;i<l; i++){
+		// 		lang = langs[i];
 
-				lang = lang.substr(0, 2).toUpperCase();
+		// 		lang = lang.substr(0, 2).toUpperCase();
 
-				switch(slot){
-					case 1:
-						s = _slotLang1;
-						break;
-					case 2:
-						s = _slotLang2;
-						break;
-					case 3:
-						s = _slotLang3;
-						break;
-					default:
-						return;
-				}
+		// 		switch(slot){
+		// 			case 1:
+		// 				s = _slotLang1;
+		// 				break;
+		// 			case 2:
+		// 				s = _slotLang2;
+		// 				break;
+		// 			case 3:
+		// 				s = _slotLang3;
+		// 				break;
+		// 			default:
+		// 				return;
+		// 		}
 
-				if( s ){
-					icon = _app.static_files("img/lang/"+lang+".png");
+		// 		if( s ){
+		// 			icon = _app.static_files("img/lang/"+lang+".png");
 
-					if( typeof icon === "undefined"){
-						console.log('Unknown flag in constante langs : '+icon+" - "+ lang.toUpperCase());
-						return;
-					}
-					console.log('flags', icon);
-					s.setTexture(new PIXI.Texture(PIXI.Texture.fromImage(icon)));
-					s.visible = true;
-				}
+		// 			if( typeof icon === "undefined"){
+		// 				console.log('Unknown flag in constante langs : '+icon+" - "+ lang.toUpperCase());
+		// 				return;
+		// 			}
 
-				slot++;
-			}
-		};
+		// 			s.setTexture(new PIXI.Texture(PIXI.Texture.fromImage(icon)));
+		// 			s.visible = true;
+		// 		}
 
-		this.setOccupations = function(occupations){
-			var slot = 1, occupation, s, icon;
+		// 		slot++;
+		// 	}
+		// };
 
-			_slotOccupation1.visible = false;
-			_slotOccupation2.visible = false;
-			_slotOccupation3.visible = false;
+		// this.setOccupations = function(occupations){
+		// 	var slot = 1, occupation, s, icon;
 
-			for(var i = 0, l = occupations.length;i<l; i++){
-				occupation = occupations[i];
+		// 	_slotOccupation1.visible = false;
+		// 	_slotOccupation2.visible = false;
+		// 	_slotOccupation3.visible = false;
 
-				switch(slot){
-					case 1:
-						s = _slotOccupation1;
-						break;
-					case 2:
-						s = _slotOccupation2;
-						break;
-					case 3:
-						s = _slotOccupation3;
-						break;
-					default:
-					return;
-				}
+		// 	for(var i = 0, l = occupations.length;i<l; i++){
+		// 		occupation = occupations[i];
 
-				if( s ){
-					icon = constantes.occupations[occupation.toUpperCase()];
+		// 		switch(slot){
+		// 			case 1:
+		// 				s = _slotOccupation1;
+		// 				break;
+		// 			case 2:
+		// 				s = _slotOccupation2;
+		// 				break;
+		// 			case 3:
+		// 				s = _slotOccupation3;
+		// 				break;
+		// 			default:
+		// 			return;
+		// 		}
 
-					if( typeof icon === "undefined"){
-						console.log('Unknown icon in constante occupations : '+icon+ " - "+occupation);
-						return;
-					}
-					s.setText(icon);
-					s.visible = true;
-				}
+		// 		if( s ){
+		// 			icon = constantes.occupations[occupation.toUpperCase()];
 
-				slot++;
-			}
-		};
+		// 			if( typeof icon === "undefined"){
+		// 				console.log('Unknown icon in constante occupations : '+icon+ " - "+occupation);
+		// 				return;
+		// 			}
+		// 			s.setText(icon);
+		// 			s.visible = true;
+		// 		}
+
+		// 		slot++;
+		// 	}
+		// };
 
 		this.update = function(data) {
 
@@ -576,17 +464,17 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 
 			this.currentNumber = _id;
 
-			var interactiveEnable = !!(_data.accountname && !(_data.claim === false && !main.currentUser));
+			var interactiveEnable = !!(_data.accountname && window._app.claimNumber !== _data.number);
 			var socialEnable = !!(typeof _data.claim === 'undefined' && !main.currentUser);
 			var claimEnable = !!(_data.claim === false && !main.currentUser);
 			var shareEnable = !!(main.currentUser && !_data.accountname);
 
 			this.setInteractive(interactiveEnable);
 			this.setSocials(socialEnable);
-			this.setClaim(claimEnable);
+			this.setClaim(claimEnable && window._app.claimNumber === _data.number);
 			this.setShare(shareEnable);
 
-			_itemBorder.visible = !!socialEnable;
+			// _itemBorder.visible = !!socialEnable;
 			_bgPicture.visible = !(_data.accountname);
 			_itemText.setText(pad(_txt*1));
 			_item.texture.destroy();
@@ -597,9 +485,6 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 		};
 
 		this.updateImage = function(img) {
-      if(this.currentNumber == 2){
-        console.log('ITEM', img, _data);
-      }
 			// Methode 2
 			//var texture = new PIXI.Texture(PIXI.Texture.fromImage(img));
 			//_item.texture.destroy();
@@ -618,6 +503,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 						}
 
 						var texture = new PIXI.Texture(PIXI.Texture.fromImage(img));
+
 						_item.texture.destroy();
 						_item.setTexture(texture);
 
