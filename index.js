@@ -1198,7 +1198,7 @@ var createMozaic = function(number, tempFaces, callback){
     console.log('TEST IMAGE', err2);
     gm()
     .command("composite")
-    .in("-gravity", "+0+0")
+    .in("-page", "+0+0")
     .in(publicPath + tempFaces[3].picture)
     .in(imgDestPath + '/' + number + '-test.png')
     .write(imgDestPath + '/' + number + '-test2.png' , function (err) {
