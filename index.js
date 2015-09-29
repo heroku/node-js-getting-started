@@ -1253,11 +1253,48 @@ var createMozaic = function(number, tempFaces, callback){
                     console.log('TEST IMAGE', err9);
                     gm()
                     .command("composite")
-                    .in("-gravity", "South")
+                    .in("-gravity", "SouthEast")
                     .in(publicPath + tempFaces[8].picture)
                     .in(imgDestPath + '/' + number + '-temp9.png')
-                    .write(imgDestPath + '/' + number + '-temp10.png' , function (err10) {
+                    .write(imgDestPath + '/' + number + '-temp-final.png' , function (err10) {
                       console.log('TEST IMAGE', err10);
+
+                      //**************//
+                      var imgFinalMozaic = im(imgDestPath + '/' + number + '-temp-final.png');
+                      imgFinalMozaic.stream(function(err, stdout, stderr) {
+
+                        var buf = new Buffer('');
+
+                        if(stdout){
+
+                          stdout.on('data', function(data) {
+                             buf = Buffer.concat([buf, data]);
+                          });
+
+                          stdout.on('end', function(data) {
+
+                            var data = {
+                              Bucket: config.S3_BUCKET_NAME,
+                              ACL: 'public-read',
+                              Key: 'img/mozaic/' + number + '-mozaic.png',
+                              Body: buf,
+                              ContentType: mime.lookup(imgDestPath + '/' + number + '-temp-final.png')
+                            };
+
+                            s3bucket.putObject(data, function(errr, ress) {
+                                console.log('CALLBACK AMAZON', errr, ress);
+                                if(errr){
+                                  console.log(errr);
+                                  callback(errr, null);
+                                }
+                                else{
+                                  callback(null, imgDestPath + '/' + number + '-temp-final.png');
+                                }
+                              });
+                            });
+                          }
+                      });
+                      //**************//
 
                     });
                   });
@@ -1271,75 +1308,6 @@ var createMozaic = function(number, tempFaces, callback){
   });
 
 
-
-  var img1 = im(publicPath + tempFaces[0].picture).resize("150", "150");
-  var img2 = im(publicPath + tempFaces[3].picture).resize("150", "150");
-  var img3 = im(publicPath + tempFaces[6].picture).resize("150", "150");
-
-  img1.append(publicPath + tempFaces[1].picture, publicPath + tempFaces[2].picture,  true);
-  img2.append(publicPath + tempFaces[4].picture, publicPath + tempFaces[5].picture,  true);
-  img3.append(publicPath + tempFaces[7].picture, publicPath + tempFaces[8].picture,  true);
-
-  img1.write(imgDestPath + '/' + number + '-temp-1.png'
-  , function(stdout1){
-    //console.log('IMG DEST PATH 1', imgDestPath + '/' + number + '-temp-1.png');
-    img2.write(imgDestPath + '/' + number + '-temp-2.png'
-    , function(stdout2){
-      //console.log('IMG DEST PATH 2', imgDestPath + '/' + number + '-temp-2.png');
-      img3.write(imgDestPath + '/' + number + '-temp-3.png'
-      , function(stdout3){
-        //console.log('IMG DEST PATH 3', imgDestPath + '/' + number + '-temp-3.png');
-
-        var imgFinal = im(imgDestPath + '/' + number + '-temp-1.png');
-        imgFinal.append(imgDestPath + '/' + number + '-temp-2.png', imgDestPath + '/' + number + '-temp-3.png', false);
-
-        imgFinal.fill('#888').drawRectangle(40, 10, 50, 20);
-
-        imgFinal.write(imgDestPath + '/' + number + '-temp-final.png'
-        , function(stdoutFinal){
-          console.log('IMG FINAL', imgFinal);
-
-        var imgFinalMozaic = im(imgDestPath + '/' + number + '-temp-final.png');
-        imgFinalMozaic.stream(function(err, stdout, stderr) {
-
-          var buf = new Buffer('');
-
-          if(stdout){
-
-            stdout.on('data', function(data) {
-               buf = Buffer.concat([buf, data]);
-            });
-
-            stdout.on('end', function(data) {
-
-              var data = {
-                Bucket: config.S3_BUCKET_NAME,
-                ACL: 'public-read',
-                Key: 'img/mozaic/' + number + '-mozaic.png',
-                Body: buf,
-                ContentType: mime.lookup(imgDestPath + '/' + number + '-temp-final.png')
-              };
-
-              s3bucket.putObject(data, function(errr, ress) {
-                  console.log('CALLBACK AMAZON', errr, ress);
-                  if(errr){
-                    console.log(errr);
-                    callback(errr, null);
-                  }
-                  else{
-                    callback(null, imgDestPath + '/' + number + '-temp-final.png');
-                  }
-                });
-              });
-            }
-        });
-
-      });
-
-      });
-    });
-
-  });
 
 };
 
