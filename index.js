@@ -1199,63 +1199,63 @@ var createMozaic = function(number, tempFaces, callback){
     .command("composite")
     .in("-gravity", "NorthWest")
     .in(publicPath + tempFaces[0].picture)
-    .in(imgDestPath + '/' + number + '-temp1.png')
-    .write(imgDestPath + '/' + number + '-temp2.png' , function (err2) {
+    .in(imgDestPath + '/' + number + '-temp.png')
+    .write(imgDestPath + '/' + number + '-temp.png' , function (err2) {
       console.log('TEST IMAGE', err2);
       gm()
       .command("composite")
       .in("-gravity", "North")
       .in(publicPath + tempFaces[1].picture)
-      .in(imgDestPath + '/' + number + '-temp2.png')
-      .write(imgDestPath + '/' + number + '-temp3.png' , function (err3) {
+      .in(imgDestPath + '/' + number + '-temp.png')
+      .write(imgDestPath + '/' + number + '-temp.png' , function (err3) {
         console.log('TEST IMAGE', err3);
         gm()
         .command("composite")
         .in("-gravity", "NorthEast")
         .in(publicPath + tempFaces[2].picture)
-        .in(imgDestPath + '/' + number + '-temp3.png')
-        .write(imgDestPath + '/' + number + '-temp4.png' , function (err4) {
+        .in(imgDestPath + '/' + number + '-temp.png')
+        .write(imgDestPath + '/' + number + '-temp.png' , function (err4) {
           console.log('TEST IMAGE', err4);
           gm()
           .command("composite")
           .in("-gravity", "West")
           .in(publicPath + tempFaces[3].picture)
-          .in(imgDestPath + '/' + number + '-temp4.png')
-          .write(imgDestPath + '/' + number + '-temp5.png' , function (err5) {
+          .in(imgDestPath + '/' + number + '-temp.png')
+          .write(imgDestPath + '/' + number + '-temp.png' , function (err5) {
             console.log('TEST IMAGE', err5);
             gm()
             .command("composite")
             .in("-gravity", "Center")
             .in(publicPath + tempFaces[4].picture)
-            .in(imgDestPath + '/' + number + '-temp5.png')
-            .write(imgDestPath + '/' + number + '-temp6.png' , function (err6) {
+            .in(imgDestPath + '/' + number + '-temp.png')
+            .write(imgDestPath + '/' + number + '-temp.png' , function (err6) {
               console.log('TEST IMAGE', err6);
               gm()
               .command("composite")
               .in("-gravity", "East")
               .in(publicPath + tempFaces[5].picture)
-              .in(imgDestPath + '/' + number + '-temp6.png')
-              .write(imgDestPath + '/' + number + '-temp7.png' , function (err7) {
+              .in(imgDestPath + '/' + number + '-temp.png')
+              .write(imgDestPath + '/' + number + '-temp.png' , function (err7) {
                 console.log('TEST IMAGE', err7);
                 gm()
                 .command("composite")
                 .in("-gravity", "SouthWest")
                 .in(publicPath + tempFaces[6].picture)
-                .in(imgDestPath + '/' + number + '-temp7.png')
-                .write(imgDestPath + '/' + number + '-temp8.png' , function (err8) {
+                .in(imgDestPath + '/' + number + '-temp.png')
+                .write(imgDestPath + '/' + number + '-temp.png' , function (err8) {
                   console.log('TEST IMAGE', err8);
                   gm()
                   .command("composite")
                   .in("-gravity", "South")
                   .in(publicPath + tempFaces[7].picture)
-                  .in(imgDestPath + '/' + number + '-temp8.png')
-                  .write(imgDestPath + '/' + number + '-temp9.png' , function (err9) {
+                  .in(imgDestPath + '/' + number + '-temp.png')
+                  .write(imgDestPath + '/' + number + '-temp.png' , function (err9) {
                     console.log('TEST IMAGE', err9);
                     gm()
                     .command("composite")
                     .in("-gravity", "SouthEast")
                     .in(publicPath + tempFaces[8].picture)
-                    .in(imgDestPath + '/' + number + '-temp9.png')
+                    .in(imgDestPath + '/' + number + '-temp.png')
                     .write(imgDestPath + '/' + number + '-temp-final.png' , function (err10) {
                       console.log('TEST IMAGE', err10);
 
