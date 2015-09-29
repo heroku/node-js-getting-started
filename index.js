@@ -1197,14 +1197,14 @@ var createMozaic = function(number, tempFaces, callback){
   im(450, 450, "#000").drawText(10, 50, "from scratch").write(imgDestPath + '/' + number + '-temp1.png', function (err1) {
     gm()
     .command("composite")
-    .in("-page", "+0+0")
+    .in("-gravity", "NorthWest")
     .in(publicPath + tempFaces[0].picture)
     .in(imgDestPath + '/' + number + '-temp1.png')
     .write(imgDestPath + '/' + number + '-temp2.png' , function (err2) {
       console.log('TEST IMAGE', err2);
       gm()
       .command("composite")
-      .in("-page", "-300+150")
+      .in("-gravity", "North")
       .in(publicPath + tempFaces[1].picture)
       .in(imgDestPath + '/' + number + '-temp2.png')
       .write(imgDestPath + '/' + number + '-temp3.png' , function (err3) {
