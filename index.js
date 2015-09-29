@@ -1199,7 +1199,7 @@ var createMozaic = function(number, tempFaces, callback){
   imgTest.drawRectangle(0, 0, 150, 150).fill('#FFF');
   imgTest.write(imgDestPath + '/' + number + '-test.png'
   , function(stdout1){
-    console.('TEST', stdout1);
+    console.log('TEST', stdout1);
   });
 
   var img1 = im(publicPath + tempFaces[0].picture).resize("150", "150");
