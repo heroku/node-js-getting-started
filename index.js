@@ -1192,7 +1192,7 @@ var getImagesForMozaic = function(number, callback){
 var createMozaic = function(number, tempFaces, callback){
 
 
-  console.log('TEMPFACES', tempFaces);
+  //console.log('TEMPFACES', tempFaces);
   var im = gm;//.subClass({ imageMagick: true });
 
   var imgTest = im(imgDestPath + '/' + number + '-test.png');
@@ -1212,13 +1212,13 @@ var createMozaic = function(number, tempFaces, callback){
 
   img1.write(imgDestPath + '/' + number + '-temp-1.png'
   , function(stdout1){
-    console.log('IMG DEST PATH 1', imgDestPath + '/' + number + '-temp-1.png');
+    //console.log('IMG DEST PATH 1', imgDestPath + '/' + number + '-temp-1.png');
     img2.write(imgDestPath + '/' + number + '-temp-2.png'
     , function(stdout2){
-      console.log('IMG DEST PATH 2', imgDestPath + '/' + number + '-temp-2.png');
+      //console.log('IMG DEST PATH 2', imgDestPath + '/' + number + '-temp-2.png');
       img3.write(imgDestPath + '/' + number + '-temp-3.png'
       , function(stdout3){
-        console.log('IMG DEST PATH 3', imgDestPath + '/' + number + '-temp-3.png');
+        //console.log('IMG DEST PATH 3', imgDestPath + '/' + number + '-temp-3.png');
 
         var imgFinal = im(imgDestPath + '/' + number + '-temp-1.png');
         imgFinal.append(imgDestPath + '/' + number + '-temp-2.png', imgDestPath + '/' + number + '-temp-3.png', false);
