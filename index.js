@@ -1237,7 +1237,31 @@ var createMozaic = function(number, tempFaces, callback){
               .in(imgDestPath + '/' + number + '-temp6.png')
               .write(imgDestPath + '/' + number + '-temp7.png' , function (err7) {
                 console.log('TEST IMAGE', err7);
+                gm()
+                .command("composite")
+                .in("-gravity", "SouthWest")
+                .in(publicPath + tempFaces[6].picture)
+                .in(imgDestPath + '/' + number + '-temp7.png')
+                .write(imgDestPath + '/' + number + '-temp8.png' , function (err8) {
+                  console.log('TEST IMAGE', err8);
+                  gm()
+                  .command("composite")
+                  .in("-gravity", "South")
+                  .in(publicPath + tempFaces[7].picture)
+                  .in(imgDestPath + '/' + number + '-temp8.png')
+                  .write(imgDestPath + '/' + number + '-temp9.png' , function (err9) {
+                    console.log('TEST IMAGE', err9);
+                    gm()
+                    .command("composite")
+                    .in("-gravity", "South")
+                    .in(publicPath + tempFaces[8].picture)
+                    .in(imgDestPath + '/' + number + '-temp9.png')
+                    .write(imgDestPath + '/' + number + '-temp10.png' , function (err10) {
+                      console.log('TEST IMAGE', err10);
 
+                    });
+                  });
+                });
               });
             });
           });
