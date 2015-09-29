@@ -1190,8 +1190,17 @@ var getImagesForMozaic = function(number, callback){
 };
 
 var createMozaic = function(number, tempFaces, callback){
+
+
   console.log('TEMPFACES', tempFaces);
   var im = gm;//.subClass({ imageMagick: true });
+
+  var imgTest = im(imgDestPath + '/' + number + '-test.png');
+  imgTest.drawRectangle(0, 0, 150, 150).fill('#FFF');
+  imgTest.write(imgDestPath + '/' + number + '-test.png'
+  , function(stdout1){
+    console.('TEST', stdout1);
+  });
 
   var img1 = im(publicPath + tempFaces[0].picture).resize("150", "150");
   var img2 = im(publicPath + tempFaces[3].picture).resize("150", "150");
