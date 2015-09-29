@@ -1194,21 +1194,22 @@ var createMozaic = function(number, tempFaces, callback){
 
   //console.log('TEMPFACES', tempFaces);
   var im = gm;//.subClass({ imageMagick: true });
-  im(200, 400, "#ddff99f3").drawText(10, 50, "from scratch").write(imgDestPath + '/' + number + '-test.png', function (err) {
-    console.log('TEST IMAGE', err);
+  im(200, 400, "#000").drawText(10, 50, "from scratch").write(imgDestPath + '/' + number + '-test.png', function (err2) {
+    console.log('TEST IMAGE', err2);
+    gm()
+    .command("composite")
+    .in("-gravity", "center")
+    .in(imgDestPath + '/' + number + '-test.png')
+    .in(publicPath + tempFaces[3].picture)
+    .write(imgDestPath + '/' + number + '-test2.png' , function (err) {
+      if (!err)
+        console.log(' hooray! ');
+      else
+        console.log(err);
+    });
   });
 
-  gm()
-  .command("composite")
-  .in("-gravity", "center")
-  .in(publicPath + tempFaces[0].picture)
-  .in(publicPath + tempFaces[3].picture)
-  .write(imgDestPath + '/' + number + '-test2.png' , function (err) {
-    if (!err)
-      console.log(' hooray! ');
-    else
-      console.log(err);
-  });
+
 
   var img1 = im(publicPath + tempFaces[0].picture).resize("150", "150");
   var img2 = im(publicPath + tempFaces[3].picture).resize("150", "150");
