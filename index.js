@@ -1194,11 +1194,11 @@ var createMozaic = function(number, tempFaces, callback){
 
   //console.log('TEMPFACES', tempFaces);
   var im = gm;//.subClass({ imageMagick: true });
-  im(200, 400, "#000").drawText(10, 50, "from scratch").write(imgDestPath + '/' + number + '-test.png', function (err2) {
+  im(450, 450, "#000").drawText(10, 50, "from scratch").write(imgDestPath + '/' + number + '-test.png', function (err2) {
     console.log('TEST IMAGE', err2);
     gm()
     .command("composite")
-    .in("-gravity", "center")
+    .in("-gravity", "+0+0")
     .in(publicPath + tempFaces[3].picture)
     .in(imgDestPath + '/' + number + '-test.png')
     .write(imgDestPath + '/' + number + '-test2.png' , function (err) {
