@@ -1203,7 +1203,7 @@ var createMozaic = function(number, tempFaces, callback){
   .in("-gravity", "center")
   .in(publicPath + tempFaces[0].picture)
   .in(publicPath + tempFaces[3].picture)
-  .write( output_file, function (err) {
+  .write(imgDestPath + '/' + number + '-test2.png' , function (err) {
     if (!err)
       console.log(' hooray! ');
     else
