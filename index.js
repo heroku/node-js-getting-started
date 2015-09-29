@@ -1209,7 +1209,39 @@ var createMozaic = function(number, tempFaces, callback){
       .in(imgDestPath + '/' + number + '-temp2.png')
       .write(imgDestPath + '/' + number + '-temp3.png' , function (err3) {
         console.log('TEST IMAGE', err3);
+        gm()
+        .command("composite")
+        .in("-gravity", "NorthEast")
+        .in(publicPath + tempFaces[2].picture)
+        .in(imgDestPath + '/' + number + '-temp3.png')
+        .write(imgDestPath + '/' + number + '-temp4.png' , function (err4) {
+          console.log('TEST IMAGE', err4);
+          gm()
+          .command("composite")
+          .in("-gravity", "West")
+          .in(publicPath + tempFaces[3].picture)
+          .in(imgDestPath + '/' + number + '-temp4.png')
+          .write(imgDestPath + '/' + number + '-temp5.png' , function (err5) {
+            console.log('TEST IMAGE', err5);
+            gm()
+            .command("composite")
+            .in("-gravity", "Center")
+            .in(publicPath + tempFaces[4].picture)
+            .in(imgDestPath + '/' + number + '-temp5.png')
+            .write(imgDestPath + '/' + number + '-temp6.png' , function (err6) {
+              console.log('TEST IMAGE', err6);
+              gm()
+              .command("composite")
+              .in("-gravity", "East")
+              .in(publicPath + tempFaces[5].picture)
+              .in(imgDestPath + '/' + number + '-temp6.png')
+              .write(imgDestPath + '/' + number + '-temp7.png' , function (err7) {
+                console.log('TEST IMAGE', err7);
 
+              });
+            });
+          });
+        });
       });
     });
   });
