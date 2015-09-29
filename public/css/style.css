@@ -898,8 +898,11 @@ input[type=checkbox]:checked + label:after {
 
 #modal-view .socials-wrapper .fb-share-button,
 #modal-view .socials-wrapper .twitter-share-button {
-	text-indent: -99999em;
 	color:transparent;
+}
+
+#modal-view .socials-wrapper .twitter-share-button {
+	text-indent: -99999em;
 }
 
 #modal-view .socials-wrapper {

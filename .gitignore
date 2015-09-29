@@ -4,3 +4,6 @@ public/js/scripts.js.map
 public/js/vendor.js.map
 app/config.js
 app/env.js
+
+.DS_Store
+npm-debug.log
