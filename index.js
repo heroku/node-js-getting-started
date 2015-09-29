@@ -1194,14 +1194,10 @@ var createMozaic = function(number, tempFaces, callback){
 
   //console.log('TEMPFACES', tempFaces);
   var im = gm;//.subClass({ imageMagick: true });
-
-  var imgTest = im(imgDestPath + '/' + number + '-test.png');
-  imgTest.drawRectangle(0, 0, 150, 150).fill('#FFF');
-  imgTest.write(imgDestPath + '/' + number + '-test.png'
-  , function(stdout1){
-    console.log('TEST', stdout1);
-  });
-
+  im(200, 400, "#ddff99f3").drawText(10, 50, "from scratch").write(imgDestPath + '/' + number + '-test.png', function (err) {
+        console.log('TEST', err);
+      });
+      
   var img1 = im(publicPath + tempFaces[0].picture).resize("150", "150");
   var img2 = im(publicPath + tempFaces[3].picture).resize("150", "150");
   var img3 = im(publicPath + tempFaces[6].picture).resize("150", "150");
