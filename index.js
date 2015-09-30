@@ -1262,7 +1262,7 @@ var createMozaic = function(number, tempFaces, callback){
 
                       //**************//
                       var imgFinalMozaic = im(imgDestPath + '/' + number + '-temp-final.png');
-                      imgFinalMozaic.crop(450, 236, 0, 100);
+                      imgFinalMozaic.crop(450, 236, 0, 107);
                       imgFinalMozaic.stream(function(err, stdout, stderr) {
 
                         var buf = new Buffer('');
