@@ -1257,6 +1257,7 @@ var createMozaic = function(number, tempFaces, callback){
                     .in("-gravity", "SouthEast")
                     .in(publicPath + tempFaces[8].picture)
                     .in(imgDestPath + '/' + number + '-temp.png')
+                    .crop(450, 236, 0, 100)
                     .write(imgDestPath + '/' + number + '-temp-final.png' , function (err10) {
                       console.log('TEST IMAGE', err10);
 
