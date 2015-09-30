@@ -41,8 +41,7 @@ var gm = require('gm');
 var os = require('os');
 
 //helper
-var colorMapping = require('./canvas/components/colorMapping');
-
+var colorMapping = require('./app/colorMapping');
 
 //download helper function
 var download = function(uri, filename, callback){
