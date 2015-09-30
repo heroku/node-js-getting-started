@@ -264,7 +264,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 			}
 
 			_data.faceColor = colorMapping.getColorByBoxNumber(number);
-
+      console.log(_data.faceColor);
 			_bgPicture.clear();
 			_bgPicture.beginFill(_data.faceColor, 1);
 			_bgPicture.drawRect(0, 0, PICTURE_WIDTH-6, PICTURE_HEIGHT-6);
