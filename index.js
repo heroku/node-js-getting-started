@@ -1192,7 +1192,7 @@ var createMozaic = function(number, tempFaces, callback){
 
 
   //console.log('TEMPFACES', tempFaces);
-  var color = '0xe6ff34';//colorMapping.getColorByBoxNumber(number);
+  var color = '#e6ff34';//colorMapping.getColorByBoxNumber(number);
   console.log('COLOR', color);
   var im = gm;//.subClass({ imageMagick: true });
   im(450, 450, color).drawText(10, 50, "from scratch").write(imgDestPath + '/' + number + '-temp.png', function (err1) {
