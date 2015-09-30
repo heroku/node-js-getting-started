@@ -40,6 +40,9 @@ var publicPath = path.resolve('./public');
 var gm = require('gm');
 var os = require('os');
 
+//helper
+var colorMapping = require('./canvas/components/colorMapping');
+
 
 //download helper function
 var download = function(uri, filename, callback){
@@ -1193,6 +1196,8 @@ var createMozaic = function(number, tempFaces, callback){
 
 
   //console.log('TEMPFACES', tempFaces);
+  var color = colorMapping.getColorByBoxNumber(number);
+  console.log('COLOR', color);
   var im = gm;//.subClass({ imageMagick: true });
   im(450, 450, "#000").drawText(10, 50, "from scratch").write(imgDestPath + '/' + number + '-temp.png', function (err1) {
     gm()
