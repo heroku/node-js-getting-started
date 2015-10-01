@@ -9,7 +9,6 @@ define('main', ['map', 'messageBus', 'searchBar', 'components/checkbox-limiter',
 		var _this = this;
 
 		// CONFIG
-		var _statEnabled = true;
 		var _centerDesktop = false;
 		var _widthDesktopView = 1280;
 		var _heightDesktopView = 800;
@@ -38,6 +37,7 @@ define('main', ['map', 'messageBus', 'searchBar', 'components/checkbox-limiter',
 
 		this.config = _data.config;
 		this.currentUser = _data.currentUser;
+		var _statEnabled = config.debug;
 
 		this.static_files = function(path){
 			if( _app.config.mock ){
