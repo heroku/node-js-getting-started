@@ -12,7 +12,7 @@ define('main', ['map', 'messageBus', 'searchBar', 'components/checkbox-limiter',
 		var _centerDesktop = false;
 		var _widthDesktopView = 1280;
 		var _heightDesktopView = 800;
-
+		var _statEnabled = false;
 		// CONST
 		var RETINA_BASE_WIDTH = 2048;
 		var RETINA_BASE_HEIGHT = 1536;
@@ -37,7 +37,7 @@ define('main', ['map', 'messageBus', 'searchBar', 'components/checkbox-limiter',
 
 		this.config = _data.config;
 		this.currentUser = _data.currentUser;
-		var _statEnabled = config.debug;
+		_statEnabled = this.config.debug;
 
 		this.static_files = function(path){
 			if( _app.config.mock ){
