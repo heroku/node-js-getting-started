@@ -461,6 +461,48 @@ body{
 .modal-login .modal-footer{
 	display:none;
 }
+
+.modal-faq .modal-content{
+	height:300px;
+}
+.modal-faq .modal-body{
+	height:230px;
+}
+.modal-faq .modal-footer{
+	display:none;
+}
+
+.modal-abuse .modal-content{
+	height:300px;
+}
+.modal-abuse .modal-body{
+	height:230px;
+}
+.modal-abuse .modal-footer{
+	display:none;
+}
+
+.modal-copright .modal-content{
+	height:300px;
+}
+.modal-copright .modal-body{
+	height:230px;
+}
+.modal-copright .modal-footer{
+	display:none;
+}
+
+.modal-retract .modal-content{
+	height:300px;
+}
+.modal-retract .modal-body{
+	height:230px;
+}
+.modal-retract .modal-footer{
+	display:none;
+}
+
+
 .modal-container .modal-footer {
   position:absolute;
   bottom:0;

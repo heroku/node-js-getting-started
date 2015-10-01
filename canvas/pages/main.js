@@ -229,6 +229,10 @@ define('main', ['map', 'messageBus', 'searchBar', 'components/checkbox-limiter',
 
 			  routes: {
 			    "edit/": "edit",  // #search/kiwis
+			    "faq/": "faq",  // #search/kiwis
+			    "copright/": "copright",  // #search/kiwis
+			    "retract/": "retract",  // #search/kiwis
+			    "abuse/": "abuse",  // #search/kiwis
 			    "view/:number": "view",  // #search/kiwis
 					"success/": "success",  // #search/kiwis
 			    "share/:number": "share",   // #search/kiwis/p7
@@ -239,6 +243,22 @@ define('main', ['map', 'messageBus', 'searchBar', 'components/checkbox-limiter',
 			  edit: function(number) {
 					console.log('BACKBONE EDIT', number);
 					showEditFace();
+			  },
+			  faq: function() {
+					console.log('BACKBONE FAQ');
+					showFaqPopin();
+			  },
+			  retract: function() {
+					console.log('BACKBONE RETRACT');
+					showRetractPopin();
+			  },
+			  copright: function() {
+					console.log('BACKBONE COPRIGHT');
+					showCoprightPopin();
+			  },
+			  abuse: function() {
+					console.log('BACKBONE ABUSE');
+					showAbusePopin();
 			  },
 			  view: function(number) {
 					console.log('BACKBONE EDIT', number);
@@ -309,6 +329,18 @@ define('main', ['map', 'messageBus', 'searchBar', 'components/checkbox-limiter',
 		/*** modal functions ***/
 		function showLoginPopin(){
 			$('.modal-login').modal('show');
+		}
+		function showFaqPopin(){
+			$('.modal-faq').modal('show');
+		}
+		function showCoprightPopin(){
+			$('.modal-copright').modal('show');
+		}
+		function showAbusePopin(){
+			$('.modal-abuse').modal('show');
+		}
+		function showRetractPopin(){
+			$('.modal-retract').modal('show');
 		}
 
 		function showSharePopin(number){

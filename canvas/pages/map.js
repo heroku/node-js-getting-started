@@ -459,7 +459,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 					onGetFacesByRange(mockFaces.getFacesByRange(range));
 				}else{
 					console.log('no Mock');
-          _services.getFacesByRange(range, onGetFacesByRange);
+					_services.getFacesByRange(range, onGetFacesByRange);
 				}
             }
 
