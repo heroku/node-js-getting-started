@@ -655,7 +655,7 @@ input[type=checkbox]:checked + label:after {
 	background:#000;
 	opacity: 0.6;
 	position: absolute;
-	right: 125px;
+	right: 195px;
 	top:20px;
 	-webkit-transition:0.25s;
 	-moz-transition:0.25s;
