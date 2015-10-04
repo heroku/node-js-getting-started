@@ -15,9 +15,12 @@ define('components/spinner', function(){
             this.addChild(l);
         }
 
-        this.tw = new TweenLite.to(this, 1, {rotation: Math.PI*360/180, onComplete:function(){
-            _this.tw.restart();
-        }});
+        this.tw = new TweenLite.to(this.scale, 1, {x: 0.5, y:0.5, onComplete:function(){
+            _this.tw.reverse();
+        }, onReverseComplete: function(){
+            _this.tw.play();
+            }
+        });
 
         this.hide();
 
@@ -43,10 +46,10 @@ define('components/spinner', function(){
             }
             this.lines[i].clear();
             this.lines[i].beginFill(color, 1);
-            this.lines[i].drawRect(0, 0, 30, 3);
+            this.lines[i].drawRect(0, 0, 20, 20);
             this.lines[i].endFill();
-            this.lines[i].pivot.x = 15;
-            this.lines[i].pivot.y = 1.5;
+            this.lines[i].pivot.x = 10;
+            this.lines[i].pivot.y = 10;
         }
     };
 
