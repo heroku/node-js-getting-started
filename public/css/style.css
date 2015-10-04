@@ -327,6 +327,7 @@ body{
 	background: #fff;
 	width: 150px;
 	height:150px;
+	opacity: 0.9;
 }
 
 .main-logo img {
@@ -808,9 +809,16 @@ input[type=checkbox]:checked + label:after {
 		width: 12em;
 	}
 
+	.main-logo {
+		width: 100px;
+		height:100px;	
+	}
+	
+
 	.menu-container {
-		right: 24px;
+		padding: 5px 24px 5px 16px;
 		top: 125px;
+    	right: 20px;
 	}
 
 	.legals-footer ul li a {

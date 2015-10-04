@@ -406,10 +406,9 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 
 		this.updateImage = function(img) {
 
-			console.log('updateImage', img, _id);
 			clearTimeout(_timerImageLoading);
 			_timerImageLoading = setTimeout(function(){
-				console.log('updateImage loading', img, _id);
+
 				(function(saveId){
 
 
