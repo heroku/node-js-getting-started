@@ -100,10 +100,11 @@ define('searchBar', ['messageBus', "components/services", 'pagination', 'autocom
             Backbone.history.navigate("number/"+value*1,{trigger:false});
             messageBus.emit('map:gotoFaceNumber', {'number': value*1, directly: false});
             _this.pagination.reset();
+            this.$field.blur();
         }else if(value.length > 2){
             _services.searchFaces(value, function(data,query){
                 _this.pagination.setData(data);
-                console.log('SEARCH RESULTS', data);
+                _this.$field.blur();
             });
         }
     };

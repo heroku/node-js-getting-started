@@ -34,7 +34,6 @@ define('autocomplete', ["components/services"], function(Services){
             },
             source: function(value, process){
 
-                console.log("autocomplete", "source", arguments);
                 return _services.searchFaces(value, function(data, query){
                     var list = [];
 
