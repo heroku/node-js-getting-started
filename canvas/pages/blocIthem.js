@@ -35,6 +35,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 		var _spinner = new Spinner();
 		var _itemBorder;
 		var _itemBorderImage = new Image();
+		var _timerImageLoading;
 
 		_itemBorderImage.src = _app.config.root_url+"/images/itemBorder@2x.png";
 
@@ -374,87 +375,6 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
             this[isClaimed ? 'showClaims' : 'hideClaims']();
         };
 
-		// this.setLangs = function(langs){
-		// 	var slot = 1, lang, s, icon;
-
-		// 	_slotLang1.visible = false;
-		// 	_slotLang2.visible = false;
-		// 	_slotLang3.visible = false;
-
-		// 	for(var i = 0, l = langs.length;i<l; i++){
-		// 		lang = langs[i];
-
-		// 		lang = lang.substr(0, 2).toUpperCase();
-
-		// 		switch(slot){
-		// 			case 1:
-		// 				s = _slotLang1;
-		// 				break;
-		// 			case 2:
-		// 				s = _slotLang2;
-		// 				break;
-		// 			case 3:
-		// 				s = _slotLang3;
-		// 				break;
-		// 			default:
-		// 				return;
-		// 		}
-
-		// 		if( s ){
-		// 			icon = _app.static_files("img/lang/"+lang+".png");
-
-		// 			if( typeof icon === "undefined"){
-		// 				console.log('Unknown flag in constante langs : '+icon+" - "+ lang.toUpperCase());
-		// 				return;
-		// 			}
-
-		// 			s.setTexture(new PIXI.Texture(PIXI.Texture.fromImage(icon)));
-		// 			s.visible = true;
-		// 		}
-
-		// 		slot++;
-		// 	}
-		// };
-
-		// this.setOccupations = function(occupations){
-		// 	var slot = 1, occupation, s, icon;
-
-		// 	_slotOccupation1.visible = false;
-		// 	_slotOccupation2.visible = false;
-		// 	_slotOccupation3.visible = false;
-
-		// 	for(var i = 0, l = occupations.length;i<l; i++){
-		// 		occupation = occupations[i];
-
-		// 		switch(slot){
-		// 			case 1:
-		// 				s = _slotOccupation1;
-		// 				break;
-		// 			case 2:
-		// 				s = _slotOccupation2;
-		// 				break;
-		// 			case 3:
-		// 				s = _slotOccupation3;
-		// 				break;
-		// 			default:
-		// 			return;
-		// 		}
-
-		// 		if( s ){
-		// 			icon = constantes.occupations[occupation.toUpperCase()];
-
-		// 			if( typeof icon === "undefined"){
-		// 				console.log('Unknown icon in constante occupations : '+icon+ " - "+occupation);
-		// 				return;
-		// 			}
-		// 			s.setText(icon);
-		// 			s.visible = true;
-		// 		}
-
-		// 		slot++;
-		// 	}
-		// };
-
 		this.update = function(data) {
 
 			_data = data;
@@ -485,41 +405,38 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 		};
 
 		this.updateImage = function(img) {
-			// Methode 2
-			//var texture = new PIXI.Texture(PIXI.Texture.fromImage(img));
-			//_item.texture.destroy();
-			//_item.texture = texture;
 
-			// @TODO: display loader while image loading
-
-			(function(saveId){
-
-				// Methode 3 slow fps ???
-				var loader = new PIXI.ImageLoader(img);
-				_spinner.show();
-				loader.onLoaded = function(){
-						if( saveId !== _id ){
-							return;
-						}
-
-						var texture = new PIXI.Texture(PIXI.Texture.fromImage(img));
-
-						_item.texture.destroy();
-						_item.setTexture(texture);
+			console.log('updateImage', img, _id);
+			clearTimeout(_timerImageLoading);
+			_timerImageLoading = setTimeout(function(){
+				console.log('updateImage loading', img, _id);
+				(function(saveId){
 
 
-						_spinner.hide();
+						// Methode 3 slow fps ???
+						var loader = new PIXI.ImageLoader(img);
+						_spinner.show();
 
-						//_item.width = PICTURE_WIDTH; // @TODO : remove - fps optimisation
-						//_item.height = PICTURE_HEIGHT; // @TODO : remove - fps optimisiation
+						loader.onLoaded = function(){
+								if( saveId !== _id ){
+									return;
+								}
 
-						//if( _data.accountname ){
-						//	TweenLite.fromTo(_item, 0.25, {alpha: 0}, {alpha: 1});
-						//}
-				};
-				loader.load();
+								var texture = new PIXI.Texture(PIXI.Texture.fromImage(img));
 
-			})(_id);
+								_item.texture.destroy();
+								_item.setTexture(texture);
+
+
+								_spinner.hide();
+
+						};
+						loader.load();
+
+
+				})(_id);
+
+			}.bind(this), 500);
 
 		};
 
