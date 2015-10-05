@@ -7,7 +7,7 @@
 //MONGO
 var mongoose   = require('mongoose');
 var config   = require('./app/config');
-mongoose.connect(config.mongodb, function(err,db){
+mongoose.connect(config.mongodb, {}, function(err,db){
   console.log('MONGOOSE', err, db);
 }); // connect to our database
 
