@@ -92,7 +92,12 @@ define('minimap', ['constantes', 'messageBus', 'btnSocial', 'mapCursor', 'colorM
 
     Minimap.prototype.updateIconsColor= function(event){
         var color = event && event.data ? event.data.color : 0xFFFFFF;
-        this.icon._text.tint = color;
+        // this.icon._text.setStyle({fill: color});
+        if( color.toString().indexOf('0x') !== -1 ){
+            this.icon.styles.fill = color.replace('0x', '#');    
+        }
+
+        this.icon._text.setText(this.icon.glyph, this.icon.styles);
     };
 
     Minimap.prototype.updateNumberColor = function(){
@@ -245,8 +250,8 @@ define('minimap', ['constantes', 'messageBus', 'btnSocial', 'mapCursor', 'colorM
         TweenLite.to(this.map.scale, 0.25, {x: 1, y:1});
         TweenLite.to(this.map, 0.25, {alpha: 1});
         TweenLite.to(this.cursor, 0.25, {alpha:1, delay:0.15});
-        //TweenLite.to(this.button, 0.25,{alpha:0});
-        this.icon._text.setText(constantes.icons.CIRCLE_CLOSE);
+        this.icon.glyph = constantes.icons.CIRCLE_CLOSE;
+        this.icon._text.setText(constantes.icons.CIRCLE_CLOSE, this.icon.styles);
     };
 
     /**
@@ -257,9 +262,8 @@ define('minimap', ['constantes', 'messageBus', 'btnSocial', 'mapCursor', 'colorM
         TweenLite.to(this.map.scale, 0.25, {x: 0, y:0, delay:0.15});
         TweenLite.to(this.map, 0.25, {alpha: 0, delay:0.15});
         TweenLite.to(this.cursor, 0.25, {alpha:0});
-        //TweenLite.to(this.button, 0.25,{alpha:1});
-        //TweenLite.fromTo(this.cursor.position, 0.25, {y:-10});
-        this.icon._text.setText(constantes.icons.COORDINATES);
+        this.icon.glyph = constantes.icons.COORDINATES;
+        this.icon._text.setText(constantes.icons.COORDINATES, this.icon.styles);
     };
 
     /**

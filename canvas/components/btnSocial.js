@@ -10,7 +10,7 @@ define('btnSocial', function(){
     var BtnSocial = function(glyph, color, clickCallback, w, h, fontSize){
         PIXI.DisplayObjectContainer.call(this);
 
-        var _btn, _text;
+        var _btn, _text, _styles;
 
         fontSize = fontSize || 30;
 
@@ -22,7 +22,9 @@ define('btnSocial', function(){
         _btn.buttonMode = true;
         _btn.tap = _btn.click = clickCallback;
 
-        _text = new PIXI.Text(glyph, {font : fontSize+"px fontello", fill : color || "#FFFFFF"});
+        _styles = {font : fontSize+"px fontello", fill : color || "#FFFFFF"};
+
+        _text = new PIXI.Text(glyph, _styles);
 
         _text.resolution = _app.canvas.renderer.resolution;
 
@@ -30,6 +32,8 @@ define('btnSocial', function(){
         this.resolution = _text.resolution;
         this._btn = _btn;
         this._text = _text;
+        this.styles = _styles;
+        this.glyph = glyph;
 
         this.addChild(_btn);
         this.addChild(_text);
