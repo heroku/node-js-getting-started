@@ -1,3 +1,6 @@
+v0.3.4  --  2015.10.02
+* Add `emitError` extension
+
 v0.3.3  --  2015.01.30
 * Fix reference to module in benchmarks
 

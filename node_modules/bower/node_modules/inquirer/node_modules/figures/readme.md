@@ -11,7 +11,7 @@ Windows CMD only supports a [limited character set](http://en.wikipedia.org/wiki
 
 ## Install
 
-```sh
+```
 $ npm install --save figures
 ```
 

@@ -1,25 +1,33 @@
 'use strict';
 
-var isPlainObject = require('./is-plain-object')
+var forEach       = require('./for-each')
+  , isPlainObject = require('./is-plain-object')
   , value         = require('./valid-value')
 
-  , keys = Object.keys
-  , copy;
+  , isArray = Array.isArray
+  , copy, copyItem;
+
+copyItem = function (value, key) {
+	var index;
+	if (!isPlainObject(value) && !isArray(value)) return value;
+	index = this[0].indexOf(value);
+	if (index === -1) return copy.call(this, value);
+	return this[1][index];
+};
 
 copy = function (source) {
-	var target = {};
+	var target = isArray(source) ? [] : {};
 	this[0].push(source);
 	this[1].push(target);
-	keys(source).forEach(function (key) {
-		var index;
-		if (!isPlainObject(source[key])) {
-			target[key] = source[key];
-			return;
-		}
-		index = this[0].indexOf(source[key]);
-		if (index === -1) target[key] = copy.call(this, source[key]);
-		else target[key] = this[1][index];
-	}, this);
+	if (isArray(source)) {
+		source.forEach(function (value, key) {
+			target[key] = copyItem.call(this, value, key);
+		}, this);
+	} else {
+		forEach(source, function (value, key) {
+			target[key] = copyItem.call(this, value, key);
+		}, this);
+	}
 	return target;
 };
 

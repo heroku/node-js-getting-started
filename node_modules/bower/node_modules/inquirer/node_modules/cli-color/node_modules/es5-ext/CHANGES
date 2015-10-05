@@ -1,3 +1,11 @@
+v0.10.8  --  2015.10.02
+* Add Number.isNatural
+* Add Object.find and Object.findKey
+* Support arrays in Object.copyDeep
+* Fix iteration issue in forEachRight and someRight
+* Fix detection of native sinh
+* Depend on es6-symbol v3
+
 v0.10.7  --  2015.04.22
 * New utlitities. They're convention differs from v0.10, as they were supposed to land in v1.
   Still they're non breaking and start the conventions to be used in v1

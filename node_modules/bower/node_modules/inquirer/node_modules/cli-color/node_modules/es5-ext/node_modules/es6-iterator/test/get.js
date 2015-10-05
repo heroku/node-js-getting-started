@@ -12,5 +12,6 @@ module.exports = function (t, a) {
 	iterator[iteratorSymbol] = function () { return new Iterator([]); };
 	a(t(iterator) instanceof Iterator, true, "Iterator");
 	a(String(t([])), '[object Array Iterator]', " Array");
+	a(String(t((function () { return arguments; }()))), '[object Array Iterator]', " Arguments");
 	a(String(t('foo')), '[object String Iterator]', "String");
 };

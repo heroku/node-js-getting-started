@@ -4,6 +4,13 @@
 or [Yandex.Metrica](http://metrica.yandex.com/)
 
 
+## Install
+
+```
+$ npm install --save insight
+```
+
+
 ## Access data / generate dashboards
 
 ### Google Analytics (GA)
@@ -155,4 +162,4 @@ Returns a boolean whether the user has opted out of tracking. Should preferably 
 
 ## License
 
-[BSD license](http://opensource.org/licenses/bsd-license.php) and copyright Google
+BSD-2-Clause © Google

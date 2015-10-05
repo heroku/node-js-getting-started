@@ -15,9 +15,9 @@ var qs = require('querystring');
  * Defaults
  */
 
-const DEFAULT_PORT = 27017;
-const DEFAULT_DB = 'test';
-const ADMIN_DB = 'admin';
+var DEFAULT_PORT = 27017;
+var DEFAULT_DB = 'test';
+var ADMIN_DB = 'admin';
 
 /**
  * Muri

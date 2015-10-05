@@ -11,6 +11,11 @@ module.exports = function (t, a) {
 		a(this, y, "Array: context:  " + (i++) + "#");
 	}, y);
 	i = 0;
+	t((function () { return arguments; }('raz', 'dwa', 'trzy')), function () {
+		a.deep(slice.call(arguments, 0, 1), [x[i]], "Arguments" + i + "#");
+		a(this, y, "Arguments: context:  " + (i++) + "#");
+	}, y);
+	i = 0;
 	t(x = 'foo', function () {
 		a.deep(slice.call(arguments, 0, 1), [x[i]], "String " + i + "#");
 		a(this, y, "Regular String: context:  " + (i++) + "#");

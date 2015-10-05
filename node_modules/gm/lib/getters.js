@@ -27,7 +27,7 @@ module.exports = function (gm) {
     , 'filesize': { key: 'Filesize', format: '%b' }
     , 'size':  { key: 'size', format: '%wx%h ', helper: 'Geometry' }
     , 'color': { key: 'color', format: '%k',  helper: 'Colors' }
-    , 'orientation': { key: 'Orientation', verbose: true }
+    , 'orientation': { key: 'Orientation', format: '%[EXIF:Orientation]', helper: 'Orientation' }
     , 'res':   { key: 'Resolution', verbose: true }
   }
 
@@ -271,6 +271,21 @@ module.exports = function (gm) {
   }
 
   /**
+   * Map exif orientation codes to orientation names.
+   */
+
+  var orientations = {
+      '1': 'TopLeft'
+    , '2': 'TopRight'
+    , '3': 'BottomRight'
+    , '4': 'BottomLeft'
+    , '5': 'LeftTop'
+    , '6': 'RightTop'
+    , '7': 'RightBottom'
+    , '8': 'LeftBottom'
+  }
+
+  /**
    * identify -verbose helpers
    */
 
@@ -280,9 +295,16 @@ module.exports = function (gm) {
     // We only want the size of the first frame.
     // Each frame is separated by a space.
     var split = val.split(" ").shift().split("x");
-    o.size = {
-        width:  parseInt(split[0], 10)
-      , height: parseInt(split[1], 10)
+    var width = parseInt(split[0], 10);
+    var height = parseInt(split[1], 10);
+    if (o.size && o.size.width && o.size.height) {
+      if (width > o.size.width) o.size.width = width;
+      if (height > o.size.height) o.size.height = height;
+    } else {
+      o.size = {
+        width:  width,
+        height: height
+      }
     }
   };
 
@@ -296,5 +318,15 @@ module.exports = function (gm) {
 
   helper.Colors = function Colors (o, val) {
     o.color = parseInt(val, 10);
+  };
+
+  helper.Orientation = function Orientation (o, val) {
+    if (val in orientations) {
+      o['Profile-EXIF'] || (o['Profile-EXIF'] = {});
+      o['Profile-EXIF'].Orientation = val;
+      o.Orientation = orientations[val];
+    } else {
+      o.Orientation = val || 'Unknown';
+    }
   };
 }

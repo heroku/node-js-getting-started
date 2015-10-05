@@ -6,6 +6,7 @@ module.exports = {
 	isFinite:         require('./is-finite'),
 	isInteger:        require('./is-integer'),
 	isNaN:            require('./is-nan'),
+	isNatural:        require('./is-natural'),
 	isNumber:         require('./is-number'),
 	isSafeInteger:    require('./is-safe-integer'),
 	MAX_SAFE_INTEGER: require('./max-safe-integer'),

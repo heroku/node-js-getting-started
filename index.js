@@ -7,10 +7,8 @@
 //MONGO
 var mongoose   = require('mongoose');
 var config   = require('./app/config');
-mongoose.connect(config.mongodb, {}, function(err,db){
-  console.log('MONGOOSE', err, db);
-}); // connect to our database
 
+mongoose.connect(config.mongodb);
 
 var Face     = require('./app/models/face');
 var Scrap     = require('./app/models/scrap');

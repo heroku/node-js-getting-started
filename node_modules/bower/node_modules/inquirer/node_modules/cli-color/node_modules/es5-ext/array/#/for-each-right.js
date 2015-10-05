@@ -14,7 +14,7 @@ module.exports = function (cb/*, thisArg*/) {
 	callable(cb);
 	thisArg = arguments[1];
 
-	for (i = toPosInt(self.length); i >= 0; --i) {
+	for (i = (toPosInt(self.length) - 1); i >= 0; --i) {
 		if (hasOwnProperty.call(self, i)) call.call(cb, thisArg, self[i], i, self);
 	}
 };

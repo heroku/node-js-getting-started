@@ -20,7 +20,7 @@ process.on('message', function (msg) {
 		var id = parts[0];
 		var path = parts[1];
 
-		request(insight._getRequestObj(id, path), function (err, res, body) {
+		request(insight._getRequestObj(id, path), function (err) {
 			if (err) {
 				cb(err);
 				return;

@@ -1,3 +1,8 @@
+v3.0.0  --  2015.10.02
+* Reuse native symbols (e.g. iterator, toStringTag etc.) in a polyfill if they're available
+  Otherwise polyfill symbols may not be recognized by other functions
+* Improve documentation
+
 v2.0.1  --  2015.01.28
 * Fix Symbol.prototype[Symbol.isPrimitive] implementation
 * Improve validation within Symbol.prototype.toString and

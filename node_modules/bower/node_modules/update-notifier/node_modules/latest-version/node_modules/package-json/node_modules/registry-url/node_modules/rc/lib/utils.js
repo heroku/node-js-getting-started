@@ -1,3 +1,4 @@
+'use strict';
 var fs   = require('fs')
 var ini  = require('ini')
 var path = require('path')
@@ -52,12 +53,13 @@ var env = exports.env = function (prefix, env) {
       while ((_emptyStringIndex=keypath.indexOf('')) > -1) {
         keypath.splice(_emptyStringIndex, 1)
       }
-      
+
       var cursor = obj
       keypath.forEach(function _buildSubObj(_subkey,i){
 
         // (check for _subkey first so we ignore empty strings)
-        if (!_subkey)
+        // (check for cursor to avoid assignment to primitive objects)
+        if (!_subkey || typeof cursor !== 'object')
           return
 
         // If this is the last key, just stuff the value in there
@@ -65,7 +67,7 @@ var env = exports.env = function (prefix, env) {
         // (unless it's just an empty string- in that case use the last valid key)
         if (i === keypath.length-1)
           cursor[_subkey] = env[k]
-          
+
 
         // Build sub-object if nothing already exists at the keypath
         if (cursor[_subkey] === undefined)

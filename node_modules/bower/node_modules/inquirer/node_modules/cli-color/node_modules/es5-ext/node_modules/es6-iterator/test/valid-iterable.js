@@ -13,4 +13,6 @@ module.exports = function (t, a) {
 	a(t(obj), obj, "Iterator");
 	obj = [];
 	a(t(obj), obj, 'Array');
+	obj = (function () { return arguments; }());
+	a(t(obj), obj, "Arguments");
 };

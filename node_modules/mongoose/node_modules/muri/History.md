@@ -1,4 +1,9 @@
 
+1.0.0 / 2014-10-18
+==================
+
+ * fixed; compatibility w/ strict mode #4 [vkarpov15](https://github.com/vkarpov15)
+
 0.3.1 / 2013-02-17
 ==================
 

@@ -11,7 +11,8 @@ module.exports = function (t, a) {
 
 	o = { foo: 'bar', raz: { dwa: 'dwa',
 		trzy: { cztery: 'pięć', 'sześć': 'siedem' }, osiem: {},
-		'dziewięć': function () { } }, 'dziesięć': 10 };
+		'dziewięć': function () { } },
+		'dziesięć': 10, "jedenaście": ['raz', ['dwa', 'trzy', { elo: "true" }]] };
 	o.raz.rec = o;
 
 	no = t(o);
@@ -21,4 +22,7 @@ module.exports = function (t, a) {
 	a(no.raz.rec, no, "Recursive");
 	a.not(o.raz.osiem, no.raz.osiem, "Empty object");
 	a(o.raz['dziewięć'], no.raz['dziewięć'], "Function");
+	a.not(o['jedenaście'], no['jedenaście']);
+	a.not(o['jedenaście'][1], no['jedenaście'][1]);
+	a.not(o['jedenaście'][1][2], no['jedenaście'][1][2]);
 };

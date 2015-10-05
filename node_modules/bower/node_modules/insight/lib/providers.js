@@ -15,19 +15,35 @@ module.exports = {
 		var now = Date.now();
 
 		var _qs = {
-			v: 1, // GA Measurement Protocol API version
-			t: 'pageview', // hit type
-			aip: 1, // anonymize IP
+			// GA Measurement Protocol API version
+			v: 1,
+
+			// hit type
+			t: 'pageview',
+
+			// anonymize IP
+			aip: 1,
+
 			tid: this.trackingCode,
-			cid: this.clientId, // random UUID
+
+			// random UUID
+			cid: this.clientId,
+
 			cd1: this.os,
+
 			// GA custom dimension 2 = Node Version, scope = Session
 			cd2: this.nodeVersion,
+
 			// GA custom dimension 3 = App Version, scope = Session (temp solution until refactored to work w/ GA app tracking)
 			cd3: this.appVersion,
+
 			dp: path,
-			qt: now - parseInt(id, 10), // queue time - delta (ms) between now and track time
-			z: now // cache busting, need to be last param sent
+
+			// queue time - delta (ms) between now and track time
+			qt: now - parseInt(id, 10),
+
+			// cache busting, need to be last param sent
+			z: now
 		};
 
 		return {
@@ -37,7 +53,7 @@ module.exports = {
 			body: qs.stringify(_qs)
 		};
 	},
-	// Yandex.Metrica — http://metrica.yandex.com
+	// Yandex.Metrica - http://metrica.yandex.com
 	yandex: function (id, path) {
 		var request = require('request');
 
@@ -47,11 +63,12 @@ module.exports = {
 			.replace(/\..*$/, '');
 
 		var qs = {
-			wmode: 3,
-			ut: 'noindex',
+			'wmode': 3,
+			'ut': 'noindex',
 			'page-url': 'http://' + this.packageName + '.insight' + path + '?version=' + this.packageVersion,
 			'browser-info': 'i:' + ts + ':z:0:t:' + path,
-			rn: Date.now() // cache busting
+			// cache busting
+			'rn': Date.now()
 		};
 
 		var url = 'https://mc.yandex.ru/watch/' + this.trackingCode;

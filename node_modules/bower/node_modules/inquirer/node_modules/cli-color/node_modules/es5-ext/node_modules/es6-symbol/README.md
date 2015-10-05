@@ -12,13 +12,13 @@ Underneath it uses real string property names which can easily be retrieved, how
 
 ### Usage
 
-If you'd like to use native version when it exists and fallback to polyfill if it doesn't (but without implementing `Symbol` on global scope), do:
+It’s safest to use *es6-symbol* as a [ponyfill](http://kikobeats.com/polyfill-ponyfill-and-prollyfill/) – a polyfill which doesn’t touch global objects:
 
 ```javascript
 var Symbol = require('es6-symbol');
 ```
 
-If you want to make sure your environment implements `Symbol`, do:
+If you want to make sure your environment implements `Symbol` globally, do:
 
 ```javascript
 require('es6-symbol/implement');

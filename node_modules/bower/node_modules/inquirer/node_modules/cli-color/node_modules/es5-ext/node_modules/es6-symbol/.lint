@@ -11,3 +11,5 @@ nomen
 plusplus
 newcap
 vars
+
+predef+ Symbol
