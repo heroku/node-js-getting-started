@@ -511,13 +511,10 @@ router.route('/faces')
 
             // get the face with that id (accessed at GET http://localhost:8080/api/faces/:face_id)
             .get(function(req, res) {
-              mongoose.connect(config.mongodb, function(err){
-                if (err) { throw err; }
-                console.log('MONGOOSE', mongoose.connection.readyState);
-              });
+              var conn = mongoose.createConnection(config.mongodb);
                 var range = JSON.parse('[' + req.params.range + ']');
 
-                Face.find({number:{$in:range}}).sort('number').exec(function(err, faces) {
+                conn.Face.find({number:{$in:range}}).sort('number').exec(function(err, faces) {
 
                     var tempFaces = _.clone(faces);
 
