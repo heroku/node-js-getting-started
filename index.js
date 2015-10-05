@@ -8,7 +8,7 @@
 var mongoose   = require('mongoose');
 var config   = require('./app/config');
 mongoose.connect(config.mongodb); // connect to our database
-console.log('MONGOOSE', mongoose.connection.readyState);
+
 
 
 var Face     = require('./app/models/face');
@@ -512,6 +512,7 @@ router.route('/faces')
 
             // get the face with that id (accessed at GET http://localhost:8080/api/faces/:face_id)
             .get(function(req, res) {
+              console.log('MONGOOSE', mongoose.connection.readyState);
                 var range = JSON.parse('[' + req.params.range + ']');
 
                 Face.find({number:{$in:range}}).sort('number').exec(function(err, faces) {
