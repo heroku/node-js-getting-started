@@ -8,6 +8,9 @@
 var mongoose   = require('mongoose');
 var config   = require('./app/config');
 mongoose.connect(config.mongodb); // connect to our database
+console.log(mongoose.connection.readyState);
+
+
 var Face     = require('./app/models/face');
 var Scrap     = require('./app/models/scrap');
 
