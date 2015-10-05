@@ -511,7 +511,7 @@ router.route('/faces')
             .get(function(req, res) {
                 var range = JSON.parse('[' + req.params.range + ']');
 
-                /*Face.find({number:{$in:range}}).sort('number').exec(function(err, faces) {
+                Face.find({number:{$in:range}}).sort('number').exec(function(err, faces) {
 
                     var tempFaces = _.clone(faces);
 
@@ -527,8 +527,7 @@ router.route('/faces')
 
                     tempFaces = _.sortBy(tempFaces, 'number');
                     res.json(tempFaces);
-                });*/
-                res.json({});
+                });
             });
 
         // on routes that end in /faces/search/:query
