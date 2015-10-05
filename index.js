@@ -7,7 +7,11 @@
 //MONGO
 var mongoose   = require('mongoose');
 var config   = require('./app/config');
-mongoose.connect(config.mongodb); // connect to our database
+//mongoose.connect(config.mongodb); // connect to our database
+mongoose.connect(config.mongodb,{}, function(err){
+  if (err) { throw err; }
+  console.log('MONGOOSE', mongoose.connection.readyState);
+});
 
 var Face     = require('./app/models/face');
 var Scrap     = require('./app/models/scrap');
@@ -510,11 +514,6 @@ router.route('/faces')
 
             // get the face with that id (accessed at GET http://localhost:8080/api/faces/:face_id)
             .get(function(req, res) {
-                mongoose.connect(config.mongodb,{}, function(err){
-                  if (err) { throw err; }
-                  console.log('MONGOOSE', mongoose.connection.readyState);
-                });
-
 
                 var range = JSON.parse('[' + req.params.range + ']');
 
