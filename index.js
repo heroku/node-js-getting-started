@@ -512,7 +512,10 @@ router.route('/faces')
 
             // get the face with that id (accessed at GET http://localhost:8080/api/faces/:face_id)
             .get(function(req, res) {
-                console.log('MONGOOSE', mongoose.connection.readyState);
+                mongoose.connect(config.mongodb,{}, function(){
+                  console.log('MONGOOSE', mongoose.connection.readyState);
+                });
+
 
                 var range = JSON.parse('[' + req.params.range + ']');
 
