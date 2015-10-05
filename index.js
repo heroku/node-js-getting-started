@@ -513,7 +513,9 @@ router.route('/faces')
             .get(function(req, res) {
 
                 var range = JSON.parse('[' + req.params.range + ']');
-                mongoose.connection.close();
+                mongoose.connection.close(function () {
+                  console.log('Mongoose connection disconnected');
+                });
                 mongoose.connect(config.mongodb,{}, function(err){
                   console.log(err);
                 });
