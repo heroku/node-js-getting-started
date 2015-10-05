@@ -514,7 +514,7 @@ router.route('/faces')
               var conn = mongoose.createConnection(config.mongodb);
                 var range = JSON.parse('[' + req.params.range + ']');
 
-                conn.collections('faces').find({number:{$in:range}}).sort('number').exec(function(err, faces) {
+                conn.collection('faces').find({number:{$in:range}}).sort('number').exec(function(err, faces) {
 
                     var tempFaces = _.clone(faces);
 
