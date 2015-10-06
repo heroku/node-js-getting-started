@@ -395,7 +395,6 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 			this.setShare(shareEnable);
 
 			// _itemBorder.visible = !!socialEnable;
-			_bgPicture.visible = !(_data.accountname);
 			_itemText.setText(pad(_txt*1));
 			_item.texture.destroy();
 			_item.texture = new PIXI.Texture(new PIXI.BaseTexture());
@@ -406,10 +405,12 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 
 		this.updateImage = function(img) {
 
+			_bgPicture.visible = false;
+
 			clearTimeout(_timerImageLoading);
 			_timerImageLoading = setTimeout(function(){
 
-				(function(saveId){
+				(function(saveId, isFreeState){
 
 
 						// Methode 3 slow fps ???
@@ -428,12 +429,13 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 
 
 								_spinner.hide();
+								_bgPicture.visible = isFreeState;
 
 						};
 						loader.load();
 
 
-				})(_id);
+				})(_id, !_data.accountname);
 
 			}.bind(this), 500);
 

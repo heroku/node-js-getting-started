@@ -1,5 +1,5 @@
 node_modules
-./.idea
+.idea
 public/js/scripts.js.map
 public/js/vendor.js.map
 app/config.js

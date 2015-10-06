@@ -324,7 +324,6 @@ body{
 	position: absolute;
 	right: 20px;
 	top: 20px;
-	background: #fff;
 	width: 150px;
 	height:150px;
 	opacity: 0.9;
@@ -438,7 +437,7 @@ body{
   bottom:0;
   left:0;
   right:0;
-	width:500px;
+	max-width:500px;
 	margin:auto;
 	border-radius:0px;
 	border:0;
@@ -795,6 +794,10 @@ input[type=checkbox]:checked + label:after {
 @media only screen and (max-width: 640px){
 	.search-bar .input-group {
 		width: 12em;
+	}
+
+	.modal-login .social-links-container .icon-twitter {
+		margin-left: 20px;
 	}
 
 	.search-bar .search-pagination {

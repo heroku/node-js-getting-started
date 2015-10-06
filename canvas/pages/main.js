@@ -34,6 +34,7 @@ define('main', ['map', 'messageBus', 'searchBar', 'components/checkbox-limiter',
 		var _loaded = false;
 		var _loader = $('.loading-container').get(0);
 		var checkboxLimiter = new CheckboxLimiter(".js-checkbox-limiter");
+		var timerLoader;
 
 		this.config = _data.config;
 		this.currentUser = _data.currentUser;
@@ -84,12 +85,16 @@ define('main', ['map', 'messageBus', 'searchBar', 'components/checkbox-limiter',
 				renderer: _renderer,
 				rendererOptions: _rendererOptions
 			};
+
+			startTimeoutTimer();
 		}
 
 		function hideLoader(){
 			if( _loaded ){
 				return;
 			}
+
+			stopTimeoutTimer();
 
 			TweenLite.to(_loader, 0.25, {opacity:0, delay: 1, onComplete: function(){
 				TweenLite.set(_loader, {display:'none'});
@@ -107,6 +112,21 @@ define('main', ['map', 'messageBus', 'searchBar', 'components/checkbox-limiter',
 				_loaded = false;
 			}});
 
+		}
+
+		function stopTimeoutTimer(){
+			clearTimeout(timerLoader);
+		}
+
+		function startTimeoutTimer(){
+			timerLoader = setTimeout(function(){
+				showTimeoutPage();
+			}, 1000*30);
+		}
+
+		function showTimeoutPage(){
+			// window.location.href = "/404"; // redirect to 404
+			window.location.href = "/"; // redirect to home
 		}
 
 		function onReady() {
