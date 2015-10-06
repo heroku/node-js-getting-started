@@ -1,1 +1,0 @@
-module.exports = require('./lib/paypal-rest-sdk.js')();
