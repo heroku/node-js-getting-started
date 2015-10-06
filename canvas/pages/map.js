@@ -10,7 +10,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 		var _minimap;
 		var _w;
 		var _h;
-		var _coefPage = window.screen.width > 1600 ? 0.5 :  (Tools.getDevice() == "desktop")  ? 1 : (Tools.getDevice() == "tablet") ? 2 : 5;
+		var _coefPage = window.screen.width > 1600 ? 0.5 :  (Tools.getDevice() == "desktop")  ? 1 : (Tools.getDevice() == "tablet") ? 2 : 2;
         var ITEM_WIDTH = Tools.getDevice() === 'desktop' ? 175 : 175;
         var ITEM_HEIGHT = Tools.getDevice() === 'desktop' ? 175 : 175;
         var MIN_SPEED = 1;
