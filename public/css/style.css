@@ -464,10 +464,10 @@ body{
 }
 
 .modal-faq .modal-content{
-	height:300px;
+	/*height:300px;*/
 }
 .modal-faq .modal-body{
-	height:230px;
+	/*height:230px;*/
 }
 .modal-faq .modal-footer{
 	display:none;
@@ -811,9 +811,9 @@ input[type=checkbox]:checked + label:after {
 
 	.main-logo {
 		width: 100px;
-		height:100px;	
+		height:100px;
 	}
-	
+
 
 	.menu-container {
 		padding: 5px 24px 5px 16px;
@@ -1155,4 +1155,35 @@ input[type=checkbox]:checked + label:after {
   100% {
     -ms-transform:  translate(0px,0px)  ;
   }
+}
+
+/*FAQ*/
+.faqHeader {
+font-size: 27px;
+margin: 20px;
+}
+
+.panel-heading [data-toggle="collapse"]:after {
+font-family: 'Glyphicons Halflings';
+content: "^"; /* "play" icon */
+float: right;
+color: #F58723;
+font-size: 18px;
+line-height: 22px;
+/* rotate "play" icon from > (right arrow) to down arrow */
+-webkit-transform: rotate(-90deg);
+-moz-transform: rotate(-90deg);
+-ms-transform: rotate(-90deg);
+-o-transform: rotate(-90deg);
+transform: rotate(-90deg);
+}
+
+.panel-heading [data-toggle="collapse"].collapsed:after {
+/* rotate "play" icon from > (right arrow) to ^ (up arrow) */
+-webkit-transform: rotate(90deg);
+-moz-transform: rotate(90deg);
+-ms-transform: rotate(90deg);
+-o-transform: rotate(90deg);
+transform: rotate(90deg);
+color: #454444;
 }

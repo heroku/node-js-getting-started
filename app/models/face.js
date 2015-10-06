@@ -19,7 +19,9 @@ var FaceSchema   = new Schema({
     claim: {type: Boolean, default: true},
     non_human: {type: Boolean, default: false},
     access_token: String,
-    refresh_token: String
+    refresh_token: String,
+    previous: Number,
+    next: Number
 });
 
 module.exports = mongoose.model('Face', FaceSchema);

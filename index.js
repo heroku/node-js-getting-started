@@ -514,6 +514,18 @@ router.route('/faces')
 
                 var range = JSON.parse('[' + req.params.range + ']');
 
+                Face.aggregate(
+                  { $group : {
+                      _id:"number",
+                      min: {$min : "0"},
+                      max: {$max : "10"}
+                    }function (err, res) {
+                        if (err) console.log(err);
+                        console.log('RES', res);
+                    }
+                  }
+                );
+
 
                 Face.find({number:{$in:range}}).sort('number').exec(function(err, faces) {
 
@@ -563,8 +575,6 @@ router.route('/faces')
                       }else{
                         res.json(faces);
                       }
-
-
                   });
                 }
 
