@@ -1129,7 +1129,7 @@ publicRouter.get('/success/:id', function(req, res, next) {
             getNextFace(face.number, function(nextFace){
               console.log('PREV/NEXT', previousFace, nextFace);
               face.previous = previousFace.number;
-              face.next = previousFace.number;
+              face.next = nextFace.number;
 
               face.save(function(err) {
                   if (err){
