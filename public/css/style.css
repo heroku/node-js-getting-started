@@ -534,8 +534,26 @@ body{
 	text-decoration:none;
 }
 
+.modal-login .social-links-container {
+	display: table;
+	width:100%;
+}
+
+.modal-login .social-links-container .icon-facebook,
 .modal-login .social-links-container .icon-twitter{
-	margin-left:50px;
+	display: table-cell;
+	text-align: center;
+    white-space: nowrap;
+}
+
+
+.modal-login .social-links-container .icon-facebook:focus,
+.modal-login .social-links-container .icon-twitter:focus{
+	text-decoration: none;
+}
+
+.modal-login .social-links-container .icon-twitter{
+    padding-right: 20px;
 }
 
 /***** CHECKBOX *****/

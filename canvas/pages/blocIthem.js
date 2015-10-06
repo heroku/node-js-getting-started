@@ -377,7 +377,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 
 		this.update = function(data) {
 
-			_data = data;
+			this._data = _data = data;
 
 
 			_id = _txt = _data.number;
@@ -437,7 +437,7 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 
 				})(_id, !_data.accountname);
 
-			}.bind(this), 500);
+			}.bind(this), !_data.accountname ? 0 : 500);
 
 		};
 

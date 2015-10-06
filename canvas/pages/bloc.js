@@ -49,8 +49,12 @@ define('bloc', ["blocIthem"], function(BlocIthem) {
 
 						var id = data[i].number;
 						var blocData = main.martixRange[id];
-						
-						if( _items[i].currentNumber === blocData.number){
+
+						// if( _items[i].currentNumber === blocData.number){
+						// 	continue;
+						// }
+
+						if( _items[i]._data === blocData){
 							continue;
 						}
 

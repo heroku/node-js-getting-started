@@ -121,7 +121,7 @@ define('main', ['map', 'messageBus', 'searchBar', 'components/checkbox-limiter',
 		function startTimeoutTimer(){
 			timerLoader = setTimeout(function(){
 				showTimeoutPage();
-			}, 1000*30);
+			}, 1000*60);
 		}
 
 		function showTimeoutPage(){
