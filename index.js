@@ -80,6 +80,21 @@ AWS.config.update({ //endpoint: 'https://files.onemillionhumans.com.s3-website-u
 var s3bucket = new AWS.S3();
 //console.log('BUCKET NAME', config.S3_BUCKET_NAME);
 
+
+var getPreviousFace = function(number, callback){
+  Face.find({number:{$lt:number}}).limit(10).sort({'number':'desc'}).exec(function(err, faces) {
+      console.log('PREVIOUS', faces[0]);
+      callback(faces[0]);
+  });
+}
+
+var getNextFace = function(number, callback){
+  Face.find({number:{$gt:number}}).limit(10).sort({'number':'asc'}).exec(function(err, faces) {
+      console.log('PREVIOUS', faces[0]);
+      callback(faces[0]);
+  });
+}
+
 passport.use(new FacebookStrategy({
   clientID: config.FACEBOOK_APP_ID,
   clientSecret: config.FACEBOOK_APP_SECRET,
@@ -148,6 +163,8 @@ passport.use(new FacebookStrategy({
                               face.access_token = accessToken;
                               face.refresh_token = refreshToken;
                               console.log('PROFILE FACEBOOK', profile, imgDestPath);
+
+
                               // save the face and check for errors
                               face.save(function(err) {
                                     if (err){
@@ -513,19 +530,6 @@ router.route('/faces')
             .get(function(req, res) {
 
                 var range = JSON.parse('[' + req.params.range + ']');
-
-                Face.aggregate(
-                  { $group : {
-                      _id:"number",
-                      min: {$min : "0"},
-                      max: {$max : "10"}
-                    }function (err, res) {
-                        if (err) console.log(err);
-                        console.log('RES', res);
-                    }
-                  }
-                );
-
 
                 Face.find({number:{$in:range}}).sort('number').exec(function(err, faces) {
 
@@ -1120,13 +1124,25 @@ publicRouter.get('/success/:id', function(req, res, next) {
             face.number_id = parseInt(face.number, 10) - 1;
           }
 
-          face.save(function(err) {
-              if (err){
-                console.log('ERROR SAVE NUMBER', err);
-              }
-              res.redirect('/#success/');
+          getPreviousFace(face.number, function(previousFace){
+
+            getNextFace(face.number, function(nextFace){
+              console.log('PREV/NEXT', previousFace, nextFace);
+              face.previous = previousFace.number;
+              face.next = previousFace.number;
+
+              face.save(function(err) {
+                  if (err){
+                    console.log('ERROR SAVE NUMBER', err);
+                  }
+                  res.redirect('/#success/');
+
+              });
+            });
 
           });
+
+
       }
 
   });
