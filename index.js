@@ -1136,7 +1136,7 @@ publicRouter.get('/success/:id', function(req, res, next) {
               });
               Face.findOneAndUpdate({_id: nextFace._id}, { $set: { previous: face.number }}, {}, function(err){
                 console.log('ERREUR', err);
-              }););
+              });
 
               face.save(function(err) {
                   if (err){
