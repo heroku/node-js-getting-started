@@ -1131,8 +1131,12 @@ publicRouter.get('/success/:id', function(req, res, next) {
               face.previous = previousFace.number;
               face.next = nextFace.number;
 
-              Face.findOneAndUpdate({_id: previousFace._id}, { $set: { next: face.number }});
-              Face.findOneAndUpdate({_id: nextFace._id}, { $set: { previous: face.number }});
+              Face.findOneAndUpdate({_id: previousFace._id}, { $set: { next: face.number }},{}, function(err){
+                console.log('ERREUR', err);
+              });
+              Face.findOneAndUpdate({_id: nextFace._id}, { $set: { previous: face.number }}, {}, function(err){
+                console.log('ERREUR', err);
+              }););
 
               face.save(function(err) {
                   if (err){
