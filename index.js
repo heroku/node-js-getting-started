@@ -666,6 +666,8 @@ publicRouter.get('/initnumbers/', function(req, res, next) {
 
     for(var i = 0; i < faces.length; i++){
       faces[i].number = nb;
+      faces[i].previous = nb - 3;
+      faces[i].next = nb + 3;
       faces[i].save(function(err){
         console.log('ERREUR', err);
       });
@@ -1132,10 +1134,11 @@ publicRouter.get('/success/:id', function(req, res, next) {
               face.next = nextFace.number;
 
               Face.findOneAndUpdate({_id: previousFace._id}, { $set: { next: face.number }},{}, function(err){
-                console.log('ERREUR', err);
+                //console.log('ERREUR', err);
+
               });
               Face.findOneAndUpdate({_id: nextFace._id}, { $set: { previous: face.number }}, {}, function(err){
-                console.log('ERREUR', err);
+                //console.log('ERREUR', err);
               });
 
               face.save(function(err) {
