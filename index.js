@@ -660,7 +660,34 @@ var CronJob = require('cron').CronJob;
 }, null, true, 'France/Paris');*/
 
 publicRouter.get('/initnumbers/', function(req, res, next) {
+
   Face.find(function(err, faces) {
+    console.log('FACES LENGTH', faces.length);
+    var nb = 1;
+
+    for(var i = 0; i < faces.length; i++){
+      if(faces[i].lang){
+        if(faces[i].lang.length > 2){
+          if(faces[i].lang.length == 5){
+            Face.findOneAndUpdate({_id: faces[i]._id}, { $set: { lang: faces[i].lang.substring(3) }},{}, function(err){
+              console.log('ERREUR', err);
+
+            });
+          }
+          console.log('PLUS', faces[i].lang.substring(3));
+        }
+      }
+
+      /*faces[i].save(function(err){
+        console.log('ERREUR', err);
+      });*/
+
+    }
+
+    res.json('SUCCESS');
+  });
+
+  /*Face.find(function(err, faces) {
     console.log('FACES LENGTH', faces.length);
     var nb = 1;
 
@@ -675,7 +702,7 @@ publicRouter.get('/initnumbers/', function(req, res, next) {
     }
 
     res.json(faces);
-  });
+  });*/
 });
 
 publicRouter.get('/initclaims/', function(req, res, next) {
