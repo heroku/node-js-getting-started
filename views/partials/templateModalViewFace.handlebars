@@ -4,17 +4,17 @@
 		<div class="col-xs-7">
 			<% if(langs.length){ %>
 			<div class="row">
-				<div class="col-xs-5">Language</div>	
-				
+				<div class="col-xs-5">Language</div>
+
 				<% _.each(langs, function(lang){ %>
-					<img class="flags" src="http://{{data.config.S3_BUCKET_NAME}}/img/lang/<%= lang.toUpperCase() %>.png" alt="<%= lang %>" /><br />
+					<img class="flags" src="http://{{data.config.S3_BUCKET_NAME}}/img/lang/<%= lang.toUpperCase() %>.PNG" alt="<%= lang %>" /><br />
 				<% }); %>
 
 			</div>
 			<% } %>
 			<% if(occupations.length){ %>
 			<div class="row">
-				<div class="col-xs-5">Occupations</div>	
+				<div class="col-xs-5">Occupations</div>
 				<div class="col-xs-7 no-wrap">
 					<% _.each(occupations, function(occupation){ %>
 							<span class="col-xs-12"><span class="font-icon"><%= icons[occupation.toUpperCase()] %></span> <%= occupation %></span>
@@ -40,6 +40,6 @@
 		<div class="col-xs-6"><a class="twitter-share-button" href="https://twitter.com/intent/tweet?url={{data.config.root_url}}%2Fnumber%2F<%= data.number %>">
 										Tweet
 									</a></div>
-	</div>		
+	</div>
 	</div>
 </script>

@@ -194,6 +194,13 @@ passport.use(new FacebookStrategy({
 
 }));
 
+//stats
+var addStat = function(Lang){
+  Stat.find({ lang:Lang}, function(err, stats) {
+    console.log('STATS', err, stats);
+  });
+};
+
 function createUserFromTwitter(twitterUserData, number, done){
   console.log('USER TWITTER', twitterUserData.id);
     if(twitterUserData.profile_image_url){
@@ -235,6 +242,10 @@ function createUserFromTwitter(twitterUserData, number, done){
                       face.lang = twitterUserData.lang;  // set the faces name (comes from the request)
                       face.non_human = false;  // set the faces name (comes from the request)
                       console.log('PROFILE TWITTER', twitterUserData.id);
+
+                      //STATS
+                      addStat(face.lang);
+
                       // save the face and check for errors
                         face.save(function(err) {
                             if (err){
@@ -660,12 +671,41 @@ var CronJob = require('cron').CronJob;
 }, null, true, 'France/Paris');*/
 
 publicRouter.get('/initnumbers/', function(req, res, next) {
+
   Face.find(function(err, faces) {
     console.log('FACES LENGTH', faces.length);
     var nb = 1;
 
     for(var i = 0; i < faces.length; i++){
+      if(faces[i].lang){
+        if(faces[i].lang.length > 2){
+          if(faces[i].lang.length == 5){
+            Face.findOneAndUpdate({_id: faces[i]._id}, { $set: { lang: faces[i].lang.substring(3) }},{}, function(err){
+              console.log('ERREUR', err);
+
+            });
+          }
+          console.log('PLUS', faces[i].lang.substring(3));
+        }
+      }
+
+      /*faces[i].save(function(err){
+        console.log('ERREUR', err);
+      });*/
+
+    }
+
+    res.json('SUCCESS');
+  });
+
+  /*Face.find(function(err, faces) {
+    console.log('FACES LENGTH', faces.length);
+    var nb = 1;
+
+    for(var i = 0; i < faces.length; i++){
       faces[i].number = nb;
+      faces[i].previous = nb - 3;
+      faces[i].next = nb + 3;
       faces[i].save(function(err){
         console.log('ERREUR', err);
       });
@@ -673,7 +713,7 @@ publicRouter.get('/initnumbers/', function(req, res, next) {
     }
 
     res.json(faces);
-  });
+  });*/
 });
 
 publicRouter.get('/initclaims/', function(req, res, next) {
@@ -1131,6 +1171,14 @@ publicRouter.get('/success/:id', function(req, res, next) {
               face.previous = previousFace.number;
               face.next = nextFace.number;
 
+              Face.findOneAndUpdate({_id: previousFace._id}, { $set: { next: face.number }},{}, function(err){
+                //console.log('ERREUR', err);
+
+              });
+              Face.findOneAndUpdate({_id: nextFace._id}, { $set: { previous: face.number }}, {}, function(err){
+                //console.log('ERREUR', err);
+              });
+
               face.save(function(err) {
                   if (err){
                     console.log('ERROR SAVE NUMBER', err);
@@ -1187,7 +1235,7 @@ var getImagesForMozaic = function(number, callback){
         for(var i = 0; i < numberArray.length; i++){
 
           if( ! _.find(tempFaces, function(currentFace){ return currentFace.number == numberArray[i]; }) ){
-              var tempPicture = '/img/FREESTATE0' + getRandomInt(1,5) + '.png';
+              var tempPicture = '/img/FREESTATE' + getRandomInt(1,23) + '.png';
               tempFaces.push({'number': numberArray[i], picture: tempPicture, downloaded: true});
               nbDownloads++;
           }
