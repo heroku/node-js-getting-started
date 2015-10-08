@@ -194,6 +194,13 @@ passport.use(new FacebookStrategy({
 
 }));
 
+//stats
+var addStat = function(Lang){
+  Stat.find({ lang:Lang}, function(err, stats) {
+    console.log('STATS', err, stats);
+  });
+};
+
 function createUserFromTwitter(twitterUserData, number, done){
   console.log('USER TWITTER', twitterUserData.id);
     if(twitterUserData.profile_image_url){
@@ -235,6 +242,10 @@ function createUserFromTwitter(twitterUserData, number, done){
                       face.lang = twitterUserData.lang;  // set the faces name (comes from the request)
                       face.non_human = false;  // set the faces name (comes from the request)
                       console.log('PROFILE TWITTER', twitterUserData.id);
+
+                      //STATS
+                      addStat(face.lang);
+
                       // save the face and check for errors
                         face.save(function(err) {
                             if (err){
