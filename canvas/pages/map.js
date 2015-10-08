@@ -79,7 +79,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 					for (var k = 0; k < _rangePage; k++) {
 						//_tmp.push({number : _ID, picture : "img/" + ((_ID === 0) ? "logo.jpg" : parseInt(MathUtils.randomMinMax(0, 15)) + ".jpg")});
 						//obj = {number : _ID, picture : "img/FREESTATE0" + parseInt(MathUtils.randomMinMax(1, 4)) + ".png", faceColor: colorMapping.getColorByBoxNumber(_ID)};
-						obj = {number : _ID, picture : _app.static_files("img/FREESTATE" + parseInt(MathUtils.randomMinMax(1, 19)) + ".png"), faceColor: 0xFF0000};
+						obj = {number : _ID, picture : _app.static_files("img/FREESTATE" + parseInt(MathUtils.randomMinMax(1, 23)) + ".png"), faceColor: 0xFF0000};
 						_tmp.push(obj);
 						main.martixRange[_ID] = obj;
 						_ID++;

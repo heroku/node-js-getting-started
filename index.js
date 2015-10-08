@@ -1224,7 +1224,7 @@ var getImagesForMozaic = function(number, callback){
         for(var i = 0; i < numberArray.length; i++){
 
           if( ! _.find(tempFaces, function(currentFace){ return currentFace.number == numberArray[i]; }) ){
-              var tempPicture = '/img/FREESTATE' + getRandomInt(1,19) + '.png';
+              var tempPicture = '/img/FREESTATE' + getRandomInt(1,23) + '.png';
               tempFaces.push({'number': numberArray[i], picture: tempPicture, downloaded: true});
               nbDownloads++;
           }
