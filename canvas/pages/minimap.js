@@ -44,7 +44,7 @@ define('minimap', ['constantes', 'messageBus', 'btnSocial', 'mapCursor', 'colorM
 
         this.background = new PIXI.Graphics();
 
-        this.home = new Button(constantes.icons.HOME, "#55acee", _.bind(this.goToMe, this));
+        this.home = new Button(constantes.icons.HOME, "#55acee", _.bind(this.goToMe, this), null, null, 12);
         this.home.visible = !!_app.currentUser;
 
         this.cursor.cursorIcon.interactive = this.cursor.cursorIcon.buttonMode = true;
@@ -64,8 +64,7 @@ define('minimap', ['constantes', 'messageBus', 'btnSocial', 'mapCursor', 'colorM
         this.cursor.position.y = 0;
 
         this.home.position = this.getHomePosition();
-        this.home.pivot.x = this.home.width/2;
-        this.home.pivot.y = this.home.height/2;
+        this.home.anchor = {x: 0.5, y: 0.5};
 
         this.mapContainer = new PIXI.DisplayObjectContainer();
 
