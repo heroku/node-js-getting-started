@@ -420,7 +420,7 @@ body{
   -webkit-transform: translate(0, -50%) !important;
   margin:auto 5%;
   width:90%;
-  height:80%;
+  height:auto;
 }
 
 .modal-container .modal-header {
