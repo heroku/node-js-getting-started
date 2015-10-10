@@ -1,7 +1,4 @@
-var _ = require('underscore');
-var Promise = require( "es6-promise" ).Promise;
-var http = require ('http');	     // For serving a basic web page.
-var mongoose = require ("mongoose"); // The reason for this demo.
+var mongoose = require ("mongoose");
 var Schema = mongoose.Schema;
 
 // Here we find an appropriate database to connect to, defaulting to
@@ -11,13 +8,11 @@ var uristring = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb:
 // Makes connection asynchronously.  Mongoose will queue up database
 // operations and release them when the connection is complete.
 mongoose.connect(uristring, function (err, res) {
+    console.log("callback", err, res);
     if (err) {
         console.log ('ERROR connecting to: ' + uristring + '. ' + err);
     } else {
         console.log ('Succeeded connected to: ' + uristring);
-        _.each(connectCallbacks, function(callback) {
-            callback();
-        });
     }
 });
 
@@ -46,8 +41,6 @@ var gameSchema = new mongoose.Schema({
 //disable for prod
 //gameSchema.set('autoIndex', false);
 
-// Compiles the schema into a model, opening (or creating, if
-// nonexistent) the 'PowerUsers' collection in the MongoDB database
 var GameModel = mongoose.model('Game', gameSchema);
 
 /* clear existing game data

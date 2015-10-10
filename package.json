@@ -16,7 +16,7 @@
     "mkdirp": "0.5.0",
     "moment": "2.8.4",
     "moment-timezone": "^0.2.5",
-    "mongoose": "3.8.15",
+    "mongoose": "^4.1.10",
     "nba": "~0.2.0",
     "query-string": "^1.0.0",
     "sleep": "1.2.0",
