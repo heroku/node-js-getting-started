@@ -669,11 +669,11 @@ input[type=checkbox]:checked + label:after {
 }
 
 .menu-container{
-	padding:5px 12px 5px 10px;
+    width: 100px;
 	background:#000;
 	opacity: 0.6;
 	position: absolute;
-	right: 195px;
+	right: 175px;
 	top:20px;
 	-webkit-transition:0.25s;
 	-moz-transition:0.25s;
@@ -702,6 +702,9 @@ input[type=checkbox]:checked + label:after {
 .profile-button-login,
 .profile-button-edit,
 .profile-button-logout {
+    margin: 5px 10px;
+    display: inline-block;
+    width: 100px;
 
 	color:white;
 	font-size: 14px;
@@ -837,7 +840,7 @@ input[type=checkbox]:checked + label:after {
 
 
 	.menu-container {
-		padding: 5px 24px 5px 16px;
+		width: 100px;
 		top: 125px;
     	right: 20px;
 	}
@@ -1207,4 +1210,12 @@ transform: rotate(-90deg);
 -o-transform: rotate(90deg);
 transform: rotate(90deg);
 color: #454444;
+}
+
+.dropdown {
+    margin: 5px 10px;
+}
+
+.open > .dropdown-menu {
+    width: 100px;
 }
