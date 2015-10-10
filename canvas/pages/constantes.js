@@ -10,9 +10,12 @@ define('constantes', function(){
     constantes.icons.TWITTER            = "B";
     constantes.icons.GEEK_MOUSE         = "A";
     constantes.icons.ATHLETE_BASKETBALL = "Z";
+    constantes.icons.ATHLETE            = "Z";
     constantes.icons.HYPE               = "R";
     constantes.icons.WORKER_BRIEFCASE   = "E";
+    constantes.icons.WORKER             = "E";
     constantes.icons.EXPLORER_ROCKET    = "T";
+    constantes.icons.EXPLORER           = "T";
     constantes.icons.PARENT             = "Y";
     constantes.icons.SCIENTISTS         = "U";
     constantes.icons.STUDENT            = "I";

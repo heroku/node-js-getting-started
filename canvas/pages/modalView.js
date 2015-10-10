@@ -21,6 +21,8 @@ function(
 		this.$close = this.$el.find(".close");
 		this.$title = this.$el.find('.modal-title');
 		this.$content = this.$el.find('.modal-body');
+		this.$previous = this.$el.find('.modal-controls-left-arrow');
+		this.$next = this.$el.find('.modal-controls-right-arrow');
 
 		messageBus.on('all:colorChange', _.bind(this.setColor, this));
 	};
@@ -43,19 +45,21 @@ function(
 
 	modalView.prototype.show = function(number){
 		var _this = this;
-		var data = {};
+		var data = main.martixRange[number];
 
-		if( number >= 0 ){
-
-			_services.searchFaces(number, function(data){
-				if( data.length > 0 ){
-					_this.render(data[0]);
-					_this.$el.modal('show');
-				}
-			});
-
-		}else{
-			return;
+		if( number >= 0 && data ){				
+				_this.render(data);
+				_this.$el.modal('show');
+				_this.$previous.off('click').on('click', function(){
+					var n = data.previous || 1*number-1;
+					messageBus.emit('map:gotoFaceNumber', {number: n, directly: false});
+					Backbone.history.navigate('#view/'+n, {trigger: true});
+				});
+				_this.$next.off('click').on('click', function(){
+					var n = data.next || 1*number+1;
+					messageBus.emit('map:gotoFaceNumber', {number: n, directly: false});
+					Backbone.history.navigate('#view/'+n, {trigger:true});
+				});
 		}
 	};
 

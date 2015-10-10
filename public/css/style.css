@@ -944,6 +944,7 @@ input[type=checkbox]:checked + label:after {
 }
 
 #modal-view .row {
+	padding-bottom: 5px;
 	margin-top: 15px;
 	border-bottom: 1px solid #666666;
 }
@@ -1218,4 +1219,26 @@ color: #454444;
 
 .open > .dropdown-menu {
     width: 100px;
+}
+
+.modal-controls-left-arrow,
+.modal-controls-right-arrow {
+	position: absolute;
+	width:20px;
+	height:100%;
+	top:0;
+	left:0;
+	padding-top: 150px;
+	text-align: center;
+	cursor:pointer;
+	font-size: 14px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+
+.modal-controls-right-arrow {
+	right:0;
+	left:auto;
 }
