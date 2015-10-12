@@ -112,7 +112,6 @@ passport.use(new FacebookStrategy({
             }
 
             if(userExist == false){
-              console.log('ERRORS', userExist);
               var face = new Face();
               /**
               { id: '10153295122599265',
@@ -978,7 +977,8 @@ app.get('/login/facebook/callback',
   function(req, res) {
     // Successful authentication, redirect home.
     console.log('USER REQ', req.user);
-    res.redirect('/#number/' + req.user.number);
+
+    //res.redirect('/#number/' + req.user.number);
   });
 
 publicRouter.get('/login/twitter',
