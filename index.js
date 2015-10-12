@@ -977,6 +977,7 @@ app.get('/login/facebook/callback',
   passport.authenticate('facebook', {callbackURL: '/login/facebook/callback', failureRedirect: '/#login' }),
   function(req, res) {
     // Successful authentication, redirect home.
+    console.log('USER REQ', req.user);
     res.redirect('/#number/' + req.user.number);
   });
 
