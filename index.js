@@ -225,6 +225,8 @@ function createUserFromTwitter(twitterUserData, number, done){
                   Body: buf,
                   ContentType: mime.lookup(imgDestPath + '/' + twitterUserData.id + '.jpeg')
                 };
+
+
                 s3bucket.putObject(data, function(errr, res) {
                     console.log('CALLBACK AMAZON', errr, res);
                     if(errr){
@@ -967,7 +969,7 @@ publicRouter.get('/login/facebook',
 function(req,res,next) {
   passport.authenticate(
     'facebook',
-     {callbackURL: '/login/facebook/callback' }
+     {callbackURL: config.FACEBOOK_CALLBACK_URL }
   )(req,res,next);
 });
 
