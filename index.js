@@ -969,7 +969,7 @@ publicRouter.get('/login/facebook',
 function(req,res,next) {
   passport.authenticate(
     'facebook',
-     {callbackURL: config.FACEBOOK_CALLBACK_URL }
+     {callbackURL: '/login/facebook/callback' }
   )(req,res,next);
 });
 
