@@ -978,7 +978,12 @@ app.get('/login/facebook/callback',
     // Successful authentication, redirect home.
     console.log('USER REQ', req.user);
 
-    //res.redirect('/#number/' + req.user.number);
+    if(req.user.number){
+      res.redirect('/#number/' + req.user.number);
+    }else{
+      res.redirect('/#nonumber');
+    }
+
   });
 
 publicRouter.get('/login/twitter',
