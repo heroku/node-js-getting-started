@@ -163,11 +163,11 @@ passport.use(new FacebookStrategy({
 
                               // save the face and check for errors
                               face.save(function(err) {
-                                    if (err){
-                                      res.send(err);
-                                    }
-                                    return done(null, face);
-                                });
+                                  if (err){
+                                    res.send(err);
+                                  }
+                                  return done(null, face);
+                              });
 
                             }
                           });
@@ -193,6 +193,25 @@ passport.use(new FacebookStrategy({
 //stats
 var addStat = function(Lang){
   Stat.find({ lang:Lang}, function(err, stats) {
+
+    //No results create it
+    if(stats.length == 0){
+      var stat = new Stat();
+      stat.lang = Lang;
+      stat.count = 1;
+      // save the stat and check for errors
+      stat.save(function(err) {
+          if (err){
+            console.log('ERROR CREATE STATS', err);
+          }
+      });
+
+    }else{
+      Stat.findOneAndUpdate({_id: stats[0]._id}, { $set: { count: stats[0].count + 1 }},{}, function(err){
+        console.log('ERREUR SAVE STATS', err);
+
+      });
+    }
     console.log('STATS', err, stats);
   });
 };
