@@ -1,6 +1,3 @@
-
-
-
 // BASE SETUP
 // =============================================================================
 
@@ -78,19 +75,17 @@ AWS.config.update({ //endpoint: 'https://files.onemillionhumans.com.s3-website-u
                     secretAccessKey: config.AWS_SECRET_ACCESS_KEY});
 
 var s3bucket = new AWS.S3();
-//console.log('BUCKET NAME', config.S3_BUCKET_NAME);
+
 
 
 var getPreviousFace = function(number, callback){
   Face.find({number:{$lt:number}}).limit(10).sort({'number':'desc'}).exec(function(err, faces) {
-      console.log('PREVIOUS', faces[0]);
       callback(faces[0]);
   });
 }
 
 var getNextFace = function(number, callback){
   Face.find({number:{$gt:number}}).limit(10).sort({'number':'asc'}).exec(function(err, faces) {
-      console.log('PREVIOUS', faces[0]);
       callback(faces[0]);
   });
 }
@@ -146,7 +141,6 @@ passport.use(new FacebookStrategy({
                           ContentType: mime.lookup(imgDestPath + '/' + profile._json.id + '.jpeg')
                         };
                         s3bucket.putObject(data, function(errr, res) {
-                            console.log('CALLBACK AMAZON', errr, res);
                             if(errr){
                               console.log(errr);
                             }
@@ -161,8 +155,10 @@ passport.use(new FacebookStrategy({
                               face.lang = profile._json.locale;
                               face.access_token = accessToken;
                               face.refresh_token = refreshToken;
-                              console.log('PROFILE FACEBOOK', profile, imgDestPath);
+                              //console.log('PROFILE FACEBOOK', profile, imgDestPath);
 
+                              //STATS
+                              addStat(face.lang);
 
                               // save the face and check for errors
                               face.save(function(err) {
@@ -183,7 +179,7 @@ passport.use(new FacebookStrategy({
               });
           }
           else{
-            console.log('PASSE');
+            //console.log('PASSE');
             return done(null, face, { message: 'User find' });
           }
 
@@ -201,7 +197,6 @@ var addStat = function(Lang){
 };
 
 function createUserFromTwitter(twitterUserData, number, done){
-  console.log('USER TWITTER', twitterUserData.id);
     if(twitterUserData.profile_image_url){
     /****************REFACTOR**********************/
     request.get({url: twitterUserData.profile_image_url.replace('_normal',''), encoding: 'binary'}, function (err, response, body) {
@@ -227,7 +222,7 @@ function createUserFromTwitter(twitterUserData, number, done){
 
 
                 s3bucket.putObject(data, function(errr, res) {
-                    console.log('CALLBACK AMAZON', errr, res);
+                    //console.log('CALLBACK AMAZON', errr, res);
                     if(errr){
                       console.log(errr);
                     }
@@ -242,7 +237,7 @@ function createUserFromTwitter(twitterUserData, number, done){
                       face.network_id = twitterUserData.id;  // set the faces name (comes from the request)
                       face.lang = twitterUserData.lang;  // set the faces name (comes from the request)
                       face.non_human = false;  // set the faces name (comes from the request)
-                      console.log('PROFILE TWITTER', twitterUserData.id);
+                      //console.log('PROFILE TWITTER', twitterUserData.id);
 
                       //STATS
                       addStat(face.lang);
@@ -292,7 +287,6 @@ passport.use(new TwitterStrategy({
       if(userExist == false){
         createUserFromTwitter(profile._json, null, done);
       }else{
-        console.log('PASSE');
         if(faces[0].claim === false){
           return done(null, faces[0]);
         }else{
@@ -338,7 +332,6 @@ app.engine('handlebars',
         'checked': function(search, list){
           if(list){
             var listTab = JSON.parse(list);
-            console.log('PARSE', listTab.length, search);
             return _.contains(listTab, search, 0) ? 'checked="true"':'';
           }else{
             return '';
@@ -430,11 +423,8 @@ router.route('/faces')
     })
     // get all the faces (accessed at GET http://localhost:8080/api/faces)
     .get(function(req, res) {
-        console.log('REQUEST', req.query);
 
         Face.find(function(err, faces) {
-
-            console.log(faces);
 
             if (err)
                 res.send(err);
@@ -460,7 +450,6 @@ router.route('/faces')
                 if (err){
                   res.send(err);
                 }
-                console.log('PARAMS', JSON.stringify(req.body.occupations));
                 face.occupations = JSON.stringify(req.body.occupations);
                 face.lang = req.body.lang;
                 face.website = req.body.website;
@@ -524,7 +513,6 @@ router.route('/faces')
                       if (err){
                         res.send(err);
                       }
-                      console.log('NUMBER', number, parseInt(number, 10) + parseInt(config.faces_by_request, 10));
                       for(var i = number; i < parseInt(number, 10) + parseInt(config.faces_by_request, 10); i++){
                         if( ! _.find(tempFaces, function(currentFace){ return currentFace.number == i; }) ){
                           tempFaces.push({'number': i});
@@ -570,11 +558,10 @@ router.route('/faces')
               var regex = new RegExp('.*' + req.params.query + '.*', "i");
               var testInt = parseInt(req.params.query, 10);
 
-              console.log('SEARCH', _.isNaN(testInt), testInt);
 
                 if(_.isNaN(testInt)){
                   Face.find({accountname: regex}).limit(config.faces_by_search).exec(function(err, faces) {
-                      console.log('SEARCH BY ACCOUNT NAME', faces);
+                      //console.log('SEARCH BY ACCOUNT NAME', faces);
                       if (err){
                         res.send(err);
                       }else{
@@ -585,7 +572,7 @@ router.route('/faces')
                   });
                 }else{
                   Face.find({number: req.params.query}).limit(config.faces_by_search).exec(function(err, faces) {
-                      console.log('SEARCH BY NUMBER', faces);
+                      //console.log('SEARCH BY NUMBER', faces);
                       if (err){
                         res.send(err);
                       }else{
@@ -599,7 +586,6 @@ router.route('/faces')
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 publicRouter.get('/', function(req, res) {
-    console.log('REQ GET URL', config.root_url);
     res.render('home', {data:{'config': config, 'currentUser': req.user}});
 });
 
@@ -674,7 +660,6 @@ var CronJob = require('cron').CronJob;
 publicRouter.get('/initnumbers/', function(req, res, next) {
 
   Face.find(function(err, faces) {
-    console.log('FACES LENGTH', faces.length);
     var nb = 1;
 
     for(var i = 0; i < faces.length; i++){
@@ -682,17 +667,12 @@ publicRouter.get('/initnumbers/', function(req, res, next) {
         if(faces[i].lang.length > 2){
           if(faces[i].lang.length == 5){
             Face.findOneAndUpdate({_id: faces[i]._id}, { $set: { lang: faces[i].lang.substring(3) }},{}, function(err){
-              console.log('ERREUR', err);
+              //console.log('ERREUR', err);
 
             });
           }
-          console.log('PLUS', faces[i].lang.substring(3));
         }
       }
-
-      /*faces[i].save(function(err){
-        console.log('ERREUR', err);
-      });*/
 
     }
 
@@ -719,14 +699,13 @@ publicRouter.get('/initnumbers/', function(req, res, next) {
 
 publicRouter.get('/initclaims/', function(req, res, next) {
   Face.find(function(err, faces) {
-    console.log('FACES LENGTH', faces.length);
     var nb = 1;
     var k = 1;
     for(var i = 0; i < faces.length; i++){
       faces[i].claim = false;
       //faces[i].claim = (faces[i].network == 'facebook') ? true : faces[i].claim;
       faces[i].save(function(err){
-        console.log('ERREUR', err);
+        //console.log('ERREUR', err);
       });
       k = k * -1;
     }
@@ -737,7 +716,6 @@ publicRouter.get('/initclaims/', function(req, res, next) {
 
 publicRouter.get('/put_to_scrap/:number', function(req, res, next) {
   Face.findOne({'number': req.params.number},function(err, face) {
-    console.log('PUT TO SCRAP', face);
       face.claim = false;
       face.save(function(err){
         console.log('ERREUR', err);
@@ -812,7 +790,7 @@ publicRouter.get('/populate/', function(req, res, next) {
             var currentList = _.uniq(scrapList);
             var scrapObjectTemp = _.uniq(scrapObject);
             var number = i + 3;
-            //console.log('LIST LENGTH', currentList.length, currentList);
+
             function insertScrapToFace() {
               client.get('users/lookup', {user_id: currentList.join(',')}, function(error, users, response){
                   if(users){
@@ -894,14 +872,11 @@ publicRouter.get('/scraping/:query', function(req, res, next) {
          var currentTweet = tweets.statuses[i];
 
          function addScrap(){
-           console.log('CURRENT TWEET', currentTweet.id);
            Scrap.find({twitter_id: currentTweet.user.id}, function(err, scrapes) {
 
                if(scrapes.length > 0){
                  userExist = true;
-                 console.log('SCRAPE',scrapes);
                  scrapes[0].occurs = scrapes[0].occurs + 1;
-                 console.log('SCRAPE',scrapes);
                  scrapes[0].save(function(err) {
                      if (err){
                        console.log('SCRAPE UPDATED', err);
@@ -976,7 +951,6 @@ app.get('/login/facebook/callback',
   passport.authenticate('facebook', {callbackURL: '/login/facebook/callback', failureRedirect: '/#login' }),
   function(req, res) {
     // Successful authentication, redirect home.
-    console.log('USER REQ', req.user);
 
     if(req.user.number){
       res.redirect('/#number/' + req.user.number);
@@ -1002,8 +976,7 @@ app.get('/login/twitter/callback',
 });
 
 app.get('/logout', function(req, res){
-    console.log("logging out");
-    console.log(req.user);
+    //console.log("logging out");
     req.logout();
     res.redirect('/');
 });
@@ -1102,9 +1075,6 @@ function(req,res,next) {
 
 publicRouter.get('/claim/:id', function(req, res, next) {
 
-    console.log('CLAIM', req.user, req.params.id );
-
-
     Face.findOne({'accountname': req.user.accountname},function(err, face) {
         if (err){
           console.log('UTILISATEUR NON TROUVE', err);
@@ -1128,9 +1098,6 @@ publicRouter.get('/claim/:id', function(req, res, next) {
 });
 
 publicRouter.get('/decline/:id', function(req, res, next) {
-
-    console.log('DECLINE', req.user, req.params.id );
-
 
     Face.findOne({'accountname': req.user.accountname},function(err, face) {
         if (err){
@@ -1160,8 +1127,6 @@ publicRouter.get('/decline/:id', function(req, res, next) {
 
 publicRouter.get('/success/:id', function(req, res, next) {
 
-  console.log('REQ ID', req.session);
-
   Face.findOne({'_id': req.user._id},function(err, face) {
       if (err){
         console.log('UTILISATEUR NON TROUVE', err);
@@ -1175,7 +1140,6 @@ publicRouter.get('/success/:id', function(req, res, next) {
           getPreviousFace(face.number, function(previousFace){
 
             getNextFace(face.number, function(nextFace){
-              console.log('PREV/NEXT', previousFace, nextFace);
               face.previous = previousFace.number;
               face.next = nextFace.number;
 
@@ -1213,7 +1177,6 @@ publicRouter.get('/edit/:number', function(req, res, next) {
         res.send(err);
       }
       if(face.number == req.user.number){
-        console.log('OCCUPATIONS', face.occupations);
         res.render('home', {data:{'config': config, 'editedFace': face, 'currentUser': req.user}});
       }else{
         res.send(err);
@@ -1250,16 +1213,13 @@ var getImagesForMozaic = function(number, callback){
         }
 
       tempFaces = _.sortBy(tempFaces, 'number');
-      console.log('NBDOWNLOADS START', nbDownloads, tempFaces.length);
       for(var i = 0; i < tempFaces.length; i++){
 
         if(!tempFaces[i].downloaded){
           //callback(null, tempFaces);
           download('http://files.onemillionhumans.com' + tempFaces[i].picture, publicPath + tempFaces[i].picture, function(errDownload,filename){
-            console.log('PICTURE FILENAME', errDownload, filename);
             if(!errDownload){
               nbDownloads++;
-              console.log('NBDOWNLOADS', nbDownloads);
               if(nbDownloads == 9){
                 callback(null, tempFaces);
               }
@@ -1279,7 +1239,7 @@ var createMozaic = function(number, tempFaces, callback){
 
   //console.log('TEMPFACES', tempFaces);
   var color = '#e6ff34';//colorMapping.getColorByBoxNumber(number);
-  console.log('COLOR', color);
+
   var im = gm;//.subClass({ imageMagick: true });
   im(450, 450, color).drawText(10, 50, "from scratch").write(imgDestPath + '/' + number + '-temp.png', function (err1) {
     gm()
@@ -1288,63 +1248,62 @@ var createMozaic = function(number, tempFaces, callback){
     .in(publicPath + tempFaces[0].picture)
     .in(imgDestPath + '/' + number + '-temp.png')
     .write(imgDestPath + '/' + number + '-temp.png' , function (err2) {
-      console.log('TEST IMAGE', err2);
+
       gm()
       .command("composite")
       .in("-gravity", "North")
       .in(publicPath + tempFaces[1].picture)
       .in(imgDestPath + '/' + number + '-temp.png')
       .write(imgDestPath + '/' + number + '-temp.png' , function (err3) {
-        console.log('TEST IMAGE', err3);
         gm()
         .command("composite")
         .in("-gravity", "NorthEast")
         .in(publicPath + tempFaces[2].picture)
         .in(imgDestPath + '/' + number + '-temp.png')
         .write(imgDestPath + '/' + number + '-temp.png' , function (err4) {
-          console.log('TEST IMAGE', err4);
+
           gm()
           .command("composite")
           .in("-gravity", "West")
           .in(publicPath + tempFaces[3].picture)
           .in(imgDestPath + '/' + number + '-temp.png')
           .write(imgDestPath + '/' + number + '-temp.png' , function (err5) {
-            console.log('TEST IMAGE', err5);
+
             gm()
             .command("composite")
             .in("-gravity", "Center")
             .in(publicPath + tempFaces[4].picture)
             .in(imgDestPath + '/' + number + '-temp.png')
             .write(imgDestPath + '/' + number + '-temp.png' , function (err6) {
-              console.log('TEST IMAGE', err6);
+
               gm()
               .command("composite")
               .in("-gravity", "East")
               .in(publicPath + tempFaces[5].picture)
               .in(imgDestPath + '/' + number + '-temp.png')
               .write(imgDestPath + '/' + number + '-temp.png' , function (err7) {
-                console.log('TEST IMAGE', err7);
+
                 gm()
                 .command("composite")
                 .in("-gravity", "SouthWest")
                 .in(publicPath + tempFaces[6].picture)
                 .in(imgDestPath + '/' + number + '-temp.png')
                 .write(imgDestPath + '/' + number + '-temp.png' , function (err8) {
-                  console.log('TEST IMAGE', err8);
+
                   gm()
                   .command("composite")
                   .in("-gravity", "South")
                   .in(publicPath + tempFaces[7].picture)
                   .in(imgDestPath + '/' + number + '-temp.png')
                   .write(imgDestPath + '/' + number + '-temp.png' , function (err9) {
-                    console.log('TEST IMAGE', err9);
+
                     gm()
                     .command("composite")
                     .in("-gravity", "SouthEast")
                     .in(publicPath + tempFaces[8].picture)
                     .in(imgDestPath + '/' + number + '-temp.png')
                     .write(imgDestPath + '/' + number + '-temp-final.png' , function (err10) {
-                      console.log('TEST IMAGE', err10);
+
 
                       //**************//
                       var imgFinalMozaic = im(imgDestPath + '/' + number + '-temp-final.png');
@@ -1370,7 +1329,7 @@ var createMozaic = function(number, tempFaces, callback){
                             };
 
                             s3bucket.putObject(data, function(errr, ress) {
-                                console.log('CALLBACK AMAZON', errr, ress);
+
                                 if(errr){
                                   console.log(errr);
                                   callback(errr, null);
@@ -1404,7 +1363,7 @@ publicRouter.get('/number/:number', function(req, res, next) {
   /***** IMAGE manipulation *****/
   var number = parseInt(req.params.number, 10);
   getImagesForMozaic(number, function(err, images){
-    console.log('PICTURE', images);
+
     createMozaic(number, images, function(err1){
 
       Face.findOne({'number': req.params.number}, function(err, face) {
@@ -1472,5 +1431,5 @@ app.use(function(req, res, next) {
 // =============================================================================
 app.listen(port);
 process.env['PATH'] = '/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin';
-console.log('Magic happens on port ' + port );
-console.log('ENV', process.env);
+console.log('SERVER LAUNCHED ON PORT' + port );
+//console.log('ENV', process.env);
