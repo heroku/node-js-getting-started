@@ -9,6 +9,7 @@ mongoose.connect(config.mongodb);
 
 var Face     = require('./app/models/face');
 var Scrap     = require('./app/models/scrap');
+var Stat     = require('./app/models/stat');
 
 // call the packages we need
 var express        = require('express');        // call express
