@@ -16,9 +16,13 @@
 			<div class="row">
 				<div class="col-xs-5">Occupations</div>
 				<div class="col-xs-7 no-wrap">
-					<% _.each(occupations, function(occupation){ %>
-							<span class="col-xs-12"><span class="font-icon"><%= icons[occupation.toUpperCase()] %></span> <%= occupation %></span>
-					<% }); %>
+					<% if(_.isString(occupations)){%>
+						<span class="col-xs-12"><span class="font-icon"><%= icons[occupations.toUpperCase()] %></span> <%= occupations %></span>
+					<% }else{%>
+						<% _.each(occupations, function(occupation){ %>
+								<span class="col-xs-12"><span class="font-icon"><%= icons[occupation.toUpperCase()] %></span> <%= occupation %></span>
+						<% }); %>
+					<% } %>
 				</div>
 			</div>
 			<% } %>
