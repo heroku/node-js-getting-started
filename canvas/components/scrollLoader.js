@@ -44,7 +44,7 @@ define('components/scrollLoader', ["messageBus"], function(messageBus){
 
     ScrollLoader.prototype.drawBackground = function(w, h){
         this.background.clear();
-        this.background.beginFill(0x000000, 1);
+        this.background.beginFill(0x262626, 1);
         this.background.drawRect(0, 0, (w||window.innerWidth), (h||window.innerHeight));
         this.background.endFill();
     };
