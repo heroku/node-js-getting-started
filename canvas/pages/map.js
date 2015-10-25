@@ -1,4 +1,4 @@
-define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', 'minimap', 'mapBlur', 'colorMapping', 'mock/faces'], function(ScrollContainer, Bloc, Services, messageBus, Minimap, MapBlur, colorMapping, mockFaces) {
+define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', 'minimap', 'mapBlur', 'colorMapping', 'mock/faces', 'components/scrollLoader'], function(ScrollContainer, Bloc, Services, messageBus, Minimap, MapBlur, colorMapping, mockFaces, ScrollLoader) {
 
 	var _map = function() {
 
@@ -42,6 +42,7 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 		var _hideTimer = null;
 		var _services = new Services();
 		var _mapMoved = false;
+		var _scrollLoader;
 		var _mapBlur;
 
 		colorMapping.setReferences(ITEM_WIDTH, ITEM_HEIGHT, maxGridWidth, maxGridHeight);
@@ -95,8 +96,10 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 			_minimap = new Minimap(_minimapWidth, _minimapHeight, ITEM_WIDTH, ITEM_HEIGHT, maxGridWidth, maxGridHeight);
 			_scrollObject.addEventListener("down", onScrollMouseDown);
 			_scrollObject.addEventListener("up", onScrollMouseUp);
+			_scrollLoader = new ScrollLoader();
 
 			_scope.addChild(_scrollObjectContainer);
+			_scope.addChild(_scrollLoader);
 			_scope.addChild(_mapBlur);
 			_scope.addChild(_minimap);
 			_scrollObjectContainer.addChild(_scrollObject);
@@ -306,10 +309,15 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
                 decal.x = (path.x-_scrollObject.position.x)*0.05;
                 decal.y = (path.y-_scrollObject.position.y)*0.05;
 
-				messageBus.emit('map:startSkipAnimation');
+				
+        		_scrollLoader.show();
+
                 timeline = new TimelineLite();
                 timeline
                     .to(_scrollObjectContainer, 0.5, {alpha: 0}, 0)
+                    .to({}, 0, {onComplete:function(){
+						messageBus.emit('map:startSkipAnimation');
+                    }}, "-=0.25")
                     //.to(_blurFilter, 0.5, {blur: 10}, 0)
                     .to(_scrollObject.position, 1, {x: "+="+decal.x, y: "+="+decal.y, ease: Cubic.easeOut}, 0)
                     .to(_scrollObject, 0, {x:path.x-decal.x,y:path.y-decal.y, ease: Cubic.easeOut})
@@ -317,7 +325,10 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
                     //.to(_blurFilter, 0.5, {blur: 0}, "-=1")
                     .to(_scrollObjectContainer, 0.5, {alpha: 1, onComplete:function(){
 						messageBus.emit('map:endSkipAnimation');
-					}}, "-=1");
+					}}, "-=1")
+                    .to({}, 0, {onComplete:function(){
+						_scrollLoader.hide();
+                    }});
 
             }else{
                 TweenLite.to(_scrollObject, speed, {x:path.x,y:path.y, ease: Cubic.easeOut});
@@ -583,6 +594,8 @@ define('map', ["ScrollContainer", "bloc", "components/services", 'messageBus', '
 
 	_map.prototype.resize = function(w, h) {
 		this.resize(w, h);
+		console.log('resize');
+		_scrollLoader.resize(w, h);
 	};
 
 	return _map;

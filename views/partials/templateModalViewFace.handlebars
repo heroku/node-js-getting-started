@@ -1,7 +1,7 @@
 <script type="text/template" id="template-modal-view">
 
-	<div class="col-xs-5"><img class="col-xs-12" src="http://{{data.config.S3_BUCKET_NAME}}<%= data.picture %>" /></div>
-		<div class="col-xs-7">
+	<div class="col-sm-5 text-center"><img class="col-xs-12" src="http://{{data.config.S3_BUCKET_NAME}}<%= data.picture %>" /><br /></div>
+		<div class="col-sm-7">
 			<% if(langs.length){ %>
 			<div class="row">
 				<div class="col-xs-5">Language</div>
@@ -36,12 +36,12 @@
 			<% } %>
 		</div>
 <br />
-		<div class="col-xs-5"></div>
-		<div class="col-xs-7 socials-wrapper">
-		<div class="col-xs-6">
+		<div class="col-sm-5"></div>
+		<div class="col-sm-7 socials-wrapper">
+		<div class="col-xs-6 text-center">
 <a name="fb_share" class="fb-share-button" share_url="{{data.config.root_url}}/number/<%= data.number %>" type="button_count"></a>
 </div>
-		<div class="col-xs-6"><a class="twitter-share-button" href="https://twitter.com/intent/tweet?url={{data.config.root_url}}%2Fnumber%2F<%= data.number %>">
+		<div class="col-xs-6 text-center"><a class="twitter-share-button" href="https://twitter.com/intent/tweet?url={{data.config.root_url}}%2Fnumber%2F<%= data.number %>">
 										Tweet
 									</a></div>
 	</div>

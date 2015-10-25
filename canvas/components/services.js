@@ -22,10 +22,12 @@ define('components/services', ['cacheControl', 'messageBus'], function(CacheCont
                     //doneXHR(_xhr.ranges, xhr);
 					cache.cache(serviceQuery, json);
 					messageBus.emit('main:hideLoader');
+					console.log('------hideloader');
 				}).fail(function(jqxhr, textStatus, error) {
 					var err = textStatus + ", " + error;
 					console.log("Request Failed: " + err);
 					messageBus.emit('main:hideLoader');
+					console.log('------hideloader');
 				});
 
                 //_xhr.ranges.xhr.push(xhr);

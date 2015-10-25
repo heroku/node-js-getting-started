@@ -50,8 +50,6 @@ define('btnSocial', function(){
      */
     BtnSocial.prototype.enable = function(speed, delay){
 
-        var speed, delay;
-
         speed = speed || 0.25;
         delay = delay || 0;
 
@@ -83,7 +81,7 @@ define('btnSocial', function(){
      */
     BtnSocial.prototype.disable = function(speed, delay){
 
-        var _this = this, speed, delay;
+        var _this = this;
 
         speed = speed || 0.25;
         delay = delay || 0;

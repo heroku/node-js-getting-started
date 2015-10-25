@@ -202,6 +202,8 @@ define('main', ['map', 'messageBus', 'searchBar', 'components/checkbox-limiter',
 			if (_page && _page.resize) {
 				_page.resize(_w, _h, _hcoef, _vcoef, _viewPosX, _viewPosY);
 			}
+
+			messageBus.emit('global:resize');
 			//
 			_renderer.resize(_w, _h);
 			_renderer.view.style.width = _w + "px";

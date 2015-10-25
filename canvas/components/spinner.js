@@ -4,7 +4,6 @@ define('components/spinner', function(){
         PIXI.DisplayObjectContainer.call(this);
 
         var _this = this;
-        var l;
 
         this.nbLines = 1;
         this.lines = [];

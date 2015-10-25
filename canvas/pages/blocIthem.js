@@ -42,8 +42,6 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 		PIXI.DisplayObjectContainer.call(this);
 		_scope = this;
 
-		this.currentNumber;
-
 		this.process = function() {
 
 		};
@@ -255,8 +253,8 @@ define('blocIthem', ['constantes', 'btnSocial', 'messageBus', 'colorMapping', 'c
 
 		function pad(n){
 			n = ""+n;
-			var pad = "000000";
-			return pad.substring(0, pad.length- n.length)+n;
+			var p = "000000";
+			return p.substring(0, p.length- n.length)+n;
 		}
 
 		function updateRectColor(number){

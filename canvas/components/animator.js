@@ -12,7 +12,7 @@ define('components/animator', function(){
 
 				$(this).removeClass(this.prefix+anim);
 
-				callback && callback();
+				if( callback ) callback();
 
 				setTimeout(function(){
 					if( loop == -1 ){

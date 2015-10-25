@@ -33,7 +33,7 @@ define('searchBar', ['messageBus', "components/services", 'pagination', 'autocom
             _this.$form.submit();
         });
 
-        messageBus.on('searchBar:blur', function(){ _this.$field.blur()});
+        messageBus.on('searchBar:blur', function(){ _this.$field.blur();});
 
         this.$form.on('submit', function(e){
             e.preventDefault();
@@ -63,7 +63,7 @@ define('searchBar', ['messageBus', "components/services", 'pagination', 'autocom
 
         this.$reset.on('mousedown', function(){
             _this.reset();
-        })
+        });
 
     };
 

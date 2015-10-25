@@ -57,7 +57,7 @@ define('minimap', ['constantes', 'messageBus', 'btnSocial', 'mapCursor', 'colorM
         this.hideMap();
         this.updateBackgroundMap();
 
-        this.background.interactive = true
+        this.background.interactive = true;
         this.background.mousedown = this.background.touchstart = function(){};
 
         this.cursor.position.x = 0;
@@ -131,7 +131,7 @@ define('minimap', ['constantes', 'messageBus', 'btnSocial', 'mapCursor', 'colorM
         messageBus.emit('all:colorChange', {color:colorMapping.getColorByBoxNumber(number)});
         Backbone.history.navigate("/number/"+number, {trigger: false, replace: true});
 
-        _lastNumber = number
+        _lastNumber = number;
     };
 
     /**

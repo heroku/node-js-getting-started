@@ -319,6 +319,7 @@ body{
 }
 
 .main-logo {
+	z-index:10;
 	margin: 0;
 	padding: 0;
 	position: absolute;
@@ -669,6 +670,7 @@ input[type=checkbox]:checked + label:after {
 }
 
 .menu-container{
+	z-index: 10;
     width: 100px;
 	background:#000;
 	opacity: 0.6;
@@ -813,6 +815,10 @@ input[type=checkbox]:checked + label:after {
 
 /** MOBILE **/
 @media only screen and (max-width: 640px){
+	.modal-container .modal-body {
+		padding:20px 40px;
+	}
+	
 	.search-bar .input-group {
 		width: 12em;
 	}
@@ -1241,4 +1247,13 @@ color: #454444;
 .modal-controls-right-arrow {
 	right:0;
 	left:auto;
+}
+
+#scrollLoader {
+    z-index: 1;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
 }

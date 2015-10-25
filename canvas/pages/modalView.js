@@ -25,6 +25,21 @@ function(
 		this.$next = this.$el.find('.modal-controls-right-arrow');
 
 		messageBus.on('all:colorChange', _.bind(this.setColor, this));
+
+		window.addEventListener('keyup', this.onKeyup.bind(this));
+	};
+
+	modalView.prototype.onKeyup = function(event){
+		if( this.$el.is(':visible') ){
+			switch(event.keyCode){
+				case 37:
+					this.$previous.trigger('click');
+				break;
+				case 39:
+					this.$next.trigger('click');
+				break;
+			}
+		}
 	};
 
 	modalView.prototype.setColor = function(event){
@@ -80,6 +95,7 @@ function(
 		
 
 		this.$title.html(data.accountname);
+		console.log(data);
 		this.$content.html(this.template({data:data, langs: langs, occupations: occupations, icons: constantes.icons}));
 		setTimeout(function(){
 			if( window.FB ){
