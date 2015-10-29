@@ -11,12 +11,21 @@ global.GAME_STATUS_FINAL = 3;
 var LEAGUE_AVERAGE_ORR = .25016666666666662;
 var LEAGUE_AVERAGE_DRR = .7494666666666669;
 
-var SHOT_CHART_OPTIONS_DEFAULT = {"TeamID":0,"GameID":0,"ContextMeasure":"FGA","Season":"2014-15","SeasonType":"Regular Season","RangeType":"2","StartPeriod":"1","EndPeriod":"10","StartRange":"0","EndRange":"28800","mode":"Advanced","showZones":"1","showDetails":"1","showShots":"1"};
+var SHOT_CHART_OPTIONS_DEFAULT = {"TeamID":0,"GameID":0,"ContextMeasure":"FGA","Season":"2015-16","SeasonType":"Regular Season","RangeType":"2","StartPeriod":"1","EndPeriod":"10","StartRange":"0","EndRange":"28800","mode":"Advanced","showZones":"1","showDetails":"1","showShots":"1"};
 
-var SEASON_START_2014_2015 = moment("10-28-2014");
-var SEASON_END_2014_2015 = moment("04-15-2015");
-var PLAYOFFS_START_2014_2015 = moment("04-18-2015");
-var PLAYOFFS_END_2014_2015 = moment("07-01-2015"); //play it safe
+//calculate rough season start/end dates
+function getSeasonDates(year) {
+    var dates = {};
+    dates[SEASON_REGULAR] = {
+        start: moment("10-25-" + (year - 1)),
+        end: moment("04-15-" + year)
+    };
+    dates[SEASON_PLAYOFFS] = {
+        start: moment("04-18" + year),
+        end: moment("07-01-" + year)
+    };
+    return dates;
+}
 
 var SEASON_REGULAR = 'regular';
 var SEASON_PLAYOFFS = 'playoffs';
@@ -160,17 +169,23 @@ module.exports = {
             });
         }
     },
-    getTeamAverages: function(options) {
+    /**
+     *
+     * @param options
+     * @param year  - 2015, 2016, etc.  The year of the playoffs
+     * @returns {*|Promise}
+     */
+    getTeamAverages: function(options, year) {
+        options = _.defaults(options, {
+            season: SEASON_REGULAR,
+            year: 2016
+        });
+        //TODO need season and year
         var team = options.team;
 
-        var start = SEASON_START_2014_2015;
-        var end = PLAYOFFS_END_2014_2015;
-        if ( options.season == SEASON_REGULAR ) {
-            end = SEASON_END_2014_2015;
-        } else if ( options.season == SEASON_PLAYOFFS ) {
-            start = PLAYOFFS_START_2014_2015;
-            end = PLAYOFFS_END_2014_2015;
-        }
+        var dates = getSeasonDates(year);
+        var start = dates[options.season].start;
+        var end = dates[options.season].end;
 
         var promise = new Promise(function(resolve, reject) {
             var dbOptions = {
@@ -480,12 +495,28 @@ function getTeams(statsArrays, usTeam, game, date) {
     return {us: us, them: them};
 }
 
+function getSeasonTypeFromDate(date) {
+    date = moment(date);
+    var year = date.get('year');
+    var thisSeason = getSeasonDates(year);
+    if ( date.between(thisSeason[SEASON_REGULAR].start, thisSeason[SEASON_REGULAR].end) ) {
+
+    }
+    var previousYear = moment(date).subtract(1, 'year').get('year');
+}
+
+function isPlayoffs(game, date) {
+    var season = getSeasonDates(parseInt(game.sEASON, 10) + 1);
+    return ( moment(date).isAfter(season[SEASON_PLAYOFFS].start) && moment(date).isBefore(season[SEASON_PLAYOFFS].end))
+}
 
 //TODO add shot chart links to each player in the players list
 function getShotChartUrl(team, game, date, playerId) {
-    var isPlayoffs = moment(date).isAfter(PLAYOFFS_START_2014_2015);
-    var seasonType = isPlayoffs ? "Playoffs" : "Regular Season";
-    var shotChartOptions = _.extend({}, SHOT_CHART_OPTIONS_DEFAULT, {SeasonType: seasonType, GameID: game.gameId, TeamID: team.teamId, EndRange: team.minutes * 600})
+    var seasonType = isPlayoffs(game, date) ? "Playoffs" : "Regular Season";
+    //game.sEASON is the first year, i.e. 2015 = 2015-2016
+    //convert this to 2015-2016
+    var season = game.sEASON + '-' + ((parseInt(game.sEASON, 10) + 1) + '').substr(2,4);
+    var shotChartOptions = _.extend({}, SHOT_CHART_OPTIONS_DEFAULT, {SeasonType: seasonType, Season: season, GameID: game.gameId, TeamID: team.teamId, EndRange: team.minutes * 600})
     if (playerId) {
         _.extend(shotChartOptions, {PlayerID: playerId});
     }
