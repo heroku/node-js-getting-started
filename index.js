@@ -1229,45 +1229,57 @@ var getImagesForMozaic = function(number, callback){
 
 var createFindImage = function(number, face, callback){
   var im = gm;
-  var imgFinalMozaic = im(imgDestPath + '/human_share.jpg');
-  console.log('FACE IMAGE', face);
 
-  //imgFinalMozaic.crop(450, 236, 0, 107);
-  imgFinalMozaic.stream(function(err, stdout, stderr) {
+  gm()
+  .command("composite")
+  .in("-gravity", "Center")
+  .in(publicPath + face.picture)
+  .in(imgDestPath + '/human_share.jpg')
+  .write(imgDestPath + '/' + number + '-temp.png' , function (err2) {
+    var imgFinalMozaic = im(imgDestPath '/' + number + '-temp.png');
+    console.log('FACE IMAGE', face);
 
-    console.log('STREAM');
+    //imgFinalMozaic.crop(450, 236, 0, 107);
+    imgFinalMozaic.stream(function(err, stdout, stderr) {
 
-    var buf = new Buffer('');
+      console.log('STREAM');
 
-    if(stdout){
+      var buf = new Buffer('');
 
-      stdout.on('data', function(data) {
-         buf = Buffer.concat([buf, data]);
-      });
+      if(stdout){
 
-      stdout.on('end', function(data) {
-        console.log('END STREAM');
-        var data = {
-          Bucket: config.S3_BUCKET_NAME,
-          ACL: 'public-read',
-          Key: 'img/mozaic/' + number + '-mozaic.jpg',
-          Body: buf,
-          ContentType: mime.lookup(imgDestPath + '/human_share.jpg')
-        };
-
-        s3bucket.putObject(data, function(errr, ress) {
-
-            if(errr){
-              console.log(errr);
-              callback(errr, null);
-            }
-            else{
-              callback(null, imgDestPath + '/' + number + '-temp-final.png');
-            }
-          });
+        stdout.on('data', function(data) {
+           buf = Buffer.concat([buf, data]);
         });
-      }
+
+        stdout.on('end', function(data) {
+          console.log('END STREAM');
+          var data = {
+            Bucket: config.S3_BUCKET_NAME,
+            ACL: 'public-read',
+            Key: 'img/mozaic/' + number + '-mozaic.png',
+            Body: buf,
+            ContentType: mime.lookup(imgDestPath + '/' + number + '-temp.png')
+          };
+
+          s3bucket.putObject(data, function(errr, ress) {
+
+              if(errr){
+                console.log(errr);
+                callback(errr, null);
+              }
+              else{
+                callback(null, imgDestPath + '/' + number + '-temp.png');
+              }
+            });
+          });
+        }
+    });
+
   });
+
+
+
 };
 
 var createMozaic = function(number, tempFaces, callback){
