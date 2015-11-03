@@ -1228,7 +1228,7 @@ var getImagesForMozaic = function(number, callback){
 };
 
 var createFindImage = function(number, face, callback){
-
+  var im = gm;
   var imgFinalMozaic = im(imgDestPath + '/' + number + '-temp-final.png');
 
   //imgFinalMozaic.crop(450, 236, 0, 107);
