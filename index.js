@@ -1230,6 +1230,7 @@ var getImagesForMozaic = function(number, callback){
 var createFindImage = function(number, face, callback){
   var im = gm;
   var imgFinalMozaic = im(imgDestPath + '/human_share.jpg');
+  console.log('FACE IMAGE', face);
 
   //imgFinalMozaic.crop(450, 236, 0, 107);
   imgFinalMozaic.stream(function(err, stdout, stderr) {
@@ -1249,7 +1250,7 @@ var createFindImage = function(number, face, callback){
         var data = {
           Bucket: config.S3_BUCKET_NAME,
           ACL: 'public-read',
-          Key: 'img/mozaic/' + number + '-mozaic.png',
+          Key: 'img/mozaic/' + number + '-mozaic.jpg',
           Body: buf,
           ContentType: mime.lookup(imgDestPath + '/human_share.jpg')
         };
