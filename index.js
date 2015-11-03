@@ -200,16 +200,17 @@ var addStat = function(Lang){
       stat.lang = Lang;
       stat.count = 1;
       // save the stat and check for errors
-      stat.save(function(err) {
-          if (err){
+      stat.save(function(errr) {
+          if (errr){
             console.log('ERROR CREATE STATS', err);
           }
       });
 
     }else{
       Stat.findOneAndUpdate({_id: stats[0]._id}, { $set: { count: stats[0].count + 1 }},{}, function(err){
-        console.log('ERREUR SAVE STATS', err);
-
+        if (errr){
+          console.log('ERREUR SAVE STATS', errr);
+        }
       });
     }
     console.log('STATS', err, stats);
@@ -1211,47 +1212,59 @@ var getRandomInt = function(min, max) {
 
 var getImagesForMozaic = function(number, callback){
 
-  var numberArray = [number - 1001, number - 1000, number - 999, number - 1, number, number + 1, number + 999, number + 1000, number + 1001];
-
-  Face.find({number:{$in:numberArray}}).sort('number').exec(function(err, faces) {
-
-      var tempFaces = _.clone(faces);
-
-        if (err){
-          callback(err, null);
-        }
-
-        var nbDownloads = 0;
-
-        for(var i = 0; i < numberArray.length; i++){
-
-          if( ! _.find(tempFaces, function(currentFace){ return currentFace.number == numberArray[i]; }) ){
-              var tempPicture = '/img/FREESTATE' + getRandomInt(1,23) + '.png';
-              tempFaces.push({'number': numberArray[i], picture: tempPicture, downloaded: true});
-              nbDownloads++;
-          }
-        }
-
-      tempFaces = _.sortBy(tempFaces, 'number');
-      for(var i = 0; i < tempFaces.length; i++){
-
-        if(!tempFaces[i].downloaded){
-          //callback(null, tempFaces);
-          download('http://files.onemillionhumans.com' + tempFaces[i].picture, publicPath + tempFaces[i].picture, function(errDownload,filename){
-            if(!errDownload){
-              nbDownloads++;
-              if(nbDownloads == 9){
-                callback(null, tempFaces);
-              }
+        Face.findOne({'number': number}, function(err, face) {
+            if (err){
+              res.send(err);
             }
-            //res.json(images);
+
+            download('http://files.onemillionhumans.com' + face.picture, publicPath + face.picture, function(errDownload,filename){
+              if(!errDownload){
+                  callback(null, face);
+              }
+            });
+
+        });
+
+};
+
+var createFindImage = function(number, face, callback){
+
+  var imgFinalMozaic = im(imgDestPath + '/' + number + '-temp-final.png');
+
+  //imgFinalMozaic.crop(450, 236, 0, 107);
+  imgFinalMozaic.stream(function(err, stdout, stderr) {
+
+    var buf = new Buffer('');
+
+    if(stdout){
+
+      stdout.on('data', function(data) {
+         buf = Buffer.concat([buf, data]);
+      });
+
+      stdout.on('end', function(data) {
+
+        var data = {
+          Bucket: config.S3_BUCKET_NAME,
+          ACL: 'public-read',
+          Key: 'img/mozaic/' + number + '-mozaic.png',
+          Body: buf,
+          ContentType: mime.lookup(imgDestPath + '/' + number + '-temp-final.png')
+        };
+
+        s3bucket.putObject(data, function(errr, ress) {
+
+            if(errr){
+              console.log(errr);
+              callback(errr, null);
+            }
+            else{
+              callback(null, imgDestPath + '/' + number + '-temp-final.png');
+            }
           });
-        }
+        });
       }
-
-
-    });
-
+  });
 };
 
 var createMozaic = function(number, tempFaces, callback){
@@ -1382,9 +1395,9 @@ publicRouter.get('/number/:number', function(req, res, next) {
 
   /***** IMAGE manipulation *****/
   var number = parseInt(req.params.number, 10);
-  getImagesForMozaic(number, function(err, images){
+  getImagesForMozaic(number, function(err, image){
 
-    createMozaic(number, images, function(err1){
+    //createMozaic(number, images, function(err1){
 
       Face.findOne({'number': req.params.number}, function(err, face) {
           if (err){
@@ -1393,7 +1406,7 @@ publicRouter.get('/number/:number', function(req, res, next) {
           //res.send('test');
           res.render('home', {data:{'config': config, 'showFace': face, 'currentUser': req.user}});
       });
-    });
+    //});
 
   });
 
