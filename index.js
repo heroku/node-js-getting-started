@@ -1397,6 +1397,8 @@ publicRouter.get('/number/:number', function(req, res, next) {
   var number = parseInt(req.params.number, 10);
   getImagesForMozaic(number, function(err, image){
 
+    console.log('IMAGE NUMBER', image);
+
     //createMozaic(number, images, function(err1){
 
       Face.findOne({'number': req.params.number}, function(err, face) {
