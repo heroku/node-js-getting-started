@@ -1236,7 +1236,7 @@ var createFindImage = function(number, face, callback){
   .in(publicPath + face.picture)
   .in(imgDestPath + '/human_share.jpg')
   .write(imgDestPath + '/' + number + '-temp.png' , function (err2) {
-    var imgFinalMozaic = im(imgDestPath '/' + number + '-temp.png');
+    var imgFinalMozaic = im(imgDestPath + '/' + number + '-temp.png');
     console.log('FACE IMAGE', face);
 
     //imgFinalMozaic.crop(450, 236, 0, 107);
