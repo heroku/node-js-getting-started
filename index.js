@@ -1234,6 +1234,8 @@ var createFindImage = function(number, face, callback){
   //imgFinalMozaic.crop(450, 236, 0, 107);
   imgFinalMozaic.stream(function(err, stdout, stderr) {
 
+    console.log('STREAM');
+
     var buf = new Buffer('');
 
     if(stdout){
@@ -1243,13 +1245,13 @@ var createFindImage = function(number, face, callback){
       });
 
       stdout.on('end', function(data) {
-
+        console.log('END STREAM');
         var data = {
           Bucket: config.S3_BUCKET_NAME,
           ACL: 'public-read',
           Key: 'img/mozaic/' + number + '-mozaic.png',
           Body: buf,
-          ContentType: mime.lookup(imgDestPath + '/' + number + '-temp-final.png')
+          ContentType: mime.lookup(imgDestPath + '/human_share.jpg')
         };
 
         s3bucket.putObject(data, function(errr, ress) {
