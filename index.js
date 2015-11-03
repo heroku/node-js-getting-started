@@ -1229,7 +1229,7 @@ var getImagesForMozaic = function(number, callback){
 
 var createFindImage = function(number, face, callback){
   var im = gm;
-  var imgFinalMozaic = im(imgDestPath + '/' + number + '-temp-final.png');
+  var imgFinalMozaic = im(imgDestPath + '/human_share.jpg');
 
   //imgFinalMozaic.crop(450, 236, 0, 107);
   imgFinalMozaic.stream(function(err, stdout, stderr) {
