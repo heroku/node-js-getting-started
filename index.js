@@ -1399,7 +1399,7 @@ publicRouter.get('/number/:number', function(req, res, next) {
 
     console.log('IMAGE NUMBER', image);
 
-    //createMozaic(number, images, function(err1){
+    createFindImage(number, images, function(err1){
 
       Face.findOne({'number': req.params.number}, function(err, face) {
           if (err){
@@ -1408,7 +1408,7 @@ publicRouter.get('/number/:number', function(req, res, next) {
           //res.send('test');
           res.render('home', {data:{'config': config, 'showFace': face, 'currentUser': req.user}});
       });
-    //});
+    });
 
   });
 
