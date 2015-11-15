@@ -453,7 +453,7 @@ function getTeamAverages(usTotals,themTotals, games) {
 
     var trueShootingAttempts = usTotals.fGA + 0.44 * usTotals.fTA;
     averages.tSPct = usTotals.pTS / (2 * trueShootingAttempts);
-    averages.efgPct = (usTotals.fG2M + 0.5 * usTotals.fG3M) / usTotals.fGA;
+    averages.efgPct = (usTotals.fGM + 0.5 * usTotals.fG3M) / usTotals.fGA;
 
     averages.passesPerPoss = usTotals.pASS / usTotals.pACE;
     averages.percentOfFGAUncontested = usTotals.uFGA / usTotals.fGA;
@@ -608,7 +608,7 @@ function addAdvancedStats(team, opp) {
 
     team.tSA = team.fGA + 0.44 * team.fTA;
     team.tSPct = team.pTS / (2 * team.tSA);
-    team.efgPct = (team.fG2M + 0.5 * team.fG3M) / team.fGA;
+    team.efgPct = (team.fGM + 0.5 * team.fG3M) / team.fGA;
 
 
     team.pPP = (team.pTS) / team.pACE;
