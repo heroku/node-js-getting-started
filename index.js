@@ -5,18 +5,17 @@ app.set('port', (process.env.PORT || 80));
 app.use(express.static(__dirname + '/public'));
 
 app.get('/about', function(request, response) {
-  response.send('About');
+  res.sendfile('public/about.html');
 });
 
 app.get('/contact', function(request, response) {
-  response.send('Contact');
+  res.sendfile('public/contact.html');
 });
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
 
-app.post('/', function(req, res){
-
+app.get('/', function(req, res){
   res.sendfile('public/index.html');
 });
