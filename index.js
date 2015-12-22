@@ -22,7 +22,7 @@ app.get('/', function(request, response) {
 //Partial views
 app.get('/:page', function(request, response){
 	var page = request.params.page;
-	response.render('pages/'+page);
+	response.render('pages/'+page, {meta: {section: page}});
 });
 
 app.use(function(request, response, next) {
@@ -47,7 +47,7 @@ if (app.get('env') === 'development') {
 // production error handler - no stacktraces leaked to user
 app.use(function(err, request, response, next) {
   response.status(err.status || 500);
-  res.render('error', {
+  response.render('error', {
     message: err.message,
     error: {}
   });
