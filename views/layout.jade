@@ -1,4 +1,12 @@
 doctype html
+mixin pageSection(title, name)
+	section.page-section(id=name)
+		h1= title
+		if block
+			block
+		else
+			p No content provided for now
+
 html(lang='en')
 	head
 		meta(charset='utf-8')
@@ -8,20 +16,22 @@ html(lang='en')
 		link(rel='stylesheet', href='/stylesheets/main.css')
 		// link(href='https://fonts.googleapis.com/css?family=Inconsolata', rel='stylesheet', type='text/css')
 		link(href='https://fonts.googleapis.com/css?family=Poiret+One', rel='stylesheet', type='text/css')
+
 	body
 		nav
 			ul
 				li(class=meta.section == "home" ? "active" :"")
-					a(href="/") Home
+					a(href="/#home") Home
 				li(class=meta.section == "bio" ? "active" :"")
-					a(href="/bio") Bio
+					a(href="/#bio") Bio
 				li(class=meta.section == "projects" ? "active" :"")
-					a(href="/projects") Projects
+					a(href="/#projects") Projects
 				li(class=meta.section == "blog" ? "active" :"")
-					a(href="/blog") Blog
+					a(href="/#blog") Blog
 				li(class=meta.section == "contact" ? "active" :"")
-					a(href="/contact") Contact
+					a(href="/#contact") Contact
 		#mainContent(class="section_#{ meta.section }") 
-			block content
+			block mainContent
+				
 			
 			

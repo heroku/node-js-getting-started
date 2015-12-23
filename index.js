@@ -16,7 +16,8 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 
 app.get('/', function(request, response) {
-  response.redirect('/home');
+  //response.redirect('/home');
+	response.render('index', {meta: {section: 'index'}});
 });
 
 //Partial views
