@@ -1,6 +1,6 @@
 doctype html
 mixin pageSection(title, name)
-	section.page-section(id=name)
+	section.page_section(id=name)
 		h1= title
 		if block
 			block
@@ -16,6 +16,7 @@ html(lang='en')
 		link(rel='stylesheet', href='/stylesheets/main.css')
 		// link(href='https://fonts.googleapis.com/css?family=Inconsolata', rel='stylesheet', type='text/css')
 		link(href='https://fonts.googleapis.com/css?family=Poiret+One', rel='stylesheet', type='text/css')
+		script(src='/js/script.js')
 
 	body
 		nav

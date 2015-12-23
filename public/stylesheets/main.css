@@ -11,6 +11,9 @@ nav, #mainContent {
 nav {
 	display: table;
 	font-family: 'Poiret One' ;
+	position: fixed;
+	top: 0;
+	background-color: #00133f;
 }
 nav ul {
 	display: table-row;
@@ -29,6 +32,10 @@ nav ul li a{
 
 nav ul li.active a{
 	color: yellow;
+}
+
+#mainContent section{
+	padding-top: 60px;
 }
 
 

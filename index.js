@@ -8,7 +8,7 @@ app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname + '/public'));
 
 // set the favicon
-//app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(favicon(__dirname + '/public/favicon.jpg'));
 
 
 // views is directory for all template files
@@ -25,6 +25,11 @@ app.get('/:page', function(request, response){
 	var page = request.params.page;
 	response.render('pages/'+page, {meta: {section: page}});
 });
+
+//All else redirect to home
+app.get('*', function(request, response, next) {
+  response.redirect('/');
+})
 
 app.use(function(request, response, next) {
   var err = new Error('Not Found');
