@@ -14,6 +14,7 @@ nav {
 	position: fixed;
 	top: 0;
 	background-color: #00133f;
+	height: 60px;
 }
 nav ul {
 	display: table-row;
