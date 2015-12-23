@@ -21,10 +21,10 @@ app.get('/', function(request, response) {
 });
 
 //Partial views
-app.get('/:page', function(request, response){
+/* app.get('/:page', function(request, response){
 	var page = request.params.page;
 	response.render('pages/'+page, {meta: {section: page}});
-});
+}); */
 
 //All else redirect to home
 app.get('*', function(request, response, next) {

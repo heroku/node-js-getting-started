@@ -5,6 +5,8 @@
 			var sectionId = $(this).attr('href').slice(1);
 			$('section.page_section').removeClass('active');
 			$('section' + sectionId).addClass('active');
+			$('nav li').removeClass('active');
+			$(this).parent().addClass('active');;
 		});
 		
 		calculate();
@@ -13,6 +15,7 @@
 			if (!window.location.hash) {
 				window.location.hash = 'home';
 				$('section#home').addClass('active');
+				$('nav li:first-child').addClass('active');
 			}
 			$('section').css('height', $(window).height());
 		}
