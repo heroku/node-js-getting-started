@@ -14,16 +14,17 @@
 		function calculate() {
 			if (!window.location.hash) {
 				window.location.hash = 'home';
-				$('section#home').addClass('active');
 				$('nav li:first-child').addClass('active');
 			}
+			activateSection (window.location.hash.slice(1));
 			$('section').css('height', $(window).height());
 		}
 		
-		/* function activateSection ( section ) {
+		function activateSection ( section ) {
 			$('section.page_section').removeClass('active');
 			$('section#' + section ).addClass('active');
-		} */
+			$('nav li.' + section).addClass('active');
+		}
 	});
 	
 	

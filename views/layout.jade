@@ -21,15 +21,15 @@ html(lang='en')
 	body
 		nav
 			ul
-				li(class=meta.section == "home" ? "active" :"")
+				li.home(class=meta.section == "home" ? "active" :"")
 					a(href="/#home") Home
-				li(class=meta.section == "bio" ? "active" :"")
+				li.bio(class=meta.section == "bio" ? "active" :"")
 					a(href="/#bio") Bio
-				li(class=meta.section == "projects" ? "active" :"")
+				li.projects(class=meta.section == "projects" ? "active" :"")
 					a(href="/#projects") Projects
-				li(class=meta.section == "blog" ? "active" :"")
+				li.blog(class=meta.section == "blog" ? "active" :"")
 					a(href="/#blog") Blog
-				li(class=meta.section == "contact" ? "active" :"")
+				li.contact(class=meta.section == "contact" ? "active" :"")
 					a(href="/#contact") Contact
 		#mainContent(class="section_#{ meta.section }") 
 			block mainContent
