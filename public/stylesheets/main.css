@@ -1,6 +1,7 @@
 body {
   background-color: #00133f;
-  color: white; }
+  color: white;
+  margin: 0; }
 
 nav, #mainContent {
   max-width: 1480px;
@@ -28,6 +29,6 @@ nav {
         color: yellow; }
 
 #mainContent section {
-  padding-top: 60px; }
+  padding: 60px 20px 0; }
 
 /*# sourceMappingURL=main.css.map */

@@ -1,6 +1,8 @@
+$blue: #00133f;
 body {
-	background-color: #00133f;
+	background-color: $blue;
 	color: white;
+    margin: 0;
 }
 
 nav, #mainContent {
@@ -13,7 +15,7 @@ nav {
 	font-family: 'Poiret One' ;
 	position: fixed;
 	top: 0;
-	background-color: #00133f;
+	background-color: $blue;
 	height: 60px;
 	ul {
 		display: table-row;
@@ -35,5 +37,5 @@ nav {
 
 
 #mainContent section{
-	padding-top: 60px;
+	padding: 60px 20px 0;
 }
