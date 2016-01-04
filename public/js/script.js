@@ -2,7 +2,14 @@
 	$( document ).ready(function() {
 		
 		$('nav').on('click', 'li a',  function(){
-			var section = $(this).parent().attr('class'); // Remoce
+			var section = $(this).parent().attr('class');
+            var target = $(this.hash);
+            target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+            if (target.length) {
+                $('html,body').animate({
+                     scrollTop: target.offset().top
+                }, 400);
+            }
 			activateSection ( section );
 		});
 		
