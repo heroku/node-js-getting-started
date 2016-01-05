@@ -1,18 +1,25 @@
 (function () {
 	$( document ).ready(function() {
+        var top = null;
+        var changed = false;
+        var currentHash = null;
+        
+        var section = $.map($("section"), function (e) {
+            var $e = $(e);
+            var pos = $e.position();
+            return {
+                top: pos.top,
+                bottom: pos.top + $e.height(),
+                hash: $e.attr('id')
+            };
+        });
+        
         $(document).bind('scroll',function(e){
-            $('section').each(function(){
-                if (
-                $(this).offset().top < window.pageYOffset + 10
-                //begins before top
-                && $(this).offset().top + $(this).height() > window.pageYOffset + 10
-                //but ends in visible area
-                //+ 10 allows you to change hash before it hits the top border
-                ) {
-                    window.location.hash = $(this).attr('id');
-                    activateSection ( $(this).attr('id') );
-                }
-            });
+            var newTop = $(document).scrollTop(); 
+            changed = newTop != top;
+            if (changed) {
+                top = newTop;
+            }
         });
 		
 		$('nav').on('click', 'li a',  function(){
@@ -20,11 +27,13 @@
             var target = $(this.hash);
             target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
             if (target.length) {
+                console.log(target.offset());
                 $('html,body').animate({
                      scrollTop: target.offset().top
-                }, 400);
+                }, 'slow');
+                return false; 
             }
-			activateSection ( section );
+			//activateSection ( section );
 		});
 		
 		calculate();
@@ -43,6 +52,30 @@
 			$('nav li').removeClass('active');
 			$('nav li.' + section).addClass('active');
 		}
+        function step() {
+            if (!changed) {
+                // Top did not change
+                return setTimeout(step, 200);
+            }
+            var count = section.length;
+            var p;
+
+            while (p = section[--count]) {
+                if (p.top >= top || p.bottom <= top) {
+                    continue;
+                }
+                if (currentHash == p.hash) {
+                    break;
+                }
+                var scrollTop = $(document).scrollTop();
+                window.location.hash = currentHash = p.hash;
+                activateSection ( p.hash );
+                // prevent browser to scroll
+                $(document).scrollTop(scrollTop);
+            }
+            setTimeout(step, 200);
+        }
+        setTimeout(step, 200);
 	});
 	
 })();
