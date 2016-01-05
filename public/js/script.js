@@ -4,6 +4,8 @@
         var changed = false;
         var currentHash = null;
         
+        calculate();
+        
         var section = $.map($("section"), function (e) {
             var $e = $(e);
             var pos = $e.position();
@@ -13,6 +15,7 @@
                 hash: $e.attr('id')
             };
         });
+        window.section = section;
         
         $(document).bind('scroll',function(e){
             var newTop = $(document).scrollTop(); 
@@ -27,7 +30,6 @@
             var target = $(this.hash);
             target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
             if (target.length) {
-                console.log(target.offset());
                 $('html,body').animate({
                      scrollTop: target.offset().top
                 }, 'slow');
@@ -36,7 +38,7 @@
 			//activateSection ( section );
 		});
 		
-		calculate();
+		
 		
 		function calculate() {
 			if (!window.location.hash) {
@@ -51,6 +53,7 @@
 			$('section#' + section ).addClass('active');
 			$('nav li').removeClass('active');
 			$('nav li.' + section).addClass('active');
+            window.location.hash = section;
 		}
         function step() {
             if (!changed) {
@@ -61,14 +64,14 @@
             var p;
 
             while (p = section[--count]) {
-                if (p.top >= top || p.bottom <= top) {
+                if (p.top >= top + 20 || p.bottom <= top) {
                     continue;
                 }
                 if (currentHash == p.hash) {
                     break;
                 }
                 var scrollTop = $(document).scrollTop();
-                window.location.hash = currentHash = p.hash;
+                //window.location.hash = currentHash = p.hash;
                 activateSection ( p.hash );
                 // prevent browser to scroll
                 $(document).scrollTop(scrollTop);
