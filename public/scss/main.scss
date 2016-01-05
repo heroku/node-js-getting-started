@@ -1,0 +1,41 @@
+$blue: #00133f;
+body {
+	background-color: $blue;
+	color: white;
+    margin: 0;
+}
+
+nav, #mainContent {
+	max-width: 1480px;
+	width: 100%;
+	margin: 0 auto;
+}
+nav {
+	display: table;
+	font-family: 'Poiret One' ;
+	position: fixed;
+	top: 0;
+	background-color: $blue;
+	height: 60px;
+	ul {
+		display: table-row;
+		li {
+			display: table-cell;
+			text-align: center;
+			padding: 10px 0;
+			a{
+				color: white;
+				font-size: 2rem;
+				text-decoration: none;
+			}
+			&.active a{
+				color: yellow;
+			}
+		}
+	}
+} 
+
+
+#mainContent section{
+	padding: 60px 20px 0;
+}

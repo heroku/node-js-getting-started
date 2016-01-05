@@ -1,0 +1,15 @@
+extends layout
+
+block mainContent
+
+	+pageSection('Home', 'home')
+		include pages/home
+	+pageSection('Bio', 'bio')
+		include pages/bio
+	+pageSection('Projects', 'projects')
+		include pages/projects
+	+pageSection('Blog', 'blog')
+		include pages/blog
+	+pageSection('Contact', 'contact')
+		include pages/contact
+

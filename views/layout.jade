@@ -1,0 +1,38 @@
+doctype html
+mixin pageSection(title, name)
+	section.page_section(id=name)
+		h1= title
+		if block
+			block
+		else
+			p No content provided for now
+
+html(lang='en')
+	head
+		meta(charset='utf-8')
+		title Nenn.es personal website
+		
+		script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
+		link(rel='stylesheet', href='/stylesheets/main.css')
+		// link(href='https://fonts.googleapis.com/css?family=Inconsolata', rel='stylesheet', type='text/css')
+		link(href='https://fonts.googleapis.com/css?family=Poiret+One', rel='stylesheet', type='text/css')
+		script(src='/js/script.js')
+
+	body
+		nav
+			ul
+				li.home(class=meta.section == "home" ? "active" :"")
+					a(href="/#home") Home
+				li.bio(class=meta.section == "bio" ? "active" :"")
+					a(href="/#bio") Bio
+				li.projects(class=meta.section == "projects" ? "active" :"")
+					a(href="/#projects") Projects
+				li.blog(class=meta.section == "blog" ? "active" :"")
+					a(href="/#blog") Blog
+				li.contact(class=meta.section == "contact" ? "active" :"")
+					a(href="/#contact") Contact
+		#mainContent(class="section_#{ meta.section }") 
+			block mainContent
+				
+			
+			
