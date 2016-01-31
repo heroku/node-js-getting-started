@@ -8,7 +8,8 @@
   },
   "dependencies": {
     "ejs": "2.3.3",
-    "express": "4.13.3"
+    "express": "4.13.3",
+    "cool-ascii-faces": "~1.3.x"
   },
   "engines": {
     "node": "0.12.7"
