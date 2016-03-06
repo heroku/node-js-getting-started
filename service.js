@@ -1,4 +1,4 @@
-var nba = require('nba');
+var nba = require('nba-hack');
 var _ = require('underscore');
 var Promise = require( "es6-promise" ).Promise;
 var dao = require('./dao');

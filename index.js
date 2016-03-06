@@ -1,13 +1,13 @@
 var express = require('express');
 var app = express();
 require('./apiExtensions');
-var nba = require('nba');
+var nba = require('nba-hack');
 var controller = require('./controller');
 var Promise = require( "es6-promise" ).Promise;
 
 
 nba.ready(function() {
-    nba.api.playersInfo({season: "2014-15"}).then( function (resp) {
+    nba.api.playersInfo({season: "2015-16"}).then( function (resp) {
         nba.playersInfo = resp;
 
         app.set('port', (process.env.PORT || 5000));

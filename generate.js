@@ -1,4 +1,4 @@
-var nba = require('nba');
+var nba = require('nba-hack');
 var fs = require('fs');
 var _ = require('underscore');
 var Handlebars = require('handlebars');

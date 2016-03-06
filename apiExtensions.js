@@ -1,8 +1,8 @@
-var nba = require("nba");
-var ep = require("nba/lib/endpoints");
-var maps = require( "nba/lib/maps" );
-var util = require( "nba/lib/util" );
-var getJSON = require( "nba/lib/get-json" );
+var nba = require("nba-hack");
+var ep = require("nba-hack/lib/endpoints");
+var maps = require( "nba-hack/lib/maps" );
+var util = require( "nba-hack/lib/util" );
+var getJSON = require( "nba-hack/lib/get-json" );
 var _ = require('underscore');
 
 var twoWayMap = maps.twoWayMap();
