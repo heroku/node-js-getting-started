@@ -1,0 +1,9 @@
+#!/usr/bin/env node
+
+const app = require('../lib/app');
+const PORT = process.env.PORT || 5000;
+
+app().listen(PORT, (err) => {
+  if (err) throw err;
+  console.log(`Listening on port ${ PORT }`);
+});
