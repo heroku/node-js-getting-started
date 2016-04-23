@@ -1,20 +1,207 @@
-var express = require('express');
-var app = express();
+// var express = require('express');
+// var app = express();
+//
+// app.set('port', (process.env.PORT || 5000));
+//
+// app.use(express.static(__dirname + '/public'));
+//
+// // views is directory for all template files
+// app.set('views', __dirname + '/views');
+// app.set('view engine', 'ejs');
+//
+// app.get('/', function(request, response) {
+//   response.render('pages/index');
+// });
+//
+// app.listen(app.get('port'), function() {
+//   console.log('Node app is running on port', app.get('port'));
+// });
+
+'use strict'
+const http = require('http')
+const express = require('express')
+const bodyParser = require('body-parser')
+const Bot = require('../')
+
+let bot = new Bot({
+  token: process.env.PAGE_ACCESS_TOKEN,
+  verify: process.env.VERIFY_TOKEN,
+  app_secret: process.env.APP_SECRET
+})
+
+bot.on('error', (err) => {
+  console.log(err.message)
+})
+
+bot.on('message', (payload, reply) => {
+  let text = payload.message.text
+
+  bot.getProfile(payload.sender.id, (err, profile) => {
+    if (err) throw err
+
+    reply({ text }, (err) => {
+      if (err) throw err
+
+      console.log(`Echoed back to ${profile.first_name} ${profile.last_name}: ${text}`)
+    })
+  })
+})
+
+let app = express()
 
 app.set('port', (process.env.PORT || 5000));
 
-app.use(express.static(__dirname + '/public'));
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({
+  extended: true
+}))
 
-// views is directory for all template files
-app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
+app.get('/', (req, res) => {
+  return bot._verify(req, res)
+})
 
-app.get('/', function(request, response) {
-  response.render('pages/index');
-});
+app.post('/', (req, res) => {
+  bot._handleMessage(req.body.entry)
+  res.end(JSON.stringify({status: 'ok'}))
+})
 
 app.listen(app.get('port'), function() {
-  console.log('Node app is running on port', app.get('port'));
+  console.log('Bot is running on port', app.get('port'));
 });
 
+// http.createServer(app).listen(3000)
+const url = require('url')
+const qs = require('querystring')
+const EventEmitter = require('events').EventEmitter
+const request = require('request')
+const crypto = require('crypto')
 
+
+class Bot extends EventEmitter {
+  constructor (opts) {
+    super()
+
+    opts = opts || {}
+    if (!opts.token) {
+      throw new Error('Missing page token. See FB documentation for details: https://developers.facebook.com/docs/messenger-platform/quickstart')
+    }
+    this.token = opts.token
+    this.app_secret = opts.app_secret || false
+    this.verify_token = opts.verify || false
+  }
+
+  getProfile (id, cb) {
+    if (!cb) cb = Function.prototype
+
+    request({
+      method: 'GET',
+      uri: `https://graph.facebook.com/v2.6/${id}`,
+      qs: {
+        fields: 'first_name,last_name,profile_pic',
+        access_token: this.token
+      },
+      json: true
+    }, (err, res, body) => {
+      if (err) return cb(err)
+      if (body.error) return cb(body.error)
+
+      cb(null, body)
+    })
+  }
+
+  sendMessage (recipient, payload, cb) {
+    if (!cb) cb = Function.prototype
+
+    request({
+      method: 'POST',
+      uri: 'https://graph.facebook.com/v2.6/me/messages',
+      qs: {
+        access_token: this.token
+      },
+      json: {
+        recipient: { id: recipient },
+        message: payload
+      }
+    }, (err, res, body) => {
+      if (err) return cb(err)
+      if (body.error) return cb(body.error)
+
+      cb(null, body)
+    })
+  }
+
+  middleware () {
+    return (req, res) => {
+      // we always write 200, otherwise facebook will keep retrying the request
+      res.writeHead(200, { 'Content-Type': 'application/json' })
+      if (req.url === '/_status') return res.end(JSON.stringify({status: 'ok'}))
+      if (this.verify_token && req.method === 'GET') return this._verify(req, res)
+      if (req.method !== 'POST') return res.end()
+
+      let body = ''
+
+      req.on('data', (chunk) => {
+        body += chunk
+      })
+
+      req.on('end', () => {
+        // check message integrity
+        if (this.app_secret) {
+          let hmac = crypto.createHmac('sha1', this.app_secret)
+          hmac.update(body)
+
+          if (req.headers['x-hub-signature'] !== `sha1=${hmac.digest('hex')}`) {
+            this.emit('error', new Error('Message integrity check failed'))
+            return res.end(JSON.stringify({status: 'not ok', error: 'Message integrity check failed'}))
+          }
+        }
+
+        let parsed = JSON.parse(body)
+        this._handleMessage(parsed)
+
+        res.end(JSON.stringify({status: 'ok'}))
+      })
+    }
+  }
+
+  _handleMessage (json) {
+    let entries = json.entry
+
+    entries.forEach((entry) => {
+      let events = entry.messaging
+
+      events.forEach((event) => {
+        // handle inbound messages
+        if (event.message) {
+          this._handleEvent('message', event)
+        }
+
+        // handle postbacks
+        if (event.postback) {
+          this._handleEvent('postback', event)
+        }
+
+        // handle message delivered
+        if (event.delivery) {
+          this._handleEvent('delivery', event)
+        }
+      })
+    })
+  }
+
+  _verify (req, res) {
+    let query = qs.parse(url.parse(req.url).query)
+
+    if (query['hub.verify_token'] === this.verify_token) {
+      return res.end(query['hub.challenge'])
+    }
+
+    return res.end('Error, wrong validation token')
+  }
+
+  _handleEvent (type, event) {
+    this.emit(type, event, this.sendMessage.bind(this, event.sender.id))
+  }
+}
+
+module.exports = Bot
