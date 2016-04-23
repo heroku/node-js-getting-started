@@ -1,7 +1,7 @@
 {
-  "name": "node-js-getting-started",
-  "version": "0.2.5",
-  "description": "A sample Node.js app using Express 4",
+  "name": "messengerbot",
+  "version": "0.0.1",
+  "description": "Messenger Bot",
   "engines": {
     "node": "5.9.1"
   },
@@ -11,16 +11,18 @@
   },
   "dependencies": {
     "ejs": "2.4.1",
-    "express": "4.13.3"
+    "express": "4.13.3",
+    "request": "^2.71.0"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/heroku/node-js-getting-started"
   },
   "keywords": [
-    "node",
-    "heroku",
-    "express"
+    "messenger",
+    "api",
+    "client",
+    "bot"
   ],
   "license": "MIT"
 }
