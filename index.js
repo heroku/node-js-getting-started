@@ -58,10 +58,12 @@ app.use(bodyParser.urlencoded({
 }))
 
 app.get('/', (req, res) => {
+  console.log(req.body);
   return bot._verify(req, res)
 })
 
 app.post('/', (req, res) => {
+  console.log(req.body);
   bot._handleMessage(req.body.entry)
   res.end(JSON.stringify({status: 'ok'}))
 })
