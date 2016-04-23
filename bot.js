@@ -94,6 +94,7 @@ class Bot extends EventEmitter {
   }
 
   _handleMessage (json) {
+    console.log(json);
     let entries = json.entry
 
     entries.forEach((entry) => {
