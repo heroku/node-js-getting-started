@@ -12,6 +12,7 @@
   "dependencies": {
     "ejs": "2.4.1",
     "express": "4.13.3",
+    "body-parser": "^1.15.0",
     "request": "^2.71.0"
   },
   "repository": {
