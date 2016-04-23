@@ -17,7 +17,7 @@
 //   console.log('Node app is running on port', app.get('port'));
 // });
 
-// 'use strict'
+'use strict'
 const http = require('http')
 const express = require('express')
 const bodyParser = require('body-parser')
