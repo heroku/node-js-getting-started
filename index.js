@@ -37,14 +37,17 @@ const actions = {
     // Let's retrieve the Facebook user whose session belongs to
     const recipientId = sessions[sessionId].fbid;
     if (recipientId) {
+      console.log(`RecipientId in actions: ${recipientId}`)
       // Yay, we found our recipient!
       // Let's forward our bot response to her.
       bot.sendMessage(recipientId, message, (err, resp, data) => {
         if (err) throw err
         console.log(`Oops! An error occurred while forwarding the response to ${recipientId}: ${err.message}`)
+        // Let's give the wheel back to our bot
+        console.log(`Inside sendMessage RecipientId: ${recipientId} Message: ${message}`)
+        cb();
       })
-      // Let's give the wheel back to our bot
-      cb();
+
     } else {
       console.log('Oops! Couldn\'t find user for session:', sessionId);
       // Giving the wheel back to our bot
