@@ -11,12 +11,18 @@ class Bot extends EventEmitter {
     super()
 
     opts = opts || {}
-    if (!opts.token) {
+    if (!opts.fb_page_access_token) {
       throw new Error('Missing page token. See FB documentation for details: https://developers.facebook.com/docs/messenger-platform/quickstart')
     }
-    this.token = opts.token
-    this.app_secret = opts.app_secret || false
-    this.verify_token = opts.verify || false
+    this.fb_app_id = opts.fb_app_id || false
+    this.fb_page_id = opts.fb_page_id || false
+    this.fb_page_access_token = opts.fb_page_access_token
+    this.fb_page_verify_token = opts.fb_page_verify_token || false
+    this.fb_app_secret = opts.fb_app_secret || false
+
+    this.wit_app_id = opts.wit_app_id || false
+    this.wit_server_token = opts.wit_server_token || false
+    this.wit_client_token = opts.wit_client_token || false
   }
 
   getProfile (id, cb) {
@@ -27,7 +33,7 @@ class Bot extends EventEmitter {
       uri: `https://graph.facebook.com/v2.6/${id}`,
       qs: {
         fields: 'first_name,last_name,profile_pic',
-        access_token: this.token
+        access_token: this.fb_page_access_token
       },
       json: true
     }, (err, res, body) => {
@@ -45,7 +51,7 @@ class Bot extends EventEmitter {
       method: 'POST',
       uri: 'https://graph.facebook.com/v2.6/me/messages',
       qs: {
-        access_token: this.token
+        access_token: this.fb_page_access_token
       },
       json: {
         recipient: { id: recipient },
@@ -64,7 +70,7 @@ class Bot extends EventEmitter {
       // we always write 200, otherwise facebook will keep retrying the request
       res.writeHead(200, { 'Content-Type': 'application/json' })
       if (req.url === '/_status') return res.end(JSON.stringify({status: 'ok'}))
-      if (this.verify_token && req.method === 'GET') return this._verify(req, res)
+      if (this.fb_page_verify_token && req.method === 'GET') return this._verify(req, res)
       if (req.method !== 'POST') return res.end()
 
       let body = ''
@@ -75,8 +81,8 @@ class Bot extends EventEmitter {
 
       req.on('end', () => {
         // check message integrity
-        if (this.app_secret) {
-          let hmac = crypto.createHmac('sha1', this.app_secret)
+        if (this.fb_app_secret) {
+          let hmac = crypto.createHmac('sha1', this.fb_app_secret)
           hmac.update(body)
 
           if (req.headers['x-hub-signature'] !== `sha1=${hmac.digest('hex')}`) {
@@ -122,7 +128,7 @@ class Bot extends EventEmitter {
   _verify (req, res) {
     let query = qs.parse(url.parse(req.url).query)
 
-    if (query['hub.verify_token'] === this.verify_token) {
+    if (query['hub.verify_token'] === this.fb_page_verify_token) {
       return res.end(query['hub.challenge'])
     }
 
