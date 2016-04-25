@@ -37,13 +37,12 @@ const actions = {
     // Our bot has something to say!
     // Let's retrieve the Facebook user whose session belongs to
     const recipientId = sessions[sessionId].fbid;
-    const witMessage = message;
     if (recipientId) {
       console.log(`RecipientId in actions: ${recipientId}`)
       console.log(`Say Message: ${message}`)
       // Yay, we found our recipient!
       // Let's forward our bot response to her.
-      bot.sendMessage(recipientId, witMessage, (err, resp) => {
+      bot.sendMessage(recipientId, message, (err, resp) => {
         // if (err) throw err
 
         // reply({ message }, (err) => {
@@ -52,7 +51,8 @@ const actions = {
         //   console.log(`Oops! An error occurred while forwarding the response to ${recipientId}: ${err.message}`)
         // })
         if (err) {
-          console.log(`Oops! An error occurred while forwarding the response to ${recipientId}: ${err.message}`)
+          console.log(`Oops! An error occurred while forwarding the response to ${recipientId}: ${err}`)
+          console.log(err.message)
         }
         // Let's give the wheel back to our bot
         console.log(`Inside sendMessage RecipientId: ${recipientId} Message: ${message}`)
