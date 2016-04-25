@@ -37,11 +37,13 @@ const actions = {
     // Our bot has something to say!
     // Let's retrieve the Facebook user whose session belongs to
     const recipientId = sessions[sessionId].fbid;
+    const witMessage = message;
     if (recipientId) {
       console.log(`RecipientId in actions: ${recipientId}`)
+      console.log(`Say Message: ${message}`)
       // Yay, we found our recipient!
       // Let's forward our bot response to her.
-      bot.sendMessage(recipientId, message, (err, resp) => {
+      bot.sendMessage(recipientId, witMessage, (err, resp) => {
         // if (err) throw err
 
         // reply({ message }, (err) => {
