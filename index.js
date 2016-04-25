@@ -43,12 +43,14 @@ const actions = {
       bot.sendMessage(recipientId, message, (err, resp, data) => {
         // if (err) throw err
 
-        reply({ message }, (err) => {
-          // if (err) throw err
-
+        // reply({ message }, (err) => {
+        //   // if (err) throw err
+        //
+        //   console.log(`Oops! An error occurred while forwarding the response to ${recipientId}: ${err.message}`)
+        // })
+        if (err) {
           console.log(`Oops! An error occurred while forwarding the response to ${recipientId}: ${err.message}`)
-        })
-        // console.log(`Oops! An error occurred while forwarding the response to ${recipientId}: ${err.message}`)
+        }
         // Let's give the wheel back to our bot
         console.log(`Inside sendMessage RecipientId: ${recipientId} Message: ${message}`)
         cb();
