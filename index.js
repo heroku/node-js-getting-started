@@ -33,6 +33,7 @@ const findOrCreateSession = (fbid) => {
 // Wit.ai bot engine actions
 const actions = {
   say(sessionId, context, message, cb) {
+    console.log(`Say Message: ${message}`)
     // Our bot has something to say!
     // Let's retrieve the Facebook user whose session belongs to
     const recipientId = sessions[sessionId].fbid;
@@ -40,7 +41,7 @@ const actions = {
       console.log(`RecipientId in actions: ${recipientId}`)
       // Yay, we found our recipient!
       // Let's forward our bot response to her.
-      bot.sendMessage(recipientId, message, (err, resp, data) => {
+      bot.sendMessage(recipientId, message, (err, resp) => {
         // if (err) throw err
 
         // reply({ message }, (err) => {
