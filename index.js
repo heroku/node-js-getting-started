@@ -41,7 +41,7 @@ const actions = {
       // Yay, we found our recipient!
       // Let's forward our bot response to her.
       bot.sendMessage(recipientId, message, (err, resp, data) => {
-        if (err) throw err
+        // if (err) throw err
 
         reply({ message }, (err) => {
           if (err) throw err
