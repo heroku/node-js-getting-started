@@ -5,6 +5,20 @@ const bodyParser = require('body-parser')
 const Bot = require('./bot')
 const Wit = require('node-wit').Wit;
 
+const wit = new Wit(process.env.WIT_SERVER_ACCESS_TOKEN, actions);
+
+let bot = new Bot({
+  fb_app_id: process.env.FB_APP_ID,
+  fb_page_id: process.env.FB_PAGE_ID,
+  fb_page_access_token: process.env.FB_PAGE_ACCESS_TOKEN,
+  fb_page_verify_token: process.env.FB_VERIFY_TOKEN,
+  fb_app_secret: process.env.FB_APP_SECRET,
+
+  wit_app_id: process.env.WIT_APP_ID,
+  wit_server_token: process.env.WIT_SERVER_ACCESS_TOKEN,
+  wit_client_token: process.env.WIT_CLIENT_ACCESS_TOKEN,
+})
+
 // Wit.ai bot specific code
 // Setting up our bot
 
@@ -38,8 +52,6 @@ const actions = {
     // Let's retrieve the Facebook user whose session belongs to
     const recipientId = sessions[sessionId].fbid;
     if (recipientId) {
-      console.log(`RecipientId in actions: ${recipientId}`)
-      console.log(`Say Message: ${message}`)
       // Yay, we found our recipient!
       // Let's forward our bot response to her.
       bot.sendMessage(recipientId, message, (err, resp) => {
@@ -75,19 +87,7 @@ const actions = {
   // See https://wit.ai/docs/quickstart
 };
 
-const wit = new Wit(process.env.WIT_SERVER_ACCESS_TOKEN, actions);
 
-let bot = new Bot({
-  fb_app_id: process.env.FB_APP_ID,
-  fb_page_id: process.env.FB_PAGE_ID,
-  fb_page_access_token: process.env.FB_PAGE_ACCESS_TOKEN,
-  fb_page_verify_token: process.env.FB_VERIFY_TOKEN,
-  fb_app_secret: process.env.FB_APP_SECRET,
-
-  wit_app_id: process.env.WIT_APP_ID,
-  wit_server_token: process.env.WIT_SERVER_ACCESS_TOKEN,
-  wit_client_token: process.env.WIT_CLIENT_ACCESS_TOKEN,
-})
 
 bot.on('error', (err) => {
   console.log(err.message)
