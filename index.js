@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 const Bot = require('./bot')
 const Wit = require('node-wit').Wit;
 
-const wit = new Wit(WIT_SERVER_ACCESS_TOKEN, actions);
+const wit = new Wit(process.env.WIT_SERVER_ACCESS_TOKEN, actions);
 
 let bot = new Bot({
   fb_app_id: process.env.FB_APP_ID,
