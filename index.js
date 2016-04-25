@@ -5,6 +5,62 @@ const bodyParser = require('body-parser')
 const Bot = require('./bot')
 const Wit = require('node-wit').Wit;
 
+// Wit.ai bot specific code
+// Setting up our bot
+
+// This will contain all user sessions.
+// Each session has an entry:
+// sessionId -> {fbid: facebookUserId, context: sessionState}
+const sessions = {};
+
+const findOrCreateSession = (fbid) => {
+  let sessionId;
+  // Let's see if we already have a session for the user fbid
+  Object.keys(sessions).forEach(k => {
+    if (sessions[k].fbid === fbid) {
+      // Yep, got it!
+      sessionId = k;
+    }
+  });
+  if (!sessionId) {
+    // No session found for user fbid, let's create a new one
+    sessionId = new Date().toISOString();
+    sessions[sessionId] = {fbid: fbid, context: {}};
+  }
+  return sessionId;
+};
+
+// Wit.ai bot engine actions
+const actions = {
+  say(sessionId, context, message, cb) {
+    // Our bot has something to say!
+    // Let's retrieve the Facebook user whose session belongs to
+    const recipientId = sessions[sessionId].fbid;
+    if (recipientId) {
+      // Yay, we found our recipient!
+      // Let's forward our bot response to her.
+      bot.sendMessage(recipientId, message, (err, resp, data) => {
+        if (err) throw err
+        console.log(`Oops! An error occurred while forwarding the response to ${recipientId}: ${err.message}`)
+      })
+      // Let's give the wheel back to our bot
+      cb();
+    } else {
+      console.log('Oops! Couldn\'t find user for session:', sessionId);
+      // Giving the wheel back to our bot
+      cb();
+    }
+  },
+  merge(sessionId, context, entities, message, cb) {
+    cb(context);
+  },
+  error(sessionId, context, error) {
+    console.log(error.message);
+  },
+  // implement custom actions here
+  // See https://wit.ai/docs/quickstart
+};
+
 const wit = new Wit(process.env.WIT_SERVER_ACCESS_TOKEN, actions);
 
 let bot = new Bot({
@@ -73,61 +129,6 @@ bot.on('message', (payload, reply) => {
   // })
 })
 
-// Wit.ai bot specific code
-// Setting up our bot
-
-// This will contain all user sessions.
-// Each session has an entry:
-// sessionId -> {fbid: facebookUserId, context: sessionState}
-const sessions = {};
-
-const findOrCreateSession = (fbid) => {
-  let sessionId;
-  // Let's see if we already have a session for the user fbid
-  Object.keys(sessions).forEach(k => {
-    if (sessions[k].fbid === fbid) {
-      // Yep, got it!
-      sessionId = k;
-    }
-  });
-  if (!sessionId) {
-    // No session found for user fbid, let's create a new one
-    sessionId = new Date().toISOString();
-    sessions[sessionId] = {fbid: fbid, context: {}};
-  }
-  return sessionId;
-};
-
-// Wit.ai bot engine actions
-const actions = {
-  say(sessionId, context, message, cb) {
-    // Our bot has something to say!
-    // Let's retrieve the Facebook user whose session belongs to
-    const recipientId = sessions[sessionId].fbid;
-    if (recipientId) {
-      // Yay, we found our recipient!
-      // Let's forward our bot response to her.
-      bot.sendMessage(recipientId, message, (err, resp, data) => {
-        if (err) throw err
-        console.log(`Oops! An error occurred while forwarding the response to ${recipientId}: ${err.message}`)
-      })
-      // Let's give the wheel back to our bot
-      cb();
-    } else {
-      console.log('Oops! Couldn\'t find user for session:', sessionId);
-      // Giving the wheel back to our bot
-      cb();
-    }
-  },
-  merge(sessionId, context, entities, message, cb) {
-    cb(context);
-  },
-  error(sessionId, context, error) {
-    console.log(error.message);
-  },
-  // implement custom actions here
-  // See https://wit.ai/docs/quickstart
-};
 
 let app = express()
 
