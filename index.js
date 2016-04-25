@@ -44,7 +44,7 @@ const actions = {
         // if (err) throw err
 
         reply({ message }, (err) => {
-          if (err) throw err
+          // if (err) throw err
 
           console.log(`Oops! An error occurred while forwarding the response to ${recipientId}: ${err.message}`)
         })
