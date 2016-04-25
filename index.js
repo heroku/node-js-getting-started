@@ -12,7 +12,7 @@ let bot = new Bot({
   fb_page_id: process.env.FB_PAGE_ID,
   fb_page_access_token: process.env.FB_PAGE_ACCESS_TOKEN,
   fb_page_verify_token: process.env.FB_VERIFY_TOKEN,
-  fb_app_secret: process.env.FB_APP_SECRET
+  fb_app_secret: process.env.FB_APP_SECRET,
 
   wit_app_id: process.env.WIT_APP_ID,
   wit_server_token: process.env.WIT_SERVER_ACCESS_TOKEN,
