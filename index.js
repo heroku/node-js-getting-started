@@ -54,22 +54,17 @@ const actions = {
     if (recipientId) {
       // Yay, we found our recipient!
       // Let's forward our bot response to her.
-      bot.sendMessage(recipientId, message, (err, resp) => {
-        // if (err) throw err
-
-        // reply({ message }, (err) => {
-        //   // if (err) throw err
-        //
-        //   console.log(`Oops! An error occurred while forwarding the response to ${recipientId}: ${err.message}`)
-        // })
+      bot.sendMessage(recipientId, message, (err, data) => {
         if (err) {
-          console.log(`Oops! An error occurred while forwarding the response to ${recipientId}: ${err}`)
-          console.log(err.message)
+          console.log(
+            'Oops! An error occurred while forwarding the response to',
+            recipientId,
+            ':',
+            err
+          );
         }
         // Let's give the wheel back to our bot
-        console.log(`Inside sendMessage RecipientId: ${recipientId} Message: ${message}`)
         cb();
-      })
 
     } else {
       console.log('Oops! Couldn\'t find user for session:', sessionId);
