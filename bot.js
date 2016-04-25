@@ -55,7 +55,7 @@ class Bot extends EventEmitter {
       },
       json: {
         recipient: { id: recipient },
-        message: { text: payload
+        message: { text: payload }
       }
     }, (err, res, body) => {
       if (err) return cb(err)
