@@ -81,6 +81,12 @@ const actions = {
   },
   // implement custom actions here
   // See https://wit.ai/docs/quickstart
+  ['fetch-weather'](sessionId, context, cb) {
+    // Here should go the api call, e.g.:
+    // context.forecast = apiCall(context.loc)
+    context.forecast = 'sunny';
+    cb(context);
+  },
 };
 
 const wit = new Wit(process.env.WIT_SERVER_ACCESS_TOKEN, actions);
