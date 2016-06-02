@@ -34,6 +34,7 @@
     "react-addons-test-utils": "~0.14.0"
   },
   "jest": {
+    "scriptPreprocessor": "node_modules/babel-jest",
     "unmockedModulePathPatterns": [
       "/node_modules/react",
       "/node_modules/react-dom",
