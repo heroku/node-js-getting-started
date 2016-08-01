@@ -87,6 +87,36 @@ const actions = {
     context.forecast = 'sunny';
     cb(context);
   },
+  ['login'](sessionId, context, cb) {
+    var message = {
+    "attachment": {
+      "type": "template",
+      "payload": {
+        "template_type": "generic",
+        "elements": [{
+          "title": "Welcome to M-Bank",
+          "image_url": "https://commbankbot.herokuapp.com/images/abc_logo.png",
+          "buttons": [{
+            "type": "account_link",
+            "url": "https://tartan.plaid.com/auth"
+          }]
+        }]
+      }
+    };
+
+    bot.sendMessage(recipientId, message, (err, data) => {
+      if (err) {
+        console.log(
+          'Oops! An error occurred while forwarding the response to',
+          recipientId,
+          ':',
+          err
+        );
+      }
+      // Let's give the wheel back to our bot
+      cb();
+    });
+  },
 };
 
 const wit = new Wit(process.env.WIT_SERVER_ACCESS_TOKEN, actions);
