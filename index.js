@@ -1,15 +1,12 @@
-// BASE SETUP
-// =============================================================================
+var config   = require('./app/config');
+var download = require('./app/download');
 
 //MONGO
-var mongoose   = require('mongoose');
-var config   = require('./app/config');
-
-mongoose.connect(config.mongodb);
-
-var Face     = require('./app/models/face');
-var Scrap     = require('./app/models/scrap');
-var Stat     = require('./app/models/stat');
+var mongoose        = require('mongoose');
+var Face            = require('./app/models/face');
+var FaceHelper      = require('./app/FaceHelper');
+var Scrap           = require('./app/models/scrap');
+var Stat            = require('./app/models/stat');
 
 // call the packages we need
 var express        = require('express');        // call express
@@ -21,44 +18,25 @@ var cors           = require('cors');
 var session        = require('cookie-session')
 var path           = require('path');
 var methodOverride = require('method-override');
-var flash = require('connect-flash');
-var Twitter = require('twitter');
-var fbgraph = require('fbgraph');
-var _ = require('underscore');
-var mime = require('mime');
+var flash          = require('connect-flash');
+var Twitter        = require('twitter');
+var fbgraph        = require('fbgraph');
+var _              = require('underscore');
+var mime           = require('mime');
 
 //PASSPORT
-var passport = require('passport');
+var passport         = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
-var TwitterStrategy = require('passport-twitter').Strategy;
+var TwitterStrategy  = require('passport-twitter').Strategy;
 //get file
-var fs      = require('fs');
-var request = require('request');
-var path = require('path');
-var imgDestPath = path.resolve('./public/img');
-var publicPath = path.resolve('./public');
-var gm = require('gm');
-var os = require('os');
+var fs           = require('fs');
+var request      = require('request');
+var path         = require('path');
+var imgDestPath  = path.resolve('./public/img');
+var publicPath   = path.resolve('./public');
+var gm           = require('gm');
+var os           = require('os');
 
-//download helper function
-var download = function(uri, filename, callback){
-  request.head(uri, function(err, res, body){
-    if (err) callback(err, filename);
-    else {
-        var stream = request(uri);
-        stream.pipe(
-            fs.createWriteStream(filename)
-                .on('error', function(err){
-                    callback(error, filename);
-                    stream.read();
-                })
-            )
-        .on('close', function() {
-            callback(null, filename);
-        });
-    }
-  });
-};
 
 //basic auth
 var auth = require('basic-auth');
@@ -75,21 +53,9 @@ AWS.config.update({ //endpoint: 'https://files.onemillionhumans.com.s3-website-u
                     accessKeyId: config.AWS_ACCESS_KEY_ID,
                     secretAccessKey: config.AWS_SECRET_ACCESS_KEY});
 
+
 var s3bucket = new AWS.S3();
 
-
-
-var getPreviousFace = function(number, callback){
-  Face.find({number:{$lt:number}}).limit(10).sort({'number':'desc'}).exec(function(err, faces) {
-      callback(faces[0]);
-  });
-}
-
-var getNextFace = function(number, callback){
-  Face.find({number:{$gt:number}}).limit(10).sort({'number':'asc'}).exec(function(err, faces) {
-      callback(faces[0]);
-  });
-}
 
 passport.use(new FacebookStrategy({
   clientID: config.FACEBOOK_APP_ID,
@@ -1158,9 +1124,9 @@ publicRouter.get('/success/:id', function(req, res, next) {
             face.number_id = parseInt(face.number, 10) - 1;
           }
 
-          getPreviousFace(face.number, function(previousFace){
+          FaceHelper.getPreviousFace(face.number, function(previousFace){
 
-            getNextFace(face.number, function(nextFace){
+            FaceHelper.getNextFace(face.number, function(nextFace){
               face.previous = previousFace.number;
               face.next = nextFace.number;
 
@@ -1479,6 +1445,7 @@ app.use(function(req, res, next) {
 
 // START THE SERVER
 // =============================================================================
+mongoose.connect(config.mongodb);
 app.listen(port);
 process.env['PATH'] = '/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin';
 console.log('SERVER LAUNCHED ON PORT' + port );
