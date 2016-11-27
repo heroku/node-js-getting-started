@@ -7,11 +7,15 @@
   },
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "mocha -R tap"
   },
   "dependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
     "ejs": "2.4.1",
-    "express": "4.13.3"
+    "express": "4.13.3",
+    "mocha": "^3.2.0"
   },
   "repository": {
     "type": "git",
