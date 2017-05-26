@@ -16,7 +16,7 @@ app.set('view engine', 'ejs');
 app.get('/', function(request, response) {
 	var client = new net.Socket();
 	client.connect(10000, 'localhost', function() {
-		console.log('Connected here on socket');
+		console.log('Conneted here on socket');
 		client.write('Hello, server! Love, Client.');
 	});
 
