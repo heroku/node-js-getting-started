@@ -449,8 +449,13 @@ body{
   bottom:45px;*/
   left:0;
   right:0;
-  overflow-y:auto;
-	background:#ededed;
+  background:#ededed;
+  height:260px;
+}
+
+.img-modal-body{
+  max-width: 100%;
+  height: auto;
 }
 
 .modal-login .modal-content{
