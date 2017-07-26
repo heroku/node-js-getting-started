@@ -10,7 +10,7 @@ test('responds to requests', (t) => {
   t.plan(4);
 
   // Make a request to our app
-  request('http://127.0.0.1:5000', (error, response, body) => {
+  request('http://localhost:5000', (error, response, body) => {
     // No error
     t.false(error);
     // Successful response
