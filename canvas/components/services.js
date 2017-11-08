@@ -9,7 +9,7 @@ define('components/services', ['cacheControl', 'messageBus'], function(CacheCont
 		this.getFacesByRange = function(range, callback) {
             var xhr;
 
-			var serviceQuery = "/api/faces_by_range/" + range.toString();
+			var serviceQuery = "/api/faces/range/" + range.toString();
 
 			if( cache.checkFromCache(serviceQuery) ){
 				callback(cache.getFromCache(serviceQuery));
@@ -38,7 +38,7 @@ define('components/services', ['cacheControl', 'messageBus'], function(CacheCont
 
 		this.getFaces = function(number, callback, id) {
 
-			var serviceQuery = "/api/faces_by_number/" + number;
+			var serviceQuery = "/api/faces/number/" + number;
 
 			if( cache.checkFromCache(serviceQuery) ){
 				callback(cache.getFromCache(serviceQuery), id, number);
