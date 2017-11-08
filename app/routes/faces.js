@@ -94,7 +94,6 @@ router.get('/number/:number', function(req,res){
 });
 
 router.get('/range/:range', function(req, res) {
-    console.log(req.params.range);
     var range = JSON.parse('[' + req.params.range + ']');
 
     Face.find({number:{$in:range}}).sort('number').exec(function(err, faces) {
