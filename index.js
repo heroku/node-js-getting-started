@@ -3,10 +3,10 @@ var download = require('./app/download');
 
 //MONGO
 var mongoose        = require('mongoose');
-var Face            = require('./app/models/face');
+var Face            = require('./app/models').Face;
 var FaceHelper      = require('./app/FaceHelper');
-var Scrap           = require('./app/models/scrap');
-var Stat            = require('./app/models/stat');
+var Scrap           = require('./app/models').Scrap;
+var Stat            = require('./app/models').Stat;
 
 // call the packages we need
 var express        = require('express');        // call express
@@ -23,45 +23,29 @@ var Twitter        = require('twitter');
 var fbgraph        = require('fbgraph');
 var _              = require('underscore');
 var mime           = require('mime');
+var auth           = require('basic-auth');
+var nodalytics     = require('nodalytics');
+var passport       = require('passport');
 
-//PASSPORT
-var passport         = require('passport');
-var FacebookStrategy = require('passport-facebook').Strategy;
-var TwitterStrategy  = require('passport-twitter').Strategy;
 //get file
-var fs           = require('fs');
-var request      = require('request');
-var path         = require('path');
+var imgDestPath  = path.resolve('./public/img');
 var imgDestPath  = path.resolve('./public/img');
 var publicPath   = path.resolve('./public');
 var gm           = require('gm');
 var os           = require('os');
 
-var routes = require('./app/routes');
-
-//basic auth
-var auth = require('basic-auth');
+var routes = require('./app/routes');  //all define routes
+var s3bucket = require('./app/providers/aws');  //aws provider
 
 var admins = {
   'human': { password: 'human@123' },
 };
 
-//AWS SERVICES
-var AWS = require('aws-sdk');
-AWS.config.region = 'us-west-2';
-AWS.config.update({ //endpoint: 'https://files.onemillionhumans.com.s3-website-us-west-2.amazonaws.com',
-                    Bucket: config.S3_BUCKET_NAME,
-                    accessKeyId: config.AWS_ACCESS_KEY_ID,
-                    secretAccessKey: config.AWS_SECRET_ACCESS_KEY});
 
+//mongoDb connection
+mongoose.connect(config.mongodb,{useMongoClient: true});
 
-var s3bucket = new AWS.S3();
-
-
-
-
-// configure app to use bodyParser()
-// this will let us get the data from a POST
+//express configuration
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -72,6 +56,14 @@ app.use(methodOverride());
 app.use(session({ secret: 'keyboard cat' }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(express.static('public')); //set public folder to static >> but now host in amazon s3
+app.use(flash());
+app.use(nodalytics('UA-67692075-1'));
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 /***** HANDLEBARS HELPERS ******/
 
@@ -130,28 +122,12 @@ app.engine('handlebars',
 
 app.set('view engine', 'handlebars');
 
-//set public folder to static >> but now host in amazon s3
-app.use(express.static('public'));
-
-app.use(flash());
-
-var port = config.PORT || 3000;        // set our port
 
 // ROUTES FOR OUR API
 // =============================================================================
-var router = express.Router();              // get an instance of the express Router
 var publicRouter = express.Router();
-// REGISTER OUR ROUTES -------------------------------
-// all of our routes will be prefixed with /api
 
-// more routes for our API will happen here
-
-// on routes that end in /faces
-// ----------------------------------------------------
-
-app.use(routes);
-
-// test route to make sure everything is working (accessed at GET http://localhost:8080/api)
+// root route (accessed at GET http://localhost:3000)
 publicRouter.get('/', function(req, res) {
     res.render('home', {data:{'config': config, 'currentUser': req.user}});
 });
@@ -224,62 +200,6 @@ var CronJob = require('cron').CronJob;
 
 }, null, true, 'France/Paris');*/
 
-publicRouter.get('/initnumbers/', function(req, res, next) {
-
-  Face.find(function(err, faces) {
-    var nb = 1;
-
-    for(var i = 0; i < faces.length; i++){
-      if(faces[i].lang){
-        if(faces[i].lang.length > 2){
-          if(faces[i].lang.length == 5){
-            Face.findOneAndUpdate({_id: faces[i]._id}, { $set: { lang: faces[i].lang.substring(3) }},{}, function(err){
-              //console.log('ERREUR', err);
-
-            });
-          }
-        }
-      }
-
-    }
-
-    res.json('SUCCESS');
-  });
-
-  /*Face.find(function(err, faces) {
-    console.log('FACES LENGTH', faces.length);
-    var nb = 1;
-
-    for(var i = 0; i < faces.length; i++){
-      faces[i].number = nb;
-      faces[i].previous = nb - 3;
-      faces[i].next = nb + 3;
-      faces[i].save(function(err){
-        console.log('ERREUR', err);
-      });
-      nb = nb + 3;
-    }
-
-    res.json(faces);
-  });*/
-});
-
-publicRouter.get('/initclaims/', function(req, res, next) {
-  Face.find(function(err, faces) {
-    var nb = 1;
-    var k = 1;
-    for(var i = 0; i < faces.length; i++){
-      faces[i].claim = false;
-      //faces[i].claim = (faces[i].network == 'facebook') ? true : faces[i].claim;
-      faces[i].save(function(err){
-        //console.log('ERREUR', err);
-      });
-      k = k * -1;
-    }
-
-    res.json(faces);
-  });
-});
 
 publicRouter.get('/put_to_scrap/:number', function(req, res, next) {
   Face.findOne({'number': req.params.number},function(err, face) {
@@ -300,24 +220,6 @@ publicRouter.get('/put_to_scrap/:number', function(req, res, next) {
 
 });
 
-publicRouter.get('/delete/:number', function(req, res, next) {
-  Face.remove({
-      number: req.params.number
-  }, function(err, face) {
-      if (err){
-        res.send(err);
-      }else{
-
-      }
-  });
-
-  Face.find(function(err, faces) {
-      if (err){
-        res.send(err);
-      }
-      res.render('register', {'faces': faces, 'nbFaces': (faces.length + 1)});
-  });
-});
 
 publicRouter.get('/moderate/:offset', function(req, res, next) {
 
@@ -619,9 +521,6 @@ publicRouter.get('/edit/:number', function(req, res, next) {
   });
 });
 
-var getRandomInt = function(min, max) {
-  return Math.floor(Math.random() * (max - min)) + min;
-};
 
 var getImagesForMozaic = function(number, callback){
 
@@ -691,136 +590,10 @@ var createFindImage = function(number, face, callback){
 
   });
 
-
-
-};
-
-var createMozaic = function(number, tempFaces, callback){
-
-
-  //console.log('TEMPFACES', tempFaces);
-  var color = '#e6ff34';//colorMapping.getColorByBoxNumber(number);
-
-  var im = gm;//.subClass({ imageMagick: true });
-  im(450, 450, color).drawText(10, 50, "from scratch").write(imgDestPath + '/' + number + '-temp.png', function (err1) {
-    gm()
-    .command("composite")
-    .in("-gravity", "NorthWest")
-    .in(publicPath + tempFaces[0].picture)
-    .in(imgDestPath + '/' + number + '-temp.png')
-    .write(imgDestPath + '/' + number + '-temp.png' , function (err2) {
-
-      gm()
-      .command("composite")
-      .in("-gravity", "North")
-      .in(publicPath + tempFaces[1].picture)
-      .in(imgDestPath + '/' + number + '-temp.png')
-      .write(imgDestPath + '/' + number + '-temp.png' , function (err3) {
-        gm()
-        .command("composite")
-        .in("-gravity", "NorthEast")
-        .in(publicPath + tempFaces[2].picture)
-        .in(imgDestPath + '/' + number + '-temp.png')
-        .write(imgDestPath + '/' + number + '-temp.png' , function (err4) {
-
-          gm()
-          .command("composite")
-          .in("-gravity", "West")
-          .in(publicPath + tempFaces[3].picture)
-          .in(imgDestPath + '/' + number + '-temp.png')
-          .write(imgDestPath + '/' + number + '-temp.png' , function (err5) {
-
-            gm()
-            .command("composite")
-            .in("-gravity", "Center")
-            .in(publicPath + tempFaces[4].picture)
-            .in(imgDestPath + '/' + number + '-temp.png')
-            .write(imgDestPath + '/' + number + '-temp.png' , function (err6) {
-
-              gm()
-              .command("composite")
-              .in("-gravity", "East")
-              .in(publicPath + tempFaces[5].picture)
-              .in(imgDestPath + '/' + number + '-temp.png')
-              .write(imgDestPath + '/' + number + '-temp.png' , function (err7) {
-
-                gm()
-                .command("composite")
-                .in("-gravity", "SouthWest")
-                .in(publicPath + tempFaces[6].picture)
-                .in(imgDestPath + '/' + number + '-temp.png')
-                .write(imgDestPath + '/' + number + '-temp.png' , function (err8) {
-
-                  gm()
-                  .command("composite")
-                  .in("-gravity", "South")
-                  .in(publicPath + tempFaces[7].picture)
-                  .in(imgDestPath + '/' + number + '-temp.png')
-                  .write(imgDestPath + '/' + number + '-temp.png' , function (err9) {
-
-                    gm()
-                    .command("composite")
-                    .in("-gravity", "SouthEast")
-                    .in(publicPath + tempFaces[8].picture)
-                    .in(imgDestPath + '/' + number + '-temp.png')
-                    .write(imgDestPath + '/' + number + '-temp-final.png' , function (err10) {
-
-
-                      //**************//
-                      var imgFinalMozaic = im(imgDestPath + '/' + number + '-temp-final.png');
-                      imgFinalMozaic.crop(450, 236, 0, 107);
-                      imgFinalMozaic.stream(function(err, stdout, stderr) {
-
-                        var buf = new Buffer('');
-
-                        if(stdout){
-
-                          stdout.on('data', function(data) {
-                             buf = Buffer.concat([buf, data]);
-                          });
-
-                          stdout.on('end', function(data) {
-
-                            var data = {
-                              Bucket: config.S3_BUCKET_NAME,
-                              ACL: 'public-read',
-                              Key: 'img/mozaic/' + number + '-mozaic.png',
-                              Body: buf,
-                              ContentType: mime.lookup(imgDestPath + '/' + number + '-temp-final.png')
-                            };
-
-                            s3bucket.putObject(data, function(errr, ress) {
-
-                                if(errr){
-                                  console.log(errr);
-                                  callback(errr, null);
-                                }
-                                else{
-                                  callback(null, imgDestPath + '/' + number + '-temp-final.png');
-                                }
-                              });
-                            });
-                          }
-                      });
-                      //**************//
-
-                    });
-                  });
-                });
-              });
-            });
-          });
-        });
-      });
-    });
-  });
-
-
-
 };
 
 publicRouter.get('/number/:number', function(req, res, next) {
-
+  console.log("get /number");
   /***** IMAGE manipulation *****/
   var number = parseInt(req.params.number, 10);
   getImagesForMozaic(number, function(err, image){
@@ -840,17 +613,9 @@ publicRouter.get('/number/:number', function(req, res, next) {
 
   });
 
-
-
-
-
-
-
-  /******************************/
-
 });
 
-/***********************/
+
 
 publicRouter.get('/error', function(req, res, next) {
   var errors = req.flash();
@@ -860,8 +625,6 @@ publicRouter.get('/error', function(req, res, next) {
 publicRouter.get('/share/:number', function(req, res, next) {
   res.render('share', {data:{'config': config, 'number' : req.params.number}});
 });
-var nodalytics = require('nodalytics');
-app.use(nodalytics('UA-67692075-1'));
 
 app.use(function(req, res, next) {
     config.root_url = req.protocol + "://" + req.get('host');
@@ -880,20 +643,20 @@ if(config.need_auth){
     return next();
   });
 }
-//
-app.use('/api', router);
+
+
+
+
+
+
+app.use(routes);
 app.use('/', publicRouter);
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+
 
 
 // START THE SERVER
 // =============================================================================
-mongoose.connect(config.mongodb,{useMongoClient: true});
+var port = config.PORT || 3000;        // set our port
 app.listen(port);
 process.env['PATH'] = '/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin';
-console.log('SERVER LAUNCHED ON PORT' + port );
-//console.log('ENV', process.env);
+console.log('SERVER LAUNCHED ON PORT ' + port );
