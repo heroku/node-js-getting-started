@@ -505,51 +505,6 @@ publicRouter.get('/register', function(req, res, next) {
   });
 });
 
-//LOGIN / LOGOUT
-publicRouter.get('/login/facebook',
-function(req,res,next) {
-  passport.authenticate(
-    'facebook',
-     {callbackURL: '/login/facebook/callback' }
-  )(req,res,next);
-});
-
-app.get('/login/facebook/callback',
-  passport.authenticate('facebook', {callbackURL: '/login/facebook/callback', failureRedirect: '/#login' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-
-    if(req.user.number){
-      res.redirect('/#number/' + req.user.number);
-    }else{
-      res.redirect('/#nonumber');
-    }
-
-  });
-
-publicRouter.get('/login/twitter',
-function(req,res,next) {
-  passport.authenticate(
-    'twitter',
-     {callbackURL: '/login/twitter/callback' }
-  )(req,res,next);
-});
-
-app.get('/login/twitter/callback',
-  passport.authenticate('twitter', { failureRedirect: '/#login' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/#number/' + req.user.number);
-});
-
-app.get('/logout', function(req, res){
-    //console.log("logging out");
-    req.logout();
-    res.redirect('/');
-});
-
-/****** END LOGIN / LOGOUT *********/
-
 publicRouter.get('/auth/facebook/register/:id',
 function(req,res,next) {
   passport.authenticate(
