@@ -981,7 +981,7 @@ app.use(function(req, res, next) {
 
 // START THE SERVER
 // =============================================================================
-mongoose.connect(config.mongodb);
+mongoose.connect(config.mongodb,{useMongoClient: true});
 app.listen(port);
 process.env['PATH'] = '/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin';
 console.log('SERVER LAUNCHED ON PORT' + port );
