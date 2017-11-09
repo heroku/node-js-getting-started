@@ -3,10 +3,9 @@ var router = express.Router();
 
 var faces = require('./faces');
 var login = require('./login');
+var auth = require('./auth');
 
-var prefix_url = '/api';
-
-router.use( prefix_url + '/faces', faces);
-router.use( prefix_url + '/login',login);
-
+router.use('/api/faces', faces);
+router.use('/login',login);
+router.use('/auth',auth);
 module.exports = router;
