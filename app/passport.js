@@ -1,25 +1,16 @@
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
 var TwitterStrategy = require('passport-twitter').Strategy;
-var AWS = require('aws-sdk');
 var gm = require('gm');
 var mime = require('mime');
 var fs = require('fs');
 
 var config = require('./config');
+var s3bucket = require('./providers/aws');
 var Face = require('./models').Face;
 var Stat = require('./models').Stat;
 
-AWS.config.region = 'us-west-2';
-AWS.config.update(
-    { //endpoint: 'https://files.onemillionhumans.com.s3-website-us-west-2.amazonaws.com',
-        Bucket: config.S3_BUCKET_NAME,
-        accessKeyId: config.AWS_ACCESS_KEY_ID,
-        secretAccessKey: config.AWS_SECRET_ACCESS_KEY
-    });
 
-
-var s3bucket = new AWS.S3();
 
 passport.use(new FacebookStrategy({
     clientID: config.FACEBOOK_APP_ID,
