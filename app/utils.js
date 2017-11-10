@@ -94,5 +94,37 @@ function createUserFromTwitter(twitterUserData, number, done){
         });
     }
 }
+ 
+function download(uri, filename, callback){
+    request.head(uri, function(err, res, body){
+      if (err) callback(err, filename);
+      else {
+          var stream = request(uri);
+          stream.pipe(
+              fs.createWriteStream(filename)
+                  .on('error', function(err){
+                      callback(error, filename);
+                      stream.read();
+                  })
+              )
+          .on('close', function() {
+              callback(null, filename);
+          });
+      }
+    });
+};
 
-module.exports = {createUserFromTwitter : createUserFromTwitter, addStat : addStat};
+var FaceHelper = {
+    getPreviousFace: function(number, callback){
+      Face.find({number:{$lt:number}}).limit(10).sort({'number':'desc'}).exec(function(err, faces) {
+          callback(faces[0]);
+      });
+    },
+    getNextFace: function(number, callback){
+      Face.find({number:{$gt:number}}).limit(10).sort({'number':'asc'}).exec(function(err, faces) {
+          callback(faces[0]);
+      });
+    }
+  };
+
+module.exports = {createUserFromTwitter : createUserFromTwitter, addStat : addStat, download : download, FaceHelper: FaceHelper};

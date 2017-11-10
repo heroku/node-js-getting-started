@@ -1,10 +1,8 @@
 var config   = require('./config');
-var download = require('./download');
 
 //MONGO
 var mongoose        = require('mongoose');
 var Face            = require('./models').Face;
-var FaceHelper      = require('./FaceHelper');
 var Scrap           = require('./models').Scrap;
 var Stat            = require('./models').Stat;
 
@@ -37,6 +35,9 @@ var os           = require('os');
 
 var routes = require('./routes');  //all define routes
 var s3bucket = require('./providers/aws');  //aws provider
+
+var FaceHelper = require('./utils').FaceHelper;
+var download = require('./utils').download;
 
 var admins = {
   'human': { password: 'human@123' },
