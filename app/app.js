@@ -1,12 +1,12 @@
-var config   = require('./app/config');
-var download = require('./app/download');
+var config   = require('./config');
+var download = require('./download');
 
 //MONGO
 var mongoose        = require('mongoose');
-var Face            = require('./app/models').Face;
-var FaceHelper      = require('./app/FaceHelper');
-var Scrap           = require('./app/models').Scrap;
-var Stat            = require('./app/models').Stat;
+var Face            = require('./models').Face;
+var FaceHelper      = require('./FaceHelper');
+var Scrap           = require('./models').Scrap;
+var Stat            = require('./models').Stat;
 
 // call the packages we need
 var express        = require('express');        // call express
@@ -26,6 +26,7 @@ var mime           = require('mime');
 var auth           = require('basic-auth');
 var nodalytics     = require('nodalytics');
 var passport       = require('passport');
+var logger         = require('morgan');
 
 //get file
 var imgDestPath  = path.resolve('./public/img');
@@ -34,8 +35,8 @@ var publicPath   = path.resolve('./public');
 var gm           = require('gm');
 var os           = require('os');
 
-var routes = require('./app/routes');  //all define routes
-var s3bucket = require('./app/providers/aws');  //aws provider
+var routes = require('./routes');  //all define routes
+var s3bucket = require('./providers/aws');  //aws provider
 
 var admins = {
   'human': { password: 'human@123' },
@@ -50,13 +51,11 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
 app.use(methodOverride());
 app.use(session({ secret: 'keyboard cat' }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static('public')); //set public folder to static >> but now host in amazon s3
+app.use(express.static(__dirname + '/public')); //set public folder to static >> but now host in amazon s3
 app.use(flash());
 app.use(nodalytics('UA-67692075-1'));
 app.use(function(req, res, next) {
@@ -64,6 +63,8 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
+if(process.env.NODE_ENV != "production")  //disable log for production
+  app.use(logger('dev'));
 
 /***** HANDLEBARS HELPERS ******/
 
@@ -422,11 +423,11 @@ if(config.need_auth){
 app.use(routes);
 app.use('/', publicRouter);
 
-
+module.exports = app;
 
 // START THE SERVER
-// =============================================================================
-var port = config.PORT || 3000;        // set our port
-app.listen(port);
-process.env['PATH'] = '/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin';
-console.log('SERVER LAUNCHED ON PORT ' + port );
+// // =============================================================================
+// var port = config.PORT || 3000;        // set our port
+// app.listen(port);
+// process.env['PATH'] = '/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin';
+// console.log('SERVER LAUNCHED ON PORT ' + port );
