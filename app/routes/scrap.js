@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 
 var Scrap = require('../models').Scrap;
-var twitter_provider = require('../providers/twitter');
+var twitter_provider = require('../providers/twitter').twitter_provider;
+var createUserFromTwitter = require('../utils').createUserFromTwitter;
 
 router.get('/', function(req, res, next) {
 
