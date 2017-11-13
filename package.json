@@ -4,8 +4,10 @@
   "description": "A sample Node.js app using Express 4",
   "main": "index.js",
   "scripts": {
-    "start": "npm run build-back && node app/dist/bin/www",
-    "build-back": "rimraf app/dist/ && babel app/src --out-dir app/dist --ignore app/scr/public/js,./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files",
+    "start": "nodemon --exec babel-node -- ./app/src/bin/www",
+    "start-prod" : "NODE_ENV=production node app/dist/bin/www",
+    "build-start-prod" : "npm run build-back && npm run start-prod",
+    "build-back": "rimraf app/dist/ && babel app/src --out-dir app/dist --ignore ./public/js --copy-files && ncp app/src/public/js app/dist/public/js",
     "watch": "grunt watch_server --force --silent",
     "start_no_server": "grunt watch_no_server --force --silent",
     "start_php": "grunt watch_php --force --silent",
@@ -26,6 +28,8 @@
     "grunt-contrib-watch": "^1.0.0",
     "grunt-php": "^1.5.1",
     "jshint-stylish": "^2.2.1",
+    "ncp": "^2.0.0",
+    "nodemon": "^1.12.1",
     "rimraf": "^2.6.2"
   },
   "dependencies": {
