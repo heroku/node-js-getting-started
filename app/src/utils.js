@@ -95,18 +95,18 @@ function createUserFromTwitter(twitterUserData, number, done){
 }
  
 function download(uri, filename, callback){
-    request.head(uri, function(err, res, body){
+    request.head(uri, (err, res, body) => {
       if (err) callback(err, filename);
       else {
           var stream = request(uri);
           stream.pipe(
               fs.createWriteStream(filename)
-                  .on('error', function(err){
+                  .on('error', (err) => {
                       callback(error, filename);
                       stream.read();
                   })
               )
-          .on('close', function() {
+          .on('close', () => {
               callback(null, filename);
           });
       }
@@ -114,13 +114,13 @@ function download(uri, filename, callback){
 };
 
 var FaceHelper = {
-    getPreviousFace: function(number, callback){
-      Face.find({number:{$lt:number}}).limit(10).sort({'number':'desc'}).exec(function(err, faces) {
+    getPreviousFace: (number, callback) => {
+      Face.find({number:{$lt:number}}).limit(10).sort({'number':'desc'}).exec((err, faces) => {
           callback(faces[0]);
       });
     },
-    getNextFace: function(number, callback){
-      Face.find({number:{$gt:number}}).limit(10).sort({'number':'asc'}).exec(function(err, faces) {
+    getNextFace: (number, callback) =>{
+      Face.find({number:{$gt:number}}).limit(10).sort({'number':'asc'}).exec((err, faces) => {
           callback(faces[0]);
       });
     }

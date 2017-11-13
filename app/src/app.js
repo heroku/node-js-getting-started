@@ -49,7 +49,7 @@ app.use(passport.session());
 app.use(express.static(__dirname + '/public')); //set public folder to static >> but now host in amazon s3
 app.use(flash());
 app.use(nodalytics('UA-67692075-1'));
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
