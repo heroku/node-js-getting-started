@@ -1,6 +1,6 @@
 {
   "tmp_path": "./tmp",
-  "public_path": "./app/public",
+  "public_path": "./app/src/public",
   "vendor_path": "./vendor",
   "sass_path": "./scss",
   "app_path": "./canvas",

@@ -67,11 +67,15 @@ app.use(function(req, res, next) {
 if(process.env.NODE_ENV != "production")  //disable log for production
   app.use(logger('dev'));
 
+console.log(path.resolve(__dirname,'test', 'dodo', 'dada'));
 /***** HANDLEBARS HELPERS ******/
 
 app.engine('handlebars',
   exphbs({
-    defaultLayout: 'main',
+    partialsDir  : [
+      path.resolve(__dirname,'views','partials'),
+    ],
+    defaultLayout: path.resolve(__dirname, 'views', 'layouts','main'),
     helpers: {
         'checked': function(search, list){
           if(list){
@@ -121,7 +125,7 @@ app.engine('handlebars',
     }
 
 }));
-
+app.set('views', path.resolve(__dirname, 'views'));
 app.set('view engine', 'handlebars');
 
 

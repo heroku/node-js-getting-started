@@ -1,9 +1,10 @@
 node_modules
 .idea
-public/js/scripts.js.map
-public/js/vendor.js.map
-app/config.js
-app/env.js
+
+app/src/public/js/scripts.js.map
+app/src/public/js/vendor.js.map
+app/src/config.js
+app/dist
 
 .DS_Store
 npm-debug.log
