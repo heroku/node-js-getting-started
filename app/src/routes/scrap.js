@@ -58,11 +58,11 @@ router.get('/populate/', async (req, res, next) => {
     var j = 0, boucle = 1;
     for(var i = 0; i < scrapes.length; i++){
       if(j > 99){
-        function closureScrapToFace() {
+        async function closureScrapToFace() {
           var currentList = _.uniq(scrapList);
           var scrapObjectTemp = _.uniq(scrapObject);
           var number = i + 3;
-          function insertScrapToFace(){
+          async function insertScrapToFace(){
             twitter_provider.get('users/lookup', {user_id: currentList.join(',')}, (err, users) => {
               for(var k = 0; k < users.length; k++){
                 createUserFromTwitter(users[k], number);
@@ -70,11 +70,7 @@ router.get('/populate/', async (req, res, next) => {
               }
               for(var s = 0; s < scrapObjectTemp.length; s++){
                 scrapObjectTemp[s].scraped = true;
-                try{
-                  scrapObjectTemp[s].save();
-                }catch(err){
-                  console.log('ERREUR SAVE SCRAPED', err);
-                }
+                scrapObjectTemp[s].save();
               }
             });            
           }
