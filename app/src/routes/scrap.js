@@ -8,41 +8,42 @@ const router = express.Router();
 
 router.get('/', async (req, res, next) => {
   try{
-    let tweets = twitter_provider.get('search/tweets', {q: 'rt since:2015-06-08', /*lang:'en',*/ count:100});
-    for(var i= 0; i < tweets.statuses.length; i++){
-      function closureAddScrap(){
-        var currentTweet = tweets.statuses[i];
-        function addScrap(){
-          let scrapes = await Scrap.find({twitter_id: currentTweet.user.id});
-          if(scrapes.length > 0){
-            scrapes[0].occurs = scrapes[0].occurs + 1;
-            await scrapes[0].save();
-            var scrap = new Scrap();
-            /*Name: {{this.user.name}}
-            Lang: {{this.lang}}
-            Location: {{this.user.location}}
-            Followers_count:{{this.user.followers_count}}
-            Created_at: {{this.created_at}}
-            Time_zone: {{this.user.time_zone}}
-            Verified: {{this.user.verified}}
-            Status_count: {{this.user.statuses_count}}
-            Last update: {{this.user.status.created_at}}*/
-            scrap.twitter_id= currentTweet.user.id;
-            scrap.location= currentTweet.user.location;
-            scrap.followers_count= currentTweet.user.followers_count;
-            scrap.created_at= currentTweet.created_at;
-            scrap.lang= currentTweet.lang;
-            scrap.time_zone= currentTweet.user.time_zone;
-            scrap.verified= currentTweet.user.verified;
-            scrap.statuses_count= currentTweet.user.statuses_count;
-            await scrap.save();
+    twitter_provider.get('search/tweets', {q: 'rt since:2015-06-08', /*lang:'en',*/ count:100}, (err, tweets) => {
+      for(var i= 0; i < tweets.statuses.length; i++){
+        async function closureAddScrap(){
+          var currentTweet = tweets.statuses[i];
+          async function addScrap(){
+            let scrapes = await Scrap.find({twitter_id: currentTweet.user.id});
+            if(scrapes.length > 0){
+              scrapes[0].occurs = scrapes[0].occurs + 1;
+              await scrapes[0].save();
+              var scrap = new Scrap();
+              /*Name: {{this.user.name}}
+              Lang: {{this.lang}}
+              Location: {{this.user.location}}
+              Followers_count:{{this.user.followers_count}}
+              Created_at: {{this.created_at}}
+              Time_zone: {{this.user.time_zone}}
+              Verified: {{this.user.verified}}
+              Status_count: {{this.user.statuses_count}}
+              Last update: {{this.user.status.created_at}}*/
+              scrap.twitter_id= currentTweet.user.id;
+              scrap.location= currentTweet.user.location;
+              scrap.followers_count= currentTweet.user.followers_count;
+              scrap.created_at= currentTweet.created_at;
+              scrap.lang= currentTweet.lang;
+              scrap.time_zone= currentTweet.user.time_zone;
+              scrap.verified= currentTweet.user.verified;
+              scrap.statuses_count= currentTweet.user.statuses_count;
+              await scrap.save();
+            }
           }
+          return addScrap;
         }
-        return addScrap;
+        var closure = closureAddScrap();
+        closure();
       }
-      var closure = closureAddScrap();
-      closure();
-    }
+    });
   }catch(err){
     console.log(err);
   }
@@ -62,8 +63,7 @@ router.get('/populate/', async (req, res, next) => {
           var scrapObjectTemp = _.uniq(scrapObject);
           var number = i + 3;
           function insertScrapToFace(){
-            try{
-              let users = await twitter_provider.get('users/lookup', {user_id: currentList.join(',')});
+            twitter_provider.get('users/lookup', {user_id: currentList.join(',')}, (err, users) => {
               for(var k = 0; k < users.length; k++){
                 createUserFromTwitter(users[k], number);
                 number += 3;
@@ -76,9 +76,7 @@ router.get('/populate/', async (req, res, next) => {
                   console.log('ERREUR SAVE SCRAPED', err);
                 }
               }
-            }catch(err){
-              console.log('')
-            }
+            });            
           }
           return insertScrapToFace;
         }
