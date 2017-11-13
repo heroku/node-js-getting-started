@@ -1,29 +1,29 @@
-var Twitter = require('twitter');
-var TwitterStrategy = require('passport-twitter').Strategy;
+import Twitter from 'twitter';
+import passport from 'passport-twitter';
 
-var config = require('../config');
-var createUserFromTwitter = require('../utils').createUserFromTwitter;
-var Face = require('../models').Face;
+import config from '../config';
+import {createUserFromTwitter} from '../utils';
+import {Face} from '../models';
 
-var twitter_provider = new Twitter({
+const twitter_provider = new Twitter({
     consumer_key: config.TWITTER_CONSUMER_KEY,
     consumer_secret: config.TWITTER_CONSUMER_SECRET,
     access_token_key: config.TWITTER_ACCESS_TOKEN_KEY,
     access_token_secret: config.TWITTER_ACCESS_TOKEN_SECRET
 });
 
-var twitter_strategy = new TwitterStrategy({
+const twitter_strategy = new passport.Strategy({
     consumerKey: config.TWITTER_CONSUMER_KEY,
     consumerSecret: config.TWITTER_CONSUMER_SECRET,
     callbackURL: config.TWITTER_CALLBACK_URL
   },
-  function(token, tokenSecret, profile, done) {
+  (token, tokenSecret, profile, done) => {
 
-    setTimeout(function () {
+    setTimeout(() => {
 
         var userExist = false;
 
-        Face.find({network: 'twitter', network_id: profile._json.id}, function(err, faces) {
+        Face.find({network: 'twitter', network_id: profile._json.id}, (err, faces) => {
             if(faces.length > 0)
                 userExist = true;
             if(userExist == false)
@@ -38,4 +38,4 @@ var twitter_strategy = new TwitterStrategy({
   }
 );
 
-module.exports = {twitter_provider : twitter_provider, twitter_strategy: twitter_strategy};
+export {twitter_provider, twitter_strategy};

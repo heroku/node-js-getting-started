@@ -1,43 +1,33 @@
-var config   = require('./config');
+import express from 'express';        // call express
+import exphbs from 'express-handlebars';
+import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import session from 'cookie-session';
+import path from 'path';
+import methodOverride from 'method-override';
+import flash from 'connect-flash';
+import Twitter from 'twitter';
+import fbgraph from 'fbgraph';
+import _ from 'underscore';
+import mime from 'mime';
+import auth from 'basic-auth';
+import nodalytics from 'nodalytics';
+import logger from 'morgan';
+import gm from 'gm';
+import os from 'os';
+import  mongoose from 'mongoose';
 
-//MONGO
-var mongoose        = require('mongoose');
-var Face            = require('./models').Face;
-var Scrap           = require('./models').Scrap;
-var Stat            = require('./models').Stat;
+import {Face,Scrap, Stat} from './models'
+import config from './config';
+import routes from './routes';  //all define routes
+import passport from './passport';
+import {FaceHelper, download} from'./utils';
+import s3bucket from './providers/aws';  //aws provider
 
-// call the packages we need
-var express        = require('express');        // call express
-var app            = express();
-var exphbs         = require('express-handlebars');
-var bodyParser     = require('body-parser');
-var cookieParser   = require('cookie-parser');
-var cors           = require('cors');
-var session        = require('cookie-session')
-var path           = require('path');
-var methodOverride = require('method-override');
-var flash          = require('connect-flash');
-var Twitter        = require('twitter');
-var fbgraph        = require('fbgraph');
-var _              = require('underscore');
-var mime           = require('mime');
-var auth           = require('basic-auth');
-var nodalytics     = require('nodalytics');
-var passport       = require('passport');
-var logger         = require('morgan');
-
-//get file
-var imgDestPath  = path.resolve('./public/img');
-var imgDestPath  = path.resolve('./public/img');
-var publicPath   = path.resolve('./public');
-var gm           = require('gm');
-var os           = require('os');
-
-var routes = require('./routes');  //all define routes
-var s3bucket = require('./providers/aws');  //aws provider
-
-var FaceHelper = require('./utils').FaceHelper;
-var download = require('./utils').download;
+const imgDestPath  = path.resolve('./public/img');
+const publicPath   = path.resolve('./public');
+const app = express();
 
 var admins = {
   'human': { password: 'human@123' },
@@ -67,7 +57,6 @@ app.use(function(req, res, next) {
 if(process.env.NODE_ENV != "production")  //disable log for production
   app.use(logger('dev'));
 
-console.log(path.resolve(__dirname,'test', 'dodo', 'dada'));
 /***** HANDLEBARS HELPERS ******/
 
 app.engine('handlebars',
@@ -77,7 +66,7 @@ app.engine('handlebars',
     ],
     defaultLayout: path.resolve(__dirname, 'views', 'layouts','main'),
     helpers: {
-        'checked': function(search, list){
+        'checked': (search, list) => {
           if(list){
             var listTab = JSON.parse(list);
             return _.contains(listTab, search, 0) ? 'checked="true"':'';
@@ -86,10 +75,10 @@ app.engine('handlebars',
           }
 
         },
-        'json': function(context) {
+        'json': (context) => {
           return JSON.stringify(context);
         },
-        ifCond: function(v1,operator,v2,options) {
+        ifCond: (v1,operator,v2,options) => {
               switch (operator){
                   case "==":
                       return (v1==v2)?options.fn(this):options.inverse(this);
@@ -134,7 +123,7 @@ app.set('view engine', 'handlebars');
 var publicRouter = express.Router();
 
 // root route (accessed at GET http://localhost:3000)
-publicRouter.get('/', function(req, res) {
+publicRouter.get('/', (req, res) => {
     res.render('home', {data:{'config': config, 'currentUser': req.user}});
 });
 
@@ -421,18 +410,7 @@ if(config.need_auth){
 }
 
 
-
-
-
-
 app.use(routes);
 app.use('/', publicRouter);
 
-module.exports = app;
-
-// START THE SERVER
-// // =============================================================================
-// var port = config.PORT || 3000;        // set our port
-// app.listen(port);
-// process.env['PATH'] = '/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin';
-// console.log('SERVER LAUNCHED ON PORT ' + port );
+export default app;

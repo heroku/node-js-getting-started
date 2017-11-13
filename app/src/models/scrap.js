@@ -1,9 +1,7 @@
-// app/models/face.js
+import mongoose from 'mongoose';
+const Schema = mongoose.Schema;
 
-var mongoose     = require('mongoose');
-var Schema       = mongoose.Schema;
-
-var ScrapSchema   = new Schema({
+const ScrapSchema   = new Schema({
     accountname: String,
     twitter_id: {type: String, unique: true},
     img_path: String,
@@ -18,4 +16,4 @@ var ScrapSchema   = new Schema({
     occurs: {type: Number, default: 1}
 });
 
-module.exports = mongoose.model('Scrap', ScrapSchema);
+export default mongoose.model('Scrap', ScrapSchema);

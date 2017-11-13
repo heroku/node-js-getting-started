@@ -1,6 +1,6 @@
-var AWS = require('aws-sdk');
+import AWS from 'aws-sdk';
 
-var config = require('../config');
+import config from '../config';
 
 AWS.config.region = 'us-west-2';
 AWS.config.update({
@@ -10,6 +10,6 @@ AWS.config.update({
 });
 
 
-var s3bucket = new AWS.S3();
+const s3bucket = new AWS.S3();
 
-module.exports = s3bucket;
+export default s3bucket;

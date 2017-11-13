@@ -1,15 +1,16 @@
-var express = require('express');
-var router = express.Router();
+import express from 'express';
 
-var Scrap = require('../models').Scrap;
-var twitter_provider = require('../providers/twitter').twitter_provider;
-var createUserFromTwitter = require('../utils').createUserFromTwitter;
+import {Scrap} from '../models';
+import {twitter_provider} from '../providers/twitter';
+import {createUserFromTwitter} from '../utils'
 
-router.get('/', function(req, res, next) {
+const router = express.Router();
+
+router.get('/', (req, res, next) => {
 
     var client = twitter_provider;  
   
-    client.get('search/tweets', {q: 'rt since:2015-06-08', /*lang:'en',*/ count:100}, function(error, tweets, response){
+    client.get('search/tweets', {q: 'rt since:2015-06-08', /*lang:'en',*/ count:100}, (error, tweets, response) =>{
   
        for(var i= 0; i < tweets.statuses.length; i++){
   
@@ -17,12 +18,12 @@ router.get('/', function(req, res, next) {
            var currentTweet = tweets.statuses[i];
   
            function addScrap(){
-             Scrap.find({twitter_id: currentTweet.user.id}, function(err, scrapes) {
+             Scrap.find({twitter_id: currentTweet.user.id}, (err, scrapes) => {
   
                  if(scrapes.length > 0){
                    userExist = true;
                    scrapes[0].occurs = scrapes[0].occurs + 1;
-                   scrapes[0].save(function(err) {
+                   scrapes[0].save((err) => {
                        if (err){
                          console.log('SCRAPE UPDATED', err);
                        }
@@ -48,7 +49,7 @@ router.get('/', function(req, res, next) {
                  scrap.verified= currentTweet.user.verified;
                  scrap.statuses_count= currentTweet.user.statuses_count;
   
-                 scrap.save(function(err) {
+                 scrap.save((err) => {
                      if (err){
                        console.log('ERROR SAVE NUMBER', err);
                      }
@@ -69,11 +70,11 @@ router.get('/', function(req, res, next) {
   });
   
 
-router.get('/populate/', function(req, res, next) {
+router.get('/populate/', (req, res, next) => {
     
       var client = twitter_provider;
     
-    Scrap.find({scraped: {$exists: false }}).limit(100000).exec(function(err, scrapes) {
+    Scrap.find({scraped: {$exists: false }}).limit(100000).exec((err, scrapes) => {
         var scrapList = [];
         var scrapObject = [];
         var j = 0, boucle = 1;
@@ -88,7 +89,7 @@ router.get('/populate/', function(req, res, next) {
             var number = i + 3;
 
             function insertScrapToFace() {
-                client.get('users/lookup', {user_id: currentList.join(',')}, function(error, users, response){
+                client.get('users/lookup', {user_id: currentList.join(',')}, (error, users, response) =>{
                     if(users){
                     for(var k = 0; k < users.length; k++){
                         createUserFromTwitter(users[k], number);
@@ -98,7 +99,7 @@ router.get('/populate/', function(req, res, next) {
 
                     for(var s = 0; s < scrapObjectTemp.length; s++){
                     scrapObjectTemp[s].scraped = true;
-                    scrapObjectTemp[s].save(function(erreur){
+                    scrapObjectTemp[s].save((erreur) =>{
                         if(erreur){
                         console.log('ERREUR SAVE SCRAPED', this);
                         }
@@ -128,4 +129,4 @@ router.get('/populate/', function(req, res, next) {
     res.json('works');
 });
 
-module.exports = router;
+export default router;

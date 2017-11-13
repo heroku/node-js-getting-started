@@ -1,14 +1,13 @@
-var request = require('request');
-var fs = require('fs');
-var gm = require('gm');
+import request from 'request';
+import fs from 'fs';
+import gm from 'gm';
 
-var Face = require('./models').Face;
-var Stats = require('./models').Stat;
-var s3bucket = require('./providers/aws');
+import {Face, Stats} from './models';
+import s3bucket from './providers/aws';
 
 
 function addStat(Lang){
-    Stat.find({ lang:Lang}, function(err, stats) {
+    Stat.find({ lang:Lang}, (err, stats) => {
   
       //No results create it
       if(stats.length == 0){
@@ -16,14 +15,14 @@ function addStat(Lang){
         stat.lang = Lang;
         stat.count = 1;
         // save the stat and check for errors
-        stat.save(function(errr) {
+        stat.save((errr) => {
             if (errr){
               console.log('ERROR CREATE STATS', err);
             }
         });
   
       }else{
-        Stat.findOneAndUpdate({_id: stats[0]._id}, { $set: { count: stats[0].count + 1 }},{}, function(err){
+        Stat.findOneAndUpdate({_id: stats[0]._id}, { $set: { count: stats[0].count + 1 }},{}, (err) =>{
           if (errr){
             console.log('ERREUR SAVE STATS', errr);
           }
@@ -38,19 +37,19 @@ function addStat(Lang){
 function createUserFromTwitter(twitterUserData, number, done){
     if(twitterUserData.profile_image_url){
     /****************REFACTOR**********************/
-        request.get({url: twitterUserData.profile_image_url.replace('_normal',''), encoding: 'binary'}, function (err, response, body) {
-            fs.writeFile(imgDestPath + '/' + twitterUserData.id + '.jpeg', body, 'binary', function(errorFile) {
-                s3bucket.createBucket(function() {
+        request.get({url: twitterUserData.profile_image_url.replace('_normal',''), encoding: 'binary'}, (err, response, body) => {
+            fs.writeFile(imgDestPath + '/' + twitterUserData.id + '.jpeg', body, 'binary',(errorFile) => {
+                s3bucket.createBucket(() => {
                     gm(imgDestPath + '/' + twitterUserData.id + '.jpeg')
                     .resize("150", "150")
-                    .stream(function(err, stdout, stderr) {
+                    .stream((err, stdout, stderr) => {
                         /***/
                         var buf = new Buffer('');
                         if(stdout){
-                            stdout.on('data', function(data) {
+                            stdout.on('data',(data) => {
                                 buf = Buffer.concat([buf, data]);
                             });
-                            stdout.on('end', function(data) {
+                            stdout.on('end',(data) => {
                                 var data = {
                                     Bucket: config.S3_BUCKET_NAME,
                                     ACL: 'public-read',
@@ -58,7 +57,7 @@ function createUserFromTwitter(twitterUserData, number, done){
                                     Body: buf,
                                     ContentType: mime.lookup(imgDestPath + '/' + twitterUserData.id + '.jpeg')
                                 };
-                                s3bucket.putObject(data, function(errr, res) {
+                                s3bucket.putObject(data,(errr, res) => {
                                     if(errr)
                                         return console.log(errr);
                                     var face = new Face();
@@ -127,4 +126,5 @@ var FaceHelper = {
     }
   };
 
-module.exports = {createUserFromTwitter : createUserFromTwitter, addStat : addStat, download : download, FaceHelper: FaceHelper};
+
+export default {createUserFromTwitter, addStat, download, FaceHelper};

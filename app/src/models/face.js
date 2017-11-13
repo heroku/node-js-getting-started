@@ -1,9 +1,7 @@
-// app/models/face.js
+import mongoose from 'mongoose';
+const Schema = mongoose.Schema;
 
-var mongoose     = require('mongoose');
-var Schema       = mongoose.Schema;
-
-var FaceSchema   = new Schema({
+const FaceSchema   = new Schema({
     firstname: String,
     lastname: String,
     accountname: String,
@@ -24,4 +22,4 @@ var FaceSchema   = new Schema({
     next: Number
 });
 
-module.exports = mongoose.model('Face', FaceSchema);
+export default mongoose.model('Face', FaceSchema);

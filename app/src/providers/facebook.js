@@ -1,22 +1,22 @@
-var FacebookStrategy = require('passport-facebook').Strategy;
-var gm = require('gm');
-var mime = require('mime');
-var fs = require('fs');
+import {Strategy} from 'passport-facebook';
+import gm from 'gm';
+import mime from 'mime';
+import fs from 'fs';
 
-var config = require('../config');
-var addStat = require('../utils').addStat;
-var Face = require('../models').Face;
+import config from '../config';
+import {addStat} from '../utils';
+import {Face} from '../models';
 
-var facebook_strategy = new FacebookStrategy({
+const facebook_strategy = new Strategy({
     clientID: config.FACEBOOK_APP_ID,
     clientSecret: config.FACEBOOK_APP_SECRET,
     callbackURL: config.FACEBOOK_CALLBACK_URL
-  }, function(accessToken, refreshToken, profile, done) {
-        setTimeout(function() {
+  }, (accessToken, refreshToken, profile, done) => {
+        setTimeout(() => {
   
             var userExist = false;
   
-            Face.find({network: 'facebook', network_id: profile._json.id}, function(err, faces) {
+            Face.find({network: 'facebook', network_id: profile._json.id}, (err, faces) => {
                 if(faces.length > 0){
                     userExist = true;
                     face = faces[0];
@@ -24,19 +24,19 @@ var facebook_strategy = new FacebookStrategy({
   
                 if(userExist == false){
                     var face = new Face();
-                    request.get({url: 'https://graph.facebook.com/' + profile._json.id + '/picture?type=large', encoding: 'binary'}, function (err, response, body) {
-                    fs.writeFile(imgDestPath + '/' + profile._json.id + '.jpeg', body, 'binary', function(errorFile) {
-                        s3bucket.createBucket(function() {
+                    request.get({url: 'https://graph.facebook.com/' + profile._json.id + '/picture?type=large', encoding: 'binary'}, (err, response, body) => {
+                    fs.writeFile(imgDestPath + '/' + profile._json.id + '.jpeg', body, 'binary', (errorFile) => {
+                        s3bucket.createBucket(() =>{
                             gm(imgDestPath + '/' + profile._json.id + '.jpeg')
                             .resize("150", "150")
-                            .stream(function(err, stdout, stderr) {
+                            .stream((err, stdout, stderr) => {
   
                       /***/
                                 var buf = new Buffer('');
-                                stdout.on('data', function(data) {
+                                stdout.on('data',(data) => {
                                     buf = Buffer.concat([buf, data]);
                                 });
-                                stdout.on('end', function(data) {
+                                stdout.on('end', (data) => {
                                     var data = {
                                         Bucket: config.S3_BUCKET_NAME,
                                         ACL: 'public-read',
@@ -44,7 +44,7 @@ var facebook_strategy = new FacebookStrategy({
                                         Body: buf,
                                         ContentType: mime.lookup(imgDestPath + '/' + profile._json.id + '.jpeg')
                                     };
-                                    s3bucket.putObject(data, function(errr, res) {
+                                    s3bucket.putObject(data, (errr, res) => {
                                         if(errr){
                                             return console.log(errr);
                                         }
@@ -64,7 +64,7 @@ var facebook_strategy = new FacebookStrategy({
                                         addStat(face.lang);
 
                                         // save the face and check for errors
-                                        face.save(function(err) {
+                                        face.save((err) => {
                                             if (err)
                                                 return res.send(err);
                                             return done(null, face);
@@ -83,4 +83,4 @@ var facebook_strategy = new FacebookStrategy({
         }, 0);
   });
 
-module.exports = {facebook_strategy : facebook_strategy};
+export default facebook_strategy;

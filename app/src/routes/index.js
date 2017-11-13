@@ -1,15 +1,17 @@
-var express = require("express");
-var router = express.Router();
+import express from 'express';
 
-var faces = require('./faces');
-var login = require('./login');
-var auth = require('./auth');
-var init = require('./init');
-var scrap = require('./scrap');
+import faces from './faces';
+import login from './login';
+import auth from './auth';
+import init from './init';
+import scrap from './scrap';
+
+const router = express.Router();
 
 router.use('/api/faces', faces);
 router.use('/login',login);
 router.use('/auth',auth);
 router.use('/init',init);
 router.use('/scrap',scrap);
-module.exports = router;
+
+export default router;

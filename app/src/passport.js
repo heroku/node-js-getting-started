@@ -1,17 +1,18 @@
-var passport = require('passport');
+import passport from 'passport';
 
-var twitter_strategy = require('./providers/twitter').twitter_strategy
-var facebook_strategy = require('./providers/facebook').facebook_strategy;
+import {twitter_strategy} from './providers/twitter';
+import facebook_strategy from'./providers/facebook';
+
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((obj, done) => {
+  done(null, obj);
+});
 
 passport.use(facebook_strategy);
 passport.use(twitter_strategy);
 
-passport.serializeUser(function(user, done) {
-    done(null, user);
-});
-  
-passport.deserializeUser(function(obj, done) {
-    done(null, obj);
-});
 
-module.exports = passport;
+export default passport;

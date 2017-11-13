@@ -1,11 +1,9 @@
-// app/models/face.js
-
-var mongoose     = require('mongoose');
-var Schema       = mongoose.Schema;
+import mongoose from 'mongoose';
+const Schema = mongoose.Schema;
 
 var StatSchema   = new Schema({
     lang: String,
     count: Number
 });
 
-module.exports = mongoose.model('Stat', StatSchema);
+export default mongoose.model('Stat', StatSchema);
