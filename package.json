@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon --exec babel-node -- ./app/src/bin/www",
-    "start-prod" : "NODE_ENV=production node app/dist/bin/www",
-    "build-start-prod" : "npm run build-back && npm run start-prod",
+    "start-prod": "NODE_ENV=production node app/dist/bin/www",
+    "build-start-prod": "npm run build-back && npm run start-prod",
     "build-back": "rimraf app/dist/ && babel app/src --out-dir app/dist --ignore ./public/js --copy-files && ncp app/src/public/js app/dist/public/js",
     "watch": "grunt watch_server --force --silent",
     "start_no_server": "grunt watch_no_server --force --silent",
@@ -15,7 +15,9 @@
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.0.2",
     "babel-preset-env": "^1.6.1",
+    "eslint": "^4.11.0",
     "grunt": "^1.0.1",
     "grunt-bower-concat": "^1.0.0",
     "grunt-contrib-clean": "^1.1.0",
