@@ -9,9 +9,9 @@ import scrap from './scrap';
 const router = express.Router();
 
 router.use('/api/faces', faces);
-router.use('/login',login);
-router.use('/auth',auth);
-router.use('/init',init);
-router.use('/scrap',scrap);
+router.use('/login', login);
+router.use('/auth', auth);
+router.use('/init', init);
+router.use('/scrap', scrap);
 
 export default router;

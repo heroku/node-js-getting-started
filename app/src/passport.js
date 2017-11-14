@@ -1,6 +1,6 @@
 import passport from 'passport';
 
-import {twitter_strategy} from './providers/twitter';
+import { twitter_strategy } from './providers/twitter';
 import facebook_strategy from'./providers/facebook';
 
 passport.serializeUser((user, done) => {
