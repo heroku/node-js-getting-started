@@ -64,7 +64,7 @@ const createUserFromTwitter = async(twitterUserData, number, done) => {
 };
 
 const download = async(uri, filename, callback) => {
-  request.head(uri, (err, res, body) => {
+  request.head(uri, (err) => {
     if (err) callback(err, filename);
     let stream = request(uri);
     stream.pipe(fs.createWriteStream(filename).on('error', () => {
