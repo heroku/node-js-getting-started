@@ -59,7 +59,7 @@ const createUserFromTwitter = async(twitterUserData, number, done) => {
         done(null, face);
 
     }catch(err) {
-      console.log(err);
+      done(err, null);
     }
   }
 };
