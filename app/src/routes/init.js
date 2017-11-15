@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'path';
 import gm from 'gm';
 
-import {Faces} from '../models';
+import { Face } from '../models';
 import s3bucket from '../providers/aws';
 
 const router = express.Router();

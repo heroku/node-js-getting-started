@@ -2,13 +2,13 @@ import request from 'request';
 import fs from 'fs';
 import gm from 'gm';
 
-import { Face, Stats } from './models';
+import { Face, Stat } from './models';
 import s3bucket from './providers/aws';
 
 
 const addStat = async(Lang) => {
   try{
-    const stats = await Stats.find({ lang: Lang });
+    const stats = await Stat.find({ lang: Lang });
     if(stats.length == 0) {
       let newStat = new Stats();
       newStat.lang = Lang;
