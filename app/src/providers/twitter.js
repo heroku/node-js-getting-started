@@ -29,7 +29,7 @@ const twitter_strategy = new passport.Strategy({
         done(null, faces[0], { message: 'User login' });
       }
     }catch(err) {
-      console.log(err);
+      done(err, null);
     }
   }, 0);
 });

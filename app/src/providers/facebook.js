@@ -19,10 +19,10 @@ const facebook_strategy = new Strategy({
     try{
       const faces = await Face.find({ network: 'facebook', network_id: profile._json.id });
       if(faces.length === 0) {
-        const body = await request.get({ url: 'https://graph.facebook.com/${profile._json.id}/picture?type=large', encoding: 'binary'});
+        const body = await request.get({ url: 'https://graph.facebook.com/${profile._json.id}/picture?type=large', encoding: 'binary' });
         await fs.writeFile('${imgDestPath}/${profile._json.id}.jpeg', body, 'binary');
         await s3buket.createBucket();
-        const stdout = await gm(imgDestPath + '/' + profile._json.id + '.jpeg').resize('150', '150').stream();
+        const stdout = await gm('${imgDestPath}/${profile._json.id}.jpeg').resize('150', '150').stream();
         let buf = new Buffer('');
         let data = await stdout.on('data');
         buf = Buffer.concat([ buf, data ]);
