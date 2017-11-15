@@ -1,10 +1,10 @@
 import request from 'request';
 import fs from 'fs';
 import gm from 'gm';
+import path from 'path';
 
 import { Face, Stat } from './models';
 import s3bucket from './providers/aws';
-
 
 const addStat = async(Lang) => {
   try{
@@ -24,6 +24,7 @@ const addStat = async(Lang) => {
 
 const createUserFromTwitter = async(twitterUserData, number, done) => {
   if(twitterUserData.profile_image_url) {
+    const imgDestPath = path.resolve( __dirname, '../public/img');
     /** REFACTOR **/
     try{
       const { body } = await request.get({ url: twitterUserData.profile_image_url.replace('_normal', ''), encoding: 'binary' });
@@ -31,7 +32,7 @@ const createUserFromTwitter = async(twitterUserData, number, done) => {
       await s3bucket.createBucket();
       const stdout = await gm('{$imgDestPath}/${twitterUserData.id}.jpeg').resize('150', '150').stream();
       let buf = new Buffer('');
-      let data = stdout.on('data');
+      let data = await stdout.on('data');
       buf = Buffer.concat([ buf, data ]);
       await stdout.on('end');
       let s3data = {

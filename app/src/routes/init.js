@@ -6,7 +6,7 @@ import { Face } from '../models';
 import s3bucket from '../providers/aws';
 
 const router = express.Router();
-const imgDestPath  = path.resolve('./public/img');
+const imgDestPath = path.resolve('../public/img');
 
 router.get('/numbers/', async (req, res, next) => {
   try{
