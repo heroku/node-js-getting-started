@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+  web:
+    build: .
+    command: node index.js
+    ports:
+      - "8080:5000"
+    depends_on:
+      - db
