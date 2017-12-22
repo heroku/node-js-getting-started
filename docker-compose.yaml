@@ -3,10 +3,33 @@ version: '3'
 services:
   db:
     image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: user
+      POSTGRES_DB: clproject
+      PGDATA: /var/lib/db
+    volumes:
+      - data-volume:/var/lib/db
+    ports:
+      - "5432:5432"
+  flyway:
+    image: boxfuse/flyway
+    command: migrate
+    depends_on:
+      - db
+    links:
+      - db
+    volumes:
+      - ./database-schema/sql:/flyway/sql
+      - ./dev/conf:/flyway/conf
   web:
-    build: .
-    command: node index.js
     ports:
       - "8080:5000"
     depends_on:
       - db
+    links:
+      - db
+
+volumes:
+  data-volume:
