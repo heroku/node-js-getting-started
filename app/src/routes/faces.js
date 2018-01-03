@@ -86,7 +86,7 @@ router.get('/number/:number', async(req, res) => {
 
 router.get('/range/:range', async(req, res) => {
   try{
-    let range = JSON.parse('[${req.params.range}]');
+    let range = JSON.parse(`[${req.params.range}]`);
     let faces = await Face.find({ number: { $in: range } }).sort('number').exec();
     let tempFaces = _.clone(faces);
     for(var i = 0; i < range.length; i++) {
