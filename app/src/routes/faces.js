@@ -103,7 +103,7 @@ router.get('/range/:range', async(req, res) => {
 
 router.get('/search/:query', async(req, res) => {
   try{
-    let regex = new RegExp('.*${req.params.query}.*', 'i');
+    let regex = new RegExp(`.*${req.params.query}.*`, 'i');
     let testInt = parseInt(req.params.query);
     let query = _.isNaN(testInt) ? { accountname: regex } : { number: req.params.query };
     let faces = await Face.find(query).limit(config.faces_by_search).exec();
