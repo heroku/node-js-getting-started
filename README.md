@@ -1,10 +1,20 @@
-# node-js-getting-started
+# Code Louisvile fsjs-project
 
-A barebones Node.js app using [Express 4](http://expressjs.com/).
 
-This application supports the [Getting Started with Node on Heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs) article - check it out.
+Right now, this is a barebones Node.js app using [Express 4](http://expressjs.com/), built from  [Getting Started with Node on Heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs).
+
+Over the course of the Winter 2018 session, this will become the JavaScript backend and frontend powering our fitness tracker site!
 
 ## Running Locally
+
+
+
+### With Database
+
+
+
+### Without Database
+_In most cases, you probably won't need to run the app without the database, but in case you do, you can start it up directly via `npm`._
 
 Make sure you have [Node.js](http://nodejs.org/) and the [Heroku CLI](https://cli.heroku.com/) installed.
 
