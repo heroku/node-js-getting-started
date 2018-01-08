@@ -1,0 +1,3 @@
+[submodule "database-schema"]
+	path = database-schema
+	url = https://github.com/codelouisvilleproject/database-schema
