@@ -2,10 +2,11 @@ FROM node:carbon
 
 WORKDIR /app
 
-COPY package.json /app
+COPY package.json .
 RUN npm install
-COPY . /app
 
-CMD node index.js
+COPY . .
 
 EXPOSE 5000/TCP
+
+CMD node index.js
