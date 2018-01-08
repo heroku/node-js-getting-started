@@ -33,6 +33,10 @@ services:
 
   web:
     build: .
+    image: web:latest
+    volumes:
+      - .:/app
+      - /app/node_modules
     ports:
       - "8080:5000"
     depends_on:
