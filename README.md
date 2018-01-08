@@ -58,7 +58,7 @@ The first two will stay running until we stop them. The last container will run,
                                  │
                     └ ─ ─ ─ ─ ─ ─ 
 ```
-_made with the awesome [Monodraw](https://monodraw.helftone.com)`
+_made with the awesome [Monodraw](https://monodraw.helftone.com)_
 
 In order to run these containers and set up networking between them, we use another tool - Docker Compose. Docker Compose uses a configuration file that tells it what containers should be run together and how they should be allowed to communicate.
 
