@@ -20,7 +20,7 @@ setTimeout(function () {
 	  operatorsAliases: false
 	});
 
-	const Car = sequelize.define('cars', {
+	const Car = sequelize.define('cars_test', {
 	  license_plate: Sequelize.STRING,
 	  color: Sequelize.STRING
 	}, {
