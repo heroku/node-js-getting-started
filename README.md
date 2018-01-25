@@ -16,7 +16,7 @@ Over the course of the Winter 2018 session, this will become the JavaScript back
 To run the JavaScript API, which is written using Node, and a Postgres database, you can do the following:
 
 * Clone this repo
-* From the repo directory on your machine, update the `database-schema` submodule with this command: `git submodule update`
+* From the repo directory on your machine, update the `database-schema` submodule with this command: `git submodule update --init`
 * Build the Docker images: `docker-compose build`
 * Start the database and Node server using Docker compose: `docker-compose up`
 
