@@ -18,8 +18,6 @@ function hello(req, res) {
 }
 
 function hello_database(req, res) {
-  console.log(db.codeLouisvilleStudents);
-  console.log('HELLO')
   db.codeLouisvilleStudents
     .findOne({ where: {name: 'Code Louisville Student One'} })
     .then(s => {

@@ -8,6 +8,6 @@ RUN npm install -g nodemon
 
 COPY . .
 
-EXPOSE 5000/TCP
+EXPOSE 8080/TCP
 
 CMD nodemon
