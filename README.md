@@ -16,10 +16,11 @@ Over the course of the Winter 2018 session, this will become the JavaScript back
 To run the JavaScript API, which is written using Node, and a Postgres database, you can do the following:
 
 * Clone this repo
-* From the repo directory on your machine, update the `database-schema` submodule with this command: `git submodule update --init`
-* Start the database and Node server using Docker compose: `docker compose up`
+* From the repo directory on your machine, update the `database-schema` submodule with this command: `git submodule update`
+* Build the Docker images: `docker-compose build`
+* Start the database and Node server using Docker compose: `docker-compose up`
 
-You should now be able to access the the JavaScript API at [http://127.0.0.1:8080](http://127.0.0.1:8080). If you're running Docker Toolbox on Windows (instead of Docker for Windows), which may be required if you use a Home edition of Windows, the address will be [http://192.168.99.100:8080](http://192.168.99.100:8080).
+You should now be able to access the the JavaScript API's docs at [http://127.0.0.1:8080/docs](http://127.0.0.1:8080/docs). If you're running Docker Toolbox on Windows (instead of Docker for Windows), which may be required if you use a Home edition of Windows, the address will be [http://192.168.99.100:8080/docs](http://192.168.99.100:8080/docs).
 
 ### Local Architecture & Tools
 
@@ -89,3 +90,18 @@ If you look in the `sql` directory of the `database-schema` project, you'll see 
 Take a look at the files; you'll see standard SQL just like you learned about in Treehouse.
 
 The `database-schema` repo is linked to the `javascript-api` repo as a git submodule. All you need to know about a submodule is that it allows one git repository to be included in another. This is how we include `database-schema` in both the `javascript-api` and `dotnet-project` projects. The one thing you need to know about submodules is that to get the latest version, you need to run `git submodule update --remote` from the `javascript-api` directory. If we, as a team, ever modify the database schema, you'll need to run this command before running `docker-compose up` so that Flyway has the latest version of the migration scripts to apply.
+
+### Developing REST Endpoints
+
+We are using [Swagger](https://swagger.io) to document our API.
+
+We will define our REST endpoints in a Swagger YAML file, and then we will code corresponding endpoints in our Node Express application.
+
+By using Swagger, we will be given a nice UI to test our endpoints and our clients (e.g. our front end Vue app) will be able to automatically generate clients to talk to our API.
+
+To get started with Swagger:
+
+* Install swagger: `npm install -g swagger`
+* From our project directory, start the Swagger editor: `swagger project edit`
+  * This is where you'll make changes to our API spec
+* Create endpoints corresponding to what you defined in Swagger
