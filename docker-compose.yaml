@@ -35,8 +35,7 @@ services:
     build: .
     image: web:latest
     volumes:
-      - .:/app
-      - /app/node_modules
+      - .:/data/app
     ports:
       - "8080:8080"
     depends_on:
