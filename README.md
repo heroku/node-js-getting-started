@@ -1,8 +1,5 @@
 # Code Louisvile JS API
 
-
-Right now, this is a barebones Node.js app using [Express 4](http://expressjs.com/), built from  [Getting Started with Node on Heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs).
-
 Over the course of the Winter 2018 session, this will become the JavaScript backend and frontend powering our fitness tracker site!
 
 ## Running Locally
