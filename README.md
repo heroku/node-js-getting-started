@@ -1,6 +1,6 @@
 # Code Louisvile JS API
 
-Over the course of the Winter 2018 session, this will become the JavaScript backend and frontend powering our fitness tracker site!
+This is my new text. It should create a conflict.
 
 ## Running Locally
 
