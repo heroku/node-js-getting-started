@@ -24,13 +24,8 @@ paths:
     get:
       description: Returns json list of users
       # used as the method name of the controller
-      operationId: usersGet
-      parameters:
-        - name: name
-          in: query
-          description: The name of the person to whom to say hello
-          required: false
-          type: string
+      operationId: getUsers
+      parameters: []
       responses:
         "200":
           description: Success
@@ -46,7 +41,7 @@ paths:
     # binds a127 app logic to a route
     x-swagger-router-controller: helloWorld
     get:
-      description: Returns a result from the databasse
+      description: Returns a result from the database
       # used as the method name of the controller
       operationId: hello_database
       responses:
@@ -116,12 +111,11 @@ definitions:
     properties:
       message:
         type: string
-  HelloWorldResponse:
-    required:
-      - userList
-    properties:
-      userList:
-        type: object
+  GetUsersResponse:
+    type: "object"
+    properties: 
+      $ref: {}
+      # how do I use the User object already defined?
   DatabaseTestResponse:
     required:
       - message
