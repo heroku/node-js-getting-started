@@ -106,7 +106,11 @@ definitions:
         type: "string"
       lastName:
         type: "string"
-      birthDate:
+      birthMonth:
+        type: "integer"
+      birthDay:
+        type: "integer"
+      birthYear:
         type: "integer"
       email:
         type: "string"
