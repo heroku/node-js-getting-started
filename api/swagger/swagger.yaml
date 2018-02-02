@@ -24,7 +24,7 @@ paths:
     get:
       description: Returns json list of users
       # used as the method name of the controller
-      operationId: getUsers
+      operationId: usersGet
       parameters: []
       responses:
         "200":
