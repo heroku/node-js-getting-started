@@ -6,9 +6,9 @@ module.exports = function(sequelize, DataTypes){
     		type: Sequelize.BIGINT,
     		primaryKey: true
     	},
-  		firtName: Sequelize.STRING,
-  		lastName: Sequelize.STRING,
-		birthDate: Sequelize.DATEONLY, //Pass a string like 02-20-1972
+  		firstName: { type: Sequelize.STRING, field: 'firstname' },
+  		lastName: { type: Sequelize.STRING, field: 'lastname' },
+		birthDate: { type: Sequelize.DATEONLY, field: 'birthdate' }, //Pass a string like 02-20-1972
 		email: Sequelize.STRING
 	},
 	{
