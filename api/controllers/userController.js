@@ -17,24 +17,29 @@ function usersPut(req, res) {
   var birthDate = util.format('%d-%d-%d,', birthYear, birthMonth, birthDay);
   var email = req.swagger.params.userInfo.value.email;
 
-  db.users.findById(id)
-    .then(user => {
-      if (user) {
-        user.update({
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          birthDate: Date.parse(birthDate)
-        })
-        .then(() => {
-          res.json({'message': 'OK'})
-        })
-        .catch(err => {
-          console.log(err);
-          res.json({'message': 'ERROR'}, 500)
-        });
-      } else {
-        res.json({'message': 'User not found'}, 400)
-      }
-    });
+  if ((birthDay>0 && birthDay<32) && (birthMonth>0 && birthMonth<13) && birthYear) {
+
+    db.users.findById(id)
+      .then(user => {
+        if (user) {
+          user.update({
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            birthDate: Date.parse(birthDate)
+          })
+          .then(() => {
+            res.json({'message': 'OK'});
+          })
+          .catch(err => {
+            console.log(err);
+            res.json({'message': 'ERROR'}, 500);
+          });
+        } else {
+          res.json({'message': 'User not found'}, 400);
+        }
+      });
+  } else {
+    res.json({'message': 'Wrong date'}, 400);
+  }
 }
