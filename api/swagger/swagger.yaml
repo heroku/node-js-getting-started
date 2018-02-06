@@ -30,8 +30,9 @@ paths:
         "200":
           description: Success
           schema:
-            # a pointer to a definition
-            $ref: "#/definitions/GetUsersResponse"
+            type: array
+            items:
+              $ref: "#/definitions/User"
         # responses may fall through to errors
         default:
           description: Error
@@ -111,11 +112,6 @@ definitions:
     properties:
       message:
         type: string
-  GetUsersResponse:
-    type: "object"
-    properties: 
-      $ref: {}
-      # how do I use the User object already defined?
   DatabaseTestResponse:
     required:
       - message

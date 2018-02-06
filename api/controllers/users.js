@@ -30,5 +30,15 @@ function users_database(req, res) {
 }
 
 function usersGet(req, res) {
-  //define variables expected in users object
+  var users = [
+    {
+      id: 123,
+      firstName: Matt
+    },
+    {
+      id: 124,
+      firstName: Ernesto
+        }
+  ];
+  res.json(users)
 }
