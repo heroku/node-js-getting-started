@@ -62,8 +62,61 @@ paths:
             $ref: "#/definitions/ErrorResponse"
   /swagger:
     x-swagger-pipe: swagger_raw
+  /users/{userId}:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: userController
+    put:
+      description: Handles PUT for /users in order to update an existing user
+      # used as the method name of the controller
+      operationId: usersPut
+      parameters:
+        - name: userId
+          in: path
+          description: The id of the user to update
+          required: true
+          type: integer
+          format: int64
+        - name: userInfo
+          in: body
+          description: The user information to update
+          required: true
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/User"
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/UsersResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"    
 # complex objects have schema definitions
 definitions:
+  User:
+    type: "object"
+    properties:
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      birthMonth:
+        type: "integer"
+      birthDay:
+        type: "integer"
+      birthYear:
+        type: "integer"
+      email:
+        type: "string"
+  UsersResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
   HelloWorldResponse:
     required:
       - message

@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const CodeLouisvilleStudents = require('./models/codeLouisvilleStudents')
+const usersModel = require('./models/user')
 
 const sequelize = new Sequelize('clproject', 'user', 'password', {
   host: 'db',
@@ -15,8 +15,8 @@ const sequelize = new Sequelize('clproject', 'user', 'password', {
   operatorsAliases: false
 });
 
-var codeLouisvilleStudents = CodeLouisvilleStudents(sequelize)
+var users = usersModel(sequelize)
 
 module.exports = {
-  codeLouisvilleStudents: codeLouisvilleStudents 
+  users: users 
 }
