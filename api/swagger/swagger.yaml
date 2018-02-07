@@ -60,7 +60,7 @@ paths:
     x-swagger-pipe: swagger_raw
   /users/{userId}:
     # binds a127 app logic to a route
-    x-swagger-router-controller: users
+    x-swagger-router-controller: userController
     put:
       description: Handles PUT for /users in order to update an existing user
       # used as the method name of the controller
@@ -95,14 +95,15 @@ definitions:
   User:
     type: "object"
     properties:
-      id:
-        type: "integer"
-        format: "int64"
       firstName:
         type: "string"
       lastName:
         type: "string"
-      birthDate:
+      birthMonth:
+        type: "integer"
+      birthDay:
+        type: "integer"
+      birthYear:
         type: "integer"
       email:
         type: "string"
