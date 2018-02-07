@@ -20,7 +20,7 @@ produces:
 paths:
   /users:
     # binds a127 app logic to a route
-    x-swagger-router-controller: users
+    x-swagger-router-controller: userController
     get:
       description: Returns json list of users
       # used as the method name of the controller

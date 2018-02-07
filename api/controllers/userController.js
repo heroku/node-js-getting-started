@@ -5,6 +5,7 @@ var db = require('../db')
 
 module.exports = {
   usersPut: usersPut,
+  usersGet: usersGet,
   users_database: users_database
 };
 
@@ -33,4 +34,27 @@ function users_database(req, res) {
     .then(s => {
       res.json(util.format('Found this student in DB: %s', s.name));
     })
+}
+
+function usersGet(req, res) {
+  var data = [
+    {
+      firstName: "Matt",
+    lastName: "string",
+    birthMonth: 9,
+    birthDay: 13,
+    birthYear: 1985,
+    email: "string"
+    },
+    {
+      firstName: "Matt",
+    lastName: "string",
+    birthMonth: 9,
+    birthDay: 13,
+    birthYear: 1985,
+    email: "string"
+    }
+
+  ];
+  res.json(data);
 }
