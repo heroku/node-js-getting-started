@@ -37,24 +37,9 @@ function users_database(req, res) {
 }
 
 function usersGet(req, res) {
-  var data = [
-    {
-      firstName: "Matt",
-    lastName: "string",
-    birthMonth: 9,
-    birthDay: 13,
-    birthYear: 1985,
-    email: "string"
-    },
-    {
-      firstName: "Matt",
-    lastName: "string",
-    birthMonth: 9,
-    birthDay: 13,
-    birthYear: 1985,
-    email: "string"
-    }
-
-  ];
-  res.json(data);
+  db.users
+    .findAll()
+    .then(users => {
+      res.json(users)
+    })
 }
