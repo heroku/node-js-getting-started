@@ -1,8 +1,26 @@
 const Sequelize = require('sequelize');
+var urlApi = require('url');
 const usersModel = require('./models/user')
 
-const sequelize = new Sequelize('clproject', 'user', 'password', {
-  host: 'db',
+var hostname = 'db';
+var username = 'user';
+var password = 'password';
+var database = 'clproject';
+var port = 5432;
+
+databaseUrl = process.env.DATABASE_URL || '';
+if (databaseUrl != '') {
+  parsedDatabaseUrl = urlApi(databaseUrl);
+  hostname = parsedDatabaseUrl.hostname;
+  username = parsedDatabaseUrl.username;
+  password = parsedDatabaseUrl.password;
+  database = parsedDatabaseUrl.pathname;
+  port = parsedDatabaseUrl.port;
+}
+
+const sequelize = new Sequelize(database, username, password, {
+  port: port,
+  host: hostname,
   dialect: 'postgres',
   pool: {
     max: 5,
