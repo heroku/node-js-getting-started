@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-var urlApi = require('url');
+const url = require('url');
 const usersModel = require('./models/user')
 
 var hostname = 'db';
@@ -10,7 +10,7 @@ var port = 5432;
 
 databaseUrl = process.env.DATABASE_URL || '';
 if (databaseUrl != '') {
-  parsedDatabaseUrl = urlApi(databaseUrl);
+  const parsedDatabaseUrl = url.parse(databaseUrl);
   hostname = parsedDatabaseUrl.hostname;
   username = parsedDatabaseUrl.username;
   password = parsedDatabaseUrl.password;
