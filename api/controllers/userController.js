@@ -4,7 +4,9 @@ var util = require('util');
 var db = require('../db')
 
 module.exports = {
-  usersPut: usersPut
+  usersPut: usersPut,
+  usersGet: usersGet,
+  users_database: users_database
 };
 
 function usersPut(req, res) {
@@ -42,4 +44,12 @@ function usersPut(req, res) {
   } else {
     res.json({'message': 'Wrong date'}, 400);
   }
+}
+
+function usersGet(req, res) {
+  db.users
+    .findAll()
+    .then(users => {
+      res.json(users)
+    })
 }

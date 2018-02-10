@@ -4,9 +4,9 @@ info:
   title: Code Louisville Winter 2018 JS-API
 # during dev, should point to your local machine
 host: localhost:8080
-# basePath prefixes all resource paths 
+# basePath prefixes all resource paths
 basePath: /
-# 
+#
 schemes:
   # tip: remove http to make production-grade
   - http
@@ -18,25 +18,21 @@ consumes:
 produces:
   - application/json
 paths:
-  /hello:
+  /users:
     # binds a127 app logic to a route
-    x-swagger-router-controller: helloWorld
+    x-swagger-router-controller: userController
     get:
-      description: Returns 'Hello' to the caller
+      description: Returns json list of users
       # used as the method name of the controller
-      operationId: hello
-      parameters:
-        - name: name
-          in: query
-          description: The name of the person to whom to say hello
-          required: false
-          type: string
+      operationId: usersGet
+      parameters: []
       responses:
         "200":
           description: Success
           schema:
-            # a pointer to a definition
-            $ref: "#/definitions/HelloWorldResponse"
+            type: array
+            items:
+              $ref: "#/definitions/User"
         # responses may fall through to errors
         default:
           description: Error
@@ -46,7 +42,7 @@ paths:
     # binds a127 app logic to a route
     x-swagger-router-controller: helloWorld
     get:
-      description: Returns a result from the databasse
+      description: Returns a result from the database
       # used as the method name of the controller
       operationId: hello_database
       responses:
@@ -93,7 +89,7 @@ paths:
         default:
           description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"    
+            $ref: "#/definitions/ErrorResponse"
 # complex objects have schema definitions
 definitions:
   User:
@@ -112,12 +108,6 @@ definitions:
       email:
         type: "string"
   UsersResponse:
-    required:
-      - message
-    properties:
-      message:
-        type: string
-  HelloWorldResponse:
     required:
       - message
     properties:
