@@ -5,8 +5,7 @@ var db = require('../db')
 
 module.exports = {
   usersPut: usersPut,
-  usersGet: usersGet,
-  users_database: users_database
+  usersGet: usersGet
 };
 
 function usersPut(req, res) {
