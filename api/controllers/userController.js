@@ -51,4 +51,8 @@ function usersGet(req, res) {
     .then(users => {
       res.json(users)
     })
+    .catch(err => {
+      console.log(err);
+      res.json({'message': 'ERROR'}, 500);
+    })
 }
