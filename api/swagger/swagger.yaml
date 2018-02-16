@@ -32,7 +32,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: "#/definitions/User"
+              $ref: "#/definitions/UserWithId"
         # responses may fall through to errors
         default:
           description: Error
@@ -112,6 +112,17 @@ definitions:
       - message
     properties:
       message:
+        type: string
+  UserWithId:
+    type: object
+    properties:
+      firstName:
+        type: string
+      lastName:
+        type: string
+      birthdate:
+        type: string
+      email:
         type: string
   DatabaseTestResponse:
     required:

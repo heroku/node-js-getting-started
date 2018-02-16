@@ -47,7 +47,14 @@ function usersPut(req, res) {
 
 function usersGet(req, res) {
   db.users
-    .findAll()
+    .findAll({
+      attributes: [
+        'firstName',
+        'lastName',
+        'birthDate',
+        'email'
+      ]
+    })
     .then(users => {
       res.json(users)
     })
