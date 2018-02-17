@@ -114,16 +114,12 @@ definitions:
       message:
         type: string
   UserWithId:
-    type: object
-    properties:
-      firstName:
-        type: string
-      lastName:
-        type: string
-      birthdate:
-        type: string
-      email:
-        type: string
+    allOf: 
+      - $ref: "#/definitions/User"
+      - type: object
+        properties:
+          id: 
+            type: integer
   DatabaseTestResponse:
     required:
       - message
