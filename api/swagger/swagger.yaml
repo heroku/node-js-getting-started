@@ -17,56 +17,63 @@ consumes:
 # format of the responses to the client (Accepts)
 produces:
   - application/json
+securityDefinitions:
+  basicAuth:
+    type: basic
+  bearerAuth:
+    type: apiKey
+    name: Authorization
+    in: header
+#security:
+#  - bearerAuth: []
 paths:
-  /hello:
-    # binds a127 app logic to a route
-    x-swagger-router-controller: helloWorld
-    get:
-      description: Returns 'Hello' to the caller
-      # used as the method name of the controller
-      operationId: hello
-      parameters:
-        - name: name
-          in: query
-          description: The name of the person to whom to say hello
-          required: false
-          type: string
-      responses:
-        "200":
-          description: Success
-          schema:
-            # a pointer to a definition
-            $ref: "#/definitions/HelloWorldResponse"
-        # responses may fall through to errors
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /database-test:
-    # binds a127 app logic to a route
-    x-swagger-router-controller: helloWorld
-    get:
-      description: Returns a result from the databasse
-      # used as the method name of the controller
-      operationId: hello_database
-      responses:
-        "200":
-          description: Success
-          schema:
-            # a pointer to a definition
-            $ref: "#/definitions/DatabaseTestResponse"
-        # responses may fall through to errors
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/ErrorResponse"
   /swagger:
     x-swagger-pipe: swagger_raw
+  /login:
+    x-swagger-router-controller: userController
+    post:
+      operationId: usersLogin
+#      security:
+#        - basicAuth: []
+      parameters:
+        - name: userCredentials
+          in: body
+          description: The user credentials (user name and password)
+          required: true
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/Credentials"        
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/UsersToken"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"    
+  /logout:
+    x-swagger-router-controller: userController
+    post:
+      operationId: usersLogout
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/UsersResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"    
   /users/{userId}:
     # binds a127 app logic to a route
     x-swagger-router-controller: userController
     put:
       description: Handles PUT for /users in order to update an existing user
+      security:
+        - bearerAuth: []
       # used as the method name of the controller
       operationId: usersPut
       parameters:
@@ -89,6 +96,10 @@ paths:
           schema:
             # a pointer to a definition
             $ref: "#/definitions/UsersResponse"
+        "401":
+          description: Authentication information is missing or invalid
+          schema:
+            $ref: "#/definitions/UnauthorizedError"
         # responses may fall through to errors
         default:
           description: Error
@@ -111,19 +122,27 @@ definitions:
         type: "integer"
       email:
         type: "string"
+  Credentials:
+    type: "object"
+    properties:
+      email:
+        type: "string"
+      password:
+        type: "string"
+        format: password
   UsersResponse:
     required:
       - message
     properties:
       message:
         type: string
-  HelloWorldResponse:
+  UsersToken:
     required:
-      - message
+      - token
     properties:
-      message:
-        type: string
-  DatabaseTestResponse:
+      token:
+        type: "string"
+  UnauthorizedError:
     required:
       - message
     properties:

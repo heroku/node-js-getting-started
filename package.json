@@ -8,7 +8,9 @@
   "license": "",
   "main": "app.js",
   "dependencies": {
+    "bcrypt": "^1.0.3",
     "express": "^4.12.3",
+    "express-authentication": "^0.3.2",
     "pg": "^6.4.2",
     "pg-hstore": "^2.3.2",
     "sequelize": "^4.32.1",
