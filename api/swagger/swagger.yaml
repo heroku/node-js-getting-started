@@ -1,0 +1,134 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Code Louisville Winter 2018 JS-API
+# during dev, should point to your local machine
+host: localhost:8080
+# basePath prefixes all resource paths
+basePath: /
+#
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+  /users:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: userController
+    get:
+      description: Returns json list of users
+      # used as the method name of the controller
+      operationId: usersGet
+      parameters: []
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/UserWithId"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /database-test:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: helloWorld
+    get:
+      description: Returns a result from the database
+      # used as the method name of the controller
+      operationId: hello_database
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/DatabaseTestResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /swagger:
+    x-swagger-pipe: swagger_raw
+  /users/{userId}:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: userController
+    put:
+      description: Handles PUT for /users in order to update an existing user
+      # used as the method name of the controller
+      operationId: usersPut
+      parameters:
+        - name: userId
+          in: path
+          description: The id of the user to update
+          required: true
+          type: integer
+          format: int64
+        - name: userInfo
+          in: body
+          description: The user information to update
+          required: true
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/User"
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/UsersResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+# complex objects have schema definitions
+definitions:
+  User:
+    type: "object"
+    properties:
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      birthMonth:
+        type: "integer"
+      birthDay:
+        type: "integer"
+      birthYear:
+        type: "integer"
+      email:
+        type: "string"
+  UsersResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+  UserWithId:
+    allOf: 
+      - $ref: "#/definitions/User"
+      - type: object
+        properties:
+          id: 
+            type: integer
+  DatabaseTestResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string

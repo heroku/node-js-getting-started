@@ -1,31 +1,28 @@
 {
-  "name": "node-js-getting-started",
-  "version": "0.3.0",
-  "description": "A sample Node.js app using Express 4",
-  "engines": {
-    "node": "8.9.1"
-  },
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js",
-    "test": "node test.js"
-  },
+  "name": "123",
+  "version": "0.0.1",
+  "private": true,
+  "description": "New Swagger API Project",
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "main": "app.js",
   "dependencies": {
-    "ejs": "^2.5.6",
-    "express": "^4.15.2"
+    "express": "^4.12.3",
+    "pg": "^6.4.2",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^4.32.1",
+    "swagger-express-mw": "^0.1.0",
+    "swagger-tools": "^0.10.3",
+    "swagger-ui": "^3.9.2",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
-    "request": "^2.81.0",
-    "tape": "^4.7.0"
+    "should": "^7.1.0",
+    "supertest": "^1.0.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/heroku/node-js-getting-started"
-  },
-  "keywords": [
-    "node",
-    "heroku",
-    "express"
-  ],
-  "license": "MIT"
+  "scripts": {
+    "start": "node app.js",
+    "test": "swagger project test"
+  }
 }
