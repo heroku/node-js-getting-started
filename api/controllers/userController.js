@@ -2,10 +2,12 @@
 
 var util = require('util');
 var db = require('../db')
+var bcrypt = require('bcrypt');
 
 module.exports = {
   usersPut: usersPut,
   usersLogin: usersLogin,
+  usersSignup: usersSignup,
   usersLogout: usersLogout
 };
 
@@ -45,13 +47,80 @@ function usersPut(req, res) {
   }
 }
 
+
 function usersLogin(req, res) {
   var email    = req.swagger.params.userCredentials.value.email;
   var password = req.swagger.params.userCredentials.value.password;
   console.log("Username: " + email);
   console.log("Password: " + password);
-  res.json({'token': 'OK'}, 200);
+  if (email && password) {
+    db.users.findOne({ where: {email: email} })
+      .then(user => {
+        if (user) {
+          bcrypt.compare(password, user.hashword , function(error, result) {
+            if (result === true) {
+              //Create token
+              var token = email + time + user.id;
+              //Store token in auth_token table
+
+              //Return token
+              res.status(200).json({'token': `${token}`});
+            } else {
+              console.log('ERROR (email or) password is wrong');
+              res.json({'message': 'ERROR (email or) password is wrong'}, 401);
+            }
+          });
+        } else {
+          res.json({'message': 'User not found'}, 400);
+          //TODO go to /setup instead?
+        }
+    });
+  } else {
+    res.json({'message': 'ERROR email are password are required'}, 401);
+  }
+}
+
+function usersSignup(req, res) {
+  var email    = req.swagger.params.userInfo.value.email;
+  var password = req.swagger.params.userInfo.value.password;
+  console.log("Username: " + email);
+  console.log("Password: " + password);
+  if (email && password) {
+    bcrypt.hash(password, 10, function(err, hash) {
+      if (err) {
+        console.log(err);
+        res.json({'message': 'ERROR (email or) password is wrong'}, 401);
+      } else {
+        user.hashword = hash;
+        //Create user and store hash
+
+        //Create token
+        var token = email + time + user.id;
+        //Store token in auth_token table
+
+        //Return token
+        res.status(200).json({'token': `${token}`});
+      }
+    });
+  } else {
+    res.json({'message': 'ERROR email and password are required'}, 401);
+  }
+  res.redirect('/login');
 }
 
 function usersLogout(req, res) {
+  var email    = req.swagger.params.userCredentials.value.email;
+  console.log("Username: " + email);
+  if (email) {
+    db.users.findOne({ where: {email: email} })
+      .then(user => {
+        if (user) {
+          //Delete token from auth_token table
+        } else {
+          res.json({'message': 'User not found'}, 400);
+        }
+    });
+  } else {
+    res.json({'message': 'ERROR email is required'}, 401);
+  }
 }

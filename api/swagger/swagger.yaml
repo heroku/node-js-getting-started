@@ -18,23 +18,39 @@ consumes:
 produces:
   - application/json
 securityDefinitions:
-  basicAuth:
-    type: basic
   bearerAuth:
     type: apiKey
     name: Authorization
     in: header
-#security:
-#  - bearerAuth: []
 paths:
   /swagger:
     x-swagger-pipe: swagger_raw
+  /signup:
+    x-swagger-router-controller: userController
+    post:
+      operationId: usersSignup
+      parameters:
+        - name: userInfo
+          in: body
+          description: The user information to register
+          required: true
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/User"
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/UsersToken"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"    
   /login:
     x-swagger-router-controller: userController
     post:
       operationId: usersLogin
-#      security:
-#        - basicAuth: []
       parameters:
         - name: userCredentials
           in: body
@@ -56,6 +72,8 @@ paths:
   /logout:
     x-swagger-router-controller: userController
     post:
+      security:
+        - bearerAuth: []
       operationId: usersLogout
       responses:
         "200":
@@ -122,6 +140,9 @@ definitions:
         type: "integer"
       email:
         type: "string"
+      password:
+        type: "string"
+        format: password
   Credentials:
     type: "object"
     properties:
