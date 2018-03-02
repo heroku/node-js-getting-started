@@ -4,6 +4,7 @@ module.exports = function(sequelize, DataTypes){
     return sequelize.define('users', {
     	id: {
     		type: Sequelize.BIGINT,
+			autoIncrement: true,
     		primaryKey: true
     	},
   		firstName: { type: Sequelize.STRING, field: 'firstname' },

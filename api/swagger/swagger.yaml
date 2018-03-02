@@ -42,7 +42,12 @@ paths:
           description: Success
           schema:
             # a pointer to a definition
-            $ref: "#/definitions/UsersToken"
+            $ref: "#/definitions/UsersResponse"
+        "401":
+          description: Authentication information is missing or invalid
+          schema:
+            $ref: "#/definitions/UnauthorizedError"
+        # responses may fall through to errors
         default:
           description: Error
           schema:
