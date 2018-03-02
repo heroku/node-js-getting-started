@@ -4,9 +4,9 @@ info:
   title: Code Louisville Winter 2018 JS-API
 # during dev, should point to your local machine
 host: localhost:8080
-# basePath prefixes all resource paths 
+# basePath prefixes all resource paths
 basePath: /
-# 
+#
 schemes:
   # tip: remove http to make production-grade
   - http
@@ -47,11 +47,29 @@ paths:
           description: Authentication information is missing or invalid
           schema:
             $ref: "#/definitions/UnauthorizedError"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /users:
+    x-swagger-router-controller: userController
+    get:
+      description: Returns json list of users
+      # used as the method name of the controller
+      operationId: usersGet
+      parameters: []
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/UserWithId"
         # responses may fall through to errors
         default:
           description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"    
+            $ref: "#/definitions/ErrorResponse"
   /login:
     x-swagger-router-controller: userController
     post:
@@ -63,7 +81,7 @@ paths:
           required: true
           schema:
             # a pointer to a definition
-            $ref: "#/definitions/Credentials"        
+            $ref: "#/definitions/Credentials"
       responses:
         "200":
           description: Success
@@ -91,7 +109,6 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"    
   /users/{userId}:
-    # binds a127 app logic to a route
     x-swagger-router-controller: userController
     put:
       description: Handles PUT for /users in order to update an existing user
@@ -127,7 +144,7 @@ paths:
         default:
           description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"    
+            $ref: "#/definitions/ErrorResponse"
 # complex objects have schema definitions
 definitions:
   User:
@@ -174,6 +191,13 @@ definitions:
     properties:
       message:
         type: string
+  UserWithId:
+    allOf: 
+      - $ref: "#/definitions/User"
+      - type: object
+        properties:
+          id: 
+            type: integer
   ErrorResponse:
     required:
       - message

@@ -7,11 +7,31 @@ var crypto = require('crypto');
 const uuidV4 = require('uuid/v4');
 
 module.exports = {
+  usersGet: usersGet,
   usersPut: usersPut,
   usersLogin: usersLogin,
   usersSignup: usersSignup,
   usersLogout: usersLogout
 };
+
+function usersGet(req, res) {
+  db.users
+    .findAll({
+      attributes: [
+        'firstName',
+        'lastName',
+        'birthDate',
+        'email'
+      ]
+    })
+    .then(users => {
+      res.json(users)
+    })
+    .catch(err => {
+      console.log(err);
+      res.json({'message': 'ERROR'}, 500);
+    })
+}
 
 function usersPut(req, res) {
   var id = req.swagger.params.userId.value;
@@ -24,6 +44,7 @@ function usersPut(req, res) {
   var email = req.swagger.params.userInfo.value.email;
 
   if ((birthDay>0 && birthDay<32) && (birthMonth>0 && birthMonth<13) && birthYear) {
+
     db.users.findById(id)
       .then(user => {
         if (user) {
@@ -48,8 +69,7 @@ function usersPut(req, res) {
     res.json({'message': 'Wrong date'}, 401);
   }
 }
-
-
+  
 function usersLogin(req, res) {
   var email    = req.swagger.params.userCredentials.value.email;
   var password = req.swagger.params.userCredentials.value.password;
@@ -63,6 +83,7 @@ function usersLogin(req, res) {
               //Create token
               var token = uuidV4();
               //Store token in auth_token table
+
               //Return token
               res.status(200).json({'token': `${token}`});
             } else {
@@ -136,4 +157,22 @@ function usersLogout(req, res) {
   } else {
     res.json({'message': 'ERROR email is required'}, 401);
   }
+}
+function usersGet(req, res) {
+  db.users
+    .findAll({
+      attributes: [
+        'firstName',
+        'lastName',
+        'birthDate',
+        'email'
+      ]
+    })
+    .then(users => {
+      res.json(users)
+    })
+    .catch(err => {
+      console.log(err);
+      res.json({'message': 'ERROR'}, 500);
+    })
 }
