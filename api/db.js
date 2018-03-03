@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 const url = require('url');
-const usersModel = require('./models/user')
+const usersModel = require('./models/user');
+const authtokensModel = require('./models/authtokens');
 
 var hostname = 'db';
 var username = 'user';
@@ -33,8 +34,10 @@ const sequelize = new Sequelize(database, username, password, {
   operatorsAliases: false
 });
 
-var users = usersModel(sequelize)
+var users = usersModel(sequelize);
+var authtokens = authtokensModel(sequelize);
 
 module.exports = {
-  users: users 
+  users: users,
+  authtokens: authtokens 
 }
