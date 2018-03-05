@@ -103,6 +103,14 @@ paths:
       security:
         - bearerAuth: []
       operationId: usersLogout
+      parameters:
+        - name: userToken
+          in: body
+          description: Disable access providing a valid token
+          required: true
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/UsersToken"
       responses:
         "200":
           description: Success

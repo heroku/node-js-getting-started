@@ -81,11 +81,25 @@ function usersLogin(req, res) {
             .then(result => {
              if (result) {
               //Create token
-              var token = uuidV4();
+              let token = uuidV4();
               //Store token in auth_token table
-
-              //Return token
-              res.status(200).json({'token': `${token}`});
+              db.tokens.create({
+                  id: user.id,
+                  token: token
+                })
+                .then(item => {
+                  if (item) {
+                    //Return token
+                    res.status(200).json({'token': item.token});
+                  } else {
+                    console.log('Token registration failed');
+                    res.json({'message': 'ERROR'}, 500);
+                  }
+                })
+                .catch(err => {
+                  console.log(err);
+                  res.json({'message': 'ERROR'}, 500);
+              });
             } else {
               console.log('ERROR (email or) password is wrong');
               res.json({'message': 'ERROR (email or) password is wrong'}, 401);
@@ -150,21 +164,27 @@ function usersSignup(req, res) {
 }
 
 function usersLogout(req, res) {
-  var email    = req.swagger.params.userCredentials.value.email;
-  console.log("Username: " + email);
-  if (email) {
-    db.users.findOne({ where: {email: email} })
-      .then(user => {
-        if (user) {
-          //Delete token from auth_token table
+  // var email    = req.swagger.params.userCredentials.value.email;
+  let token = "";
+  console.log("LOGOUT: " + token);
+  if (token) {
+    //Delete token from auth_token table
+    db.tokens.destroy({ where: {token: token} })
+      .then(item => {
+        if (item) {
         } else {
-          res.json({'message': 'User not found'}, 401);
+          res.json({'message': 'Token not found.'}, 401);
         }
-    });
+      })
+      .catch(err => {
+          console.log(err);
+          res.json({'message': 'Server error.'}, 500);
+      });
   } else {
-    res.json({'message': 'ERROR email is required'}, 401);
+    res.json({'message': 'Invalid token.'}, 401);
   }
 }
+
 function usersGet(req, res) {
   db.users
     .findAll({
