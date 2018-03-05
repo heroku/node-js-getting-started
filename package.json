@@ -8,13 +8,18 @@
   "license": "",
   "main": "app.js",
   "dependencies": {
-    "express": "^4.12.3",
+    "bcrypt": "^1.0.3",
+    "crypto": "^1.0.1",
+    "express": "^4.16.2",
+    "express-authentication": "^0.3.2",
+    "peer": "^0.2.8",
     "pg": "^6.4.2",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^4.32.1",
+    "sequelize": "^4.34.0",
     "swagger-express-mw": "^0.1.0",
     "swagger-tools": "^0.10.3",
     "swagger-ui": "^3.9.2",
+    "uuid": "^3.2.1",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
