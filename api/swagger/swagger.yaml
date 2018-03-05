@@ -43,6 +43,11 @@ paths:
           schema:
             # a pointer to a definition
             $ref: "#/definitions/UsersResponse"
+        "400":
+          description: User already in database
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/UsersResponse"
         "401":
           description: Authentication information is missing or invalid
           schema:

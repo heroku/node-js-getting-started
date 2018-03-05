@@ -112,30 +112,37 @@ function usersSignup(req, res) {
   var password   = req.swagger.params.userInfo.value.password;
   //TODO add other profile fields
 
-  if (email && password && ((birthDay>0 && birthDay<32) && (birthMonth>0 && birthMonth<13) && birthYear)) {
+  if (email && password && firstName && lastName && ((birthDay>0 && birthDay<32) && (birthMonth>0 && birthMonth<13) && birthYear)) {
     //Create hash from password
     bcrypt.hash(password, 10)
       .then(hash => {
-        //Create user and store hash
-        db.users.create({
-            firstName: firstName,
-            lastName: lastName,
-            birthDate: Date.parse(birthDate),
-            email: email,
-            hashword: hash
+        //Find if already exists or create user and store hash
+        db.users.findOrCreate({
+            where: {email: email},
+            defaults: {
+              firstName: firstName,
+              lastName: lastName,
+              birthDate: Date.parse(birthDate),
+              hashword: hash
+            }
           })
-          .then(user => {
-            if (user) {
-              res.json({'message': 'OK'}, 200);
+          .spread(function(user, created){
+            // this userId was either created or found depending upon whether the argment 'created' is true or false
+            if (created) {
+              if (user) {
+                res.json({'message': 'User created.'}, 200);
+              } else {
+                console.log('User creation failed');
+                res.json({'message': 'Server error.'}, 500);
+              }
             } else {
-              console.log('User creation failed');
-              res.json({'message': 'ERROR'}, 500);
+              res.json({'message': 'Email already in use.'}, 400);
             }
           })
           .catch(err => {
             console.log(err);
-            res.json({'message': 'ERROR'}, 500);
-          });
+            res.json({'message': 'Server error.'}, 500);
+        });
       });
   } else {
     res.status(401).json({'message': 'ERROR email and password are required'});
