@@ -12,14 +12,17 @@ var config = {
   appRoot: __dirname // required config
 };
 config.swaggerSecurityHandlers = {
-  bearerAuth: function securityHandler1(req, authOrSecDef, scopesOrApiKey, cb) {
+  bearerAuth: function securityHandler1(req, authOrSecDef, scopesOrApiKey, callback) {
     // your security code
-    console.log('auth:' + req.headers.authorization);
-    console.log("authOrSecDef: " + authOrSecDef);
-    console.log("IT IS bearerAuth: " + scopesOrApiKey);
-    cb();
+    console.log('bearerAuth:req.headers.authorization:' + req.headers.authorization);
+    console.log("bearerAuth:token: " + scopesOrApiKey);
+    // Look-up the token table
+    // If the token, get the user object.
+    // add the user object to the request.
+    callback();
   }
 };
+//Alternate implementation
 SwaggerTools.initializeMiddleware(SwaggerDoc, function (middleware) {
   // Setup security handlers
   app.use(middleware.swaggerSecurity({

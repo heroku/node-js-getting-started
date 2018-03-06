@@ -84,17 +84,11 @@ function usersLogin(req, res) {
               let token = uuidV4();
               //Store token in auth_token table
               db.tokens.create({
-                  id: user.id,
+                  user_id: user.id,
                   token: token
                 })
                 .then(item => {
-                  if (item) {
-                    //Return token
-                    res.status(200).json({'token': item.token});
-                  } else {
-                    console.log('Token registration failed');
-                    res.json({'message': 'ERROR'}, 500);
-                  }
+                    res.status(200).json({'token': token});
                 })
                 .catch(err => {
                   console.log(err);
@@ -106,7 +100,8 @@ function usersLogin(req, res) {
             }
           });
         } else {
-          res.json({'message': 'User not found'}, 401);
+          console.log('User not found', 401);
+          res.json({'message': 'ERROR (email or) password is wrong'}, 401);
           //TODO go to /signup instead?
         }
     });
@@ -143,12 +138,7 @@ function usersSignup(req, res) {
           .spread(function(user, created){
             // this userId was either created or found depending upon whether the argment 'created' is true or false
             if (created) {
-              if (user) {
-                res.json({'message': 'User created.'}, 200);
-              } else {
-                console.log('User creation failed');
-                res.json({'message': 'Server error.'}, 500);
-              }
+              res.json({'message': 'User created.'}, 200);
             } else {
               res.json({'message': 'Email already in use.'}, 400);
             }
@@ -164,9 +154,7 @@ function usersSignup(req, res) {
 }
 
 function usersLogout(req, res) {
-  // var email    = req.swagger.params.userCredentials.value.email;
-  let token = "";
-  console.log("LOGOUT: " + token);
+  let token = req.headers.authorization;
   if (token) {
     //Delete token from auth_token table
     db.tokens.destroy({ where: {token: token} })
