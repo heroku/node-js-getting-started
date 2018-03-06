@@ -24,15 +24,6 @@ config.swaggerSecurityHandlers = {
 };
 //Alternate implementation
 SwaggerTools.initializeMiddleware(SwaggerDoc, function (middleware) {
-  // Setup security handlers
-  app.use(middleware.swaggerSecurity({
-    bearerAuth: function(req, def, scopes, callback) {
-      // API KEY LOGIC HERE
-      console.log("IT IS THE API KEY!!!");
-      // IF SUCCESSFUL
-      callback();
-    }
-  }));
 
   // Serve the Swagger documents and Swagger UI
   app.use(middleware.swaggerUi());
