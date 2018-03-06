@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const AuthToken = require('authtokens');
+const AuthToken = require('./authtokens');
 
 module.exports = function(sequelize, DataTypes){
     const User = sequelize.define('users', {
@@ -15,6 +15,6 @@ module.exports = function(sequelize, DataTypes){
 	{
 		timestamps: false,
 	});
-  User.hasMany(AuthTokens, {foreignKey: 'user_id', sourceKey: 'id'});
+  User.hasMany(AuthToken, {foreignKey: 'user_id', sourceKey: 'id'});
   return User;
 };
