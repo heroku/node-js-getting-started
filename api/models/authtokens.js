@@ -1,16 +1,18 @@
 const Sequelize = require('sequelize');
-const User = require('./users');
+const User = require('./user');
+
 
 
 module.exports = function(sequelize, DataTypes){
-  const AuthToken = sequelize.define('authtokens', {
-    token: { type: Sequelize.STRING},
-    expiration: { type: Sequelize.DATE},
-  },
-  {
-    timestamps: false
-  });
+    var Authtokens = sequelize.define('authtokens', {
+        token: { type: Sequelize.STRING, primaryKey: true, field: 'token' },
+        expiration: { type: Sequelize.DATE, primaryKey: true, field: 'expiration' },
+    	  user_id: { type: Sequelize.BIGINT, primaryKey: true, field: 'user_id' },
+	},
+	{
+		timestamps: false,
+	});
+  AuthTokens.belongsTo(models.user, {foreignKey: 'user_id', targetKey: 'id'});
 
-  AuthToken.belongsTo(User, {foreignKey: 'user_id', targetKey: 'id'});
-  return AuthToken;
+  return Authtokens;
 };
