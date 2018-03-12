@@ -43,30 +43,35 @@ function usersPut(req, res) {
   var birthDate = util.format('%d-%d-%d,', birthYear, birthMonth, birthDay);
   var email = req.swagger.params.userInfo.value.email;
 
-  if ((birthDay>0 && birthDay<32) && (birthMonth>0 && birthMonth<13) && birthYear) {
-
-    db.users.findById(id)
-      .then(user => {
-        if (user) {
-          user.update({
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            birthDate: Date.parse(birthDate)
-          })
-          .then(() => {
-            res.json({'message': 'OK'}, 200);
-          })
-          .catch(err => {
-            console.log(err);
-            res.json({'message': 'ERROR'}, 500);
-          });
-        } else {
-          res.json({'message': 'User not found'}, 401);
-        }
-      });
+  //authorisation: check if ids match
+  if (id != req.user.id) {
+    res.json({'message': 'User not authorized'}, 403);
   } else {
-    res.json({'message': 'Wrong date'}, 401);
+    if ((birthDay>0 && birthDay<32) && (birthMonth>0 && birthMonth<13) && birthYear) {
+
+      db.users.findById(id)
+        .then(user => {
+          if (user) {
+            user.update({
+              firstName: firstName,
+              lastName: lastName,
+              email: email,
+              birthDate: Date.parse(birthDate)
+            })
+            .then(() => {
+              res.json({'message': 'OK'}, 200);
+            })
+            .catch(err => {
+              console.log(err);
+              res.json({'message': 'ERROR'}, 500);
+            });
+          } else {
+            res.json({'message': 'User not found'}, 401);
+          }
+        });
+    } else {
+      res.json({'message': 'Wrong date'}, 401);
+    }
   }
 }
 
@@ -160,6 +165,7 @@ function usersLogout(req, res) {
     db.authtokens.destroy({ where: {token: token} })
       .then(item => {
         if (item) {
+          res.json({'message': 'User logged out.'}, 200);
         } else {
           res.json({'message': 'Token not found.'}, 401);
         }

@@ -5,6 +5,7 @@ var SwaggerExpress = require('swagger-express-mw');
 var SwaggerTools = require('swagger-tools');
 var YAML = require('yamljs');
 var SwaggerDoc = YAML.load('api/swagger/swagger.yaml');
+var db = require('./api/db');
 
 module.exports = app; // for testing
 
@@ -17,9 +18,26 @@ config.swaggerSecurityHandlers = {
     console.log('bearerAuth:req.headers.authorization:' + req.headers.authorization);
     console.log("bearerAuth:token: " + scopesOrApiKey);
     // Look-up the token table
-    // If the token, get the user object.
-    // add the user object to the request.
-    callback();
+    let token = scopesOrApiKey.split(' ')[1];
+    db.authtokens.findOne({ where: {token: token} })
+      .then(token => {
+          // add the user object to the request.
+        console.log("token_auth:token: " + token);
+        if (token) {
+          req.user = token.user;
+          callback();
+          return;
+        } else {
+          console.log('ERROR token not found');
+          req.res.json({'message': 'ERROR in user authenticate'}, 401);
+          req.res.end();
+          return;
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        res.json({'message': 'ERROR'}, 500);
+      });
   }
 };
 
