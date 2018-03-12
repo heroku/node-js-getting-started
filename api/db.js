@@ -41,11 +41,4 @@ var authtokens = authtokensModel(sequelize);
 module.exports = {
   users: users,
   authtokens: authtokens
-=======
-var tokens = tokensModel(sequelize);
-
-module.exports = {
-  users: users,
-  tokens: tokens
->>>>>>> master
-}
+};
