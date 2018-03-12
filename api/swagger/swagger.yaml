@@ -17,9 +17,41 @@ consumes:
 # format of the responses to the client (Accepts)
 produces:
   - application/json
+securityDefinitions:
+  bearerAuth:
+    type: apiKey
+    name: Authorization
+    in: header
 paths:
+  /swagger:
+    x-swagger-pipe: swagger_raw
+  /signup:
+    x-swagger-router-controller: userController
+    post:
+      operationId: usersSignup
+      parameters:
+        - name: userInfo
+          in: body
+          description: The user information to register
+          required: true
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/User"
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/UsersResponse"
+        "401":
+          description: Authentication information is missing or invalid
+          schema:
+            $ref: "#/definitions/UnauthorizedError"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /users:
-    # binds a127 app logic to a route
     x-swagger-router-controller: userController
     get:
       description: Returns json list of users
@@ -38,31 +70,50 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
-  /database-test:
-    # binds a127 app logic to a route
-    x-swagger-router-controller: helloWorld
-    get:
-      description: Returns a result from the database
-      # used as the method name of the controller
-      operationId: hello_database
+  /login:
+    x-swagger-router-controller: userController
+    post:
+      operationId: usersLogin
+      parameters:
+        - name: userCredentials
+          in: body
+          description: The user credentials (user name and password)
+          required: true
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/Credentials"
       responses:
         "200":
           description: Success
           schema:
             # a pointer to a definition
-            $ref: "#/definitions/DatabaseTestResponse"
-        # responses may fall through to errors
+            $ref: "#/definitions/UsersToken"
         default:
           description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
-  /swagger:
-    x-swagger-pipe: swagger_raw
+            $ref: "#/definitions/ErrorResponse"    
+  /logout:
+    x-swagger-router-controller: userController
+    post:
+      security:
+        - bearerAuth: []
+      operationId: usersLogout
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/UsersResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"    
   /users/{userId}:
-    # binds a127 app logic to a route
     x-swagger-router-controller: userController
     put:
       description: Handles PUT for /users in order to update an existing user
+      security:
+        - bearerAuth: []
       # used as the method name of the controller
       operationId: usersPut
       parameters:
@@ -85,6 +136,10 @@ paths:
           schema:
             # a pointer to a definition
             $ref: "#/definitions/UsersResponse"
+        "401":
+          description: Authentication information is missing or invalid
+          schema:
+            $ref: "#/definitions/UnauthorizedError"
         # responses may fall through to errors
         default:
           description: Error
@@ -107,7 +162,30 @@ definitions:
         type: "integer"
       email:
         type: "string"
+      password:
+        type: "string"
+        format: password
+  Credentials:
+    type: "object"
+    properties:
+      email:
+        type: "string"
+      password:
+        type: "string"
+        format: password
   UsersResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+  UsersToken:
+    required:
+      - token
+    properties:
+      token:
+        type: "string"
+  UnauthorizedError:
     required:
       - message
     properties:
@@ -120,12 +198,6 @@ definitions:
         properties:
           id: 
             type: integer
-  DatabaseTestResponse:
-    required:
-      - message
-    properties:
-      message:
-        type: string
   ErrorResponse:
     required:
       - message
