@@ -41,8 +41,8 @@ config.swaggerSecurityHandlers = {
   }
 };
 
-if (process.env.PROD) {
-  SwaggerDoc['host'] = 'https://2qvihxpp77.execute-api.us-east-2.amazonaws.com';
+if (!process.env.PROD) {
+  SwaggerDoc['host'] = '2qvihxpp77.execute-api.us-east-2.amazonaws.com';
   SwaggerDoc['basePath'] = '/Staging'
 }
 
