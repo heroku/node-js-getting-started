@@ -17,6 +17,7 @@ consumes:
 # format of the responses to the client (Accepts)
 produces:
   - application/json
+# follow RFC 6750, section 2.1.  Authorization Request Header Field
 securityDefinitions:
   bearerAuth:
     type: apiKey
@@ -60,6 +61,8 @@ paths:
     x-swagger-router-controller: userController
     get:
       description: Returns json list of users
+      security:
+        - bearerAuth: []
       # used as the method name of the controller
       operationId: usersGet
       parameters: []
@@ -153,6 +156,10 @@ paths:
           description: Authentication information is missing or invalid
           schema:
             $ref: "#/definitions/UnauthorizedError"
+        "403":
+          description: Access forbidden
+          schema:
+            $ref: "#/definitions/ErrorResponse"
         # responses may fall through to errors
         default:
           description: Error
