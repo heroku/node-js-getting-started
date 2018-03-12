@@ -69,7 +69,7 @@ function usersPut(req, res) {
     res.json({'message': 'Wrong date'}, 401);
   }
 }
-  
+
 function usersLogin(req, res) {
   var email    = req.swagger.params.userCredentials.value.email;
   var password = req.swagger.params.userCredentials.value.password;
@@ -83,7 +83,7 @@ function usersLogin(req, res) {
               //Create token
               let token = uuidV4();
               //Store token in auth_token table
-              db.tokens.create({
+              db.authtokens.create({
                   user_id: user.id,
                   token: token
                 })
@@ -157,7 +157,7 @@ function usersLogout(req, res) {
   let token = req.headers.authorization;
   if (token) {
     //Delete token from auth_token table
-    db.tokens.destroy({ where: {token: token} })
+    db.authtokens.destroy({ where: {token: token} })
       .then(item => {
         if (item) {
         } else {

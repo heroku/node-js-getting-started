@@ -1,7 +1,8 @@
 const Sequelize = require('sequelize');
 
+
 module.exports = function(sequelize, DataTypes){
-    return sequelize.define('users', {
+    var Users =  sequelize.define('users', {
     	id: {
     		type: Sequelize.BIGINT,
 			autoIncrement: true,
@@ -15,5 +16,9 @@ module.exports = function(sequelize, DataTypes){
 	},
 	{
 		timestamps: false,
-	})
+	});
+  Users.associate = function(models) {
+    models.Users.hasMany(models.AuthTokens);
+  };
+  return Users;
 };

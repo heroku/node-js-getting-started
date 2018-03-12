@@ -1,7 +1,8 @@
 const Sequelize = require('sequelize');
-const url = require('url');;
+const url = require('url');
 const usersModel = require('./models/user');
-const tokensModel = require('./models/token')
+const authtokensModel = require('./models/authtokens');
+
 
 var hostname = 'db';
 var username = 'user';
@@ -35,9 +36,9 @@ const sequelize = new Sequelize(database, username, password, {
 });
 
 var users = usersModel(sequelize);
-var tokens = tokensModel(sequelize);
- 
+var authtokens = authtokensModel(sequelize);
+
 module.exports = {
   users: users,
-  tokens: tokens
-}
+  authtokens: authtokens
+};
