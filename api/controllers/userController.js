@@ -81,18 +81,27 @@ function usersLogin(req, res) {
             .then(result => {
              if (result) {
               //Create token
-              var token = uuidV4();
+              let token = uuidV4();
               //Store token in auth_token table
-
-              //Return token
-              res.status(200).json({'token': `${token}`});
+              db.tokens.create({
+                  user_id: user.id,
+                  token: token
+                })
+                .then(item => {
+                    res.status(200).json({'token': token});
+                })
+                .catch(err => {
+                  console.log(err);
+                  res.json({'message': 'ERROR'}, 500);
+              });
             } else {
               console.log('ERROR (email or) password is wrong');
               res.json({'message': 'ERROR (email or) password is wrong'}, 401);
             }
           });
         } else {
-          res.json({'message': 'User not found'}, 401);
+          console.log('User not found', 401);
+          res.json({'message': 'ERROR (email or) password is wrong'}, 401);
           //TODO go to /signup instead?
         }
     });
@@ -112,30 +121,32 @@ function usersSignup(req, res) {
   var password   = req.swagger.params.userInfo.value.password;
   //TODO add other profile fields
 
-  if (email && password && ((birthDay>0 && birthDay<32) && (birthMonth>0 && birthMonth<13) && birthYear)) {
+  if (email && password && firstName && lastName && ((birthDay>0 && birthDay<32) && (birthMonth>0 && birthMonth<13) && birthYear)) {
     //Create hash from password
     bcrypt.hash(password, 10)
       .then(hash => {
-        //Create user and store hash
-        db.users.create({
-            firstName: firstName,
-            lastName: lastName,
-            birthDate: Date.parse(birthDate),
-            email: email,
-            hashword: hash
+        //Find if already exists or create user and store hash
+        db.users.findOrCreate({
+            where: {email: email},
+            defaults: {
+              firstName: firstName,
+              lastName: lastName,
+              birthDate: Date.parse(birthDate),
+              hashword: hash
+            }
           })
-          .then(user => {
-            if (user) {
-              res.json({'message': 'OK'}, 200);
+          .spread(function(user, created){
+            // this userId was either created or found depending upon whether the argment 'created' is true or false
+            if (created) {
+              res.json({'message': 'User created.'}, 200);
             } else {
-              console.log('User creation failed');
-              res.json({'message': 'ERROR'}, 500);
+              res.json({'message': 'Email already in use.'}, 400);
             }
           })
           .catch(err => {
             console.log(err);
-            res.json({'message': 'ERROR'}, 500);
-          });
+            res.json({'message': 'Server error.'}, 500);
+        });
       });
   } else {
     res.status(401).json({'message': 'ERROR email and password are required'});
@@ -143,21 +154,25 @@ function usersSignup(req, res) {
 }
 
 function usersLogout(req, res) {
-  var email    = req.swagger.params.userCredentials.value.email;
-  console.log("Username: " + email);
-  if (email) {
-    db.users.findOne({ where: {email: email} })
-      .then(user => {
-        if (user) {
-          //Delete token from auth_token table
+  let token = req.headers.authorization;
+  if (token) {
+    //Delete token from auth_token table
+    db.tokens.destroy({ where: {token: token} })
+      .then(item => {
+        if (item) {
         } else {
-          res.json({'message': 'User not found'}, 401);
+          res.json({'message': 'Token not found.'}, 401);
         }
-    });
+      })
+      .catch(err => {
+          console.log(err);
+          res.json({'message': 'Server error.'}, 500);
+      });
   } else {
-    res.json({'message': 'ERROR email is required'}, 401);
+    res.json({'message': 'Invalid token.'}, 401);
   }
 }
+
 function usersGet(req, res) {
   db.users
     .findAll({

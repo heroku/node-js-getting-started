@@ -11,8 +11,20 @@ module.exports = app; // for testing
 var config = {
   appRoot: __dirname // required config
 };
-
+config.swaggerSecurityHandlers = {
+  bearerAuth: function securityHandler1(req, authOrSecDef, scopesOrApiKey, callback) {
+    // your security code
+    console.log('bearerAuth:req.headers.authorization:' + req.headers.authorization);
+    console.log("bearerAuth:token: " + scopesOrApiKey);
+    // Look-up the token table
+    // If the token, get the user object.
+    // add the user object to the request.
+    callback();
+  }
+};
+//Alternate implementation
 SwaggerTools.initializeMiddleware(SwaggerDoc, function (middleware) {
+
   // Serve the Swagger documents and Swagger UI
   app.use(middleware.swaggerUi());
   console.log('View Swagger UI at: http://127.0.0.1:8080/docs');

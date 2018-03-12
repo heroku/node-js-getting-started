@@ -43,6 +43,11 @@ paths:
           schema:
             # a pointer to a definition
             $ref: "#/definitions/UsersResponse"
+        "400":
+          description: User already in database
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/UsersResponse"
         "401":
           description: Authentication information is missing or invalid
           schema:
@@ -98,6 +103,14 @@ paths:
       security:
         - bearerAuth: []
       operationId: usersLogout
+      parameters:
+        - name: userToken
+          in: body
+          description: Disable access providing a valid token
+          required: true
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/UsersToken"
       responses:
         "200":
           description: Success

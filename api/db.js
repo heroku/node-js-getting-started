@@ -36,9 +36,17 @@ const sequelize = new Sequelize(database, username, password, {
 });
 
 var users = usersModel(sequelize);
+<<<<<<< HEAD
 var authtokens = authtokensModel(sequelize);
 
 module.exports = {
   users: users,
   authtokens: authtokens
+=======
+var tokens = tokensModel(sequelize);
+
+module.exports = {
+  users: users,
+  tokens: tokens
+>>>>>>> master
 }
