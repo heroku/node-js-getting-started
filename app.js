@@ -22,9 +22,13 @@ config.swaggerSecurityHandlers = {
     callback();
   }
 };
-//Alternate implementation
-SwaggerTools.initializeMiddleware(SwaggerDoc, function (middleware) {
 
+if (process.env.PROD) {
+  SwaggerDoc['host'] = 'https://2qvihxpp77.execute-api.us-east-2.amazonaws.com';
+  SwaggerDoc['basePath'] = '/Staging'
+}
+
+SwaggerTools.initializeMiddleware(SwaggerDoc, function (middleware) {
   // Serve the Swagger documents and Swagger UI
   app.use(middleware.swaggerUi());
   console.log('View Swagger UI at: http://127.0.0.1:8080/docs');
