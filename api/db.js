@@ -39,5 +39,5 @@ var authtokens = authtokensModel(sequelize);
 
 module.exports = {
   users: users,
-  authtokens: authtokens 
+  authtokens: authtokens
 }

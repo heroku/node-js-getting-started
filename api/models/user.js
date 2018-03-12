@@ -1,5 +1,4 @@
 const Sequelize = require('sequelize');
-const AuthTokens = require('./authtokens.js');
 
 
 module.exports = function(sequelize, DataTypes){
@@ -18,8 +17,8 @@ module.exports = function(sequelize, DataTypes){
 	{
 		timestamps: false,
 	});
-
-  Users.hasMany(models.authtokens, {foreignKey: 'user_id', sourceKey: 'id'});
-
+  Users.associate = function(models) {
+    models.Users.hasMany(models.AuthTokens);
+  };
   return Users;
 };
