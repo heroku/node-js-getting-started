@@ -18,19 +18,26 @@ config.swaggerSecurityHandlers = {
     console.log('bearerAuth:req.headers.authorization:' + req.headers.authorization);
     console.log("bearerAuth:token: " + scopesOrApiKey);
     // Look-up the token table
-    let token = scopesOrApiKey;
-    db.tokens.findOne({ where: {token: token} })
+    let token = scopesOrApiKey.split(' ')[1];
+    db.authtokens.findOne({ where: {token: token} })
       .then(token => {
           // add the user object to the request.
         console.log("token_auth:token: " + token);
-        req.user = token.user;
+        if (token) {
+          req.user = token.user;
+          callback();
+          return;
+        } else {
+          console.log('ERROR token not found');
+          req.res.json({'message': 'ERROR in user authenticate'}, 401);
+          req.res.end();
+          return;
+        }
       })
       .catch(err => {
         console.log(err);
         res.json({'message': 'ERROR'}, 500);
       });
-
-    callback();
   }
 };
 

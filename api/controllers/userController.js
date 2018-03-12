@@ -165,6 +165,7 @@ function usersLogout(req, res) {
     db.authtokens.destroy({ where: {token: token} })
       .then(item => {
         if (item) {
+          res.json({'message': 'User logged out.'}, 200);
         } else {
           res.json({'message': 'Token not found.'}, 401);
         }
