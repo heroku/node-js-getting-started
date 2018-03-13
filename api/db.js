@@ -18,7 +18,7 @@ if (databaseUrl != '') {
   hostname = parsedDatabaseUrl.hostname;
   username = parsedDatabaseUrl.auth.split(":")[0];
   password = parsedDatabaseUrl.auth.split(":")[1];
-  database = parsedDatabaseUrl.pathname;
+  database = parsedDatabaseUrl.pathname.replace("/", "");
   port = parsedDatabaseUrl.port;
 
   console.log('hostname: ' + hostname);
