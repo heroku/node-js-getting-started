@@ -15,6 +15,7 @@ console.log('DATABASE_URL: ' + process.env.DATABASE_URL);
 databaseUrl = process.env.DATABASE_URL || '';
 if (databaseUrl != '') {
   const parsedDatabaseUrl = url.parse(databaseUrl);
+  console.log('parsedDatabaseUrl: ' + parsedDatabaseUrl);
   hostname = parsedDatabaseUrl.hostname;
   username = parsedDatabaseUrl.username;
   password = parsedDatabaseUrl.password;
