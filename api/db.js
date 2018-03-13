@@ -17,14 +17,14 @@ if (databaseUrl != '') {
   const parsedDatabaseUrl = url.parse(databaseUrl);
   console.log('parsedDatabaseUrl: ' + parsedDatabaseUrl);
   hostname = parsedDatabaseUrl.hostname;
-  username = parsedDatabaseUrl.username;
-  password = parsedDatabaseUrl.password;
+  username = parsedDatabaseUrl.user;
+  password = parsedDatabaseUrl.pass;
   database = parsedDatabaseUrl.pathname;
   port = parsedDatabaseUrl.port;
   console.log('hostname: ' + hostname);
   console.log('username: ' + username);
   console.log('password: ' + password);
-  console.log('pathname: ' + pathname);
+  console.log('pathname: ' + database);
   console.log('port: ' + port);
 }
 
