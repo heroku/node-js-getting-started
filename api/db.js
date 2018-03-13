@@ -15,12 +15,12 @@ console.log('DATABASE_URL: ' + process.env.DATABASE_URL);
 databaseUrl = process.env.DATABASE_URL || '';
 if (databaseUrl != '') {
   const parsedDatabaseUrl = url.parse(databaseUrl);
-  console.log('parsedDatabaseUrl: ' + parsedDatabaseUrl);
   hostname = parsedDatabaseUrl.hostname;
-  username = parsedDatabaseUrl.user;
-  password = parsedDatabaseUrl.pass;
+  username = parsedDatabaseUrl.auth.split(":")[0];
+  password = parsedDatabaseUrl.auth.split(":")[1];
   database = parsedDatabaseUrl.pathname;
   port = parsedDatabaseUrl.port;
+
   console.log('hostname: ' + hostname);
   console.log('username: ' + username);
   console.log('password: ' + password);
