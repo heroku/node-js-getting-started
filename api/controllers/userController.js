@@ -33,7 +33,6 @@ function usersGet(req, res) {
           birthDay: parseInt(user.birthDate.slice(8,10)),
           birthYear: parseInt(user.birthDate.slice(0,4)),
           email: user.email,
-          password: user.hashword,
           id: parseInt(user.id)
       }));
       res.json(formattedUsers);
