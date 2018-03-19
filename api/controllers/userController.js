@@ -21,11 +21,22 @@ function usersGet(req, res) {
         'firstName',
         'lastName',
         'birthDate',
-        'email'
+        'email',
+        'id'
       ]
     })
     .then(users => {
-      res.json(users)
+      var formattedUsers = users.map(user => ({
+          firstName: user.firstName,
+          lastName: user.lastName,
+          birthMonth: parseInt(user.birthDate.slice(5,7)),
+          birthDay: parseInt(user.birthDate.slice(8,10)),
+          birthYear: parseInt(user.birthDate.slice(0,4)),
+          email: user.email,
+          password: user.hashword,
+          id: parseInt(user.id)
+      }));
+      res.json(formattedUsers);
     })
     .catch(err => {
       console.log(err);
@@ -177,23 +188,4 @@ function usersLogout(req, res) {
   } else {
     res.json({'message': 'Invalid token.'}, 401);
   }
-}
-
-function usersGet(req, res) {
-  db.users
-    .findAll({
-      attributes: [
-        'firstName',
-        'lastName',
-        'birthDate',
-        'email'
-      ]
-    })
-    .then(users => {
-      res.json(users)
-    })
-    .catch(err => {
-      console.log(err);
-      res.json({'message': 'ERROR'}, 500);
-    })
 }
