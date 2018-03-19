@@ -212,12 +212,22 @@ definitions:
       message:
         type: string
   UserWithId:
-    allOf: 
-      - $ref: "#/definitions/User"
-      - type: object
-        properties:
-          id: 
-            type: integer
+    type: "object"
+    properties:
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      birthMonth:
+        type: "integer"
+      birthDay:
+        type: "integer"
+      birthYear:
+        type: "integer"
+      email:
+        type: "string"
+      id:
+        type: "integer"
   ErrorResponse:
     required:
       - message
