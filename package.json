@@ -11,8 +11,17 @@
     "test": "node test.js"
   },
   "dependencies": {
+    "cors": "^2.8.4",
     "ejs": "^2.5.6",
-    "express": "^4.15.2"
+    "express": "^4.15.2",
+    "express-session": "^1.15.6",
+    "helmet": "^3.12.1",
+    "jsonwebtoken": "^8.3.0",
+    "mongodb": "^3.1.1",
+    "mongoose": "^5.2.4",
+    "morgan": "^1.9.0",
+    "node-gyp": "^3.7.0",
+    "node-pre-gyp": "^0.10.3"
   },
   "devDependencies": {
     "request": "^2.81.0",
