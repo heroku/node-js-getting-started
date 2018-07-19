@@ -15,12 +15,9 @@ const server = express();
 setupMiddleware(server);
 setupRoutes(server);
 
-express()
-  .get('/', (req, res) => res.json({hello: 'hello world!'}))
-
-db.connectTo('lambda-notes')
+db.connectTo('back-end-lambda-notes')
   .then(() => {
-    console.log('\n... API Connected to lambda-notes Database ...\n');
+    console.log('\n... API Connected to back-end-lambda-notes ...\n');
     server.listen(5000, () =>
       console.log('\n=== API running on port 5000 ===\n')
     );

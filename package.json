@@ -14,7 +14,7 @@
     "bcrypt-nodejs": "^0.0.3",
     "cors": "^2.8.4",
     "ejs": "^2.5.6",
-    "express": "^4.15.2",
+    "express": "^4.16.3",
     "express-session": "^1.15.6",
     "helmet": "^3.12.1",
     "jsonwebtoken": "^8.3.0",
