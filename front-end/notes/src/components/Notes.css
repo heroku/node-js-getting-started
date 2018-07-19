@@ -1,0 +1,53 @@
+
+.card-text{
+  color: none;
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    text-decoration: none;
+}
+
+.note-card{
+    text-decoration: none;
+    color: black;
+}
+/* .note {
+  width: 100%;
+  border: 1px solid grey;
+  box-shadow: 2px 2px 2px lightgrey;
+  margin: 15px 0;
+  padding: 15px;
+  list-style-type: none;
+} */
+
+.card {
+    float: left;
+    justify-content: space-between;
+    align-items: center;
+    width: 30%;
+    margin: 1.5%;
+    /* margin-left: 2%; */
+    border: 1px solid rgb(71, 71, 71);
+    text-decoration: none;
+    color: solid black;
+    width: 250px;
+    height: 250px;
+  
+    
+    /*&hover*/
+  /* padding: 15px; */
+  /* list-style-type: none; */
+}
+
+.card :hover {
+  text-decoration: none;
+}
+
+.card-body{
+    border: 1px solid rgb(71, 71, 71);
+    width: 250px;
+    height: 250px;
+    text-decoration-color: none;
+}

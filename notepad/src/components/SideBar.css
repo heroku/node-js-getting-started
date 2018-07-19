@@ -1,0 +1,19 @@
+
+.side-bar h2{
+    margin: 1%;
+}
+
+.button  {
+    display: inline-block;
+    color: white;
+    width: 100%;
+    background-color: #47d1d1;
+    font: bold;
+    padding: 5%;
+    margin-top: 5%;
+    margin-bottom: 2%;
+    text-decoration: none;
+    font-size: 1rem;
+
+
+}
