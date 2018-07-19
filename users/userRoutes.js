@@ -16,6 +16,7 @@ router.get('/', (req, res) => {
         });
 });
 
+
 router.post('/new', (req, res) => {
     const user = new User(req.body);
     user.save()

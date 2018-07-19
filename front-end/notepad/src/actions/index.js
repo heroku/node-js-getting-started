@@ -9,7 +9,7 @@ export const getNotes = () => {
     return (dispatch) => {
         dispatch({ type: PENDING });
         axios
-            .get('http://localhost:5000/notes')
+            .get(`http://localhost:5000/users/notes`)
             .then(response => {
                 dispatch({ type: SUCCESS_NOTES, notes: response.data })
             })
@@ -17,13 +17,13 @@ export const getNotes = () => {
                 dispatch({ type: ERROR, error: 'ERROR FETCHING NOTES' })
             })
     }
-}
+ }
 
 export const getNote = (id) => {
     return (dispatch) => {
         dispatch({ type: PENDING });
         axios
-            .get(`http://localhost:5000/notes/${id}`)
+            .get(`http://localhost:5000/users/notes/note/${id}`)
             .then(response => {
                 console.log('RES', response)
                 dispatch({ type: SUCCESS_NOTE, note: response.data })
@@ -45,7 +45,7 @@ export const editNote = (note) => {
     return (dispatch) => {
         dispatch({ type: PENDING });
         axios
-            .put(`http://localhost:5000/notes/${note.id}`, note)
+            .put(`http://localhost:5000/users/notes/note/${note.id}`, note)
             .then(response => {
                 console.log('RES', response)
                 dispatch({ type: SUCCESS_NOTE, note: response.data })
@@ -61,7 +61,7 @@ export const createNote = (note) => {
         dispatch({ type: PENDING });
         console.log(note);
         axios
-            .post('http://localhost:5000/notes', note)
+            .post(`http://localhost:5000/users/notes/new`, note)
             .then(response => {
                 dispatch({ type: SUCCESS_NOTES, notes: response.data })
             })
@@ -75,7 +75,7 @@ export const deleteNote = id => {
     return dispatch => {
         dispatch({ type: PENDING });
         axios
-            .delete(`http://localhost:5000/notes/${id}`)
+            .delete(`http://localhost:5000/users/notes/${id}`)
             .then(response => {
                 dispatch({ type: SUCCESS_NOTES, notes: response.data })
             })
