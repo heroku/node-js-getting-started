@@ -24,16 +24,6 @@ router.post('/new', (req, res) => {
         .catch(err => res.status(500).send(err)))
 });
 
-router.get('/${user.id}/notes', (req, res) => {
-    User.find()
-        .select('-password')
-        .then(users => {
-            res.json(users);
-        })
-        .catch(err => {
-            res.status(500).json(err);
-        });
-});
 
 
 

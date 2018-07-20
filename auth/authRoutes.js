@@ -9,11 +9,11 @@ const User = require('../users/User');
 router.post('/register', (req, res) => {
   User.create(req.body) 
     // .select('-password')
-    .then(({ username, race }) => {
+    .then(({ username }) => {
       const token = makeToken(req.body);
-      // we destructure the username and race to avoid returning the hashed password
+      // we destructure the username to avoid returning the hashed password
       // then we assemble a new object and return it
-      res.status(201).json({ username, race });
+      res.status(201).json({ msg: 'User Registered', username });
     })
     .catch(err => res.status(500).json(err));
 });
