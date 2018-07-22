@@ -25,22 +25,4 @@ router.post('/new', (req, res) => {
 });
 
 
-
-
-// router.get('/${user.id}/notes/note/${id}', (req, res) => {
-
-//         .then(user => res.status(201).json('')
-//         .catch(err => res.status(500).send(err)))
-// });
-
-
-// router.put('${user.id}/notes/note/${note.id}', (req, res) => {
-
-// });
-
-
-
-
-
-
 module.exports = router;

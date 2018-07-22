@@ -2,9 +2,10 @@ const router = require('express').Router();
 const { makeToken,verifyToken }  = require('./jwt');
 
 const session = require('express-session')
+const userRoutes = require('../notepad/src/components/users/userRoutes.js');
 
 
-const User = require('../users/User');
+const User = require('../notepad/src/components/users/User');
 
 router.post('/register', (req, res) => {
   User.create(req.body) 
@@ -37,8 +38,7 @@ router.put('/login', (req, res) => {
       })
       .catch(err => {
         res.status(500).json({ error: 'Error finding username', err });
-    })
-
+      })
     })
     .catch(err => {
       res.status(500).json({ error: 'Error finding username', err });
