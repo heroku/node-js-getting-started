@@ -78,7 +78,7 @@ router.post('/new', (req, res) => {
             res.status(201).json(note)
         })
         .catch(err => {
-            res.status(500).json({ errorMessage: "There was an error while saving the note to the database" });
+            res.status(500).json({ errorMessage: "There was an error while saving the note to the database", err });
         });
 })
 

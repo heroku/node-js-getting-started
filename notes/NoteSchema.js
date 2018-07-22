@@ -7,16 +7,21 @@ const Note = new mongoose.Schema({
         required: true,
         lowercase: true,
     },
-    mind: {
+    content: {
         type: String,
         // required: true,
         minlength: 4,
     },
-    me: {
-        type: String,
-        // required: true,
-        minlength: 4,
-    },
+    // mind: {
+    //     type: String,
+    //     // required: true,
+    //     minlength: 4,
+    // },
+    // me: {
+    //     type: String,
+    //     // required: true,
+    //     minlength: 4,
+    // },
     dateCreated: {
         type: Date,
         default: Date.now
@@ -25,18 +30,18 @@ const Note = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    practices : [{
-        type: ObjectId,
-        ref: 'practices'
-    }],
-    meditations: [{
-        type: ObjectId,
-        ref: 'meditations'
-    }]
+    // practices : [{
+    //     type: ObjectId,
+    //     ref: 'practices'
+    // }],
+    // meditations: [{
+    //     type: ObjectId,
+    //     ref: 'meditations'
+    // }]
 
 });
 
-// noteSchema.pre('save', function preSave(next) {
+// Note.pre('save', function preSave(next) {
 //     var note = this;
 //     note.lastEdited(Date.now());
 //     next();

@@ -1,6 +1,6 @@
-const authRoutes = require('../auth/authRoutes');
-const userRoutes = require('../notepad/src/components/users/userRoutes.js');
-const notesRoutes = require('../notepad/src/components/notes/notesRoutes.js');
+const authRoutes = require('../auth/authRoutes.js');
+const userRoutes = require('../users/userRoutes.js');
+const notesRoutes = require('../notes/notesRoutes.js');
 
 module.exports = function (server) {
     // sanity check route
@@ -9,6 +9,6 @@ module.exports = function (server) {
     });
 
     server.use('/users', userRoutes);
-    server.use('/users', authRoutes);
+    server.use('/users/auth', authRoutes);
     server.use('/users/notes', notesRoutes);
 };

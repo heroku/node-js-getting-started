@@ -1,15 +1,17 @@
 const router = require('express').Router();
-const { makeToken,verifyToken }  = require('./jwt');
+const { makeToken, verifyToken }  = require('./jwt');
 
 const session = require('express-session')
-const userRoutes = require('../notepad/src/components/users/userRoutes.js');
+const userRoutes = require('../users/userRoutes.js');
 
 
-const User = require('../notepad/src/components/users/User');
+const User = require('../users/User');
 
 router.post('/register', (req, res) => {
   User.create(req.body) 
     // .select('-password')
+  // const user = new User(req.body);
+  // user.save()
     .then(({ username }) => {
       const token = makeToken(req.body);
       // we destructure the username to avoid returning the hashed password
@@ -24,7 +26,7 @@ router.put('/login', (req, res) => {
     res.sendStatus(400).json({ msg: 'Please enter a username and password' })
   }
   const { username, password } = req.body;
-  User.findOne({ username })
+  User.findOne({ username }, (err, user) )
   // .select('-password')
     .then(user => {
       user.validatePassword(password)
@@ -36,11 +38,12 @@ router.put('/login', (req, res) => {
           res.status(401).json({ msg: 'Password Incorrect' })
         }
       })
-      .catch(err => {
-        res.status(500).json({ error: 'Error finding username', err });
+      .catch(err => {        res.status(500).json({ error: 'Error finding username', err });
       })
     })
     .catch(err => {
+      // console.log(token)
+
       res.status(500).json({ error: 'Error finding username', err });
   })
 });
