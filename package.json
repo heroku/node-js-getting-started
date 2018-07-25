@@ -7,11 +7,12 @@
   },
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "nodemon index.js",
     "test": "node test.js"
   },
   "dependencies": {
     "bcrypt-nodejs": "^0.0.3",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
     "ejs": "^2.5.6",
@@ -27,10 +28,9 @@
     "react-router-dom": "^4.3.1"
   },
   "devDependencies": {
+    "nodemon": "^1.18.3",
     "request": "^2.81.0",
-    "tape": "^4.7.0",
-    "nodemon": "^1.18.3"
-        
+    "tape": "^4.7.0"
   },
   "repository": {
     "type": "git",

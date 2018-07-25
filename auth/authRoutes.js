@@ -2,10 +2,15 @@ const router = require('express').Router();
 const { makeToken, verifyToken }  = require('./jwt');
 
 const session = require('express-session')
-const userRoutes = require('../users/userRoutes.js');
+const userRoutes = require('../users/userRoutes');
 
 
 const User = require('../users/User');
+
+// router
+//   .route('/login')
+//   .post(post);
+
 
 router.post('/register', (req, res) => {
   User.create(req.body) 
@@ -21,32 +26,57 @@ router.post('/register', (req, res) => {
     .catch(err => res.status(500).json(err));
 });
 
-router.put('/login', (req, res) => {
+router.put('/login', function(req, res) {
   if (!req.body.username || !req.body.password) {
     res.sendStatus(400).json({ msg: 'Please enter a username and password' })
   }
   const { username, password } = req.body;
-  User.findOne({ username }, (err, user) )
+  User.findOne({ username })
   // .select('-password')
-    .then(user => {
-      user.validatePassword(password)
-      .then(isMatch => {
-        if (isMatch) {
-          const token = makeToken(user)
-          res.status(201).json({ user, token });
-        } else {
-          res.status(401).json({ msg: 'Password Incorrect' })
-        }
-      })
-      .catch(err => {        res.status(500).json({ error: 'Error finding username', err });
-      })
+    .then(async user => {
+      const response = await user.validatePassword(password)
+      if(response) {
+        const token = makeToken(user)
+        res.status(200).json( { ...user.toObject(), token });
+      } else {
+        res.status(401).json({ msg: "Password does not match!"})
+      }
     })
     .catch(err => {
       // console.log(token)
-
-      res.status(500).json({ error: 'Error finding username', err });
+      res.status(500).json({ error: err.message });
   })
 });
+
+  // function post (req, res) {
+  //   const { username, password } = req.body;
+  //   User.findOne({ username }, (err, user) => {
+  //     if (err) {
+  //       res.status(403).json({ error: 'Invalid Username/Password' });
+  //       return;
+  //     }
+  //     if (user === null) {
+  //       res.status(422).json({ error: 'No user with that username in our DB' });
+  //       return;
+  //     }
+  //     user.validatePassword(password, (err, isMatch) => {
+  //       if (err) {
+  //         res.status(500).json({ error: 'server error' });
+  //       }
+  //       if (!isMatch) {
+  //         res.status(422).json({ error: 'passwords dont match' });
+  //         return;
+  //       }
+  //       const payload = {
+  //         username: user.username
+  //       }; // what will determine our payload.
+  //       const token = jwt.sign(payload, mysecret); // creates our JWT with a secret and a payload and a hash.
+  //       res.status(200).json({ token, msg: 'Logged In' })// sends the token back to the client
+  //     })
+  //   });
+
+  // };
+
 
 router.get('/', verifyToken, (req, res) => {
   User.find()

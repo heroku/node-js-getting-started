@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt-nodejs');
+const bcrypt = require('bcryptjs');
+
+SALT_ROUNDS = 11;
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -19,33 +21,83 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-userSchema.pre('create', function (next) {
-    return bcrypt
-        .hash(this.password, 11)
-        .then(hash => {
-            this.password = hash;
-
-            return next();
-        })
-        .catch(err => {
-            return next(err);
-        });
+userSchema.pre('save', function (next) {
+    console.log("stsring")
+    bcrypt.hash(this.password, SALT_ROUNDS, (err, hash) => {
+        if (err) {
+            console.log(err.message)
+            return
+        }
+        this.password = hash;
+        next();
+    })
 });
 
 userSchema.methods.validatePassword = function (passwordGuess) {
-    return bcrypt.compare(passwordGuess, this.password);
-};
+    console.log("PASS", this.password)
+    return bcrypt.compare(passwordGuess, this.password)
+
+}
 
 
-// userSchema.methods.checkPassword = function (passwordGuess, callBack) {
-//     bcrypt.compare(passwordGuess, this.password)
-//         .then(hashMatch => {
-//             callBack(hashMatch)
+// userSchema.pre('create', function (next) {
+
+// var user = this;
+// if (this.isModified('password') || this.isNew) {
+//     bcrypt.genSalt(this.password, null, function (err, SALT_ROUNDS) {
+//         if (err) {
+//             return next(err);
+//         }
+//         bcrypt.hash(user.password, SALT_ROUNDS, null, function (err, hash) {
+//             if (err) {
+//                 return next(err);
+//             }
+//             user.password = hash;
+//             next();
+//         });
+//     });
+// } else {
+//     return next();
+// }
+//     });
+
+// userSchema.methods.validatePassword = function (passw, cb) {
+//     bcrypt.compareSync(this.password, hash, function(err, isMatch) {
+//         if (err) {
+//             return cb(err);
+//         }
+//         cb(null, isMatch);
+//     });
+//}
+// userSchema.methods.validatePassword = function (passwordGuess) {
+//      bcrypt.compare(passwordGuess, this.password)
+//         .then((isMatch) => {
+//             if( isMatch) {
+//                 res.status(201).json( { message: "Login Successful!", isMatch})
+//         } else {
+//             return res.status(404).json({message: "User not found!"})
+
+//         }
+//         }).catch(err => {
+//             res.status(500).json({ errorMessage: "Your entry could not be retrieved", err })
 //         })
-//         .catch(err => {
-//             console.log(err);
-//         })
-// };
+// }
+
+
+
+// userSchema.methods.validatePassword = function (passwordGuess, res){
+//     bcrypt.compare(passwordGuess, this.password, res)
+//     .then(isMatch => {
+//         if (isMatch) {
+//            res.status(201).json(isMatch)
+//         } else {
+//             return res.status(404).json({ errorMessage: "Passwords dont match!" })
+//         }})
+//         .catch (err => {
+//         res.status(500).json({ errorMessage: "User not found", err })
+//     })};
+
+
 
 
 
