@@ -26,7 +26,7 @@ class NoteEdit extends Component {
 saveNote = e => {
     console.log("SAVING", this.state);
     this.props.editNote(this.state);
-    this.props.history.push(`/notes/`)
+    this.props.history.push(`/users/notes`)
 }
 
 

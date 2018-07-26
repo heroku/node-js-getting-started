@@ -25,7 +25,7 @@ class NewNote extends Component {
             title: '',
             content: ''        
         });
-        this.props.history.push(`/notes/`)
+        this.props.history.push(`/users/notes`)
     }
 
     render() {

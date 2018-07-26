@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { createUser } from '../actions';
+import { createUser } from '../actions/auth';
 import { connect } from 'react-redux';
 import { Col, Button, Form, FormGroup, Input } from 'reactstrap';
 
@@ -24,7 +24,7 @@ class Register extends Component {
             Username: '',
             Password: ''
         });
-        this.props.history.push(`/login/`)
+        this.props.history.push(`/users/login`)
     }
 
     render() {

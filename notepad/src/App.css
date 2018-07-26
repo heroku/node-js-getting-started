@@ -5,7 +5,7 @@
     background-color: #bfbfbf;
     margin-right: auto;
     margin-left: auto;
-    max-width: 1600px;
+    max-width: 100%;
   }
 
     .side-bar {
@@ -17,6 +17,13 @@
   .content{
       background-color: #e6e6e6;
       max-width:100%;
+      height: 100%;
+      position: fixed;
+      padding-top: 1rem;
+  }
+    .row{
+      background-color: #e6e6e6;
+      width: 100%;;
       height: 100%;
       position: fixed;
       padding-top: 1rem;
@@ -48,6 +55,7 @@
 
 
   }
+  
 }
 
 @media (max-width: 992px) {

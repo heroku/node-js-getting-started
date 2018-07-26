@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { loginUser } from '../actions';
+import { loginUser } from '../actions/auth';
 import { connect } from 'react-redux';
 import { Col, Button, Form, FormGroup, Input } from 'reactstrap';
+
 
 class Login extends Component {
     constructor(props) {
@@ -24,7 +25,7 @@ class Login extends Component {
             Username: '',
             Password: ''
         });
-        this.props.history.push(`/notes/`)
+        this.props.history.push(`/users/notes`)
     }
 
     render() {

@@ -7,6 +7,9 @@ export const UPDATING = "UPDATING";
 export const SUCCESS_USER = "SUCCESS_USER";
 
 
+
+
+
 export const getNotes = () => {
     return (dispatch) => {
         dispatch({ type: PENDING });
@@ -77,7 +80,7 @@ export const deleteNote = id => {
     return dispatch => {
         dispatch({ type: PENDING });
         axios
-            .delete(`http://localhost:5000/users/notes/${id}`)
+            .delete(`http://localhost:5000/users/notes/note/${id}`)
             .then(response => {
                 dispatch({ type: SUCCESS_NOTES, notes: response.data })
             })
@@ -87,32 +90,3 @@ export const deleteNote = id => {
     }
 }
 
-export const createUser = (user) => {
-    return dispatch => {
-        dispatch({ type: PENDING });
-        console.log(user);
-        axios
-            .post(`http://localhost:5000/users/auth/register`, user)
-            .then(response => {
-                dispatch({ type: SUCCESS_USER, users: response.data })
-            })
-            .catch(() => {
-                dispatch({ type: ERROR, error: 'ERROR CREATING USER' })
-            })
-    }
-}
-
-export const loginUser = (user) => {
-    return dispatch => {
-        dispatch({ type: PENDING });
-        console.log(user);
-        axios
-            .put(`http://localhost:5000/users/auth/login`, user)
-            .then(response => {
-                dispatch({ type: SUCCESS_USER, user: response.data })
-            })
-            .catch(() => {
-                dispatch({ type: ERROR, error: 'ERROR LOGGIN IN!' })
-            })
-    }
-}

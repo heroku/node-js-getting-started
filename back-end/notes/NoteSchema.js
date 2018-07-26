@@ -12,6 +12,10 @@ const Note = new mongoose.Schema({
         // required: true,
         minlength: 4,
     },
+    createdBy: {
+        type: ObjectId,
+        ref: 'User'
+    },
     // mind: {
     //     type: String,
     //     // required: true,

@@ -23,11 +23,11 @@ class Note extends Component {
     }
      editNote = () => {
          this.props.startEditing(this.props.note);
-         this.props.history.push(`/notes/edit/${this.props.note.id}`)
+         this.props.history.push(`/users/notes/note/edit/${this.props.note.id}`)
     }
     deleteNote = () => {
         this.props.deleteNote(this.props.note.id);
-        this.props.history.push(`/notes/`)
+        this.props.history.push(`/users/notes`)
     }
 
     handleprintDocument = () => {
@@ -43,11 +43,11 @@ render(){
         <div key={this.props.note.id}>
             <div className={"textLink"}> 
                 <Link 
-                    to={`/notes/edit/${this.props.note.id}`}
+                    to={`/users/notes/note/edit/${this.props.note.id}`}
                     onClick={this.editNote} >
                     <a>edit</a>
                 </Link>
-                <Link to={`/notes/delete/`}>
+                <Link to={`/users/notes/note/delete/`}>
                 <DeleteModal  show={this.props.modal}
                     onClose={this.toggle} 
                     deleteNote={this.deleteNote} 

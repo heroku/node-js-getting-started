@@ -26,7 +26,7 @@ render() {
                {this.props.notes.map(note => {
                 return (
                 <Card>
-                <Link to={`/notes/${note.id}`} 
+                <Link to={`/users/notes/note/${note.id}`} 
                 className="note-card" key={note.id} note={note}>
                     <CardBody>
                             <CardTitle>{note.title.substring(0, 21)}</CardTitle>

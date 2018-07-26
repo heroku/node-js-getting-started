@@ -1,0 +1,22 @@
+.container {
+background-color: #e6e6e6;
+
+}
+
+
+
+.button  {
+    display: flex;
+  justify-content: center;
+    color: white;
+    width: 100%;
+    background-color: #47d1d1;
+    font: bold;
+    padding: 5%;
+    margin-top: 5%;
+    margin-bottom: 2%;
+    text-decoration: none;
+    font-size: 1rem;
+
+
+}

@@ -8,12 +8,12 @@ const SideBar = () => (
     <div>
         <h2>Lambda Notes</h2>
 
-            <Link to='/notes'>
-            <button className={"button"} pathto='/notes' >
+        <Link to='/users/notes'>
+            <button className={"button"} pathto='/users/notes' >
                     View Your Notes
                 </button>
             </Link>
-            <Link to='/new'>
+        <Link to='/users/notes/new'>
             <button className={"button"}>
                     + Create New Note
                 </button>
