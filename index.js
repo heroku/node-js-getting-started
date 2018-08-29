@@ -17,7 +17,7 @@ express()
   .get('/db', async (req, res) => {
       try {
         const client = await pool.connect()
-        const result = await client.query('SELECT name, state__c, city__c, price__c FROM salesforce.property__c');
+        const result = await client.query('SELECT name FROM salesforce.property__c');
         res.render('pages/db', result);
         client.release();
       } catch (err) {
