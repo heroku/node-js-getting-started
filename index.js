@@ -1,10 +1,16 @@
-const express = require('express')
-const path = require('path')
-const PORT = process.env.PORT || 5000
+const {RTMClient} = require('@slack/client');
+const token = process.env.SLACK_TOKEN || `xoxb-2338385904-768981846963-99WLYRrFavcvFsfM7MzD3kLh`;
+const rtm = new RTMClient(token);
+rtm.start();
 
-express()
-  .use(express.static(path.join(__dirname, 'public')))
-  .set('views', path.join(__dirname, 'views'))
-  .set('view engine', 'ejs')
-  .get('/', (req, res) => res.render('pages/index'))
-  .listen(PORT, () => console.log(`Listening on ${ PORT }`))
+rtm.on(`message`,(message)=>{
+  var text = message.text;
+
+  if(text.includes("test")){
+    rtm.sendMessage("testOK",message.channel);
+  }
+
+  else if(text.includes("hey dailyBot")){
+    rtm.sendMessage("yessir?",message.channel)
+  }
+});
