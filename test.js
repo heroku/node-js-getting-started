@@ -13,19 +13,16 @@ test('responds to requests', (t) => {
   child.stdout.on('data', _ => {
     // Make a request to our app
     (async () => {
-      try {
-        const response = await got('http://127.0.0.1:5000');
-        // stop the server
-        child.kill();
-        // No error
-        t.false(error);
-        // Successful response
-        t.equal(response.statusCode, 200);
-        // Assert content checks
-        t.notEqual(body.indexOf("<title>Node.js Getting Started on Heroku</title>"), -1);
-        t.notEqual(body.indexOf("Getting Started on Heroku with Node.js"), -1);
-      } catch (error) {
-      }
+      const response = await got('http://127.0.0.1:5000');
+      // stop the server
+      child.kill();
+      // No error
+      t.false(response.error);
+      // Successful response
+      t.equal(response.statusCode, 200);
+      // Assert content checks
+      t.notEqual(response.body.indexOf("<title>Node.js Getting Started on Heroku</title>"), -1);
+      t.notEqual(response.body.indexOf("Getting Started on Heroku with Node.js"), -1);
     })();
   });
 });
