@@ -15,7 +15,7 @@
     "express": "^4.15.2"
   },
   "devDependencies": {
-    "request": "^2.81.0",
+    "got": "^11.3.0",
     "tape": "^4.7.0"
   },
   "repository": {
