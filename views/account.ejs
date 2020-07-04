@@ -1,0 +1,45 @@
+account.ejs
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>登録</title>
+  </head>
+  <body>
+      <h1>新規取引先</h1>
+        <form action="/account/save" method="POST">
+            <table>
+                <tr>
+                    <th>取引先名</th>
+                    <td>
+                        <textarea name="name"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th>電話</th>
+                    <td>
+                        <textarea name="phone"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Fax</th>
+                    <td>
+                        <textarea name="fax"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th>取引先UUID</th>
+                    <td>
+                        <textarea name="accountUUID"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td>
+                        <button type="submit">保存</button>
+                    </td>
+                </tr>
+        </table>
+        </form>
+  </body>
+</html>

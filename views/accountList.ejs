@@ -1,0 +1,51 @@
+accountList.ejs
+
+<!DOCTYPE html>
+<html>
+  <!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <head>
+    <title>取引先一覧</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col">
+    <h1>取引先情報</h1>
+  </div></br>
+  <div class="col-md-12">
+        <a href="/account/new">新規追加</a>
+        <br>
+      </div>
+      <br>
+      <table class="table table-bordered">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">No</th>
+            <th scope="col">取引先名</th>
+            <th scope="col">電話</th>
+            <th scope="col">Fax</th>
+            <th scope="col">取引先UUID</th>
+          </tr>
+        </thead>
+        <tbody>
+
+        <% for(var i=0; i<results.length; i++) {%>
+          <tr>
+            <td><%= results[i].id%></td>
+            <td><%= results[i].name%></td>
+            <td><%= results[i].phone%></td>
+            <td><%= results[i].fax%></td>
+            <td><%= results[i].accountuuid__c%></td>
+          </tr>
+          <% } %>
+
+    </tbody>
+  </table>
+
+      </div>
+    </div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.bundle.min.js" integrity="sha384-zDnhMsjVZfS3hiP7oCBRmfjkQC4fzxVxFhBx8Hkz2aZX8gEvA/jsP3eXRCvzTofP" crossorigin="anonymous"></script>
+  </body>
+</html>
