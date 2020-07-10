@@ -55,6 +55,6 @@ express()
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
   .get('/table', (req, res) => res.render('pages/table'))
-  .get('/data', (req, res) => res.render('pages/table', {request: request();}) {
+  .get('/data', (req, res) => res.render('pages/table', {request: request()}) {
   })
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
