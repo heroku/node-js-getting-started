@@ -1,3 +1,4 @@
+  
 const express = require('express')
 const path = require('path')
 const PORT = process.env.PORT || 5000
@@ -17,6 +18,8 @@ app.use(function (req, res, next) {
     // Pass to next layer of middleware
     next();
 });
+
+
 var auth;
 var request = require('request');
 var options = {
@@ -40,25 +43,8 @@ request(options, function (error, response) {
   auth = JSON.parse(response.body);
 });
 
-var data;
-function myRequest() {
-var request = require('request');
-var options = {
-  'method': 'GET',
-  'url': 'https://mydbrestservice.herokuapp.com/orders',
-  'headers': {
-    'Prefer': 'resolution=ignore-duplicates'
-  }
-};
-request(options, function (error, response) {
-  if (error) throw new Error(error);
-  console.log(response.body);
-  data = (response.body);
-});
-return data;
-}
 
-var mydata = myRequest(); 
+
 express()
   .use(express.static(path.join(__dirname, 'public')))
   .set('views', path.join(__dirname, 'views'))
