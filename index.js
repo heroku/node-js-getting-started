@@ -23,8 +23,7 @@ app.use(function (req, res, next) {
     next();
 });
 
-function request {
-    console.log("requests)
+function request() {
 var request = require('request');
 var options = {
   'method': 'POST',
