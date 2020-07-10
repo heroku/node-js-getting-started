@@ -50,20 +50,24 @@ var options = {
     'Prefer': 'resolution=ignore-duplicates'
   }
 };
-request(options, function (error, response) {
-  if (error) throw new Error(error);
-  console.log(response.body);
-  data = (response.body);
-});
-return data;
-}
+    
 settings = {
             "url": "https://purchase.izettle.com/purchases/v2?limit=99&descending=true",
             "method": "GET",
             "headers": {
                 "content-type": "application/json",
                 "Authorization": "Bearer " + auth.access_token,
-            }
+            }    
+    
+    
+request(settings, function (error, response) {
+  if (error) throw new Error(error);
+  console.log(response.body);
+  data = (response.body);
+});
+return data;
+}
+
 var mydata = myRequest();
 
 function myGet() {
@@ -74,7 +78,7 @@ function myGet() {
     return dataGet;
 }
     
-var dataGet = myGet();
+dataGet = myGet();
 
 
 
