@@ -3,9 +3,14 @@ const path = require('path')
 const PORT = process.env.PORT || 5000
 
 var cors = require('cors');
+router.get('/', function(req, res) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE'); // If needed
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type'); // If needed
+    res.setHeader('Access-Control-Allow-Credentials', true); // If needed
 
-// use it before all route definitions
-app.use(cors({origin: '*'}));
+    res.send('cors problem fixed:)');
+});
 
 
 
