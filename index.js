@@ -37,7 +37,7 @@ var options = {
 request(options, function (error, response) {
   if (error) throw new Error(error);
   console.log(response.body);
-  auth = response.body;
+  auth = JSON.stringify(response.body);
 });
 
 var data;
@@ -65,5 +65,5 @@ express()
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
   .get('/table', (req, res) => res.render('pages/table'))
-  .get('/data', (req, res) => res.render('pages/table', {arequest: JSON.stringify(auth).access_token}))
+  .get('/data', (req, res) => res.render('pages/table', {arequest: auth}))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
