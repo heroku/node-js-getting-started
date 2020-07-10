@@ -23,7 +23,7 @@ app.use(function (req, res, next) {
     next();
 });
 
-function request() {
+function myRequest() {
 var request = require('request');
 var options = {
   'method': 'POST',
@@ -55,5 +55,5 @@ express()
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
   .get('/table', (req, res) => res.render('pages/table'))
-  .get('/data', (req, res) => res.render('pages/table', {request: request()}))
+  .get('/data', (req, res) => res.render('pages/table', {request: myRequest()}))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
