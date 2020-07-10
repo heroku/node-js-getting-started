@@ -40,6 +40,14 @@ var options = {
   }
 };
 
+
+ 
+request(options, function (error, response) {
+  if (error) throw new Error(error);
+  console.log(response.body);
+  auth = JSON.parse(response.body);
+});
+
 var options1 = {
             "url": "https://purchase.izettle.com/purchases/v2?limit=99&descending=true",
             "method": "GET",
@@ -49,20 +57,11 @@ var options1 = {
                 "Authorization": "Bearer " + auth.access_token
             }
         }
-
 request(options1, function (error, response) {
   if (error) throw new Error(error);
   console.log(response.body);
   auth1 = (response.body);
 });
-
-
-request(options, function (error, response) {
-  if (error) throw new Error(error);
-  console.log(response.body);
-  auth = JSON.parse(response.body);
-});
-
 
 
 express()
