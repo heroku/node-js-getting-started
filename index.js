@@ -2,6 +2,8 @@ const express = require('express')
 const path = require('path')
 const PORT = process.env.PORT || 5000
 var app = express();
+    var request = require('request');
+
 // Add headers
 app.use(function (req, res, next) {
 // Website you wish to allow to connect
@@ -30,7 +32,6 @@ express()
 .get('/table', (req, res) => res.render('pages/table'))
 .listen(PORT, () => console.log(`Listening on ${ PORT }`))
 .get('/data', function(req, res){
-    var request = require('request');
     var options = {
       'method': 'POST',
       'url': 'https://mycorsprox.herokuapp.com/https://oauth.izettle.com/token',
