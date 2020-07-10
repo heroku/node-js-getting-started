@@ -43,6 +43,5 @@ request('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY', { json: true }, 
   if (err) { return console.log(err); }
   res.send(body.url);
   res.send(body.explanation);
-});)
+});})
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
-
