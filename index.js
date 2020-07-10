@@ -39,9 +39,6 @@ var options = {
     '': ''
   }
 };
-
-
- 
 request(options, function (error, response) {
   if (error) throw new Error(error);
   console.log(response.body);
@@ -57,11 +54,15 @@ var options1 = {
                 "Authorization": "Bearer " + auth.access_token
             }
         }
+
 request(options1, function (error, response) {
   if (error) throw new Error(error);
   console.log(response.body);
   auth1 = (response.body);
 });
+
+
+
 
 
 express()
