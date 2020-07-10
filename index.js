@@ -44,9 +44,9 @@ var request
 request(options, function (error, response) {
   if (error) throw new Error(error);
   console.log(response.body);
-  request = response.body;
+  //request = response.body;
 });
-return request;
+//return request;
 }
 
 express()
