@@ -1,3 +1,4 @@
+  
 const express = require('express')
 const path = require('path')
 const PORT = process.env.PORT || 5000
@@ -44,6 +45,7 @@ request(options, function (error, response) {
   auth = JSON.parse(response.body);
 });
 auth = JSON.stringify(auth.access_token)
+console.log(auth);
 var options1 = {
             "url": "https://purchase.izettle.com/purchases/v2?limit=99&descending=true",
             "method": "GET",
