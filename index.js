@@ -51,7 +51,7 @@ var options1 = {
             "timeout": 0,
             "headers": {
                 "content-type": "application/json",
-                "Authorization": "Bearer " + auth.access_token
+                "Authorization": "Bearer " + auth
             }
         }
 
