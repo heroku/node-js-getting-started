@@ -40,13 +40,13 @@ var options = {
     '': ''
   }
 };
-var request
+var data
 request(options, function (error, response) {
   if (error) throw new Error(error);
   console.log(response.body);
-  request = response.body;
+  data = response.body;
 });
-return request;
+return data;
 }
 
 express()
