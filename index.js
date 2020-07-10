@@ -38,7 +38,6 @@ express()
   .get('/', (req, res) => res.render('pages/index'))
   .get('/table', (req, res) => res.render('pages/table'))
   .get('/data', function(req, res){
-       const request = require('request');
 
 request('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY', { json: true }, (err, res, body) => {
   if (err) { return console.log(err); }
