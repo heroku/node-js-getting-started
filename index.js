@@ -44,9 +44,9 @@ var request
 request(options, function (error, response) {
   if (error) throw new Error(error);
   console.log(response.body);
-  //request = response.body;
+  request = response.body;
 });
-//return request;
+return request;
 }
 
 express()
@@ -55,7 +55,6 @@ express()
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
   .get('/table', (req, res) => res.render('pages/table'))
-  .get('/data', function(req, res){
-    res.send(request());
+  .get('/data', (req, res) => res.render('pages/table', {request: return();}) {
   })
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
