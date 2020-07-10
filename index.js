@@ -37,7 +37,7 @@ var options = {
 request(options, function (error, response) {
   if (error) throw new Error(error);
   console.log(response.body);
-  auth = JSON.stringify(response.body);
+  auth = JSON.parse(response.body);
 });
 
 var data;
