@@ -50,17 +50,7 @@ var options = {
     'Prefer': 'resolution=ignore-duplicates'
   }
 };
-    
-settings = {
-            "url": "https://purchase.izettle.com/purchases/v2?limit=99&descending=true",
-            "method": "GET",
-            "headers": {
-                "content-type": "application/json",
-                "Authorization": "Bearer " + auth.access_token,
-            }    
-    
-    
-request(settings, function (error, response) {
+request(options, function (error, response) {
   if (error) throw new Error(error);
   console.log(response.body);
   data = (response.body);
@@ -68,25 +58,12 @@ request(settings, function (error, response) {
 return data;
 }
 
-var mydata = myRequest();
-
-function myGet() {
-    request(settings, function (error, response) {
-      if (error) throw new Error(error);
-      dataGet = response.body;
-    });
-    return dataGet;
-}
-    
-dataGet = myGet();
-
-
-
+var mydata = myRequest(); 
 express()
   .use(express.static(path.join(__dirname, 'public')))
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
   .get('/table', (req, res) => res.render('pages/table'))
-  .get('/data', (req, res) => res.render('pages/table', {arequest: dataGet}))
+  .get('/data', (req, res) => res.render('pages/table', {arequest: auth.access_token}))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
