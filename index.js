@@ -65,14 +65,18 @@ settings = {
                 "Authorization": "Bearer " + auth.access_token,
             }
 var mydata = myRequest();
-var dataGet;
 
 function myGet() {
-request(settings, function (error, response) {
-  if (error) throw new Error(error);
-  dataGet = response.body;
-});
+    request(settings, function (error, response) {
+      if (error) throw new Error(error);
+      dataGet = response.body;
+    });
+    return dataGet;
 }
+    
+var dataGet = myGet();
+
+
 
 express()
   .use(express.static(path.join(__dirname, 'public')))
