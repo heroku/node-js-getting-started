@@ -44,7 +44,7 @@ var data
 request(options, function (error, response) {
   if (error) throw new Error(error);
   console.log(response.body);
-  data = response.body;
+  data ="TEST";
 });
 return data;
 }
