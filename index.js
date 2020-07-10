@@ -49,11 +49,12 @@ request(options, function (error, response) {
 return data;
 }
 
+var mydata = myRequest(); 
 express()
   .use(express.static(path.join(__dirname, 'public')))
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
   .get('/table', (req, res) => res.render('pages/table'))
-  .get('/data', (req, res) => res.render('pages/table', {arequest: "ME"}))
+  .get('/data', (req, res) => res.render('pages/table', {arequest: mydata}))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
