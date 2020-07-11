@@ -85,9 +85,10 @@ request(options, function (error, response) {
     request(options1, function (error, response) {
         if (error) throw new Error(error);
         auth1 = response.body;
-        console.log(auth1);
         auth1 = JSON.parse(auth1);
         newBody = createBody(auth1.purchases[0].globalPurchaseNumber,auth1.purchases[0].products);
+        console.log(newBody)
+        
         postDB(auth1.purchases[0].globalPurchaseNumber,auth1.purchases[0].products);
     });
 });
