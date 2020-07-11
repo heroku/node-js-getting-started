@@ -77,7 +77,7 @@ function createBody(orderNum,products){
     return JSON.stringify(body);
     }
 auth1 = JSON.parse(auth1);
-console.log(createBody(auth1.Request.purchases[0].globalPurchaseNumber,auth1.Request.purchases[0].products));
+console.log(createBody(auth1.purchases[0].globalPurchaseNumber,auth1.purchases[0].products));
 
 
 
