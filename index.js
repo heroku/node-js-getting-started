@@ -39,7 +39,7 @@ function postDB(orderNum,products) {
                 "method": "POST",
                 "timeout": 0,
                 "headers": {"content-type": "application/json"},
-                "data" : substring(9, reqBody.length);
+                "data" : (substring(9, reqBody.length))
             }
     request(postSettings, function (error, response) {
         if (error) throw new Error(error);
@@ -88,9 +88,17 @@ request(options, function (error, response) {
         auth1 = JSON.parse(auth1);
         newBody = createBody(auth1.purchases[0].globalPurchaseNumber,auth1.purchases[0].products[0]);
         console.log(substring(9, newbody.length))
+
         postDB(auth1.purchases[0].globalPurchaseNumber,auth1.purchases[0].products[0]);
     });
 });
+
+
+
+
+
+
+
 
 express()
   .use(express.static(path.join(__dirname, 'public')))
