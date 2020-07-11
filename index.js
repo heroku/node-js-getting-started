@@ -74,8 +74,7 @@ request(options, function (error, response) {
         auth1 = response.body;
         console.log(auth1);
         auth1 = JSON.parse(auth1);
-        console.log(createBody(auth1.purchases[0].globalPurchaseNumber,auth1.purchases[0].products));
-
+        newBody = createBody(auth1.purchases[0].globalPurchaseNumber,auth1.purchases[0].products);
     });
 });
 
@@ -92,5 +91,5 @@ express()
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
   .get('/table', (req, res) => res.render('pages/table'))
-  .get('/data', (req, res) => res.render('pages/table', {arequest: auth1}))
+  .get('/data', (req, res) => res.render('pages/table', {arequest: newBody}))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
