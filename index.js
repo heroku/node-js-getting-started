@@ -29,17 +29,19 @@ function createBody(orderNum,products){
 
     body.order_id = orderNum;
     body.products = products
+    console.log("createBody: "+ JSON.stringify(body));
     return JSON.stringify(body);
     }
     
 function postDB(orderNum,products) {
     reqBody = createBody(orderNum, products);
+    reqBody = (substring(9, reqBody.length))
     var postSettings = {
                 "url": "https://mydbrestservice.herokuapp.com/orders",
                 "method": "POST",
                 "timeout": 0,
                 "headers": {"content-type": "application/json"},
-                "data" : (substring(9, reqBody.length))
+                "data" : reqBody
             }
     request(postSettings, function (error, response) {
         if (error) throw new Error(error);
