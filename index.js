@@ -74,8 +74,9 @@ function createBody(orderNum,products){
     body.order_id = orderNum;
     body.products = products
     return JSON.stringify(body);
-}
-console.log(createBody(auth1.purchases[0].globalPurchaseNumber,auth1.purchases[0].products));
+    }
+//console.log(createBody(auth1.purchases[0].globalPurchaseNumber,auth1.purchases[0].products));
+
 
 
 
