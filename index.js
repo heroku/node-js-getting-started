@@ -32,7 +32,20 @@ function createBody(orderNum,products){
     return JSON.stringify(body);
     }
     
-
+function postDB(orderNum,products) {
+    reqBody = createBody(orderNum, products);
+    var postSettings = {
+                "url": "https://mydbrestservice.herokuapp.com/orders",
+                "method": "POST",
+                "timeout": 0,
+                "headers": {"content-type": "application/json"},
+                "data" : reqBody
+            }
+    request(postSettings, function (error, response) {
+        if (error) throw new Error(error);
+        console.log("DBPOST: "response.body;
+    });
+}
 
 var request = require('request');
 var options = {
@@ -75,6 +88,7 @@ request(options, function (error, response) {
         console.log(auth1);
         auth1 = JSON.parse(auth1);
         newBody = createBody(auth1.purchases[0].globalPurchaseNumber,auth1.purchases[0].products);
+        postDB(auth1.purchases[0].globalPurchaseNumber,auth1.purchases[0].products);
     });
 });
 
