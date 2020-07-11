@@ -50,7 +50,7 @@ request(options, function (error, response) {
     auth = 'Bearer ' + auth
 
     var options1 = {
-            'url': "https://purchase.izettle.com/purchases/v2?limit=99&descending=true",
+            'url': "https://purchase.izettle.com/purchases/v2?limit=1&descending=true",
             'method': "GET",
             'timeout': 0,
             'headers': {
@@ -76,7 +76,8 @@ function createBody(orderNum,products){
     body.products = products
     return JSON.stringify(body);
     }
-//console.log(createBody(auth1.purchases[0].globalPurchaseNumber,auth1.purchases[0].products));
+auth1 = JSON.parse(auth1);
+console.log(createBody(auth1.purchases[0].globalPurchaseNumber,auth1.purchases[0].products));
 
 
 
