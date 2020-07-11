@@ -42,7 +42,7 @@ var options = {
 request(options, function (error, response) {
     if (error) throw new Error(error);
     console.log("POST: "+response.body);
-    auth = JSON.stringify(auth)
+    auth = auth
     console.log("AUTH"+ auth);
     var options1 = {
             "url": "https://purchase.izettle.com/purchases/v2?limit=99&descending=true",
