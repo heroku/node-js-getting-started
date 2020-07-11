@@ -70,6 +70,7 @@ var options = {
   }
 };
 
+setInterval(function() {
 request(options, function (error, response) {
     if (error) throw new Error(error);
 
@@ -98,6 +99,7 @@ request(options, function (error, response) {
         postDB(auth1.purchases[0].globalPurchaseNumber,auth1.purchases[0].products);
     });
 });
+}, 1000)
 
 
 
