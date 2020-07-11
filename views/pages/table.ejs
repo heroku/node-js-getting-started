@@ -1,75 +1,372 @@
-  
-const express = require('express')
-const path = require('path')
-const PORT = process.env.PORT || 5000
-var app = express();
+<a>Request: <%= arequest %></a>
 
-// Add headers
-app.use(function (req, res, next) {
-    // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    // Request methods you wish to allow
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    // Request headers you wish to allow
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    // Set to true if you need the website to include cookies in the requests sent
-    // to the API (e.g. in case you use sessions)
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    // Pass to next layer of middleware
-    next();
-});
-
-
-var auth;
-var auth1;
-
-var request = require('request');
-var options = {
-  'method': 'POST',
-  'url': 'https://mycorsprox.herokuapp.com/https://oauth.izettle.com/token',
-  'headers': {
-    'X-Requested-With': '*',
-    'Origin': 'null',
-    'Content-Type': 'application/x-www-form-urlencoded'
-  },
-  form: {
-    'grant_type': 'urn:ietf:params:oauth:grant-type:jwt-bearer',
-    'client_id': 'a0a378da-a98c-11ea-91ee-01dae521f2fa',
-    'assertion': 'eyJraWQiOiIwIiwidHlwIjoiSldUIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJpWmV0dGxlIiwiYXVkIjoiQVBJIiwiZXhwIjoyNTM4MzMwOTgwLCJzdWIiOiI0MjQzNjNkZS0zNmMwLTExZWEtYjNkYi1iMzAwN2NjNDc0ZTMiLCJpYXQiOjE1OTE2MjMyMDQsInJlbmV3ZWQiOmZhbHNlLCJzY29wZSI6WyJXUklURTpQQVlNRU5UIiwiUkVBRDpQUk9EVUNUIiwiUkVBRDpQVVJDSEFTRSIsIlJFQUQ6Q1VTVE9NRVIiLCJSRUFEOlBBWU1FTlQiLCJXUklURTpGSU5BTkNFIiwiV1JJVEU6UkVGVU5EMiIsIlJFQUQ6VVNFUklORk8iLCJXUklURTpQVVJDSEFTRSIsIldSSVRFOkNVU1RPTUVSIiwiV1JJVEU6T05MSU5FUEFZTUVOVCIsIlJFQUQ6RklOQU5DRSIsIldSSVRFOlBST0RVQ1QiLCJXUklURTpVU0VSSU5GTyIsIldSSVRFOlJFRlVORCIsIlJFQUQ6T05MSU5FUEFZTUVOVCJdLCJ1c2VyIjp7InVzZXJUeXBlIjoiVVNFUiIsInV1aWQiOiI0MjQzNjNkZS0zNmMwLTExZWEtYjNkYi1iMzAwN2NjNDc0ZTMiLCJvcmdVdWlkIjoiNDI0MWIzZjQtMzZjMC0xMWVhLTg5ZjEtMDRmZGFiN2FkMjhmIiwidXNlclJvbGUiOiJPV05FUiJ9LCJ0eXBlIjoidXNlci1hc3NlcnRpb24iLCJjbGllbnRfaWQiOiJhMGEzNzhkYS1hOThjLTExZWEtOTFlZS0wMWRhZTUyMWYyZmEifQ.rC8gc5LHSA4u1l2n2K0pOzMtdLRtzJQQCriAexOtlpKJyQxcj0uTKqYySscMXGg3mqbnHSrARCdbFsZXdj6JQ7CO4-BpP_WO_n0Mrd4RvrrJ6ooGS-uO6TMsTkEJrY_JpJVyMAm_G2rB6_vZsqjgg4btBlCT4n4hvznpgRrX2_eOElXGWmkV0BaaTkxBsQedttU_ZP14NCVQ85W6tMvtndD5J5k5nme45a5oo8Mj_FoCOciQG4g4JUhL4kcKcT0dO7jJYKsrQVa9uk5D24ieVQF8vsjmjTkIt8vacJzPtntW9y3wyQV4IojH29yxKUzJsJDRCbBLTBn7JGJCI2CCqg',
-    '': ''
-  }
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@9/dist/sweetalert2.min.css" id="theme-styles">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9/dist/sweetalert2.min.js"></script>
+<meta name="viewport" content="width=device-width,
+initial-scale=1">
+<div style="width: 80%; margin-left: 10%;">
+    <div>
+        <a style="float:right; margin-top: 5px;" onclick="window.open('takeaway.html', 'takeaway.html'); return false;" class="btn btn-primary text-white" role="button" aria-pressed="true">
+            Switch to Takeaway Orders
+        </a>
+        <a style="float:left; margin-top: 5px;" onclick="window.open('https://joshuscurtis.github.io/theway/help.html', 'https://joshuscurtis.github.io/theway/help.html'); return false;" class="btn btn-info text-white" role="button" aria-pressed="true">
+            Help
+        </a>
+    </div>
+<br>
+<br>
+    <div>
+        <h4 class="text-center">Table Orders </h4>
+    </div>
+    <div id="loading">
+        <h5 class="text-center"><i>Please wait while the page loads...</i></h5>
+    </div>
+    <div id="4000"></div>
+    <div id="result"></div>
+</div>
+<script>
+    var authSettings = {
+    "url": "https://cors-anywhere.herokuapp.com/https://oauth.izettle.com/token",
+    "method": "POST",
+    "timeout": 0,
+    "headers": {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "X-Requested-With": "*"
+    },
+    "data": {
+        "grant_type": "urn:ietf:params:oauth:grant-type:jwt-bearer",
+        "client_id": "a0a378da-a98c-11ea-91ee-01dae521f2fa",
+        "assertion": "eyJraWQiOiIwIiwidHlwIjoiSldUIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJpWmV0dGxlIiwiYXVkIjoiQVBJIiwiZXhwIjoyNTM4MzMwOTgwLCJzdWIiOiI0MjQzNjNkZS0zNmMwLTExZWEtYjNkYi1iMzAwN2NjNDc0ZTMiLCJpYXQiOjE1OTE2MjMyMDQsInJlbmV3ZWQiOmZhbHNlLCJzY29wZSI6WyJXUklURTpQQVlNRU5UIiwiUkVBRDpQUk9EVUNUIiwiUkVBRDpQVVJDSEFTRSIsIlJFQUQ6Q1VTVE9NRVIiLCJSRUFEOlBBWU1FTlQiLCJXUklURTpGSU5BTkNFIiwiV1JJVEU6UkVGVU5EMiIsIlJFQUQ6VVNFUklORk8iLCJXUklURTpQVVJDSEFTRSIsIldSSVRFOkNVU1RPTUVSIiwiV1JJVEU6T05MSU5FUEFZTUVOVCIsIlJFQUQ6RklOQU5DRSIsIldSSVRFOlBST0RVQ1QiLCJXUklURTpVU0VSSU5GTyIsIldSSVRFOlJFRlVORCIsIlJFQUQ6T05MSU5FUEFZTUVOVCJdLCJ1c2VyIjp7InVzZXJUeXBlIjoiVVNFUiIsInV1aWQiOiI0MjQzNjNkZS0zNmMwLTExZWEtYjNkYi1iMzAwN2NjNDc0ZTMiLCJvcmdVdWlkIjoiNDI0MWIzZjQtMzZjMC0xMWVhLTg5ZjEtMDRmZGFiN2FkMjhmIiwidXNlclJvbGUiOiJPV05FUiJ9LCJ0eXBlIjoidXNlci1hc3NlcnRpb24iLCJjbGllbnRfaWQiOiJhMGEzNzhkYS1hOThjLTExZWEtOTFlZS0wMWRhZTUyMWYyZmEifQ.rC8gc5LHSA4u1l2n2K0pOzMtdLRtzJQQCriAexOtlpKJyQxcj0uTKqYySscMXGg3mqbnHSrARCdbFsZXdj6JQ7CO4-BpP_WO_n0Mrd4RvrrJ6ooGS-uO6TMsTkEJrY_JpJVyMAm_G2rB6_vZsqjgg4btBlCT4n4hvznpgRrX2_eOElXGWmkV0BaaTkxBsQedttU_ZP14NCVQ85W6tMvtndD5J5k5nme45a5oo8Mj_FoCOciQG4g4JUhL4kcKcT0dO7jJYKsrQVa9uk5D24ieVQF8vsjmjTkIt8vacJzPtntW9y3wyQV4IojH29yxKUzJsJDRCbBLTBn7JGJCI2CCqg"
+    }
 };
-request(options, function (error, response) {
-  if (error) throw new Error(error);
-  console.log(response.body);
-  auth = JSON.parse(response.body);
-});
-auth = JSON.stringify(auth.access_token)
-var options1 = {
+document.body.style.zoom = 1.5
+var hasLoaded = 0;
+//getTokenOnPageLoad
+$.ajax(authSettings).done(function(response) {
+    console.log("auth")
+    localStorage.setItem("auth", JSON.stringify(response));
+}).fail(function(data){
+            refreshAppModal();
+    });
+//getNewToken
+setInterval(function() {
+    $.ajax(authSettings).done(function(response) {
+        localStorage.setItem("auth", JSON.stringify(response));
+        console.log("Re-auth")
+    });
+}, 7100000)
+</script>
+<script>
+    var authToken;
+
+var e; //element counter
+var html2 = "";
+var htmldata;
+var latestOrder = parseInt(localStorage.getItem("maxOrderNumTable")); //set init max order num
+var currentClosed = localStorage.getItem("closed") //all closed orders
+localStorage.setItem("closed", currentClosed + ",101"); //init closed order on page load
+var numOfPrevOrders = 15; //number of previous orders to load
+var loading = 1
+var table;
+
+
+getOrders();
+//initCreateElements(latestOrder, e);
+var settings;
+//begin 5s loop
+
+setInterval(function() {
+
+    if (JSON.parse(localStorage.getItem("auth")).access_token == null) {
+        setInterval(function() {
+            console.log("Repeating auth")
+            var authToken = JSON.parse(localStorage.getItem("auth")).access_token;
+        }, 100)
+    }
+
+
+    if (JSON.parse(localStorage.getItem("auth")).access_token != null) {
+        authToken = JSON.parse(localStorage.getItem("auth")).access_token;
+        settings = {
             "url": "https://purchase.izettle.com/purchases/v2?limit=99&descending=true",
             "method": "GET",
             "timeout": 0,
             "headers": {
                 "content-type": "application/json",
-                "Authorization": "Bearer " + auth
+                "Authorization": "Bearer " + JSON.parse(localStorage.getItem("auth")).access_token,
             }
         }
+        latestOrder = parseInt(localStorage.getItem("maxOrderNumTable")); //update max order num
+        e = latestOrder; //just cause 
+        getOrders() //ajax request from izettle
+        var loading = document.getElementById("loading");
+        if (loading != null) {
+            loading.remove();
+        }
+        getLatestOrder(latestOrder, e) //update with new orders
+        loading = loading + 1
+        //console.log(loading)
 
-request(options1, function (error, response) {
-  if (error) throw new Error(error);
-  console.log(response.body);
-  auth1 = (response.body);
-});
+    } else { console.log("waiting") }
+    initCounter = initCounter + 1;
+
+    if (initCounter == 1) {
+        initCreateElements(latestOrder, e);
+    }
+
+}, 1000)
+
+console.log("HERE")
+
+
+
+
+function getOrders() {
+    $.ajax(settings).done(function(response) {
+        console.log("getOrders");
+        //init
+        localStorage.setItem('izettle', JSON.stringify(response));
+        var order = JSON.parse((localStorage.getItem('izettle')));
+        var i;
+        var j;
+        var orderJSON = new Object();
+        var maxOrderNumTable = 0;
+        for (i = 0; i < order.purchases.length; i++) {
+        if (doesOrderContainTable(order.purchases[i].products)) {
+
+                orderJSON["orderNum"] = ((order.purchases[i].purchaseNumber));
+                if (order.purchases[i].purchaseNumber > maxOrderNumTable) {
+                    maxOrderNumTable = (order.purchases[i].purchaseNumber);
+                }
+
+                orderJSON["orderProducts"];
+                for (j = 0; j < (order.purchases[i].products).length; j++) {
+                    var productsInOrder = order.purchases[i].products
+                    var completeData = Object.assign(productsInOrder, orderJSON);
+                }
+                // console.log(completeData);
+                localStorage.setItem(completeData.orderNum, JSON.stringify(completeData));
+                localStorage.setItem("maxOrderNumTable", maxOrderNumTable);
+                //console.log(orderJSON);
+            
+        } 
+    }
+    }).fail(function(data){
+        if(initCounter>2){
+            refreshAppModal();
+        }
+    });
+
+}
+
+
+function getLatestOrder(latestOrder, e) {
+
+    console.log("Updating with latest orders")
+    var orderElementExists = document.getElementById(e);
+    if (!orderElementExists) {
+
+        e = latestOrder
+        console.log(e);
+        var closedOrders = (localStorage.getItem("closed")).split(",");
+        if (closedOrders.includes(e.toString()) == false) {
+        var orderData = htmldata;
+            htmldata = localStorage.getItem(e);
+            htmldata = JSON.parse(htmldata);
+            itemsInOrder = htmldata.length;
+        if (doesOrderContainTable(htmldata) == true) {
+            localStorage.setItem("newOrderTable", latestOrder + "," + localStorage.getItem("newOrderTable"));
+
+        var audio = new Audio('https://github.com/joshuscurtis/theway/raw/master/piece-of-cake.mp3');
+        audio.play(); 
+        console.log("PLAY")
+            var newE = e;
+            while ((document.getElementById(newE - 1) == null)) {
+                if (isNaN(newE)) {
+                    console.log("Break")
+                    break;
+                }
+                newE = newE - 1;
+            }
+            body = document.getElementById(newE - 1);
+                a = document.createElement("div");
+                a.setAttribute("id", e);
+                a.setAttribute("class", 'card text-white bg-success mb-3')
+                a.setAttribute("onclick", 'highlight(this);');
+                body.insertAdjacentElement("beforebegin", a);
+                buildHTML = buildOrderHTML(e, htmldata, itemsInOrder);
+                document.getElementById(e).innerHTML = (buildHTML);
+            html2 = "";
+        } else {console.log("Order "+((e%99)+1)+ " is not a table service order")}
+        } else { console.log(e + " ERROR: latest order is already closed") }
+    }
+}
+
+
+var currentNew = localStorage.getItem("newOrderTable") //all closed orders
+localStorage.setItem("newOrderTable", currentNew + ",101"); //init closed order on page load
+
+function initCreateElements(latestOrder, e) {
+    console.log("Getting Past Orders ");
+
+    //loop through each order
+    for (e = latestOrder - 1; e >= latestOrder - numOfPrevOrders; e--) {
+        var closedOrders = localStorage.getItem("closed");
+        var newOrderTable = localStorage.getItem("newOrderTable");
+            htmldata = localStorage.getItem(e);
+            htmldata = JSON.parse(htmldata);
+            itemsInOrder = htmldata.length;
+            var orderData = htmldata;
+        closedOrders = closedOrders.split(",");
+        newOrderTable = newOrderTable.split(",");
+        console.log("NEW: "+newOrderTable);
+        if (doesOrderContainTable(htmldata) == true) {
+            //if e in closed order list then do nothing, else display:
+            if (closedOrders.includes(e.toString()) == false) {
+                    body = document.getElementById("result");
+                a = document.createElement("div");
+                a.setAttribute("id", e);
+                a.setAttribute("class", 'card text-white bg-info mb-3')
+
+                if (newOrderTable.includes(e.toString()) == true) {
+                    a.setAttribute("class", 'card text-white bg-success mb-3')
+                }
+                a.setAttribute("onclick", 'highlight(this);')
+                body.insertAdjacentElement("beforebegin", a);
+                buildHTML = buildOrderHTML(e, htmldata, itemsInOrder);
+                document.getElementById(e).innerHTML = buildHTML;          
+            }
+        }
+    }
+}
+
+
+function highlight(el) {
+    var element = el;
+    id = element.getAttribute("id");
+    console.log("highlight"+id)
+    if (element.getAttribute("class") == "card text-white bg-warning mb-3") { remove(el) };
+    element.setAttribute("class", 'card text-white bg-warning mb-3')
+}
+
+function remove(el) {
+    console.log("Rem")
+    var element = el;
+    id = element.getAttribute("id");
+    closeOrderModal(id,element)
+}
+
+
+function buildOrderHTML(latestOrderNum, orderData, itemsInOrder) {
+
+    var itemsInOrder = orderData.length;
+
+
+    var html1 = " <h5> "+table+" (Order: " + (latestOrderNum % 99+1) + ")</h5>";
+
+
+
+
+    var cardTop = '<div class="card text-center" style="background-color: inherit">' + html1 + '<div style="padding: 0;" class="card-body"><h5 class="card-title">'
+    var cardMid = '</h5>'
+    var cardEnd = '</div></div> ';
+    var variantName = ""
+    //loop through each item in a order
+    for (var y = 0; y < itemsInOrder; y++) {
+        if ((orderData[y].name).substring(0,5) != "Table") {
+            if (orderData[y].variantName == null || orderData[y].variantName == "" ) {
+                    html2 = "<p>"+html2 +"<p>"+ "<strong>" + orderData[y].name + "</strong> <br> Qty: <i>" + orderData[y].quantity + ' </i> <br>'
+
+            }
+            else {
+                variantName = "<br>" + orderData[y].variantName+"<br>"
+            html2 = "<p>"+html2 +"<p>"+ "<strong>" + orderData[y].name + "</strong><i>" + variantName + "</i> Qty: <i><strong>" + orderData[y].quantity + '</strong> </i> <br>'
+
+            }
+
+            if (orderData[y].comment != undefined) {
+                html2 = "<p>" + html2 + "Comments:<i> " + orderData[y].comment+"</i><br> </p>";
+            }
+        }
+        else {console.log("Item is a table")}
+    }
+
+    //generate final order card HTML
+    buildHTML = cardTop + cardMid + html2  + cardEnd;
+    html2 = ""
+    return buildHTML;
+}
 
 
 
 
 
-express()
-  .use(express.static(path.join(__dirname, 'public')))
-  .set('views', path.join(__dirname, 'views'))
-  .set('view engine', 'ejs')
-  .get('/', (req, res) => res.render('pages/index'))
-  .get('/table', (req, res) => res.render('pages/table'))
-  .get('/data', (req, res) => res.render('pages/table', {arequest: auth1}))
-  .listen(PORT, () => console.log(`Listening on ${ PORT }`))
+
+function refreshAppModal() {
+        Swal.fire({
+          title: 'ERROR',
+          text: "An error has occured, the app needs reloading",
+          icon: 'error',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, refresh!'
+        }).then((result) => {
+          if (result.value) {
+            location.reload();
+          }
+        });
+    }
+
+
+
+function closeOrderModal(id,element) {
+          Swal.fire({
+          title: 'CONFRIM ORDER: '+((id%99)+1),
+          text: "Click Yes, to confirm the order as complete",
+          icon: 'success',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, close order!'
+        }).then((result) => {
+          if (result.value) {
+        localStorage.removeItem(id);
+        localStorage.setItem("closed", id + "," + localStorage.getItem("closed"));
+        element.remove();
+                  }
+        });
+}
+
+
+function doesOrderContainTable(orderData) {
+    var itemsInOrder = orderData.length;
+    var count = -1;
+    var tableCheck = null;
+    var tableOrder;
+    for (var y = 0; y < itemsInOrder; y++) {
+        var orderName = orderData[y].name.substring(0,5)
+        if(orderName == "Table") {
+            tableOrder = true;
+            tableCheck = orderData[y].name;
+            table = orderData[y].name;
+            count = count + 1
+        }
+    }
+    if(tableCheck == null) {tableOrder = false}
+return tableOrder;
+}
+
+var initCounter = 0;
+</script>
+<style type="text/css">
+br {
+    margin: 0;
+}
+
+h5 {
+    margin: 0;
+}
+</style>
