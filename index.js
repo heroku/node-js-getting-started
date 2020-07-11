@@ -42,7 +42,6 @@ var options = {
 request(options, function (error, response) {
     if (error) throw new Error(error);
     console.log("POST: "+response.body);
-    auth = JSON.parse(response.body);
     auth = JSON.stringify(auth.access_token)
     console.log("AUTH"+ auth);
     var options1 = {
