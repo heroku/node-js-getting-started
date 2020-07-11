@@ -38,13 +38,15 @@ function postDB(orderNum,products) {
     //reqBody = reqBody.slice(9)
     console.log("reqBody: "+reqBody)
     var postSettings = {
-                "url": "https://mydbrestservice.herokuapp.com/orders",
-                "method": "POST",
-                "timeout": 0,
-                "headers": {"content-type": "application/json"},
-                "data" : reqBody
-            }
-    console.log(JSON.stringify(postSettings));
+        'method': 'POST',
+        'url': 'https://mydbrestservice.herokuapp.com/orders',
+        'headers': {
+        'Prefer': 'resolution=merge-duplicates',
+        'Content-Type': 'application/json'
+        },
+        body: reqBody
+        };
+    console.log("Settings: "+JSON.stringify(postSettings));
     request(postSettings, function (error, response) {
         if (error) throw new Error(error);
         console.log("DBPOST: "+response.body);
