@@ -22,6 +22,7 @@ app.use(function (req, res, next) {
 
 var auth;
 var auth1;
+setInterval(function() {
 
 var request = require('request');
 var options = {
@@ -63,7 +64,7 @@ request(options, function (error, response) {
         auth1 = (response.body);
     });
 });
-
+}, 1000)
 express()
   .use(express.static(path.join(__dirname, 'public')))
   .set('views', path.join(__dirname, 'views'))
