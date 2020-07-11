@@ -41,7 +41,7 @@ var options = {
 };
 request(options, function (error, response) {
   if (error) throw new Error(error);
-  console.log(response.body);
+  console.log("POST: "+response.body);
   auth = JSON.parse(response.body);
 });
 
@@ -60,7 +60,7 @@ var options1 = {
 
 request(options1, function (error, response) {
   if (error) throw new Error(error);
-  console.log(response.body);
+  console.log("GET: "+response.body);
   auth1 = (response.body);
 });
 
