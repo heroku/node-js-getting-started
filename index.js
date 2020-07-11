@@ -46,7 +46,7 @@ request(options, function (error, response) {
 });
 
 
-auth = JSON.stringify(auth.access_token)
+//auth = JSON.stringify(auth.access_token)
 console.log(auth);
 var options1 = {
             "url": "https://purchase.izettle.com/purchases/v2?limit=99&descending=true",
