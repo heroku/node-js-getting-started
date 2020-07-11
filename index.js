@@ -92,10 +92,10 @@ request(options, function (error, response) {
         if (error) throw new Error(error);
         auth1 = response.body;
         auth1 = JSON.parse(auth1);
-        newBody = createBody(auth1.purchases[0].globalPurchaseNumber,auth1.purchases[0].products[0]);
+        newBody = createBody(auth1.purchases[0].globalPurchaseNumber,auth1.purchases[0].products);
         //console.log(newBody.slice(9))
 
-        postDB(auth1.purchases[0].globalPurchaseNumber,auth1.purchases[0].products[0]);
+        postDB(auth1.purchases[0].globalPurchaseNumber,auth1.purchases[0].products);
     });
 });
 
