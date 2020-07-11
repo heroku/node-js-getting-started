@@ -86,18 +86,12 @@ request(options, function (error, response) {
         if (error) throw new Error(error);
         auth1 = response.body;
         auth1 = JSON.parse(auth1);
-        newBody = createBody(auth1.purchases[0].globalPurchaseNumber,auth1.purchases[0].products);
+        newBody = createBody(auth1.purchases[0].globalPurchaseNumber,auth1.purchases[0].products[0]);
         console.log(newBody)
-        
-        postDB(auth1.purchases[0].globalPurchaseNumber,auth1.purchases[0].products);
+
+        postDB(auth1.purchases[0].globalPurchaseNumber,auth1.purchases[0].products[0]);
     });
 });
-
-
-
-
-
-
 
 
 express()
