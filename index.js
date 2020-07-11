@@ -41,13 +41,12 @@ var options = {
 };
 request(options, function (error, response) {
     if (error) throw new Error(error);
-    console.log("POST: "+response.body);
+
     auth = JSON.parse(response.body);
     auth = JSON.stringify(auth.access_token)
     auth = auth.substring(1, auth.length-1);
     auth = 'Bearer ' + auth
-    
-    console.log("AUTH"+ auth);
+
     var options1 = {
             'url': "https://purchase.izettle.com/purchases/v2?limit=99&descending=true",
             'method': "GET",
@@ -57,19 +56,12 @@ request(options, function (error, response) {
                 'Authorization': auth
             }
         }
-    console.log("OPTIONS: "+JSON.stringify(options1));
-
 
     request(options1, function (error, response) {
         if (error) throw new Error(error);
-        console.log("GET: "+response.body);
         auth1 = (response.body);
     });
 });
-
-
-console.log(auth);
-
 
 express()
   .use(express.static(path.join(__dirname, 'public')))
@@ -77,5 +69,5 @@ express()
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
   .get('/table', (req, res) => res.render('pages/table'))
-  .get('/data', (req, res) => res.render('pages/table', {arequest: "TEST"}))
+  .get('/data', (req, res) => res.render('pages/table', {arequest: auth1}))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
