@@ -20,58 +20,55 @@ app.use(function (req, res, next) {
 });
 
 
+var auth;
+var auth1;
 
-function izettle() {
-    var auth;
-    var auth1;
+var request = require('request');
+var options = {
+  'method': 'POST',
+  'url': 'https://mycorsprox.herokuapp.com/https://oauth.izettle.com/token',
+  'headers': {
+    'X-Requested-With': '*',
+    'Origin': 'null',
+    'Content-Type': 'application/x-www-form-urlencoded'
+  },
+  form: {
+    'grant_type': 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+    'client_id': 'a0a378da-a98c-11ea-91ee-01dae521f2fa',
+    'assertion': 'eyJraWQiOiIwIiwidHlwIjoiSldUIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJpWmV0dGxlIiwiYXVkIjoiQVBJIiwiZXhwIjoyNTM4MzMwOTgwLCJzdWIiOiI0MjQzNjNkZS0zNmMwLTExZWEtYjNkYi1iMzAwN2NjNDc0ZTMiLCJpYXQiOjE1OTE2MjMyMDQsInJlbmV3ZWQiOmZhbHNlLCJzY29wZSI6WyJXUklURTpQQVlNRU5UIiwiUkVBRDpQUk9EVUNUIiwiUkVBRDpQVVJDSEFTRSIsIlJFQUQ6Q1VTVE9NRVIiLCJSRUFEOlBBWU1FTlQiLCJXUklURTpGSU5BTkNFIiwiV1JJVEU6UkVGVU5EMiIsIlJFQUQ6VVNFUklORk8iLCJXUklURTpQVVJDSEFTRSIsIldSSVRFOkNVU1RPTUVSIiwiV1JJVEU6T05MSU5FUEFZTUVOVCIsIlJFQUQ6RklOQU5DRSIsIldSSVRFOlBST0RVQ1QiLCJXUklURTpVU0VSSU5GTyIsIldSSVRFOlJFRlVORCIsIlJFQUQ6T05MSU5FUEFZTUVOVCJdLCJ1c2VyIjp7InVzZXJUeXBlIjoiVVNFUiIsInV1aWQiOiI0MjQzNjNkZS0zNmMwLTExZWEtYjNkYi1iMzAwN2NjNDc0ZTMiLCJvcmdVdWlkIjoiNDI0MWIzZjQtMzZjMC0xMWVhLTg5ZjEtMDRmZGFiN2FkMjhmIiwidXNlclJvbGUiOiJPV05FUiJ9LCJ0eXBlIjoidXNlci1hc3NlcnRpb24iLCJjbGllbnRfaWQiOiJhMGEzNzhkYS1hOThjLTExZWEtOTFlZS0wMWRhZTUyMWYyZmEifQ.rC8gc5LHSA4u1l2n2K0pOzMtdLRtzJQQCriAexOtlpKJyQxcj0uTKqYySscMXGg3mqbnHSrARCdbFsZXdj6JQ7CO4-BpP_WO_n0Mrd4RvrrJ6ooGS-uO6TMsTkEJrY_JpJVyMAm_G2rB6_vZsqjgg4btBlCT4n4hvznpgRrX2_eOElXGWmkV0BaaTkxBsQedttU_ZP14NCVQ85W6tMvtndD5J5k5nme45a5oo8Mj_FoCOciQG4g4JUhL4kcKcT0dO7jJYKsrQVa9uk5D24ieVQF8vsjmjTkIt8vacJzPtntW9y3wyQV4IojH29yxKUzJsJDRCbBLTBn7JGJCI2CCqg',
+    '': ''
+  }
+};
 
-    var request = require('request');
-    var options = {
-      'method': 'POST',
-      'url': 'https://mycorsprox.herokuapp.com/https://oauth.izettle.com/token',
-      'headers': {
-        'X-Requested-With': '*',
-        'Origin': 'null',
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      form: {
-        'grant_type': 'urn:ietf:params:oauth:grant-type:jwt-bearer',
-        'client_id': 'a0a378da-a98c-11ea-91ee-01dae521f2fa',
-        'assertion': 'eyJraWQiOiIwIiwidHlwIjoiSldUIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJpWmV0dGxlIiwiYXVkIjoiQVBJIiwiZXhwIjoyNTM4MzMwOTgwLCJzdWIiOiI0MjQzNjNkZS0zNmMwLTExZWEtYjNkYi1iMzAwN2NjNDc0ZTMiLCJpYXQiOjE1OTE2MjMyMDQsInJlbmV3ZWQiOmZhbHNlLCJzY29wZSI6WyJXUklURTpQQVlNRU5UIiwiUkVBRDpQUk9EVUNUIiwiUkVBRDpQVVJDSEFTRSIsIlJFQUQ6Q1VTVE9NRVIiLCJSRUFEOlBBWU1FTlQiLCJXUklURTpGSU5BTkNFIiwiV1JJVEU6UkVGVU5EMiIsIlJFQUQ6VVNFUklORk8iLCJXUklURTpQVVJDSEFTRSIsIldSSVRFOkNVU1RPTUVSIiwiV1JJVEU6T05MSU5FUEFZTUVOVCIsIlJFQUQ6RklOQU5DRSIsIldSSVRFOlBST0RVQ1QiLCJXUklURTpVU0VSSU5GTyIsIldSSVRFOlJFRlVORCIsIlJFQUQ6T05MSU5FUEFZTUVOVCJdLCJ1c2VyIjp7InVzZXJUeXBlIjoiVVNFUiIsInV1aWQiOiI0MjQzNjNkZS0zNmMwLTExZWEtYjNkYi1iMzAwN2NjNDc0ZTMiLCJvcmdVdWlkIjoiNDI0MWIzZjQtMzZjMC0xMWVhLTg5ZjEtMDRmZGFiN2FkMjhmIiwidXNlclJvbGUiOiJPV05FUiJ9LCJ0eXBlIjoidXNlci1hc3NlcnRpb24iLCJjbGllbnRfaWQiOiJhMGEzNzhkYS1hOThjLTExZWEtOTFlZS0wMWRhZTUyMWYyZmEifQ.rC8gc5LHSA4u1l2n2K0pOzMtdLRtzJQQCriAexOtlpKJyQxcj0uTKqYySscMXGg3mqbnHSrARCdbFsZXdj6JQ7CO4-BpP_WO_n0Mrd4RvrrJ6ooGS-uO6TMsTkEJrY_JpJVyMAm_G2rB6_vZsqjgg4btBlCT4n4hvznpgRrX2_eOElXGWmkV0BaaTkxBsQedttU_ZP14NCVQ85W6tMvtndD5J5k5nme45a5oo8Mj_FoCOciQG4g4JUhL4kcKcT0dO7jJYKsrQVa9uk5D24ieVQF8vsjmjTkIt8vacJzPtntW9y3wyQV4IojH29yxKUzJsJDRCbBLTBn7JGJCI2CCqg',
-        '': ''
-      }
-    };
+request(options, function (error, response) {
+    if (error) throw new Error(error);
 
-    request(options, function (error, response) {
-        if (error) throw new Error(error);
+    auth = JSON.parse(response.body);
+    auth = JSON.stringify(auth.access_token);
+    auth = auth.substring(1, auth.length-1);
+    auth = 'Bearer ' + auth
 
-        auth = JSON.parse(response.body);
-        auth = JSON.stringify(auth.access_token);
-        auth = auth.substring(1, auth.length-1);
-        auth = 'Bearer ' + auth;
-
-        var options1 = {
-                'url': "https://purchase.izettle.com/purchases/v2?limit=99&descending=true",
-                'method': "GET",
-                'timeout': 0,
-                'headers': {
-                    "content-type": "application/json",
-                    'Authorization': auth
-                }
+    var options1 = {
+            'url': "https://purchase.izettle.com/purchases/v2?limit=99&descending=true",
+            'method': "GET",
+            'timeout': 0,
+            'headers': {
+                "content-type": "application/json",
+                'Authorization': auth
             }
+        }
 
-        request(options1, function (error, response) {
-            if (error) throw new Error(error);
-            auth1 = (response.body);
-        });
+    request(options1, function (error, response) {
+        if (error) throw new Error(error);
+        auth1 = (response.body);
     });
-    return auth1;
-}
+});
+
 express()
   .use(express.static(path.join(__dirname, 'public')))
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
   .get('/table', (req, res) => res.render('pages/table'))
-  .get('/data', (req, res) => res.render('pages/table', {arequest: izettle()}))
+  .get('/data', (req, res) => res.render('pages/table', {arequest: auth1}))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
