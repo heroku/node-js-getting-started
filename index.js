@@ -62,6 +62,7 @@ request(options, function (error, response) {
     request(options1, function (error, response) {
         if (error) throw new Error(error);
         auth1 = response.body;
+        console.log(auth1);
     });
 });
 }, 1000)
