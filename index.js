@@ -43,12 +43,7 @@ request(options, function (error, response) {
   if (error) throw new Error(error);
   console.log("POST: "+response.body);
   auth = JSON.parse(response.body);
-});
-
-
-//auth = JSON.stringify(auth.access_token)
-console.log(auth);
-var options1 = {
+  var options1 = {
             "url": "https://purchase.izettle.com/purchases/v2?limit=99&descending=true",
             "method": "GET",
             "timeout": 0,
@@ -58,11 +53,16 @@ var options1 = {
             }
         }
 
-request(options1, function (error, response) {
-  if (error) throw new Error(error);
-  console.log("GET: "+response.body);
-  auth1 = (response.body);
+    request(options1, function (error, response) {
+    if (error) throw new Error(error);
+    console.log("GET: "+response.body);
+    auth1 = (response.body);
+    });
 });
+
+
+//auth = JSON.stringify(auth.access_token)
+console.log(auth);
 
 
 
