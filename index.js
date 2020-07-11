@@ -44,6 +44,7 @@ request(options, function (error, response) {
     console.log("POST: "+response.body);
     auth = JSON.parse(response.body);
     auth = JSON.stringify(auth.access_token)
+    auth = 'Bearer ' + auth
     console.log("AUTH"+ auth);
     var options1 = {
             'url': "https://purchase.izettle.com/purchases/v2?limit=99&descending=true",
@@ -51,7 +52,7 @@ request(options, function (error, response) {
             'timeout': 0,
             'headers': {
                 "content-type": "application/json",
-                'Authorization': 'Bearer ' + auth
+                'Authorization': auth
             }
         }
     console.log("OPTIONS: "+JSON.stringify(options1));
