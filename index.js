@@ -44,6 +44,8 @@ request(options, function (error, response) {
   console.log(response.body);
   auth = JSON.parse(response.body);
 });
+
+
 auth = JSON.stringify(auth.access_token)
 console.log(auth);
 var options1 = {
@@ -66,11 +68,12 @@ request(options1, function (error, response) {
 
 
 
+
 express()
   .use(express.static(path.join(__dirname, 'public')))
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
   .get('/table', (req, res) => res.render('pages/table'))
-  .get('/data', (req, res) => res.render('pages/table', {arequest: auth1}))
+  .get('/data', (req, res) => res.render('pages/table', {arequest: "TEST"}))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
