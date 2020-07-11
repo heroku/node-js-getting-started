@@ -43,7 +43,7 @@ function postDB(orderNum,products) {
             }
     request(postSettings, function (error, response) {
         if (error) throw new Error(error);
-        console.log("DBPOST: "response.body);
+        console.log("DBPOST: "+response.body);
     });
 }
 
@@ -91,6 +91,8 @@ request(options, function (error, response) {
         postDB(auth1.purchases[0].globalPurchaseNumber,auth1.purchases[0].products);
     });
 });
+
+
 
 
 
