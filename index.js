@@ -22,7 +22,6 @@ app.use(function (req, res, next) {
 
 var auth;
 var auth1;
-setInterval(function() {
 
 var request = require('request');
 var options = {
@@ -65,7 +64,6 @@ request(options, function (error, response) {
         console.log(auth1);
     });
 });
-}, 1000)
 
 
 
@@ -76,6 +74,7 @@ function createBody(orderNum,products){
     body.products = products
     return JSON.stringify(body);
     }
+    console
 auth1 = JSON.parse(auth1);
 console.log(createBody(auth1.purchases[0].globalPurchaseNumber,auth1.purchases[0].products));
 
