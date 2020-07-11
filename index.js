@@ -61,7 +61,7 @@ request(options, function (error, response) {
 
     request(options1, function (error, response) {
         if (error) throw new Error(error);
-        auth1 = JSON.parse(response.body);
+        auth1 = response.body;
     });
 });
 }, 1000)
@@ -75,7 +75,7 @@ function createBody(orderNum,products){
     body.products = products
     return JSON.stringify(body);
     }
-//console.log(createBody(auth1.purchases[0].globalPurchaseNumber,auth1.purchases[0].products));
+console.log(createBody(auth1.purchases[0].globalPurchaseNumber,auth1.purchases[0].products));
 
 
 
