@@ -35,7 +35,7 @@ function createBody(orderNum,products){
     
 function postDB(orderNum,products) {
     reqBody = createBody(orderNum, products);
-    reqBody = reqBody.slice(9)
+    //reqBody = reqBody.slice(9)
     console.log("reqBody: "+reqBody)
     var postSettings = {
                 "url": "https://mydbrestservice.herokuapp.com/orders",
@@ -44,6 +44,7 @@ function postDB(orderNum,products) {
                 "headers": {"content-type": "application/json"},
                 "data" : reqBody
             }
+    console.log(JSON.stringify(postSettings));
     request(postSettings, function (error, response) {
         if (error) throw new Error(error);
         console.log("DBPOST: "+response.body);
