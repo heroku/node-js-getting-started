@@ -54,6 +54,7 @@ request(options, function (error, response) {
                 "Authorization": "Bearer " + auth
             }
         }
+    console.log("OPTIONS: "+options1);
     request(options1, function (error, response) {
     if (error) throw new Error(error);
     console.log("GET: "+response.body);
