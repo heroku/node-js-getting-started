@@ -148,7 +148,10 @@ setInterval(function() {
 
 
 // Socket.io server listens to our app
-var io = require('socket.io').listen(app);
+var server = http.createServer(app);
+var io = require('socket.io').listen(server);  //pass a http.Server instance
+server.listen(80);
+
 
 // Send current time to all connected clients
 function sendTime() {
