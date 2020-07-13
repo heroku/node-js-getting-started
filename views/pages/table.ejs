@@ -1,6 +1,18 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
 
+
+
+
+    <div>
+        <h1>Hello World!</h1>
+        <div id="future"></div>
+        <form id="form" id="chat_form">
+            <input id="chat_input" type="text">
+            <input type="submit" value="Send">
+        </form>
+    </div>
+
 <script>
  var socket = io.connect();
  socket.on('connect', function(data) {
@@ -15,22 +27,8 @@
      var message = $('#chat_input').val();
      socket.emit('messages', message);
  });
+
 </script>
-
-
-    <div>
-        <h1>Hello World!</h1>
-        <div id="future"></div>
-        <form id="form" id="chat_form">
-            <input id="chat_input" type="text">
-            <input type="submit" value="Send">
-        </form>
-         <script src="/jquery/dist/jquery.js"></script>
-        <script src="/socket.io/socket.io.js"></script>
-    </div>
-
-
-
 
 
 
