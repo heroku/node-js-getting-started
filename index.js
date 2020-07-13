@@ -6,6 +6,8 @@ var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 
+server.listen(4200);
+
 
 // Add headers
 app.use(function(req, res, next) {
