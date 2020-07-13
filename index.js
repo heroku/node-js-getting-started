@@ -3,10 +3,13 @@ const path = require('path')
 const PORT = process.env.PORT || 5000
 var app = express();
 //io
-var server = require('http').createServer(app);
-var io = require('socket.io')(server);
+const http = require("http");
+const socketIo = require("socket.io");
+const server = http.createServer(app);
+const io = socketIo(server); // < Interesting!
+const getApiAndEmit = "TODO";
 
-server.listen(4200);
+
 
 
 // Add headers
@@ -150,19 +153,27 @@ setInterval(function() {
     });
 }, 1000)
 
-io.on('connection', function(client) {
-    console.log('Client connected...');
+let interval;
 
-    client.on('join', function(data) {
-        console.log(data);
-    });
-
-    client.on('messages', function(data) {
-           client.emit('broad', data);
-           client.broadcast.emit('broad',data);
-    });
-
+io.on("connection", (socket) => {
+  console.log("New client connected");
+  if (interval) {
+    clearInterval(interval);
+  }
+  interval = setInterval(() => getApiAndEmit(socket), 1000);
+  socket.on("disconnect", () => {
+    console.log("Client disconnected");
+    clearInterval(interval);
+  });
 });
+
+server.listen(port, () => console.log(`Listening on port ${port}`));
+
+const getApiAndEmit = socket => {
+  const response = new Date();
+  // Emitting a new message. Will be consumed by the client
+  socket.emit("FromAPI", response);
+};
 
 express()
     .use(express.static(path.join(__dirname, 'public')))
