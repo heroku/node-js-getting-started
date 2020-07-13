@@ -78,7 +78,7 @@ function createBody(orderNum, products) {
 
     body.order_id = orderNum;
     body.products = products
-    console.log("createBody: " + JSON.stringify(body));
+    //console.log("createBody: " + JSON.stringify(body));
     return JSON.stringify(body);
 }
 
