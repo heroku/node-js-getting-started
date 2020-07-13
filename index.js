@@ -2,7 +2,10 @@ const express = require('express')
 const path = require('path')
 const PORT = process.env.PORT || 5000
 var app = express();
-var http = require('http');
+//io
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
+
 
 // Add headers
 app.use(function(req, res, next) {
