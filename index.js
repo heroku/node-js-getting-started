@@ -7,7 +7,7 @@ var server = require('http').createServer();
 var io = require('socket.io').listen(server);
 
 
-server.listen(PORT);
+server.listen(5000);
 io.on('connection', function (socket) {
   socket.on('message',function(message){
     console.log(message); 
