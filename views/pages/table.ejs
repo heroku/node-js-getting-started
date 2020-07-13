@@ -2,7 +2,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
 
 <script>
- var socket = io.connect('http://10.1.220.19:4200');
+ var socket = io.connect('http://thewaycoffee.herokuapp.com:4200');
  socket.on('connect', function(data) {
     socket.emit('join', 'Hello World from client');
  });
