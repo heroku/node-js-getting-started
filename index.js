@@ -3,9 +3,11 @@ const path = require('path')
 const PORT = process.env.PORT || 5000
 var app = express();
 
-var appio = require('http').createServer();
-var io = require('socket.io')(appio);
-app.listen(5001);
+var server = require('http').createServer();
+var io = require('socket.io').listen(server);
+
+
+server.listen(PORT);
 io.on('connection', function (socket) {
   socket.on('message',function(message){
     console.log(message); 
