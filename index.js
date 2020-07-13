@@ -5,7 +5,7 @@ var app = express();
 
 var appio = require('http').createServer();
 var io = require('socket.io')(appio);
-app.listen(5000);
+app.listen(5001);
 io.on('connection', function (socket) {
   socket.on('message',function(message){
     console.log(message); 
