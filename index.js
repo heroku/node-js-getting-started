@@ -2,12 +2,7 @@ const express = require('express')
 const path = require('path')
 const PORT = process.env.PORT || 5000
 var app = express();
-//io
-const http = require("http");
-const socketIo = require("socket.io");
-const server = http.createServer(app);
-const io = socketIo(server); // < Interesting!
-const getApiAndEmit = "TODO";
+
 
 
 
@@ -153,27 +148,6 @@ setInterval(function() {
     });
 }, 1000)
 
-let interval;
-
-io.on("connection", (socket) => {
-  console.log("New client connected");
-  if (interval) {
-    clearInterval(interval);
-  }
-  interval = setInterval(() => getApiAndEmit(socket), 1000);
-  socket.on("disconnect", () => {
-    console.log("Client disconnected");
-    clearInterval(interval);
-  });
-});
-
-server.listen(port, () => console.log(`Listening on port ${port}`));
-
-const getApiAndEmit = socket => {
-  const response = new Date();
-  // Emitting a new message. Will be consumed by the client
-  socket.emit("FromAPI", response);
-};
 
 express()
     .use(express.static(path.join(__dirname, 'public')))
