@@ -85,7 +85,7 @@ function createBody(orderNum, products) {
 function postDB(orderNum, products) {
     reqBody = createBody(orderNum, products);
     //reqBody = reqBody.slice(9)
-    console.log("reqBody: " + reqBody)
+    //console.log("reqBody: " + reqBody)
     var postSettings = {
         'method': 'POST',
         'url': 'https://mydbrestservice.herokuapp.com/orders',
@@ -95,10 +95,10 @@ function postDB(orderNum, products) {
         },
         body: reqBody
     };
-    console.log("Settings: " + JSON.stringify(postSettings));
+    //console.log("Settings: " + JSON.stringify(postSettings));
     request(postSettings, function(error, response) {
         if (error) throw new Error(error);
-        console.log("DBPOST: " + response.body);
+        //console.log("DBPOST: " + response.body);
     });
 }
 
