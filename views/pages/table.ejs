@@ -3,35 +3,6 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
 
-
-    <div>
-        <h1>Hello World!</h1>
-        <div id="future"></div>
-        <form id="form" id="chat_form">
-            <input id="chat_input" type="text">
-            <input type="submit" value="Send">
-        </form>
-    </div>
-
-<script>
- var socket = io.connect();
- socket.on('connect', function(data) {
-    socket.emit('join', 'Hello World from client');
- });
- socket.on('broad', function(data) {
-         $('#future').append(data+ "<br/>");
-   });
-
- $('form').submit(function(e){
-     e.preventDefault();
-     var message = $('#chat_input').val();
-     socket.emit('messages', message);
- });
-
-</script>
-
-
-
 <a>Request: <%= arequest %></a>
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
