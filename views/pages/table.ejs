@@ -382,6 +382,20 @@ $.ajax(settings).done(function (response) {
 
 
 
+function getOrderDetails(id)
+var settings = {
+  "url": "https://mydbrestservice.herokuapp.com/orders?order_id=eq."+id,
+  "method": "GET",
+  "timeout": 0,
+  "headers": {
+    "Prefer": "resolution=merge-duplicates",
+    "Content-Type": "application/x-www-form-urlencoded"
+  },
+};
+
+$.ajax(settings).done(function (response) {
+  return response;
+});
 
 
 </script>
