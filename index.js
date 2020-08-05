@@ -2,17 +2,11 @@ const express = require('express')
 const path = require('path')
 const PORT = process.env.PORT || 5000
 var app = require('express')()
-  , server = require('http').createServer(app)
-  , io = require('socket.io').listen(server)
+server = require('http').createServer(app)
 server.listen(PORT);
 
 
-io.on('connection', function (socket) {
-  socket.on('message',function(message){
-    console.log(message); 
-  });
-  socket.emit('message','Hello, my name is Server');
-});
+
 
 
 
