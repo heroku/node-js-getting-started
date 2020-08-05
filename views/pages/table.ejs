@@ -380,9 +380,7 @@ $.ajax(settings).done(function (response) {
 });
 }
 
-
-
-function getOrderDetails(id)
+function getOrderDetails(id){
 var settings = {
   "url": "https://mydbrestservice.herokuapp.com/orders?order_id=eq."+id,
   "method": "GET",
@@ -394,8 +392,10 @@ var settings = {
 };
 
 $.ajax(settings).done(function (response) {
-  return response;
+  localStorage.setItem("response", JSON.stringify(response));
 });
+  return JSON.parse(localStorage.getItem("response"));
+}
 
 
 </script>
