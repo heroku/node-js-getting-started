@@ -395,11 +395,15 @@ var settings = {
 
 $.ajax(settings).done(function (response) {
   localStorage.setItem("response", JSON.stringify(response));
+  return response;
 });
-  return JSON.parse(localStorage.getItem("response"));
 }
 
-function getOrderDetails(id) {fetchDetails(id); return JSON.parse(localStorage.getItem("response"))}
+function getOrderDetails(id) {
+  fetchDetails(id)
+  details = JSON.parse(localStorage.getItem("response"))
+  return details
+}
 
 
 function isOrderForTable(id){
@@ -456,12 +460,13 @@ function maxOrder(){
 function createOrderCard(orderid) {
 
     orderDetails = getOrderDetails(orderid);
+    orderDetails = getOrderDetails(orderid);
     orderData = orderDetails[0].products
     istable = orderDetails[0].istable;
     isclosed = orderDetails[0].isclosed;
     isnew = orderDetails[0].isnew;
     tableNum = 99; //TODO
-
+    get
 
     for (var y = 0; y < orderData.length; y++) {
         if ((orderData[y].name).substring(0,5) == "Table") {
