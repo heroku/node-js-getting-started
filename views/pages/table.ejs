@@ -333,7 +333,7 @@ function closeOrderModal(id,element) {
           if (result.value) {
         localStorage.removeItem(id);
         localStorage.setItem("closed", id + "," + localStorage.getItem("closed"));
-        changeOrderStatus(true);
+        changeOrderStatus(true, id);
         element.remove();
                   }
         });
