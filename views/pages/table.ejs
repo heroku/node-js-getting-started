@@ -194,7 +194,7 @@ function getLatestOrder(latestOrder, e) {
                 a.setAttribute("class", 'card text-white bg-success mb-3')
                 a.setAttribute("onclick", 'highlight(this);');
                 body.insertAdjacentElement("beforebegin", a);
-                buildHTML = buildOrderHTML(e, htmldata, itemsInOrder);
+                buildHTML = buildOrderHTML(e);
                 document.getElementById(e).innerHTML = (buildHTML);
             html2 = "";
         } else {console.log("Order "+((e%99)+1)+ " is not a table service order")}
