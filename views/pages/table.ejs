@@ -333,6 +333,7 @@ function closeOrderModal(id,element) {
           if (result.value) {
         localStorage.removeItem(id);
         localStorage.setItem("closed", id + "," + localStorage.getItem("closed"));
+        changeOrderStatus(true);
         element.remove();
                   }
         });
@@ -358,6 +359,31 @@ return tableOrder;
 }
 
 var initCounter = 0;
+
+
+function changeOrderStatus(status) {
+var settings = {
+  "url": "https://mydbrestservice.herokuapp.com/orders?order_id=eq.5677",
+  "method": "PATCH",
+  "timeout": 0,
+  "headers": {
+    "Prefer": "resolution=merge-duplicates",
+    "Content-Type": "application/x-www-form-urlencoded"
+  },
+  "data": {
+    "isclosed": status
+  }
+};
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+}
+
+
+
+
+
 </script>
 <style type="text/css">
 br {
