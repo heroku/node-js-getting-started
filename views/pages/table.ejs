@@ -233,7 +233,7 @@ function initCreateElements(latestOrder, e) {
                 }
                 a.setAttribute("onclick", 'highlight(this);')
                 body.insertAdjacentElement("beforebegin", a);
-                buildHTML = buildOrderHTML(e, htmldata, itemsInOrder);
+                buildHTML = createOrderCard(e);
                 document.getElementById(e).innerHTML = buildHTML;          
             }
         }
