@@ -99,7 +99,7 @@ function postDB(orderNum, products) {
     //console.log("Settings: " + JSON.stringify(postSettings));
     request(postSettings, function(error, response) {
         if (error) throw new Error(error);
-        //console.log("DBPOST: " + response.body);
+        console.log("DBPOST: " + response.body);
     });
 }
 
