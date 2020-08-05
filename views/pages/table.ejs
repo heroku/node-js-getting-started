@@ -416,6 +416,12 @@ $.ajax(settings).done(function (response) {
   return localStorage.getItem("tableResponse");
 }
 
+function isOrderClosed(id){
+  order = getOrderDetails(id);
+  return order[0].isclosed
+}
+
+
 </script>
 <style type="text/css">
 br {
