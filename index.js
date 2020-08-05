@@ -1,9 +1,8 @@
 const express = require('express')
-const path = require('path')
-const PORT = process.env.PORT || 5000
-var app = require('express')()
-server = require('http').createServer(app)
-server.listen(PORT);
+const path = require('path')	
+const PORT = process.env.PORT || 5000	
+var app = express()
+var http = require('http')
 
 
 
