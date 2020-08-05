@@ -99,7 +99,7 @@ function createBody(orderNum, products) {
     body.isclosed = false;
     
     
-    console.log("createBody: " + JSON.stringify(body));
+    //console.log("createBody: " + JSON.stringify(body));
     return JSON.stringify(body);
 }
 
@@ -141,7 +141,7 @@ function postDB(orderNum, products) {
     //console.log("Settings: " + JSON.stringify(postSettings));
     request(postSettings, function(error, response) {
         if (error) throw new Error(error);
-        console.log("DBPOST: " + response.body);
+        //console.log("DBPOST: " + response.body);
     });
 }
 
