@@ -1,8 +1,9 @@
-const express = require('express')
 const path = require('path')	
 const PORT = process.env.PORT || 5000	
+
+var express = require('express')
 var app = express();
-var server = app.listen(5000);
+var server = app.listen(PORT);
 var io = require('socket.io').listen(server);
 
 app.get('/', function(req, res) {
