@@ -210,17 +210,19 @@ function initCreateElements(latestOrder, e) {
     console.log("Getting Past Orders ");
 
     //loop through each order
-    for (e = latestOrder - 1; e >= latestOrder - numOfPrevOrders; e--) {
+    for (e = latestOrder - 1; e >= latestOrder - posOfTable2(JSON.parse(localStorage.getItem("izettle"))); e--) {
         var closedOrders = localStorage.getItem("closed");
         var newOrderTable = localStorage.getItem("newOrderTable");
-            htmldata = localStorage.getItem(e);
-            htmldata = JSON.parse(htmldata);
-            itemsInOrder = htmldata.length;
-            var orderData = htmldata;
+            htmldata2 = localStorage.getItem(e);
+            htmldata2 = JSON.parse(htmldata2);
+            if (htmldata2 != null) {
+            itemsInOrder = htmldata2.length;
+        }
+            var orderData = htmldata2;
         closedOrders = closedOrders.split(",");
         newOrderTable = newOrderTable.split(",");
-        console.log("NEW: "+newOrderTable);
-        if (doesOrderContainTable(htmldata) == true) {
+        //console.log("NEW: "+newOrderTable);
+        if (doesOrderContainTable(htmldata2) == true) {
             //if e in closed order list then do nothing, else display:
             if (closedOrders.includes(e.toString()) == false) {
                     body = document.getElementById("result");
