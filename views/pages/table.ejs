@@ -457,15 +457,44 @@ function maxOrder(){
   return lastId;
 }
 
-function createOrderCard(orderid) {
+function createOrderCard(id){
+    $.ajax({
+        url: 'https://mydbrestservice.herokuapp.com/orders?order_id=eq.'+id,
+        success: function(response) {
+            successCallback(response,id);
+        }
+    });
+}
 
-    orderDetails = getOrderDetails(orderid);
-    orderDetails = getOrderDetails(orderid);
+function successCallback(responseObj,id){
+    alert(JSON.stringify(responseObj)); // Only applicable to JSON response
+    createOrderCardContent(responseObj);
+}
+
+function foo(callback) {
+
+    $.ajax({
+        url: 'https://mydbrestservice.herokuapp.com/orders?order_id=eq.0',
+        success: function(response) {
+           return callback(null, response);
+        }
+    });
+}
+
+var result = foo(function(err, result){
+          if (!err)
+           console.log(result);    
+}); 
+
+function createOrderCardContent(responseObj,id) {
+    id = responseObj[0].order_id
+    orderDetails = responseObj;
     orderData = orderDetails[0].products
     istable = orderDetails[0].istable;
     isclosed = orderDetails[0].isclosed;
     isnew = orderDetails[0].isnew;
     tableNum = 99; //TODO
+
 
     for (var y = 0; y < orderData.length; y++) {
         if ((orderData[y].name).substring(0,5) == "Table") {
@@ -474,8 +503,8 @@ function createOrderCard(orderid) {
       }
 
     
-    if (istable == true) var html1 = " <h5> Table "+tableNum+" (Order: " + (orderid % 99+1) + ")</h5>";
-    if (istable == false) var html1 = " <h5> Order: " + (orderid % 99+1) + "</h5>";
+    if (istable == true) var html1 = " <h5> Table "+tableNum+" (Order: " + (id % 99+1) + ")</h5>";
+    if (istable == false) var html1 = " <h5> Order: " + (id % 99+1) + "</h5>";
 
 
 
@@ -506,6 +535,7 @@ function createOrderCard(orderid) {
     //generate final order card HTML
     buildHTML = cardTop + cardMid + html2  + cardEnd;
     html2 = ""
+    console.log(buildHTML);
     return buildHTML;
 }
 
