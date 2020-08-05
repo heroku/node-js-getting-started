@@ -361,9 +361,9 @@ return tableOrder;
 var initCounter = 0;
 
 
-function changeOrderStatus(status) {
+function changeOrderStatus(status, id) {
 var settings = {
-  "url": "https://mydbrestservice.herokuapp.com/orders?order_id=eq.5677",
+  "url": "https://mydbrestservice.herokuapp.com/orders?order_id=eq."+id,
   "method": "PATCH",
   "timeout": 0,
   "headers": {
