@@ -78,10 +78,37 @@ function createBody(orderNum, products) {
     }
 
     body.order_id = orderNum;
-    body.products = products
-    //console.log("createBody: " + JSON.stringify(body));
+    body.products = products;
+    body.isNew = true;
+    
+    body.isTable = doesOrderContainTable(products);
+    
+    
+    console.log("createBody: " + JSON.stringify(body));
     return JSON.stringify(body);
 }
+
+
+function doesOrderContainTable(orderData) {
+	if (orderData != null) {
+    var itemsInOrder = orderData.length;
+}
+    var count = -1;
+    var tableCheck = null;
+    var tableOrder;
+    for (var y = 0; y < itemsInOrder; y++) {
+        var orderName = orderData[y].name.substring(0,5)
+        if(orderName == "Table") {
+            tableOrder = true;
+            tableCheck = orderData[y].name;
+            table = orderData[y].name;
+            count = count + 1
+        }
+    }
+    if(tableCheck == null) {tableOrder = false}
+return tableOrder;
+}
+
 
 function postDB(orderNum, products) {
     reqBody = createBody(orderNum, products);
