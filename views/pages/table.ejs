@@ -457,8 +457,15 @@ function createOrderCard(orderid) {
     isnew = orderDetails[0].isnew;
     tableNum = 99; //TODO
 
+
+    for (var y = 0; y < orderData.length; y++) {
+        if ((orderData[y].name).substring(0,5) == "Table") {
+          tableNum = (orderData[y].name).substring(6,10)
+        }
+      }
+
     
-    if (istable == true) var html1 = " <h5> Table"+tableNum+" (Order: " + (orderid % 99+1) + ")</h5>";
+    if (istable == true) var html1 = " <h5> Table "+tableNum+" (Order: " + (orderid % 99+1) + ")</h5>";
     if (istable == false) var html1 = " <h5> Order: " + (orderid % 99+1) + "</h5>";
 
 
@@ -470,6 +477,7 @@ function createOrderCard(orderid) {
     //loop through each item in a order
     for (var y = 0; y < orderData.length; y++) {
         if ((orderData[y].name).substring(0,5) != "Table") {
+
             if (orderData[y].variantName == null || orderData[y].variantName == "" ) {
                     html2 = "<p>"+html2 +"<p>"+ "<strong>" + orderData[y].name + "</strong> <br> Qty: <i>" + orderData[y].quantity + ' </i> <br>'
 
