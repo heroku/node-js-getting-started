@@ -398,6 +398,7 @@ $.ajax(settings).done(function (response) {
 }
 
 
+
 function isOrderForTable(id){
 var settings = {
   "url": "https://mydbrestservice.herokuapp.com/orders?order_id=eq."+id,
@@ -421,8 +422,103 @@ function isOrderClosed(id){
   return order[0].isclosed
 }
 
+function maxOrder(){
+  lastId = 0;
+  var settings = {
+    "url": "https://mydbrestservice.herokuapp.com/orders",
+    "method": "GET",
+    "timeout": 0,
+    "headers": {
+      "Prefer": "resolution=merge-duplicates",
+      "Content-Type": "application/x-www-form-urlencoded"
+    }
+
+  };
+
+  $.ajax(settings).done(function (response) {
+    localStorage.setItem("allOrders", JSON.stringify(response));
+  });
+  data = JSON.parse(localStorage.getItem("allOrders"));
+  for (var i = 0; i < data.length ; i++) {
+    if (data[i].order_id > lastId) {
+      lastId = data[i].order_id
+    }
+
+  }
+  return lastId;
+}
+
+function createOrderCard(orderid) {
+
+    orderDetails = getOrderDetails(orderid);
+    orderData = orderDetails[0].products
+    istable = orderDetails[0].istable;
+    isclosed = orderDetails[0].isclosed;
+    isnew = orderDetails[0].isnew;
+    tableNum = 99; //TODO
+
+    
+    if (istable == true) var html1 = " <h5> Table"+tableNum+" (Order: " + (orderid % 99+1) + ")</h5>";
+    if (istable == false) var html1 = " <h5> Order: " + (orderid % 99+1) + "</h5>";
+
+
+
+    var cardTop = '<div class="card text-center" style="background-color: inherit">' + html1 + '<div style="padding: 0;" class="card-body"><h5 class="card-title">'
+    var cardMid = '</h5>'
+    var cardEnd = '</div></div> ';
+    var variantName = ""
+    //loop through each item in a order
+    for (var y = 0; y < orderData.length; y++) {
+        if ((orderData[y].name).substring(0,5) != "Table") {
+            if (orderData[y].variantName == null || orderData[y].variantName == "" ) {
+                    html2 = "<p>"+html2 +"<p>"+ "<strong>" + orderData[y].name + "</strong> <br> Qty: <i>" + orderData[y].quantity + ' </i> <br>'
+
+            }
+            else {
+                variantName = "<br>" + orderData[y].variantName+"<br>"
+            html2 = "<p>"+html2 +"<p>"+ "<strong>" + orderData[y].name + "</strong><i>" + variantName + "</i> Qty: <i><strong>" + orderData[y].quantity + '</strong> </i> <br>'
+
+            }
+
+            if (orderData[y].comment != undefined) {
+                html2 = "<p>" + html2 + "Comments:<i> " + orderData[y].comment+"</i><br> </p>";
+            }
+        }
+    }
+
+    //generate final order card HTML
+    buildHTML = cardTop + cardMid + html2  + cardEnd;
+    html2 = ""
+    return buildHTML;
+}
+
+
+
+
+
+
+
+
 
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <style type="text/css">
 br {
     margin: 0;
