@@ -535,6 +535,7 @@ function createOrderCardContent(responseObj,id) {
     buildHTML = cardTop + cardMid + html2  + cardEnd;
     html2 = ""
     console.log(buildHTML);
+    document.getElementById(e).innerHTML = buildHTML;          
     return buildHTML;
 }
 
