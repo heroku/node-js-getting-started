@@ -407,7 +407,7 @@ function getOrderDetails(id) {
 
 
 function isOrderForTable(id){
-var settings = {
+var settings1 = {
   "url": "https://mydbrestservice.herokuapp.com/orders?order_id=eq."+id,
   "method": "GET",
   "timeout": 0,
@@ -417,7 +417,7 @@ var settings = {
   },
 };
 
-$.ajax(settings).done(function (response) {
+$.ajax(settings1).done(function (response) {
   table = 99
   if(response[0].istable != null) table = response[0].istable;
 
