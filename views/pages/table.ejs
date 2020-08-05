@@ -210,7 +210,7 @@ function initCreateElements(latestOrder, e) {
     console.log("Getting Past Orders ");
 
     //loop through each order
-    for (e = latestOrder - 1; e >= latestOrder - posOfTable2(JSON.parse(localStorage.getItem("izettle"))); e--) {
+    for (e = latestOrder - 1; e >= latestOrder - numOfPrevOrders; e--) {
         var closedOrders = localStorage.getItem("closed");
         var newOrderTable = localStorage.getItem("newOrderTable");
             htmldata2 = localStorage.getItem(e);
