@@ -1,9 +1,9 @@
 const express = require('express')
 const path = require('path')	
 const PORT = process.env.PORT || 5000	
-var app = require('express')();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var app = express();
+var server = app.listen(5000);
+var io = require('socket.io').listen(server);
 
 app.get('/', function(req, res) {
    res.sendfile('index.html');
@@ -17,10 +17,6 @@ io.on('connection', function(socket) {
    socket.on('disconnect', function () {
       console.log('A user disconnected');
    });
-});
-
-http.listen(5000, function() {
-   console.log('listening on *:5000');
 });
 
 
