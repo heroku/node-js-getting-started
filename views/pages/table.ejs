@@ -222,7 +222,7 @@ function initCreateElements(latestOrder, e) {
         closedOrders = closedOrders.split(",");
         newOrderTable = newOrderTable.split(",");
         //console.log("NEW: "+newOrderTable);
-        if (isOrderForTable(e) == true) {
+        if (isOrderForTable(e) == "true") {
             //if e in closed order list then do nothing, else display:
             if (closedOrders.includes(e.toString()) == false) {
                     body = document.getElementById("result");
