@@ -398,6 +398,24 @@ $.ajax(settings).done(function (response) {
 }
 
 
+function isOrderForTable(id){
+var settings = {
+  "url": "https://mydbrestservice.herokuapp.com/orders?order_id=eq."+id,
+  "method": "GET",
+  "timeout": 0,
+  "headers": {
+    "Prefer": "resolution=merge-duplicates",
+    "Content-Type": "application/x-www-form-urlencoded"
+  },
+};
+
+$.ajax(settings).done(function (response) {
+  table = response[0].istable
+  localStorage.setItem("tableResponse", table);
+});
+  return localStorage.getItem("tableResponse");
+}
+
 </script>
 <style type="text/css">
 br {
