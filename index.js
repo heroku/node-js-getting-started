@@ -79,9 +79,8 @@ function createBody(orderNum, products) {
 
     body.order_id = orderNum;
     body.products = products;
-    body.isNew = true;
-    
-    body.isTable = doesOrderContainTable(products);
+    body.isnew = true;
+    body.istable = doesOrderContainTable(products);
     
     
     console.log("createBody: " + JSON.stringify(body));
