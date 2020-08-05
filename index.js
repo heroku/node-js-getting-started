@@ -173,12 +173,11 @@ setInterval(function() {
             auth1 = JSON.parse(auth1);
             newBody = createBody(auth1.purchases[0].globalPurchaseNumber, auth1.purchases[0].products);
             //console.log(newBody.slice(9))
-
             postDB(auth1.purchases[0].globalPurchaseNumber, auth1.purchases[0].products);
         });
     });
 }, 1000)
-
+max = 0
 
 express()
     .use(express.static(path.join(__dirname, 'public')))
@@ -186,7 +185,7 @@ express()
     .set('view engine', 'ejs')
     .get('/', (req, res) => res.render('pages/index'))
     .get('/table', (req, res) => res.render('pages/table'))
-    .get('/data', (req, res) => res.render('pages/table', {
-        arequest: newBody
+    .get('/table', (req, res) => res.render('pages/table', {
+        request: newBody
     }))
     .listen(PORT, () => console.log(`Listening on ${ PORT }`))
