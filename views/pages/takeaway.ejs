@@ -1,0 +1,484 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@9/dist/sweetalert2.min.css" id="theme-styles">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9/dist/sweetalert2.min.js"></script>
+<meta name="viewport" content="width=device-width,
+initial-scale=1">
+
+<body class="" style="zoom: 1.5;" data-gr-c-s-loaded="true">
+    <div style="
+    background: slategrey;
+    height: 50px;
+    width: 100%;
+">
+       <!--  <a style="float:right;margin-top: 5px;margin-right: 10%;" onclick="window.open('table.html', 'table.html'); return false;" class="btn btn-primary text-white" role="button" aria-pressed="true">
+            Table Orders
+        </a> -->
+        <a style="float:left;margin-top: 5px;margin-left: 10%;" onclick="window.open('https://joshuscurtis.github.io/theway/help.html', 'https://joshuscurtis.github.io/theway/help.html'); return false;" class="btn btn-info text-white" role="button" aria-pressed="true">
+            Help
+        </a>
+    </div>
+    <div style="width: 80%; margin-left: 10%; ">
+        <br>
+        <div>
+            <div class="center" style="width: 80%; margin-left: 10%; " id="content">
+            </div>
+</body>
+<script>
+    var allOrders; 
+
+function searchOrders(id){
+  orders = allOrders;
+  for (var y = 0; y < orders.length; y++) {
+    currentid = orders[y].order_id;
+    if(currentid == id) { 
+      return orders[y]
+    }
+  }
+}
+
+function newestOrder(){
+ orders = allOrders;
+ id = 0
+  for (var y = 0; y < orders.length; y++) {
+    currentid = orders[y].order_id;
+    if(currentid > id) { 
+      id = currentid;
+    }
+  }
+        return id
+}
+
+function isClosed(id){
+  return searchOrders(id).isclosed;
+}
+function isProcessing(id){
+  return searchOrders(id).isprocessing;
+}
+function isTable(id){
+  return searchOrders(id).istable;
+}
+function draw() {
+  divId = searchOrders(newestOrder()).order_id;
+  //if(isClosed(divId) == true){ divId = divId-1}
+    if(document.getElementById(divId) == null && isClosed(divId) != true){
+    g = document.createElement('div');
+    g.setAttribute("id", divId);
+    document.getElementById("content").appendChild(g);
+    document.getElementById(divId).innerHTML = (createOrderCardContent(searchOrders(newestOrder())))
+    g.setAttribute("onclick", 'highlight(this);')
+  
+  }
+}
+function drawNth(x, table) {
+  divId = searchOrders(newestOrder()).order_id -x;
+  if (document.getElementById(divId) != null) document.getElementById(divId).remove();
+
+    if(document.getElementById(divId) == null && isClosed(divId) != true && isTable(divId) == table){
+      g = document.createElement('div');
+      g.setAttribute("id", divId);
+      g.setAttribute("style", "margin: 10px");
+      g.setAttribute("class", "card text-white bg-success mb-3")
+      document.getElementById("content").appendChild(g);
+      document.getElementById(divId).innerHTML = (createOrderCardContent(searchOrders(divId)))
+      g.setAttribute("onclick", 'highlight(this);')
+      if (isProcessing(divId)) highlight(g) 
+    }
+}
+
+function drawPastXTableOrders(x){
+  for(i=0; i<x;i++){
+    drawNth(i, true);
+  }
+}
+function drawPastXTakeawayOrders(x){
+  for(i=0; i<x;i++){
+    drawNth(i, false);
+  }
+
+}
+function checkIfStillOpen(id){
+  closed = isClosed(id)
+  if (closed) {
+    document.getElementById(id).remove();
+  }
+}
+
+
+
+function highlight(el) {
+    var element = el;
+    id = element.getAttribute("id");
+    console.log("highlight"+id)
+    if (element.getAttribute("class") == "card text-white bg-warning mb-3") { remove(el) };
+    element.setAttribute("class", 'card text-white bg-warning mb-3')
+    processOrder(id)
+}
+
+function remove2(id) {
+    element = id;
+    closeOrderModal(id)
+}
+function closeOrderModal(id) {
+          Swal.fire({
+          title: 'CONFRIM ORDER: '+((id%99)+1),
+          text: "Click Yes, to confirm the order as complete",
+          icon: 'success',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, close order!'
+        }).then((result) => {
+          if (result.value) {
+        //localStorage.removeItem(id);
+        //localStorage.setItem("closed", id + "," + localStorage.getItem("closed"));
+        closeOrder(id);
+        document.getElementById(id).remove();
+                  }
+        });
+}
+
+function assignOrderModal(id,element) {
+          Swal.fire({
+          title: 'Assign Order: '+((id%99)+1),
+          text: "Assign the order to a area.",
+          icon: 'info',
+          showCancelButton: true,
+          cancelButtonText: 'Bar',
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Kitchen'
+        }).then((result) => {
+          if (result.value) {
+            assginOrder(id, "Kitchen")
+            } else {assginOrder(id,"Bar")}  drawPastXTableOrders(20);
+
+        });
+}
+
+
+function remove(el) {
+    var element = el;
+    id = element.getAttribute("id");
+    assignOrderModal(id,element)
+}
+
+
+function closeOrder(id) {
+var settings = {
+  "url": "https://mydbrestservice.herokuapp.com/orders?order_id=eq."+id,
+  "method": "PATCH",
+  "timeout": 0,
+  "headers": {
+    "Prefer": "resolution=merge-duplicates",
+    "Content-Type": "application/x-www-form-urlencoded"
+  },
+  "data": {
+    "isclosed": true
+  }
+};
+
+$.ajax(settings).done(function (response) {
+});
+}
+
+
+function assginOrder(id, assignee) {
+var settings = {
+  "url": "https://mydbrestservice.herokuapp.com/orders?order_id=eq."+id,
+  "method": "PATCH",
+  "timeout": 0,
+  "headers": {
+    "Prefer": "resolution=merge-duplicates",
+    "Content-Type": "application/x-www-form-urlencoded"
+  },
+  "data": {
+    "assignee": assignee
+  }
+};
+
+$.ajax(settings).done(function (response) {
+});
+}
+
+
+function processOrder(id) {
+var settings = {
+  "url": "https://mydbrestservice.herokuapp.com/orders?order_id=eq."+id,
+  "method": "PATCH",
+  "timeout": 0,
+  "headers": {
+    "Prefer": "resolution=merge-duplicates",
+    "Content-Type": "application/x-www-form-urlencoded"
+  },
+  "data": {
+    "isprocessing": true
+  }
+};
+
+$.ajax(settings).done(function (response) {
+});
+}
+
+
+setInterval(function(){
+  getAllOrders();
+}, 500);
+
+setInterval(function(){
+  drawPastXTableOrders(20);
+}, 5000);
+
+function getAllOrders() {
+var settings = {
+  "url": "https://mydbrestservice.herokuapp.com/orders",
+  "method": "GET",
+  "timeout": 0,
+  "headers": {
+    "Content-Type": "application/x-www-form-urlencoded"
+  },
+};
+
+$.ajax(settings).done(function (response) {
+  allOrders = response; 
+  //console.log(response);
+  table = isOrderForTable
+
+});
+}
+ //******************************************* 
+function doesOrderContainTable(orderData) {
+    var itemsInOrder = orderData.length;
+    var count = -1;
+    var tableCheck = null;
+    var tableOrder;
+    for (var y = 0; y < itemsInOrder; y++) {
+        var orderName = orderData[y].name.substring(0,5)
+        if(orderName == "Table") {
+            tableOrder = true;
+            tableCheck = orderData[y].name;
+            table = orderData[y].name;
+            count = count + 1
+        }
+    }
+    if(tableCheck == null) {tableOrder = false}
+return tableOrder;
+}
+
+var initCounter = 0;
+
+
+function changeOrderStatus(status, id) {
+var settings = {
+  "url": "https://mydbrestservice.herokuapp.com/orders?order_id=eq."+id,
+  "method": "PATCH",
+  "timeout": 0,
+  "headers": {
+    "Prefer": "resolution=merge-duplicates",
+    "Content-Type": "application/x-www-form-urlencoded"
+  },
+  "data": {
+    "isclosed": status
+  }
+};
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+}
+
+function fetchDetails(id){
+var settings = {
+  "url": "https://mydbrestservice.herokuapp.com/orders?order_id=eq."+id,
+  "method": "GET",
+  "timeout": 0,
+  "headers": {
+    "Prefer": "resolution=merge-duplicates",
+    "Content-Type": "application/x-www-form-urlencoded"
+  },
+};
+
+$.ajax(settings).done(function (response) {
+  localStorage.setItem("response", JSON.stringify(response));
+  return response;
+});
+}
+
+function getOrderDetails(id) {
+  fetchDetails(id)
+  details = JSON.parse(localStorage.getItem("response"))
+  return details
+}
+
+
+function isOrderForTable(id){
+var settings1 = {
+  "url": "https://mydbrestservice.herokuapp.com/orders?order_id=eq."+id,
+  "method": "GET",
+  "timeout": 0,
+  "headers": {
+    "Prefer": "resolution=merge-duplicates",
+    "Content-Type": "application/x-www-form-urlencoded"
+  },
+};
+
+$.ajax(settings1).done(function (response) {
+  table = 99
+  if(response[0].istable != null) table = response[0].istable;
+
+  localStorage.setItem("tableResponse", table);
+});
+  return localStorage.getItem("tableResponse");
+}
+
+function isOrderClosed(id){
+  order = getOrderDetails(id);
+  return order[0].isclosed
+}
+
+
+
+
+function maxOrder(){
+  lastId = 0;
+  var settings = {
+    "url": "https://mydbrestservice.herokuapp.com/orders",
+    "method": "GET",
+    "timeout": 0,
+    "headers": {
+      "Prefer": "resolution=merge-duplicates",
+      "Content-Type": "application/x-www-form-urlencoded"
+    }
+
+  };
+
+  $.ajax(settings).done(function (response) {
+    localStorage.setItem("allOrders", JSON.stringify(response));
+  });
+  data = JSON.parse(localStorage.getItem("allOrders"));
+  for (var i = 0; i < data.length ; i++) {
+    if (data[i].order_id > lastId) {
+      lastId = data[i].order_id
+    }
+
+  }
+  return lastId;
+}
+
+function createOrderCard(id){
+    $.ajax({
+        url: 'https://mydbrestservice.herokuapp.com/orders?order_id=eq.'+id,
+        success: function(response) {
+            successCallback(response,id);
+        }
+    });
+}
+
+function successCallback(responseObj,id){
+    createOrderCardContent(responseObj);
+}
+
+function foo(callback) {
+
+    $.ajax({
+        url: 'https://mydbrestservice.herokuapp.com/orders?order_id=eq.0',
+        success: function(response) {
+           return callback(null, response);
+        }
+    });
+}
+
+var result = foo(function(err, result){
+          if (!err)
+           console.log(result);    
+}); 
+    html2 = ""
+
+function createOrderCardContent(responseObj) {
+    id = responseObj.order_id
+    orderDetails = responseObj;
+    orderData = orderDetails.products
+    istable = orderDetails.istable;
+    isclosed = orderDetails.isclosed;
+    isnew = orderDetails.isnew;
+    tableNum = 99; //TODO
+
+
+    for (var y = 0; y < orderData.length; y++) {
+        if ((orderData[y].name).substring(0,5) == "Table") {
+          tableNum = (orderData[y].name).substring(6,10)
+        }
+      }
+
+    
+    if (istable == true) var html1 = " <h5> Table "+tableNum+" (Order: " + (id % 99+1) + ")</h5>";
+    if (istable == false) var html1 = " <h5> Order: " + (id % 99+1) + "</h5>";
+
+
+
+    var cardTop = '<div class="card text-center" style="background-color: inherit">' + html1 + '<div style="padding: 0;" class="card-body"><h5 class="card-title">'
+    var cardMid = '</h5>'
+    var cardEnd = '</div></div> ';
+    var variantName = ""
+    //loop through each item in a order
+    for (var y = 0; y < orderData.length; y++) {
+        if ((orderData[y].name).substring(0,5) != "Table") {
+
+            if (orderData[y].variantName == null || orderData[y].variantName == "" ) {
+                    html2 = "<p>"+html2 +"<p>"+ "<strong>" + orderData[y].name + "</strong> <br> Qty: <i>" + orderData[y].quantity + ' </i> <br>'
+
+            }
+            else {
+                variantName = "<br>" + orderData[y].variantName+"<br>"
+            html2 = "<p>"+html2 +"<p>"+ "<strong>" + orderData[y].name + "</strong><i>" + variantName + "</i> Qty: <i><strong>" + orderData[y].quantity + '</strong> </i> <br>'
+
+            }
+
+            if (orderData[y].comment != undefined) {
+                html2 = "<p>" + html2 + "Comments:<i> " + orderData[y].comment+"</i><br> </p>";
+            }
+
+
+        }
+    }
+            html2 = '<button onclick="event.stopPropagation();remove2(this.parentNode.parentNode.parentNode.id)" id="X">x</button>'+ "<p>" + html2 + "<b style='color:black;'> " + orderDetails.assignee/*+"</b><br> </p>";
+
+    //generate final order card HTML
+    buildHTML = cardTop + cardMid + html2  + cardEnd;
+    html2 = ""
+    console.log(buildHTML);
+    //document.getElementById(id).innerHTML = buildHTML;          
+    return buildHTML;
+}
+
+
+/*document.getElementById("x").addEventListener("click", function( e ){
+    e = window.event || e; 
+    if(this === e.target) {
+    remove2(this);    }
+});*/
+
+
+
+
+
+
+</script>
+<style type="text/css">
+br {
+    margin: 0;
+}
+
+h5 {
+    margin: 0;
+}
+#x {
+    position: absolute;
+    background: red;
+    color: white;
+    top: -10px;
+    right: -10px;
+    border-radius: 99%;
+}
+
+</style>
