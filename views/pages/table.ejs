@@ -5,16 +5,27 @@
 <meta name="viewport" content="width=device-width,
 initial-scale=1">
 
-
-
-<div id="content">
-  
-</div>
-
-
-
+<body class="" style="zoom: 1.5;" data-gr-c-s-loaded="true">
+    <div style="
+    background: slategrey;
+    height: 50px;
+    width: 100%;
+">
+        <a style="float:right;margin-top: 5px;margin-right: 10%;" onclick="window.open('table.html', 'table.html'); return false;" class="btn btn-primary text-white" role="button" aria-pressed="true">
+            Table Orders
+        </a>
+        <a style="float:left;margin-top: 5px;margin-left: 10%;" onclick="window.open('https://joshuscurtis.github.io/theway/help.html', 'https://joshuscurtis.github.io/theway/help.html'); return false;" class="btn btn-info text-white" role="button" aria-pressed="true">
+            Help
+        </a>
+    </div>
+    <div style="width: 80%; margin-left: 10%; ">
+        <br>
+        <div>
+            <div class="center" style="width: 80%; margin-left: 10%; " id="content">
+            </div>
+</body>
 <script>
-var allOrders; 
+    var allOrders; 
 
 function searchOrders(id){
   orders = allOrders;
@@ -66,6 +77,8 @@ function drawNth(x, table) {
     if(document.getElementById(divId) == null && isClosed(divId) != true && isTable(divId) == table){
       g = document.createElement('div');
       g.setAttribute("id", divId);
+      g.setAttribute("style", "margin: 10px");
+      g.setAttribute("class", "card text-white bg-success mb-3")
       document.getElementById("content").appendChild(g);
       document.getElementById(divId).innerHTML = (createOrderCardContent(searchOrders(divId)))
       g.setAttribute("onclick", 'highlight(this);')
@@ -402,24 +415,6 @@ function createOrderCardContent(responseObj) {
 
 
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <style type="text/css">
 br {
     margin: 0;
