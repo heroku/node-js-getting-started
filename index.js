@@ -1,24 +1,14 @@
+  
+const express = require('express')
 const path = require('path')	
 const PORT = process.env.PORT || 5000	
+var app = express()
+var http = require('http')
 
-var express = require('express')
-var app = express();
-var server = app.listen(PORT);
-var io = require('socket.io').listen(server);
 
-app.get('/', function(req, res) {
-   res.sendfile('index.html');
-});
 
-//Whenever someone connects this gets executed
-io.on('connection', function(socket) {
-   console.log('A user connected');
 
-   //Whenever someone disconnects this piece of code executed
-   socket.on('disconnect', function () {
-      console.log('A user disconnected');
-   });
-});
+
 
 
 // Add headers
@@ -96,7 +86,7 @@ function createBody(orderNum, products) {
     body.isclosed = false;
     
     
-    //console.log("createBody: " + JSON.stringify(body));
+    console.log("createBody: " + JSON.stringify(body));
     return JSON.stringify(body);
 }
 
@@ -138,7 +128,7 @@ function postDB(orderNum, products) {
     //console.log("Settings: " + JSON.stringify(postSettings));
     request(postSettings, function(error, response) {
         if (error) throw new Error(error);
-        //console.log("DBPOST: " + response.body);
+        console.log("DBPOST: " + response.body);
     });
 }
 
