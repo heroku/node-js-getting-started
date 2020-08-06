@@ -151,7 +151,7 @@ function assignOrderModal(id,element) {
         }).then((result) => {
           if (result.value) {
             assginOrder(id, "Kitchen")
-            } else {assginOrder(id,"Bar")}  drawPastXTakeawayeOrders(20);
+            } else {assginOrder(id,"Bar")}  drawPastXTakeawayOrders(20);
 
         });
 }
@@ -226,7 +226,7 @@ setInterval(function(){
 }, 500);
 
 setInterval(function(){
-  drawPastXTakeawayeOrders(20);
+  drawPastXTakeawayOrders(20);
 }, 5000);
 
 function getAllOrders() {
