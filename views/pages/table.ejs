@@ -59,6 +59,8 @@ function draw() {
 }
 function drawNth(x, table) {
   divId = searchOrders(newestOrder()).order_id -x;
+  if (document.getElementById(divId) != null) document.getElementById(divId).remove();
+
     if(document.getElementById(divId) == null && isClosed(divId) != true && isTable(divId) == table){
       g = document.createElement('div');
       g.setAttribute("id", divId);
@@ -79,6 +81,13 @@ function drawPastXTakeawayOrders(x){
   }
 
 }
+function checkIfStillOpen(id){
+  closed = isClosed(id)
+  if (closed) {
+    document.getElementById(id).remove();
+  }
+}
+
 
 
 function highlight(el) {
