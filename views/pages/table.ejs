@@ -115,8 +115,11 @@ function highlight(el) {
     processOrder(id)
 }
 
-
-function closeOrderModal(id,element) {
+function remove2(id) {
+    element = id;
+    closeOrderModal(id)
+}
+function closeOrderModal(id) {
           Swal.fire({
           title: 'CONFRIM ORDER: '+((id%99)+1),
           text: "Click Yes, to confirm the order as complete",
@@ -130,15 +133,34 @@ function closeOrderModal(id,element) {
         //localStorage.removeItem(id);
         //localStorage.setItem("closed", id + "," + localStorage.getItem("closed"));
         closeOrder(id);
-        element.remove();
+        document.getElementById(id).remove();
                   }
         });
 }
 
+function assignOrderModal(id,element) {
+          Swal.fire({
+          title: 'Assign Order: '+((id%99)+1),
+          text: "Assign the order to a area.",
+          icon: 'info',
+          showCancelButton: true,
+          cancelButtonText: 'Bar',
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Kitchen'
+        }).then((result) => {
+          if (result.value) {
+            assginOrder(id, "Kitchen")
+            } else {assginOrder(id,"Bar")}  drawPastXTableOrders(20);
+
+        });
+}
+
+
 function remove(el) {
     var element = el;
     id = element.getAttribute("id");
-    closeOrderModal(id,element)
+    assignOrderModal(id,element)
 }
 
 
@@ -159,6 +181,26 @@ var settings = {
 $.ajax(settings).done(function (response) {
 });
 }
+
+
+function assginOrder(id, assignee) {
+var settings = {
+  "url": "https://mydbrestservice.herokuapp.com/orders?order_id=eq."+id,
+  "method": "PATCH",
+  "timeout": 0,
+  "headers": {
+    "Prefer": "resolution=merge-duplicates",
+    "Content-Type": "application/x-www-form-urlencoded"
+  },
+  "data": {
+    "assignee": assignee
+  }
+};
+
+$.ajax(settings).done(function (response) {
+});
+}
+
 
 function processOrder(id) {
 var settings = {
@@ -395,8 +437,11 @@ function createOrderCardContent(responseObj) {
             if (orderData[y].comment != undefined) {
                 html2 = "<p>" + html2 + "Comments:<i> " + orderData[y].comment+"</i><br> </p>";
             }
+
+
         }
     }
+            html2 = '<button onclick="event.stopPropagation();remove2(this.parentNode.parentNode.parentNode.id)" id="X">x</button>'+ "<p>" + html2 + "<b style='color:black;'> " + orderDetails.assignee+"</b><br> </p>";
 
     //generate final order card HTML
     buildHTML = cardTop + cardMid + html2  + cardEnd;
@@ -405,6 +450,18 @@ function createOrderCardContent(responseObj) {
     //document.getElementById(id).innerHTML = buildHTML;          
     return buildHTML;
 }
+
+
+/*document.getElementById("x").addEventListener("click", function( e ){
+    e = window.event || e; 
+    if(this === e.target) {
+    remove2(this);    }
+});*/
+
+
+
+
+
 
 </script>
 <style type="text/css">
@@ -415,4 +472,12 @@ br {
 h5 {
     margin: 0;
 }
+#x {
+    position: absolute;
+    background: red;
+    color: white;
+    top: -10px;
+    right: -10px;
+}
+
 </style>
