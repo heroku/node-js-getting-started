@@ -41,7 +41,9 @@ function newestOrder(){
 function isClosed(id){
   return searchOrders(id).isclosed;
 }
-
+function isProcessing(id){
+  return searchOrders(id).isprocessing;
+}
 function isTable(id){
   return searchOrders(id).istable;
 }
@@ -67,6 +69,7 @@ function drawNth(x, table) {
       document.getElementById("content").appendChild(g);
       document.getElementById(divId).innerHTML = (createOrderCardContent(searchOrders(divId)))
       g.setAttribute("onclick", 'highlight(this);')
+      if (isProcessing(divId)) highlight(g) 
     }
 }
 
@@ -96,6 +99,7 @@ function highlight(el) {
     console.log("highlight"+id)
     if (element.getAttribute("class") == "card text-white bg-warning mb-3") { remove(el) };
     element.setAttribute("class", 'card text-white bg-warning mb-3')
+    processOrder(id)
 }
 
 
@@ -142,6 +146,25 @@ var settings = {
 $.ajax(settings).done(function (response) {
 });
 }
+
+function processOrder(id) {
+var settings = {
+  "url": "https://mydbrestservice.herokuapp.com/orders?order_id=eq."+id,
+  "method": "PATCH",
+  "timeout": 0,
+  "headers": {
+    "Prefer": "resolution=merge-duplicates",
+    "Content-Type": "application/x-www-form-urlencoded"
+  },
+  "data": {
+    "isprocessing": true
+  }
+};
+
+$.ajax(settings).done(function (response) {
+});
+}
+
 
 setInterval(function(){
   getAllOrders();
