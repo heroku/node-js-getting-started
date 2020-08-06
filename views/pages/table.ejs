@@ -25,9 +25,11 @@ initial-scale=1">
         <br>
         <div>
             <div class="center" style="width: 80%; margin-left: 10%; " id="content">
+            <div id="count"></div>  
             </div>
 </body>
 <script>
+
     var allOrders; 
 
 function searchOrders(id){
@@ -107,7 +109,18 @@ function checkIfStillOpen(id){
   }
 }
 
-
+function countOpen() {
+  count = 0;
+  for(i=0; i<20; i++){
+    
+    thisOrder = searchOrders(newestOrder()-i)
+    console.log(JSON.stringify(thisOrder)+": "+thisOrder.isclosed)
+    if (thisOrder.isclosed != true && thisOrder.istable ) {
+      count = count+1
+    } 
+  }
+  return count;
+}
 
 function highlight(el) {
     var element = el;
@@ -230,7 +243,12 @@ setInterval(function(){
 
 setInterval(function(){
   drawPastXTableOrders(20);
-}, 5000);
+    openOrders = countOpen()
+   count = document.getElementById("count")
+    count.innerHTML = "<strong col> Open Orders: "+(openOrders) +"</strong>"
+    if(openOrders>=5) count.setAttribute("style", "color: red;")
+    if(openOrders<=4) count.setAttribute("style", "color: orange;")
+    if(openOrders<=2) count.setAttribute("style", "color: green;")}, 5000);
 
 function getAllOrders() {
 var settings = {
