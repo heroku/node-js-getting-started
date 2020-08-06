@@ -151,7 +151,7 @@ function assignOrderModal(id,element) {
         }).then((result) => {
           if (result.value) {
             assginOrder(id, "Kitchen")
-            } else {assginOrder(id,"Bar")}  drawPastXTableOrders(20);
+            } else {assginOrder(id,"Bar")}  drawPastXTakeawayeOrders(20);
 
         });
 }
@@ -226,7 +226,7 @@ setInterval(function(){
 }, 500);
 
 setInterval(function(){
-  drawPastXTableOrders(20);
+  drawPastXTakeawayeOrders(20);
 }, 5000);
 
 function getAllOrders() {
@@ -441,7 +441,7 @@ function createOrderCardContent(responseObj) {
 
         }
     }
-            html2 = '<button onclick="event.stopPropagation();remove2(this.parentNode.parentNode.parentNode.id)" id="X">x</button>'+ "<p>" + html2 + "<b style='color:black;'> " + orderDetails.assignee/*+"</b><br> </p>";
+            html2 = '<button onclick="event.stopPropagation();remove2(this.parentNode.parentNode.parentNode.id)" id="X">x</button>'+ "<p>" + html2 + "<b style='color:black;'> " + orderDetails.assignee+"</b><br> </p>";
 
     //generate final order card HTML
     buildHTML = cardTop + cardMid + html2  + cardEnd;
