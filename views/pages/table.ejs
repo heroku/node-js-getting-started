@@ -55,7 +55,9 @@ function newestOrder(){
 }
 
 function isClosed(id){
-  return searchOrders(id).isclosed;
+	closed = searchOrders(id).isclosed;
+	if (closed == undefined) {return false}
+	return closed;
 }
 function isProcessing(id){
   return searchOrders(id).isprocessing;
