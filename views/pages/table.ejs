@@ -82,6 +82,7 @@ function drawNth(x, table) {
   if (document.getElementById(divId) != null) document.getElementById(divId).remove();
 
     if(document.getElementById(divId) == null && isClosed(divId) != true && isTable(divId) == table){
+		console.log("id: "+divId+searchOrders(divId));
       g = document.createElement('div');
       g.setAttribute("id", divId);
       g.setAttribute("style", "margin: 10px");
@@ -115,8 +116,7 @@ function countOpen() {
   count = 0;
   for(i=0; i<2; i++){
     
-    thisOrder = searchOrders(newestOrder()-i)
-    console.log(JSON.stringify(thisOrder)+": "+thisOrder.isclosed)
+    thisOrder" = searchOrders(newestOrder()-i)
     if (thisOrder.isclosed != true && thisOrder.istable ) {
       count = count+1
     } 
