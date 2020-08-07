@@ -25,7 +25,7 @@ initial-scale=1">
         <br>
         <div>
             <div class="center" style="width: 80%; margin-left: 10%; " id="content">
-            <div class="text-center" id="count"></div>  
+            <p class="text-center" id="count"></p>  
             </div>
 </body>
 <script>
@@ -244,11 +244,12 @@ setInterval(function(){
 setInterval(function(){
   drawPastXTableOrders(20);
     openOrders = countOpen()
-   count = document.getElementById("count")
-    count.innerHTML = "<strong col> Open Orders: "+(openOrders) +"</strong>"
+    count = document.getElementById("count")
+    count.innerHTML = "<strong col> Current Open Orders: "+(openOrders) +"</strong>"
     if(openOrders>=5) count.setAttribute("style", "color: red;")
     if(openOrders<=4) count.setAttribute("style", "color: orange;")
-    if(openOrders<=2) count.setAttribute("style", "color: green;")}, 5000);
+    if(openOrders<=2) count.setAttribute("style", "color: green;")}
+	,5000);
 
 function getAllOrders() {
 var settings = {
@@ -476,17 +477,6 @@ function createOrderCardContent(responseObj) {
     //document.getElementById(id).innerHTML = buildHTML;          
     return buildHTML;
 }
-
-
-/*document.getElementById("x").addEventListener("click", function( e ){
-    e = window.event || e; 
-    if(this === e.target) {
-    remove2(this);    }
-});*/
-
-
-
-
 
 
 </script>
