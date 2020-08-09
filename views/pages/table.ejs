@@ -61,7 +61,7 @@ function isClosed2(id){
 }
 
 function isClosed(id) {
-	try {
+try {
 		closed = searchOrders(id).isclosed;
 	}
 catch(err) {
@@ -78,9 +78,24 @@ finally {
 function isProcessing(id){
   return searchOrders(id).isprocessing;
 }
-function isTable(id){
+function isTable2(id){
   return searchOrders(id).istable;
 }
+
+function isTable(id) {
+try {
+	table = searchOrders(id).istable;
+	}
+catch(err) {
+    return true;
+	} 
+finally {
+	return table;
+	}	
+}
+
+
+
 function draw() {
   divId = searchOrders(newestOrder()).order_id;
   //if(isClosed(divId) == true){ divId = divId-1}
