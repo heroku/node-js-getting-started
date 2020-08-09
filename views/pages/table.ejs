@@ -148,7 +148,7 @@ function countOpen() {
   for(i=0; i<2; i++){
     
     thisOrder = searchOrders(newestOrder()-i)
-    if (isClosed(newestOrder()-i != true) && (isTable(newestOrder()-i)) {
+    if ((isClosed(newestOrder()-i) != true) && (isTable(newestOrder()-i))) {
       count = count+1
     } 
   }
