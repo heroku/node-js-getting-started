@@ -54,11 +54,27 @@ function newestOrder(){
         return id
 }
 
-function isClosed(id){
+function isClosed2(id){
 	if (searchOrders(id).isclosed == undefined) {return false}
 	closed = searchOrders(id).isclosed;
 	return closed;
 }
+
+function isClosed(id) {
+	try {
+		closed = searchOrders(id).isclosed;
+	}
+catch(err) {
+        return true;
+	} 
+finally {
+		return closed;
+	}	
+}
+
+
+
+
 function isProcessing(id){
   return searchOrders(id).isprocessing;
 }
