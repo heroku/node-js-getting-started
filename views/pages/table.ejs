@@ -113,7 +113,7 @@ function drawNth(x, table) {
   if (document.getElementById(divId) != null) document.getElementById(divId).remove();
 
     if(document.getElementById(divId) == null && isClosed(divId) != true && isTable(divId) == table){
-		console.log("id: "+divId+JSON.parse(searchOrders(divId)));
+		//console.log("id: "+divId+JSON.parse(searchOrders(divId)));
       g = document.createElement('div');
       g.setAttribute("id", divId);
       g.setAttribute("style", "margin: 10px");
