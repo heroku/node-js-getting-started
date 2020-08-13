@@ -67,15 +67,15 @@ try {
 		closed = searchOrders(id).isclosed;
 	}
 catch(err) {
+		console.log(id+" had an error, return closed by default")
         return true;
 	} 
 finally {
+		console.log(id+" return closed by finally")
 		return closed;
+		
 	}	
 }
-
-
-
 
 function isProcessing(id){
   return searchOrders(id).isprocessing;
@@ -115,7 +115,7 @@ function drawNth(x, table) {
   if (document.getElementById(divId) != null) document.getElementById(divId).remove();
 
     if(document.getElementById(divId) == null && isClosed(divId) != true && isTable(divId) == table){
-		//console.log("id: "+divId+JSON.parse(searchOrders(divId)));
+	  //console.log("id: "+divId+JSON.parse(searchOrders(divId)));
       g = document.createElement('div');
       g.setAttribute("id", divId);
       g.setAttribute("style", "margin: 10px");
@@ -158,14 +158,13 @@ function countEle() {
 	
 }
 
-
 function countOpen() {
   count = 0;
   for(i=0; i<maxOrderNum; i++){
     
     thisOrder = searchOrders(newestOrder()-i)
     if ((isClosed(newestOrder()-i) != true) && (isTable(newestOrder()-i))) {
-      count = count+1
+    	count = count+1
     } 
   }
   return count;
@@ -184,6 +183,7 @@ function remove2(id) {
     element = id;
     closeOrderModal(id)
 }
+
 function closeOrderModal(id) {
           Swal.fire({
           title: 'CONFRIM ORDER: '+((id%99)+1),
@@ -221,13 +221,11 @@ function assignOrderModal(id,element) {
         });
 }
 
-
 function remove(el) {
     var element = el;
     id = element.getAttribute("id");
     assignOrderModal(id,element)
 }
-
 
 function closeOrder(id) {
 var settings = {
