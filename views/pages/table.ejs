@@ -31,7 +31,8 @@ initial-scale=1">
 <script>
 
     var allOrders;
-	maxOrderNum = 3;
+	var maxOrderNum = 3;
+	var drawNum = 15;
 
 function searchOrders(id){
   orders = allOrders;
@@ -215,7 +216,7 @@ function assignOrderModal(id,element) {
         }).then((result) => {
           if (result.value) {
             assginOrder(id, "Kitchen")
-            } else {assginOrder(id,"Bar")}  drawPastXTableOrders(maxOrderNum);
+            } else {assginOrder(id,"Bar")}
 
         });
 }
@@ -290,7 +291,7 @@ setInterval(function(){
 }, 500);
 
 setInterval(function(){
-  drawPastXTableOrders(15);
+  drawPastXTableOrders(drawNum);
     openOrders = countOpen()
     count = document.getElementById("count")
     count.innerHTML = "<strong col> Current Open Orders: "+(openOrders) +"</strong>"
