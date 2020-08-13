@@ -31,7 +31,7 @@ initial-scale=1">
 <script>
 
     var allOrders;
-	maxOrderNum = 2;
+	maxOrderNum = 3;
 
 function searchOrders(id){
   orders = allOrders;
@@ -290,7 +290,7 @@ setInterval(function(){
 }, 500);
 
 setInterval(function(){
-  drawPastXTableOrders(3);
+  drawPastXTableOrders(15);
     openOrders = countOpen()
     count = document.getElementById("count")
     count.innerHTML = "<strong col> Current Open Orders: "+(openOrders) +"</strong>"
