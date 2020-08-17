@@ -150,6 +150,8 @@ function draw() {
 function drawNth(x, table) {
   divId = searchOrders(newestOrder()).order_id -x;
   if (document.getElementById(divId) != null) document.getElementById(divId).remove();
+  if (searchOrders(newestOrder()-x).isnew == true) console.log("new order")
+ 
   setOld(newestOrder()-x);
   
 	//check if order is closed and is a table order
