@@ -312,6 +312,11 @@ setInterval(function(){
 	
 	,5000);
 
+	setInterval(function(){
+		if(openOrders > 7) alertModal();
+	}, 60000)
+	
+	
 function getAllOrders() {
 var settings = {
   "url": "https://mydbrestservice.herokuapp.com/orders",
