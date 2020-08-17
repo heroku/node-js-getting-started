@@ -390,11 +390,12 @@ setInterval(function(){
   option = checkOption();
   numOfPastOrders = checkNum();
   displayOrder = checkOrder();
-  isNew();
+  
 }, 500);
 
 
 setInterval(function(){
+	isNew();
 	content = document.getElementById("content");
 	content.innerHTML = '';
 	if(option == 'table') {
