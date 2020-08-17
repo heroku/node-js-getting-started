@@ -21,6 +21,11 @@ initial-scale=1">
 			<option value="table">Table Orders</option>
 			<option value="takeaway">Takeaway Orders</option>
 		</select>
+		<select id="myNum">
+			<option value=5>5</option>
+			<option value=10>10</option>
+			<option value=20>20</option>
+		</select>
 	</div>
 
 
@@ -51,7 +56,10 @@ function checkOption() {
   var x = document.getElementById("mySelect").selectedIndex;
   return (document.getElementsByTagName("option")[x].value);
 }	
-	
+function checkNum() {
+  var x = document.getElementById("myNum").selectedIndex;
+  return (document.getElementsByTagName("option")[x].value);
+}	
 	
 function searchOrders(id){
   orders = allOrders;
@@ -327,6 +335,7 @@ numOfPastOrders = 20
 setInterval(function(){
   getAllOrders();
   option = checkOption();
+  numOfPastOrders = checkNum();
 }, 500);
 
 setInterval(function(){
