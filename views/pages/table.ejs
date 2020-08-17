@@ -130,6 +130,12 @@ finally {
 }
 
 
+function isNew() {
+	latestOrder = newestOrder();
+	if(newestOrder > latestOrder) console.log("play")
+}
+
+
 
 function draw() {
   divId = searchOrders(newestOrder()).order_id;
@@ -363,6 +369,7 @@ setInterval(function(){
   option = checkOption();
   numOfPastOrders = checkNum();
   displayOrder = checkOrder();
+  isNew();
 }, 500);
 
 
