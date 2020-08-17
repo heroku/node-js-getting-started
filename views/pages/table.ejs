@@ -457,7 +457,7 @@ var settings = {
 };
 
 $.ajax(settings).done(function (response) {
-  console.log(response);
+  //console.log(response);
 });
 }
 
@@ -564,7 +564,7 @@ function foo(callback) {
 
 var result = foo(function(err, result){
           if (!err)
-           console.log(result);    
+           //console.log(result);    
 }); 
     html2 = ""
 
@@ -625,7 +625,7 @@ function createOrderCardContent(responseObj) {
     //generate final order card HTML
     buildHTML = cardTop + cardMid + html2  + cardEnd;
     html2 = ""
-    console.log(buildHTML);
+   // console.log(buildHTML);
     //document.getElementById(id).innerHTML = buildHTML;          
     return buildHTML;
 }
