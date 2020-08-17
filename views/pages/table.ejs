@@ -323,7 +323,7 @@ $.ajax(settings).done(function (response) {
 });
 }
 
-
+numOfPastOrders = 20
 setInterval(function(){
   getAllOrders();
   option = checkOption();
@@ -331,12 +331,12 @@ setInterval(function(){
 
 setInterval(function(){
 	if(option == 'table') {
-		drawPastXTableOrders(10)
-		openOrders = countOpen(10)
+		drawPastXTableOrders(numOfPastOrders)
+		openOrders = countOpen(numOfPastOrders)
 	};
 	if(option == 'takeaway') {
-		drawPastXTakeawayOrders(10);
-		openOrders = countOpenTake(10);
+		drawPastXTakeawayOrders(numOfPastOrders);
+		openOrders = countOpenTake(numOfPastOrders);
 	}
    
     count = document.getElementById("count")
