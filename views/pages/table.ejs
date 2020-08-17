@@ -23,10 +23,15 @@ initial-scale=1">
     </div>
     <div style="width: 80%; margin-left: 10%; ">
         <br>
-        <div>
-            <div class="center" style="width: 80%; margin-left: 10%; " id="content">
-            <p class="text-center" id="count"></p>  
-            </div>
+        	<div>
+	            <div class="center" style="width: 80%; margin-left: 10%; " id="content">
+	            	<p class="text-center" id="count"></p>
+					<div id="loader" class="text-center">
+						<div class="spinner-border" role="status">
+			    			<span class="sr-only">Loading...</span>
+	            		</div>
+	            	</div>
+	    		</div>
 </body>
 <script>
 
@@ -109,19 +114,28 @@ function draw() {
 function drawNth(x, table) {
   divId = searchOrders(newestOrder()).order_id -x;
   if (document.getElementById(divId) != null) document.getElementById(divId).remove();
-
-    if(document.getElementById(divId) == null && isClosed(divId) != true && isTable(divId) == table){
-		//console.log("id: "+divId+JSON.parse(searchOrders(divId)));
-      g = document.createElement('div');
-      g.setAttribute("id", divId);
-      g.setAttribute("style", "margin: 10px");
-      g.setAttribute("class", "card text-white bg-success mb-3")
-      document.getElementById("content").appendChild(g);
-      document.getElementById(divId).innerHTML = (createOrderCardContent(searchOrders(divId)))
-      g.setAttribute("onclick", 'highlight(this);')
-      if (isProcessing(divId)) highlight(g)
-	  if (isClosed(divId) == true  ) {g.setAttribute("class", "card text-white bg-info mb-3")}
-    }
+  
+	//check if order is closed and is a table order
+    if(document.getElementById(divId) == null &&
+	   isClosed(divId) != true &&
+	   isTable(divId) == table)
+	   {
+		  //create div
+	      g = document.createElement('div');
+		  //set id and styling
+	      g.setAttribute("id", divId);
+		  
+	      g.setAttribute("style", "margin: 10px");
+	      g.setAttribute("class", "card text-white bg-success mb-3")
+		  
+		  //set card content
+	      document.getElementById("content").appendChild(g);
+	      document.getElementById(divId).innerHTML = (createOrderCardContent(searchOrders(divId)))
+	      g.setAttribute("onclick", 'highlight(this);')
+		  
+		  //highlight for processing 
+	      if (isProcessing(divId)) highlight(g)
+	    }
 }
 
 function drawPastXTableOrders(x){
@@ -281,6 +295,7 @@ setInterval(function(){
     if(openOrders>=5) count.setAttribute("style", "color: red;")
     if(openOrders<=4) count.setAttribute("style", "color: orange;")
     if(openOrders<=2) count.setAttribute("style", "color: green;")}
+	document.getElementById('loader').remove();
 	,5000);
 
 function getAllOrders() {
