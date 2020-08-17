@@ -131,8 +131,10 @@ finally {
 
 
 function isNew() {
-	latestOrder = newestOrder();
-	if(newestOrder > latestOrder) console.log("play")
+	latestOrder=0
+	
+	if(newestOrder == latestOrder) console.log("play");
+	latestOrder = document.getElementById(newestOrder()+1)
 }
 
 
