@@ -180,6 +180,20 @@ function countOpen(num) {
   return count;
 }
 
+function countOpenTake(num) {
+  count = 0;
+  for(i=0; i<num; i++){
+    
+    thisOrder = searchOrders(newestOrder()-i)
+    if ((isClosed(newestOrder()-i) != true) && (isTable(newestOrder()-i) == false)) {
+      count = count+1
+    } 
+  }
+  return count;
+}
+
+
+
 function highlight(el) {
     var element = el;
     id = element.getAttribute("id");
@@ -312,9 +326,15 @@ setInterval(function(){
 }, 500);
 
 setInterval(function(){
-	if(option == 'table') drawPastXTableOrders(10);
-	if(option == 'takeaway') drawPastXTakeawayOrders(10);
-    openOrders = countOpen(10)
+	if(option == 'table') {
+		drawPastXTableOrders(10)
+		openOrders = countOpen(10)
+	};
+	if(option == 'takeaway') {
+		drawPastXTakeawayOrders(10);
+		openOrders = countOpenTake(10);
+	}
+   
     count = document.getElementById("count")
     count.innerHTML = "<strong col> Current Open Orders: "+(openOrders) +"</strong>"
     if(openOrders>=5) count.setAttribute("style", "color: red;")
