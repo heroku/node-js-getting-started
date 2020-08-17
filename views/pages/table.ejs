@@ -22,9 +22,9 @@ initial-scale=1">
 			<option value="takeaway">Takeaway Orders</option>
 		</select>
 		<select id="myNum">
-			<option value=5>5</option>
-			<option value=10>10</option>
-			<option value=20>20</option>
+			<num value=5>5</num>
+			<num value=10>10</num>
+			<num value=20>20</num>
 		</select>
 	</div>
 
@@ -58,7 +58,7 @@ function checkOption() {
 }	
 function checkNum() {
   var x = document.getElementById("myNum").selectedIndex;
-  return (document.getElementsByTagName("option")[x].value);
+  return (document.getElementsByTagName("num")[x].value);
 }	
 	
 function searchOrders(id){
