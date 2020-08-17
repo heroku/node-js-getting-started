@@ -392,9 +392,9 @@ setInterval(function(){
   displayOrder = checkOrder();
 
 }, 500);
-
+var audio = new Audio('https://github.com/joshuscurtis/theway/raw/master/piece-of-cake.mp3');
 setInterval(function(){
-	if (searchOrders(newestOrder()).isnew == true) console.log("new order")
+	if (searchOrders(newestOrder()).isnew == true) audio.play()
 	content = document.getElementById("content");
 	content.innerHTML = '';
 	if(option == 'table') {
