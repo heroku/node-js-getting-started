@@ -108,7 +108,17 @@ return closed;
 }
 
 
-
+function setOld(id) {
+	orders = allOrders;
+  for (var y = 0; y < orders.length; y++) {
+    currentid = orders[y].order_id;
+    if(currentid == id) { 
+      orders[y].isnew = false
+    }
+  }
+  return 0;
+	
+}
 
 function isProcessing(id){
   return searchOrders(id).isprocessing;
@@ -132,7 +142,6 @@ finally {
 dom = 0
 function isNew() {
 	
-	if(newestOrder() == dom) console.log("play");
 	dom = document.getElementById(newestOrder()+1)
 }
 
@@ -152,8 +161,8 @@ function draw() {
 }
 function drawNth(x, table) {
   divId = searchOrders(newestOrder()).order_id -x;
-  
   if (document.getElementById(divId) != null) document.getElementById(divId).remove();
+  setOld(newestOrder()-x);
   
 	//check if order is closed and is a table order
     if(document.getElementById(divId) == null &&
@@ -394,6 +403,8 @@ setInterval(function(){
 	
 	loader = document.getElementById('loader');
 	if (loader != null) loader.remove();}
+	
+	 
 	
 	,5000);
 
