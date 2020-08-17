@@ -26,6 +26,10 @@ initial-scale=1">
 			<option value=10>10</option>
 			<option value=20>20</option>
 		</select>
+		<select id="myOrder">
+			<option value="asc">Oldest First</option>
+			<option value="desc">Newest First</option>
+		</select>
 	</div>
 
 
@@ -59,9 +63,13 @@ function checkOption() {
 function checkNum() {
   var x = document.getElementById("myNum")
   return (x.options[x.selectedIndex]).value;
-
 }	
-	
+
+function checkOrder() {
+  var x = document.getElementById("myOrder")
+  return (x.options[x.selectedIndex]).value;
+}	
+
 function searchOrders(id){
   orders = allOrders;
   for (var y = 0; y < orders.length; y++) {
@@ -347,14 +355,17 @@ $.ajax(settings).done(function (response) {
 });
 }
 
+displayOrder = "asc"
 numOfPastOrders = 20
+
 setInterval(function(){
   getAllOrders();
   option = checkOption();
   numOfPastOrders = checkNum();
+  displayOrder = checkOrder();
 }, 500);
 
-displayOrder = "asc"
+
 setInterval(function(){
 	content = document.getElementById("content");
 	content.innerHTML = '';
