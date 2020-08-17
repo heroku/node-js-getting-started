@@ -137,6 +137,7 @@ function draw() {
 }
 function drawNth(x, table) {
   divId = searchOrders(newestOrder()).order_id -x;
+  
   if (document.getElementById(divId) != null) document.getElementById(divId).remove();
   
 	//check if order is closed and is a table order
@@ -146,8 +147,7 @@ function drawNth(x, table) {
 	   {
 		  //create div
 	      g = document.createElement('div');
-		  prev = document.getElementById(divId -1);
-		  //document.prev.appendChild(g);
+		  document.getElementById(newestOrder()-1).appendChild(g);
 		  //set id and styling
 	      g.setAttribute("id", divId);
 		  
