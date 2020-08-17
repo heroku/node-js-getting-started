@@ -295,7 +295,8 @@ setInterval(function(){
     if(openOrders>=5) count.setAttribute("style", "color: red;")
     if(openOrders<=4) count.setAttribute("style", "color: orange;")
     if(openOrders<=2) count.setAttribute("style", "color: green;")}
-	document.getElementById('loader').remove();
+	loader = document.getElementById('loader');
+	loader.remove();
 	,5000);
 
 function getAllOrders() {
