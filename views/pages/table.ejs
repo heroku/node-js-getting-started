@@ -27,8 +27,8 @@ initial-scale=1">
 	            <div class="center" style="width: 80%; margin-left: 10%; " id="content">
 					<div id="select" class="text-right">
 						<select id="mySelect">
-						  <option value="table">Table</option>
-						  <option value="takeaway">Takeaway</option>
+						  <option value="table">Table Orders</option>
+						  <option value="takeaway">Takeaway Orders</option>
 						</select>
 					</div>
 	            	<p class="text-center" id="count"></p>
@@ -239,7 +239,7 @@ function assignOrderModal(id,element) {
         }).then((result) => {
           if (result.value) {
             assginOrder(id, "Kitchen")
-            } else {assginOrder(id,"Bar")}  drawPastXTableOrders(2);
+            } else {assginOrder(id,"Bar")};
 
         });
 }
