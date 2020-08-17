@@ -25,7 +25,7 @@ initial-scale=1">
         <br>
         	<div>
 	            <div class="center" style="width: 80%; margin-left: 10%; " id="content">
-					<div id="select">
+					<div id="select" class="text-center">
 						<select id="mySelect">
 						  <option value="table">Table</option>
 						  <option value="takeaway">Takeaway</option>
@@ -43,7 +43,7 @@ initial-scale=1">
 
     var allOrders; 
 	var option = 'table'
-function myFunction() {
+function checkOption() {
   var x = document.getElementById("mySelect").selectedIndex;
   return (document.getElementsByTagName("option")[x].value);
 }	
@@ -308,7 +308,7 @@ $.ajax(settings).done(function (response) {
 
 setInterval(function(){
   getAllOrders();
-  option = myFunction()
+  option = "()
 }, 500);
 
 setInterval(function(){
