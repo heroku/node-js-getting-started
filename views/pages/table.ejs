@@ -166,27 +166,28 @@ function drawNth(x, table) {
 }
 
 function drawPastXTableOrders(x, order){
-if(order == 'asc'){
-	for(i=x; i>0;i--){
-    drawNth(i, true);
-  }
-}
-if(order == 'desc'){
-	for(i=x; i<x;i++){
-    drawNth(i, true);
-}
-}
-}
-function drawPastXTakeawayOrders(x, order){
-if(order =='desc'){
-  for(i=x; i<x;i++){
-    drawNth(i, false);
-  }
-if (order == 'asc'){
-	for (var i = x; i < x; i--) {
-	drawNth(i,false)
+	if(order == 'asc'){
+		for(i=x; i>0;i--){
+	    drawNth(i, true);
+	  	}
+	}
+	if(order == 'desc'){
+		for(i=x; i<x;i++){
+	    drawNth(i, true);
+		}
 	}
 }
+function drawPastXTakeawayOrders(x, order){
+	if(order =='desc'){
+	  for(i=x; i<x;i++){
+	  		drawNth(i, false);
+	  }
+	 }
+	if (order == 'asc'){
+		for (var i = x; i < x; i--) {
+			drawNth(i,false)
+		}
+	}
 }
 function checkIfStillOpen(id){
   closed = isClosed(id)
@@ -353,15 +354,16 @@ setInterval(function(){
   numOfPastOrders = checkNum();
 }, 500);
 
+displayOrder = "asc"
 setInterval(function(){
 	content = document.getElementById("content");
 	content.innerHTML = '';
 	if(option == 'table') {
-		drawPastXTableOrders(numOfPastOrders, "asc")
+		drawPastXTableOrders(numOfPastOrders, displayOrder)
 		openOrders = countOpen(numOfPastOrders)
 	};
 	if(option == 'takeaway') {
-		drawPastXTakeawayOrders(numOfPastOrders, "asc");
+		drawPastXTakeawayOrders(numOfPastOrders, displayOrder);
 		openOrders = countOpenTake(numOfPastOrders);
 	}
    
