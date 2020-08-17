@@ -175,24 +175,24 @@ function drawNth(x, table) {
 
 function drawPastXTableOrders(x, order){
 	if(order == 'asc'){
-		for(i=x; i>0;i--){
+		for(i=x; i>=0;i--){
 	    drawNth(i, true);
 	  	}
 	}
 	if(order == 'desc'){
-		for(i=0; i<x;i++){
+		for(i=0; i<=x;i++){
 	    drawNth(i, true);
 		}
 	}
 }
 function drawPastXTakeawayOrders(x, order){
 	if(order =='desc'){
-	  for(i=0; i<x;i++){
+	  for(i=0; i<=x;i++){
 	  		drawNth(i, false);
 	  }
 	 }
 	if (order == 'asc'){
-		for (var i = x; i > 0; i--) {
+		for (var i = x; i >= 0; i--) {
 			drawNth(i,false)
 		}
 	}
