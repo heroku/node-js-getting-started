@@ -108,18 +108,6 @@ return closed;
 }
 
 
-function setOld(id) {
-	orders = allOrders;
-  for (var y = 0; y < orders.length; y++) {
-    currentid = orders[y].order_id;
-    if(currentid == id) { 
-      orders[y].isnew = false
-    }
-  }
-  return 0;
-	
-}
-
 function isProcessing(id){
   return searchOrders(id).isprocessing;
 }
@@ -332,6 +320,27 @@ var settings = {
 $.ajax(settings).done(function (response) {
 });
 }
+
+
+function setOld(id) {
+var settings = {
+  "url": "https://mydbrestservice.herokuapp.com/orders?order_id=eq."+id,
+  "method": "PATCH",
+  "timeout": 0,
+  "headers": {
+    "Prefer": "resolution=merge-duplicates",
+    "Content-Type": "application/x-www-form-urlencoded"
+  },
+  "data": {
+    "isnew": false
+  }
+};
+
+$.ajax(settings).done(function (response) {
+});
+}
+
+
 
 
 function assginOrder(id, assignee) {
