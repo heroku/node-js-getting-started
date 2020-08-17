@@ -93,11 +93,11 @@ function newestOrder(){
         return id
 }
 
-function isClosed2(id){
+function isClosed(id){
 	return searchOrders(id).isclosed;
 }
 
-function isClosed(id) {
+function isClosed2(id) {
 try {
 	closed = searchOrders(id).isclosed;
 	}
