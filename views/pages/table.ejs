@@ -84,20 +84,18 @@ function newestOrder(){
         return id
 }
 
-function isClosed(id){
+function isClosed2(id){
 	return searchOrders(id).isclosed;
 }
 
-function isClosed2(id) {
+function isClosed(id) {
 try {
-		closed = searchOrders(id).isclosed;
+	closed = searchOrders(id).isclosed;
 	}
 catch(err) {
-        return true;
+    closed = true;
 	} 
-finally {
-		return closed;
-	}	
+return closed;
 }
 
 
