@@ -131,10 +131,10 @@ finally {
 
 
 function isNew() {
-	latestOrder=0
+	dom=0
 	
-	if(newestOrder == latestOrder) console.log("play");
-	latestOrder = document.getElementById(newestOrder()+1)
+	if(newestOrder() == latestOrder) console.log("play");
+	dom = document.getElementById(newestOrder()+1)
 }
 
 
