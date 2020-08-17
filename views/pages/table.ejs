@@ -219,6 +219,17 @@ function assignOrderModal(id,element) {
 }
 
 
+function alertModal() {
+          Swal.fire({
+          title: 'Lots of oen orders',
+          text: "There are more than 7 open orders!",
+          icon: 'error',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'Ok'
+	  })
+	}
+
+
 function remove(el) {
     var element = el;
     id = element.getAttribute("id");
