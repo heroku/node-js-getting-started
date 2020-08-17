@@ -150,7 +150,7 @@ function draw() {
 function drawNth(x, table) {
   divId = searchOrders(newestOrder()).order_id -x;
   if (document.getElementById(divId) != null) document.getElementById(divId).remove();
-  if (searchOrders(newestOrder()).isnew == true) console.log("new order")
+  
  
   setOld(newestOrder()-x);
   
@@ -390,12 +390,11 @@ setInterval(function(){
   option = checkOption();
   numOfPastOrders = checkNum();
   displayOrder = checkOrder();
-  
+  if (searchOrders(newestOrder()).isnew == true) console.log("new order")
 }, 500);
 
-
 setInterval(function(){
-	isNew();
+
 	content = document.getElementById("content");
 	content.innerHTML = '';
 	if(option == 'table') {
