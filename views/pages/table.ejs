@@ -59,12 +59,18 @@ initial-scale=1">
 	
 	
 function setToSplit() {
-	left = document.getElementById(content);
-	right = document.getElementById(right);
+	left = document.getElementById("content");
+	right = document.getElementById("right");
 	left.setAttribute("style","width:45%;")
 	right.setAttribute("style","width:45%;")
 }
 
+function unSplit() {
+	left = document.getElementById(content);
+	right = document.getElementById(right);
+	left.setAttribute("style","width:100%;")
+	right.setAttribute("style","width:0%;")
+}
 
 
 function checkOption() {
@@ -181,7 +187,16 @@ function drawNth(x, table) {
 	      g.setAttribute("class", "card text-white bg-success mb-3")
 		  
 		  //set card content
-	      document.getElementById("content").appendChild(g);
+		  isSplit = document.getElementById(content).getAttribute("style")
+		  
+		  target = "content"
+		  if(isSplit == "width:45%;") {
+			  if(table == true) target = "content"
+			  if(table == false) target = "right"
+		  }
+		 
+		  
+	      document.getElementById(target).appendChild(g);
 	      document.getElementById(divId).innerHTML = (createOrderCardContent(searchOrders(divId)))
 	      g.setAttribute("onclick", 'highlight(this);')
 		  
