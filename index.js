@@ -5,7 +5,7 @@ const PORT = process.env.PORT || 5000
 var app = express()
 var http = require('http')
 
-
+const basicAuth = require('express-basic-auth')
 
 
 
@@ -179,6 +179,19 @@ setInterval(function() {
     });
 }, 500)
 max = 0
+
+
+app.use(basicAuth({
+  users: { 'admin': 'supersecret' },
+  challenge: true,
+  realm: 'foo',
+}))
+
+app.get('/', (req, res) => {
+  res.send('authorized');
+});
+
+
 
 express()
     .use(express.static(path.join(__dirname, 'public')))
