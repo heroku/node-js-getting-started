@@ -56,9 +56,10 @@ initial-scale=1">
 
     var allOrders; 
 	var option = 'table'
-	
+	var view
 	
 function setToSplit() {
+	view = "split"
 	left = document.getElementById("content");
 	right = document.getElementById("right");
 	left.setAttribute("style","width:45%;")
@@ -66,6 +67,7 @@ function setToSplit() {
 }
 
 function unSplit() {
+	view = "norm"
 	left = document.getElementById(content);
 	right = document.getElementById(right);
 	left.setAttribute("style","width:100%;")
@@ -433,7 +435,10 @@ setInterval(function(){
 		drawPastXTakeawayOrders(numOfPastOrders, displayOrder);
 		openOrders = countOpenTake(numOfPastOrders);
 	}
-   
+   	if(view == "all"){
+		drawPastXTakeawayOrders(numOfPastOrders, displayOrder);
+		drawPastXTableOrders(numOfPastOrders, displayOrder);
+   	}
     count = document.getElementById("count")
     count.innerHTML = "<strong col> Current Open Orders: "+(openOrders) +"</strong>"
     if(openOrders>=5) count.setAttribute("style", "color: red;")
