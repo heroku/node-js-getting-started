@@ -69,10 +69,11 @@ function setToSplit() {
 
 function unSplit() {
 	view = "norm"
-	left = document.getElementById(content);
-	right = document.getElementById(right);
+	left = document.getElementById("content");
+	right = document.getElementById("right");
 	left.setAttribute("style","width:100%;")
 	right.setAttribute("style","width:0%;")
+	right.innerHTML("");
 }
 
 
@@ -429,10 +430,12 @@ setInterval(function(){
 	content = document.getElementById("content");
 	content.innerHTML = '';
 	if(option == 'table') {
+		unSplit()
 		drawPastXTableOrders(numOfPastOrders, displayOrder)
 		openOrders = countOpen(numOfPastOrders)
 	};
 	if(option == 'takeaway') {
+		unSplit()
 		drawPastXTakeawayOrders(numOfPastOrders, displayOrder);
 		openOrders = countOpenTake(numOfPastOrders);
 	}
