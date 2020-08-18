@@ -62,7 +62,7 @@ function setToSplit() {
 	view = "split"
 	left = document.getElementById("content");
 	right = document.getElementById("right");
-	left.setAttribute("style","width:45%;")
+	left.setAttribute("style","width:45%;margin-left:5%;position:absolute;left:0;")
 	right.setAttribute("style","width:45%;margin-right:5%;position:absolute;right:0;")
 }
 
@@ -168,7 +168,7 @@ function draw() {
 }
 function drawNth(x, table) {
   divId = searchOrders(newestOrder()).order_id -x;
- // if (document.getElementById(divId) != null) document.getElementById(divId).remove();
+  if (document.getElementById(divId) != null) document.getElementById(divId).remove();
   
  
   setOld(newestOrder()-x);
@@ -192,7 +192,7 @@ function drawNth(x, table) {
 		  isSplit = document.getElementById("content").getAttribute("style")
 		  
 		  target = "content"
-		  if(isSplit == "width:45%;") {
+		  if(isSplit == "width:45%;margin-left:5%;position:absolute;left:0;") {
 			  if(table == true) target = "content"
 			  if(table == false) target = "right"
 		  }
