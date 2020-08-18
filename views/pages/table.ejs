@@ -20,6 +20,7 @@ initial-scale=1">
 		<select id="mySelect">
 			<option value="table">Table Orders</option>
 			<option value="takeaway">Takeaway Orders</option>
+			<option value="split">All Orders</option>
 		</select>
 		<select id="myNum">
 			<option value=5>5</option>
@@ -435,7 +436,8 @@ setInterval(function(){
 		drawPastXTakeawayOrders(numOfPastOrders, displayOrder);
 		openOrders = countOpenTake(numOfPastOrders);
 	}
-   	if(view == "split"){
+   	if(option == "split"){
+		setToSplit()
 		drawPastXTakeawayOrders(numOfPastOrders, displayOrder);
 		drawPastXTableOrders(numOfPastOrders, displayOrder);
    	}
