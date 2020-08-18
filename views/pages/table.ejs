@@ -339,7 +339,7 @@ var settings = {
 };
 
 $.ajax(settings).done(function (response) {
-});
+}).fail(function(data){console.log("fail")});
 }
 
 
