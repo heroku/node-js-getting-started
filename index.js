@@ -187,7 +187,7 @@ app.use(basicAuth({
   realm: 'foo',
 }))
 
-app.get('/', (req, res) => {
+app.get('/auth', (req, res) => {
   res.send('authorized');
 });
 
