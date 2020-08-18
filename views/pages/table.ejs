@@ -45,7 +45,7 @@ initial-scale=1">
         	<div>
 				<p class="text-center" id="count"></p>
 	            <div class="center" id="content">
-					<h3>Table</h3>
+					
 					<div id="loader" class="text-center">
 						<div class="spinner-border" role="status">
 			    			<span class="sr-only">Loading...</span>
@@ -53,7 +53,7 @@ initial-scale=1">
 	            	</div>
 	    		</div>
 				<div id="right">
-					<h3>Takeaway</h3>
+					
 				</div>
 </body>
 <script>
@@ -66,6 +66,8 @@ function setToSplit() {
 	view = "split"
 	left = document.getElementById("content");
 	right = document.getElementById("right");
+	left.innerHTML = "<h3>Table</h3>"
+	right.innerHTML = "<h3>Takeaway</h3>"
 	left.setAttribute("style","width:45%;margin-left:5%;position:absolute;left:0;")
 	right.setAttribute("style","width:45%;margin-right:5%;position:absolute;right:0;")
 }
