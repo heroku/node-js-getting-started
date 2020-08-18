@@ -170,7 +170,7 @@ function draw() {
 function drawNth(x, table) {
   divId = searchOrders(newestOrder()).order_id -x;
   if (document.getElementById(divId) != null && view != "split") document.getElementById(divId).remove();
-  if(option=="split") document.getElementById("right").innerHTML = ""
+  //if(option=="split") document.getElementById("right").innerHTML = ""
   
  
   setOld(newestOrder()-x);
