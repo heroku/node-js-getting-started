@@ -177,7 +177,7 @@ setInterval(function() {
             postDB(auth1.purchases[0].globalPurchaseNumber, auth1.purchases[0].products);
         });
     });
-}, 1000)
+}, 500)
 max = 0
 
 express()
