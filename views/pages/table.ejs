@@ -39,23 +39,34 @@ initial-scale=1">
 		
 		
     </div>
-    <div style="width: 80%; margin-left: 10%; ">
+    <div style="width: 90%; margin-left: 5%; ">
         <br>
         	<div>
 				<p class="text-center" id="count"></p>
 	            <div class="center" id="content">
-					
 					<div id="loader" class="text-center">
 						<div class="spinner-border" role="status">
 			    			<span class="sr-only">Loading...</span>
 	            		</div>
 	            	</div>
 	    		</div>
+				<div id="right"></div>
 </body>
 <script>
 
     var allOrders; 
 	var option = 'table'
+	
+	
+function setToSplit() {
+	left = document.getElementById(content);
+	right = document.getElementById(right);
+	left.setAttribute("style","width:45%;")
+	right.setAttribute("style","width:45%;")
+}
+
+
+
 function checkOption() {
   var x = document.getElementById("mySelect").selectedIndex;
   return (document.getElementsByTagName("option")[x].value);
