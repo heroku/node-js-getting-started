@@ -75,7 +75,7 @@ function setCacheClosedOrder(id){
 }
 function getCacheClosedOrder(id) {
 	orderData = JSON.parse(localStorage.getItem(id));
-	if (orderData = null) return null
+	if (orderData == null) return null
 	return orderData.isclosed;
 	
 }
