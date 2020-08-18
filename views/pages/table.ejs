@@ -66,6 +66,20 @@ initial-scale=1">
     var allOrders; 
 	var option = 'table'
 	var view
+
+	
+function setCacheClosedOrder(id){
+	orderData = searchOrders(id)
+	orderData.isclosed = true
+	localStorage.setItem(id, JSON.stringify(orderData);
+}
+function getCacheClosedOrder(id) {
+	orderData = JSON.parse(localStorage.getItem(id));
+	return orderData.isclosed;
+	
+}
+	
+
 	
 function setToSplit() {
 	view = "split"
@@ -186,8 +200,8 @@ function drawNth(x, table) {
   setOld(newestOrder()-x);
   
 	//check if order is closed and is a table order
-    if(document.getElementById(divId) == null &&
-	   isClosed(divId) != true &&
+    if(document.getElementById(divId) == null &&(
+	   isClosed(divId) != true || getCacheClosedOrder(divId) != true) &&
 	   isTable(divId) == table)
 	   {
 		  //create div
@@ -303,6 +317,7 @@ function closeOrderModal(id) {
         //localStorage.removeItem(id);
         //localStorage.setItem("closed", id + "," + localStorage.getItem("closed"));
         closeOrder(id);
+		setCacheClosedOrder(id);
         document.getElementById(id).remove();
                   }
         });
