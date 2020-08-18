@@ -437,6 +437,7 @@ setInterval(function(){
 		openOrders = countOpenTake(numOfPastOrders);
 	}
    	if(option == "split"){
+		openOrders = countOpenTake(numOfPastOrders);
 		setToSplit()
 		drawPastXTakeawayOrders(numOfPastOrders, displayOrder);
 		drawPastXTableOrders(numOfPastOrders, displayOrder);
