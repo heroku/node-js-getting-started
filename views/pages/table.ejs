@@ -306,6 +306,7 @@ function remove(el) {
 
 
 function closeOrder(id) {
+document.getElementById(id).remove()
 var settings = {
   "url": "https://mydbrestservice.herokuapp.com/orders?order_id=eq."+id,
   "method": "PATCH",
@@ -320,6 +321,7 @@ var settings = {
 };
 
 $.ajax(settings).done(function (response) {
+	document.getElementById(id).remove()
 });
 }
 
