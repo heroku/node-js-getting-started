@@ -71,7 +71,7 @@ initial-scale=1">
 function setCacheClosedOrder(id){
 	orderData = searchOrders(id)
 	orderData.isclosed = true
-	localStorage.setItem(id, JSON.stringify(orderData);
+	localStorage.setItem(id, JSON.stringify(orderData));
 }
 function getCacheClosedOrder(id) {
 	orderData = JSON.parse(localStorage.getItem(id));
