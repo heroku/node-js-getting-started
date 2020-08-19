@@ -448,10 +448,10 @@ displayOrder = "asc"
 numOfPastOrders = 20
 
 setInterval(function(){
-  getAllOrders();
-  option = checkOption();
-  numOfPastOrders = checkNum();
-  displayOrder = checkOrder();
+  // getAllOrders();
+  // option = checkOption();
+  // numOfPastOrders = checkNum();
+  // displayOrder = checkOrder();
 
 }, 1000);
 var audio = new Audio('https://github.com/joshuscurtis/theway/raw/master/piece-of-cake.mp3');
@@ -493,6 +493,20 @@ setInterval(function(){
 	}, 60000)
 	
 
+function refresh() {
+	  getAllOrders();
+	  option = checkOption();
+	  numOfPastOrders = checkNum();
+	  displayOrder = checkOrder();
+    setTimeout(refresh, 1000);
+    // ...
+}
+
+// initial call, or just call refresh directly
+setTimeout(refresh, 1000);
+	
+	
+	
 function getAllOrders() {
 var settings = {
   "url": "https://mydbrestservice.herokuapp.com/orders",
