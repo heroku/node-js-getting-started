@@ -74,10 +74,11 @@ initial-scale=1">
 function setCacheClosedOrder(id){
 	orderData = searchOrders(id)
 	orderData.isclosed = true
-	localStorage.setItem(id, JSON.stringify(orderData));
+	sessionStorage.setItem(id, JSON.stringify(orderData));
 }
+loc
 function getCacheClosedOrder(id) {
-	orderData = JSON.parse(localStorage.getItem(id));
+	orderData = JSON.parse(sessionStorage.getItem(id));
 	if (orderData == null) return false
 	return orderData.isclosed;
 }
@@ -86,10 +87,10 @@ function getCacheClosedOrder(id) {
 function setCacheProcessingOrder(id){
 	orderData = searchOrders(id)
 	orderData.isprocessing = true
-	localStorage.setItem(id, JSON.stringify(orderData));
+	sessionStorage.setItem(id, JSON.stringify(orderData));
 }
 function getCacheProcessingOrder(id) {
-	orderData = JSON.parse(localStorage.getItem(id));
+	orderData = JSON.parse(sessionStorage.getItem(id));
 	if (orderData == null) return false
 	return orderData.isprocessing;
 }
