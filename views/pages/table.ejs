@@ -76,7 +76,7 @@ function setCacheClosedOrder(id){
 	orderData.isclosed = true
 	sessionStorage.setItem(id, JSON.stringify(orderData));
 }
-loc
+
 function getCacheClosedOrder(id) {
 	orderData = JSON.parse(sessionStorage.getItem(id));
 	if (orderData == null) return false
