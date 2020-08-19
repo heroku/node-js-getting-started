@@ -79,7 +79,7 @@ function setCacheClosedOrder(id){
 function getCacheClosedOrder(id) {
 	orderData = JSON.parse(localStorage.getItem(id));
 	if (orderData == null) return false
-	return orderData.isclosed;
+	return orderData.isclosed;ƒ
 	
 }
 	
@@ -486,7 +486,7 @@ setInterval(function(){
 	
 	 
 	
-	,7000);
+	,3000); //time between page reloads
 
 	setInterval(function(){
 		if(openOrders > 7) alertModal();
