@@ -243,7 +243,7 @@ function drawNth(x, table) {
 		  
 	      document.getElementById(target).appendChild(g);
 	      document.getElementById(divId).innerHTML = (createOrderCardContent(searchOrders(divId)))
-	      g.setAttribute("onclick", 'remove2(this);')
+	      g.setAttribute("onclick", 'remove2(divId);')
 		  
 		  //highlight for processing 
 	      if (isProcessing(divId)) highlight(g)
