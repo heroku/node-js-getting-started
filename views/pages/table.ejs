@@ -79,12 +79,21 @@ function setCacheClosedOrder(id){
 function getCacheClosedOrder(id) {
 	orderData = JSON.parse(localStorage.getItem(id));
 	if (orderData == null) return false
-	return orderData.isclosed;ƒ
-	
+	return orderData.isclosed;
 }
 	
 
-	
+function setCacheProcessingOrder(id){
+	orderData = searchOrders(id)
+	orderData.isprocessing = true
+	localStorage.setItem(id, JSON.stringify(orderData));
+}
+function getCacheProcessingOrder(id) {
+	orderData = JSON.parse(localStorage.getItem(id));
+	if (orderData == null) return false
+	return orderData.isprocessing;
+}
+
 function setToSplit() {
 	view = "split"
 	left = document.getElementById("content");
@@ -157,7 +166,9 @@ return closed;
 
 
 function isProcessing(id){
-  return searchOrders(id).isprocessing;
+	processing = getCacheProcessingOrder(id);
+	if(processing || searchOrders(id).isprocessing) return true;
+  	return false;
 }
 function isTable2(id){
   return searchOrders(id).istable;
@@ -427,6 +438,7 @@ $.ajax(settings).done(function (response) {
 
 
 function processOrder(id) {
+setCacheProcessingOrder(id);
 var settings = {
   "url": "https://mydbrestservice.herokuapp.com/orders?order_id=eq."+id,
   "method": "PATCH",
