@@ -204,9 +204,7 @@ function drawNth(x, table) {
   setOld(newestOrder()-x);
   
 	//check if order is closed and is a table order
-    if(document.getElementById(divId) == null &&(
-	   isClosed(divId) != true || getCacheClosedOrder(divId) != true) &&
-	   isTable(divId) == table)
+    if(document.getElementById(divId) == null && (isClosed(divId) != true) && isTable(divId) == table)
 	   {
 		  //create div
 	      g = document.createElement('div');
@@ -380,7 +378,7 @@ var settings = {
 };
 
 $.ajax(settings).done(function (response) {
-	//document.getElementById(id).remove()
+	/document.getElementById(id).remove()
 });
 }
 
