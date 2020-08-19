@@ -204,7 +204,10 @@ function drawNth(x, table) {
   setOld(newestOrder()-x);
   
 	//check if order is closed and is a table order
-    if(document.getElementById(divId) == null && (isClosed(divId) != true) && isTable(divId) == table)
+	
+	dbOrCacheClosed = (isClosed(divId) || getCacheClosedOrder(divId));
+	
+    if(document.getElementById(divId) == null && (dbOrCacheClosed == false) && isTable(divId) == table)
 	   {
 		  //create div
 	      g = document.createElement('div');
