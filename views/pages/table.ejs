@@ -97,8 +97,8 @@ function getCacheProcessingOrder(id) {
 
 function setToSplit() {
 	view = "split"
-	right = document.getElementById("content");
-	left = document.getElementById("right");
+	left = document.getElementById("content");
+	right = document.getElementById("right");
 	left.innerHTML = "<h3 class='text-center'>Table</h3>"
 	right.innerHTML = "<h3 class='text-center'>Takeaway</h3>"
 	left.setAttribute("style","width:45%;margin-left:5%;position:absolute;left:0;")
@@ -236,8 +236,8 @@ function drawNth(x, table) {
 		  
 		  target = "content"
 		  if(isSplit == "width:45%;margin-left:5%;position:absolute;left:0;") {
-			  if(table == true) target = "content"
-			  if(table == false) target = "right"
+			  if(table == true) target = "right"
+			  if(table == false) target = "content"
 		  }
 		 
 		  
