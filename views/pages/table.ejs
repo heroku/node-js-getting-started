@@ -95,6 +95,19 @@ function getCacheProcessingOrder(id) {
 	return orderData.isprocessing;
 }
 
+
+function setCacheAssigneeOrder(id, assignee){
+	orderData = searchOrders(id)
+	orderData.assignee = assignee;
+	sessionStorage.setItem(id, JSON.stringify(orderData));
+}
+function getCacheAssigneeOrder(id) {
+	orderData = JSON.parse(sessionStorage.getItem(id));
+	if (orderData == null) return false
+	return orderData.assignee;
+}
+
+
 function setToSplit() {
 	view = "split"
 	left = document.getElementById("content");
@@ -240,7 +253,6 @@ function drawNth(x, table) {
 			  if(table == false) target = "content"
 		  }
 		 
-		  
 	      document.getElementById(target).appendChild(g);
 	      document.getElementById(divId).innerHTML = (createOrderCardContent(searchOrders(divId)))
 	      g.setAttribute("onclick", 'highlight(this);')
@@ -274,6 +286,7 @@ function drawPastXTakeawayOrders(x, order){
 		}
 	}
 }
+
 function checkIfStillOpen(id){
   closed = isClosed(id)
   if (closed) {
@@ -284,7 +297,6 @@ function checkIfStillOpen(id){
 function countOpen(num) {
   count = 0;
   for(i=0; i<=num; i++){
-    
     thisOrder = searchOrders(newestOrder()-i)
     if ((isClosed(newestOrder()-i) != true) && (isTable(newestOrder()-i))) {
       count = count+1
@@ -305,8 +317,6 @@ function countOpenTake(num) {
   return count;
 }
 
-
-
 function highlight(el) {
     var element = el;
     id = element.getAttribute("id");
@@ -321,6 +331,7 @@ function remove2(el) {
     id = element.getAttribute("id");
     closeOrderModal(id)
 }
+
 function closeOrderModal(id) {
           Swal.fire({
           title: 'CONFRIM ORDER: '+((id%99)+1),
@@ -354,12 +365,13 @@ function assignOrderModal(id,element) {
         }).then((result) => {
           if (result.value) {
             assginOrder(id, "Kitchen")
-			
-            } else {assginOrder(id,"Bar")};
+			setCacheAssignOrder(id,"Kitchen")
+            } else {assginOrder(id,"Bar")
+					setCacheAssignOrder(id,"Bar")
+		};
 
         });
 }
-
 
 function alertModal() {
           Swal.fire({
@@ -371,13 +383,11 @@ function alertModal() {
 	  })
 	}
 
-
 function remove(el) {
     var element = el;
     id = element.getAttribute("id");
     assignOrderModal(id,element)
 }
-
 
 function closeOrder(id) {
 document.getElementById(id).remove()
@@ -399,7 +409,6 @@ $.ajax(settings).done(function (response) {
 });
 }
 
-
 function setOld(id) {
 var settings = {
   "url": "https://mydbrestservice.herokuapp.com/orders?order_id=eq."+id,
@@ -418,11 +427,9 @@ $.ajax(settings).done(function (response) {
 }).fail(function(data){console.log("fail ")});
 }
 
-
-
-
 function assginOrder(id, assignee) {
-	document.getElementById('a'+id).innerHTML = assignee;
+	document.getElementById('a'+id).innerHTML = getCacheAssigneeOrder(id);
+	
 	
 var settings = {
   "url": "https://mydbrestservice.herokuapp.com/orders?order_id=eq."+id,
@@ -440,7 +447,6 @@ var settings = {
 $.ajax(settings).done(function (response) {
 });
 }
-
 
 function processOrder(id) {
 setCacheProcessingOrder(id);
@@ -556,13 +562,6 @@ setTimeout(refresh2, 5000);
 setTimeout(refresh, 2000);
 setTimeout(refresh2, 4000);
 
-
-
-
-
-
-	
-	
 function getAllOrders() {
 
 var settings = {
