@@ -354,6 +354,7 @@ function assignOrderModal(id,element) {
         }).then((result) => {
           if (result.value) {
             assginOrder(id, "Kitchen")
+			
             } else {assginOrder(id,"Bar")};
 
         });
@@ -421,6 +422,8 @@ $.ajax(settings).done(function (response) {
 
 
 function assginOrder(id, assignee) {
+
+	
 var settings = {
   "url": "https://mydbrestservice.herokuapp.com/orders?order_id=eq."+id,
   "method": "PATCH",
@@ -776,7 +779,7 @@ function createOrderCardContent(responseObj) {
     if (orderDetails.assignee == null) var assignee = "Not Assigned";
     else assignee = orderDetails.assignee;
 
-            html2 = '<button onclick="event.stopPropagation();remove(this.parentNode.parentNode.parentNode)" style="position: absolute; top: -1px; right: 1px;" type="button" class="close" aria-label="Close"><span class="fa fa-cog" aria-hidden="true"></span></button>'+ "<p>" + html2 + "<b style='color:black;'> " + assignee+
+            html2 = '<button onclick="event.stopPropagation();remove(this.parentNode.parentNode.parentNode)" style="position: absolute; top: -1px; right: 1px;" type="button" class="close" aria-label="Close"><span class="fa fa-cog" aria-hidden="true"></span></button>'+ "<p>" + html2 + "<b id='assign'style='color:black;'> " + assignee+
             "</b><br> </p>";
 
     //generate final order card HTML
