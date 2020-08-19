@@ -365,13 +365,11 @@ function assignOrderModal(id,element) {
         }).then((result) => {
           if (result.value) {
             assginOrder(id, "Kitchen")
-			setCacheAssignOrder(id,"Kitchen")
-            } else {assginOrder(id,"Bar")
-					setCacheAssignOrder(id,"Bar")
-		};
+            } else {assginOrder(id,"Bar")};
 
         });
 }
+
 
 function alertModal() {
           Swal.fire({
@@ -383,11 +381,13 @@ function alertModal() {
 	  })
 	}
 
+
 function remove(el) {
     var element = el;
     id = element.getAttribute("id");
     assignOrderModal(id,element)
 }
+
 
 function closeOrder(id) {
 document.getElementById(id).remove()
@@ -409,6 +409,7 @@ $.ajax(settings).done(function (response) {
 });
 }
 
+
 function setOld(id) {
 var settings = {
   "url": "https://mydbrestservice.herokuapp.com/orders?order_id=eq."+id,
@@ -427,9 +428,11 @@ $.ajax(settings).done(function (response) {
 }).fail(function(data){console.log("fail ")});
 }
 
+
+
+
 function assginOrder(id, assignee) {
-	document.getElementById('a'+id).innerHTML = getCacheAssigneeOrder(id);
-	
+	document.getElementById('a'+id).innerHTML = assignee;
 	
 var settings = {
   "url": "https://mydbrestservice.herokuapp.com/orders?order_id=eq."+id,
@@ -447,6 +450,7 @@ var settings = {
 $.ajax(settings).done(function (response) {
 });
 }
+
 
 function processOrder(id) {
 setCacheProcessingOrder(id);
@@ -562,6 +566,13 @@ setTimeout(refresh2, 5000);
 setTimeout(refresh, 2000);
 setTimeout(refresh2, 4000);
 
+
+
+
+
+
+	
+	
 function getAllOrders() {
 
 var settings = {
