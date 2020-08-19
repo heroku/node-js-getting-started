@@ -270,7 +270,7 @@ function checkIfStillOpen(id){
 
 function countOpen(num) {
   count = 0;
-  for(i=0; i<num; i++){
+  for(i=0; i<=num; i++){
     
     thisOrder = searchOrders(newestOrder()-i)
     if ((isClosed(newestOrder()-i) != true) && (isTable(newestOrder()-i))) {
@@ -282,7 +282,7 @@ function countOpen(num) {
 
 function countOpenTake(num) {
   count = 0;
-  for(i=0; i<num; i++){
+  for(i=0; i<=num; i++){
     
     thisOrder = searchOrders(newestOrder()-i)
     if ((isClosed(newestOrder()-i) != true) && (isTable(newestOrder()-i) == false)) {
