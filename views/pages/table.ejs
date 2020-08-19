@@ -243,7 +243,7 @@ function drawNth(x, table) {
 		  
 	      document.getElementById(target).appendChild(g);
 	      document.getElementById(divId).innerHTML = (createOrderCardContent(searchOrders(divId)))
-	      g.setAttribute("onclick", 'remove2(divId);')
+	      g.setAttribute("onclick", 'remove2('+divId+');')
 		  
 		  //highlight for processing 
 	      if (isProcessing(divId)) highlight(g)
@@ -309,7 +309,8 @@ function countOpenTake(num) {
 
 function highlight(el) {
     var element = el;
-    id = element.getAttribute("id");
+    //id = element.getAttribute("id");
+	id = el
     console.log("highlight"+id)
     if (element.getAttribute("class") == "card text-white bg-warning mb-3") { remove(el) };
     element.setAttribute("class", 'card text-white bg-warning mb-3')
