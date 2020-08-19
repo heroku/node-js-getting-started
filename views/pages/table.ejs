@@ -316,7 +316,8 @@ function highlight(el) {
     processOrder(id)
 }
 
-function remove2(id) {
+function remove2(el) {
+	element = el;
     id = element.getAttribute("id");
     closeOrderModal(id)
 }
