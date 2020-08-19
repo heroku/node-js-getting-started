@@ -422,7 +422,7 @@ $.ajax(settings).done(function (response) {
 
 
 function assginOrder(id, assignee) {
-
+	document.getElementById(id).childNodes[0].childNodes[2].childNodes[6].childNodes[7].childNodes[0].data = assignee;
 	
 var settings = {
   "url": "https://mydbrestservice.herokuapp.com/orders?order_id=eq."+id,
