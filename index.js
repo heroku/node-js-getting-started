@@ -47,15 +47,15 @@ async function getData1() {
 	}	
 }
 
-async function getData2() {
-	var result = await getData1()
-	return result
-	
-}
-function getData() {
-	(async () => {
-  return (await getData2())
-	})()
+async function myAsyncFunction() {
+  try {
+    const result = await getData1()
+  }
+
+    console.log(result);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 //getData();
