@@ -41,10 +41,11 @@ function getData() {
 	pool.query('SELECT * FROM public.orders', (err, res) => {
 		//console.log(err, res)
 		data = res;
+		return data.rows
 		//console.log(res)
 	})
 }
-getData();
+//getData();
 
 //console.log(data);
 
@@ -219,7 +220,7 @@ setInterval(function() {
 			if (nextVal == auth1.purchases[0].globalPurchaseNumber) io.sockets.emit('broadcast',{ description: true});
 			thisVal = auth1.purchases[0].globalPurchaseNumber
        		getData();
-			io.sockets.emit('db',{ db: data.rows});
+			io.sockets.emit('db',{ db: getData()});
 		});
     });
 
@@ -243,6 +244,6 @@ max = 0;
 	app.set('view engine', 'ejs')
 
     app.get('/', myAuth, (req, res) => res.render('pages/table'))
- 	app.get('/allOrders', (req,res) => res.send(data.rows))
+ 	app.get('/allOrders', (req,res) => res.send(getData()))
     //app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
 	server.listen(PORT);
