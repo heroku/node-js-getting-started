@@ -40,7 +40,7 @@ function getData() {
 	client.query('SELECT * FROM public.orders', (err, res) => {
 		console.log(err, res)
 		client.end()
-		return res;
+		return JSON.parse(res);
 	})
 }
 
