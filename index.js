@@ -180,14 +180,21 @@ setInterval(function() {
 }, 500)
 max = 0
 
-
-app.use(basicAuth({
+myAuth = basicAuth({
   users: { 'admin': 'espresso',
            'staff': 'latte',
   },
   challenge: true,
   realm: 'foo',
-}))
+});
+
+// app.use(basicAuth({
+//   users: { 'admin': 'espresso',
+//            'staff': 'latte',
+//   },
+//   challenge: true,
+//   realm: 'foo',
+// }))
 
 app.use(express.static(path.join(__dirname, 'public')))
 app.set('views', path.join(__dirname, 'views'))
@@ -201,6 +208,6 @@ app.get('/auth', (req, res) => {
 	
     app.get('/', (req, res) => res.render('pages/table'))
 	
-    app.get('/table', (req, res) => res.render('pages/table'))
+    app.get('/table', myAuth, (req, res) => res.render('pages/table'))
     
     app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
