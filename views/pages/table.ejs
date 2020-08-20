@@ -72,11 +72,15 @@ socket.on('connect', function(data) {
     });
 
 socket.on('broadcast',function(data) {
-         console.log(data.db);
+         console.log(data.description);
 		 if(data.description == true) audio.play();
 	 });
 
-
+socket.on('db',function(data) {
+         console.log(data.db);
+	 });
+	 
+	 
     var allOrders; 
 	var option = 'table'
 	var view
