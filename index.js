@@ -182,7 +182,9 @@ max = 0
 
 
 app.use(basicAuth({
-  users: { 'admin': 'supersecret' },
+  users: { 'admin': 'espresso',
+           'staff': 'latte',
+  },
   challenge: true,
   realm: 'foo',
 }))
