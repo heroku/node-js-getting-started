@@ -25,6 +25,7 @@ io.on('connection', function(client) {
 
 
 //pg
+const { Client } = require('pg')
 
 const pool = new Pool({
   user: 'josh',
@@ -34,7 +35,7 @@ const pool = new Pool({
   port: 5432,
 })
 
-const { Client } = require('pg')
+
 const client = new Client()
 ;(async () => {
   await client.connect()
