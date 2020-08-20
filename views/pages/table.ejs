@@ -525,7 +525,7 @@ function refresh() {
 	  option = checkOption();
 	  numOfPastOrders = checkNum();
 	  displayOrder = checkOrder();
-    setTimeout(refresh, 2000);
+    setTimeout(refresh, 1000);
     // ...
 }
 
@@ -560,11 +560,11 @@ function refresh2() {
 	
 	loader = document.getElementById('loader');
 	if (loader != null) loader.remove();
-setTimeout(refresh2, 5000);
+setTimeout(refresh2, 2000);
 }
 
-setTimeout(refresh, 2000);
-setTimeout(refresh2, 4000);
+setTimeout(refresh, 500);
+setTimeout(refresh2, 2000);
 
 
 
