@@ -226,7 +226,7 @@ function drawNth(x, table) {
   if(option=="split" && isTable == false) document.getElementById(divID).remove();
   
  
-  setOld(newestOrder()-x);
+ // setOld(newestOrder()-x);
   
 	//check if order is closed and is a table order
 	
@@ -525,7 +525,7 @@ function refresh() {
 	  option = checkOption();
 	  numOfPastOrders = checkNum();
 	  displayOrder = checkOrder();
-    setTimeout(refresh, 1000);
+    setTimeout(refresh, 1500);
     // ...
 }
 
@@ -560,7 +560,7 @@ function refresh2() {
 	
 	loader = document.getElementById('loader');
 	if (loader != null) loader.remove();
-setTimeout(refresh2, 2000);
+setTimeout(refresh2, 4000);
 }
 
 setTimeout(refresh, 500);
