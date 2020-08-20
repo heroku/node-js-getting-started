@@ -40,12 +40,13 @@ function getData() {
 	client.query('SELECT * FROM public.orders', (err, res) => {
 		//console.log(err, res)
 		data = res;
+		console.log(res)
 		io.sockets.emit('db',{ db: res});
 		client.end()
 	})
 }
 
-getData()
+
 console.log(data);
 
 // Add headers
@@ -220,7 +221,7 @@ setInterval(function() {
 			thisVal = auth1.purchases[0].globalPurchaseNumber
         });
     });
-
+getData()
 }, 5000)
 max = 0;
 
