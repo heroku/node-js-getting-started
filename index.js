@@ -25,10 +25,8 @@ io.on('connection', function(client) {
 
 
 //pg
-
+data =
 const { Pool, Client } = require('pg')
-
-
 const client = new Client({
   user: 'josh',
   host: 'theway.c15j82hx0pnm.us-east-2.rds.amazonaws.com',
@@ -36,13 +34,17 @@ const client = new Client({
   password: 'Rufus912',
   port: 5432,
 })
-client.connect()
-client.query('SELECT * FROM public.orders', (err, res) => {
-  console.log(err, res)
-  client.end()
-})
 
+function getData() {
+	client.connect()
+	client.query('SELECT * FROM public.orders', (err, res) => {
+		console.log(err, res)
+		client.end()
+		return res;
+	})
+}
 
+console.log(getData())
 
 // Add headers
 app.use(function(req, res, next) {
@@ -190,7 +192,6 @@ setInterval(function() {
 		
         auth = JSON.parse(response.body);
         auth = JSON.stringify(auth.access_token);
-		console.log(auth)
         auth = auth.substring(1, auth.length - 1);
         auth = 'Bearer ' + auth
 
