@@ -72,7 +72,7 @@ socket.on('connect', function(data) {
     });
 
 socket.on('broadcast',function(data) {
-         console.log(data.description);
+         console.log(data.db);
 		 if(data.description == true) audio.play();
 	 });
 

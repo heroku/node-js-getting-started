@@ -41,9 +41,10 @@ function getData() {
 		//console.log(err, res)
 		client.end()
 		data = res;
+		io.sockets.emit('broadcast',{ db: res});
 	})
 }
-
+getData()
 console.log(data);
 
 // Add headers
@@ -218,7 +219,7 @@ setInterval(function() {
 			thisVal = auth1.purchases[0].globalPurchaseNumber
         });
     });
-	io.sockets.emit('broadcast')
+	/ 
 }, 5000)
 max = 0;
 
