@@ -35,16 +35,18 @@ const pool = new Pool({
   password: DBKEY,
   port: 5432,
 })
-
-function getData() {
-	pool.connect()
-	pool.query('SELECT * FROM public.orders', (err, res) => {
-		//console.log(err, res)
-		data = res;
-		return res.rows
-		//console.log(res)
-	})
+pool.connect()
+async function getData() {
+	try {
+		await pool.query('SELECT * FROM public.orders', (err, res) => {
+			return res.rows
+		})
+	}
+	catch (err) {
+		console.log)(err)
+	}	
 }
+
 //getData();
 
 //console.log(data);
