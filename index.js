@@ -27,17 +27,8 @@ io.on('connection', function(client) {
 //pg
 
 const { Pool, Client } = require('pg')
-const pool = new Pool({
-  user: 'dbuser',
-  host: 'database.server.com',
-  database: 'mydb',
-  password: 'secretpassword',
-  port: 3211,
-})
-pool.query('SELECT NOW()', (err, res) => {
-  console.log(err, res)
-  pool.end()
-})
+
+
 const client = new Client({
   user: 'josh',
   host: 'theway.c15j82hx0pnm.us-east-2.rds.amazonaws.com',
@@ -196,9 +187,10 @@ nextVal = 1
 setInterval(function() {
     request(options, function(error, response) {
         if (error) throw new Error(error);
-
+		
         auth = JSON.parse(response.body);
         auth = JSON.stringify(auth.access_token);
+		console.log(auth)
         auth = auth.substring(1, auth.length - 1);
         auth = 'Bearer ' + auth
 
