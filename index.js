@@ -21,7 +21,7 @@ io.on('connection', function(client) {
     client.on('join', function(data) {
     	console.log(data);
     });
-	io.sockets.emit('broadcast',{ description: Date.now() + ' server Time!'});
+	//io.sockets.emit('broadcast',{ description: ' connec Time!'});
 });
 
 
