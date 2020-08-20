@@ -242,6 +242,6 @@ getData()
 	app.set('view engine', 'ejs')
 
     app.get('/', myAuth, (req, res) => res.render('pages/table'))
- 
+ 	app.get('/test', (req,res) => res.send(data))
     //app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
 	server.listen(PORT);
