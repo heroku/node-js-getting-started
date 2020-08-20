@@ -36,13 +36,12 @@ const client = new Client({
 })
 
 function getData() {
-	client.connect()
-	client.query('SELECT * FROM public.orders', (err, res) => {
+	pool.connect()
+	pool.query('SELECT * FROM public.orders', (err, res) => {
 		//console.log(err, res)
 		data = res;
 		console.log(res)
 		io.sockets.emit('db',{ db: res});
-		client.end()
 	})
 }
 
