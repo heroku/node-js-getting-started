@@ -193,13 +193,13 @@ app.get('/auth', (req, res) => {
 
 
 
-express()
+express"()
     .use(express.static(path.join(__dirname, 'public')))
     .set('views', path.join(__dirname, 'views'))
     .set('view engine', 'ejs')
-    .get('/', (req, res) => res.render('pages/table'))
-    .get('/table', (req, res) => res.render('pages/table'))
-    .get('/takeaway', (req, res) => res.render('pages/takeaway', {
-        request: newBody
-    }))
-    .listen(PORT, () => console.log(`Listening on ${ PORT }`))
+	
+    app.get('/', (req, res) => res.render('pages/table'))
+	
+    app.get('/table', (req, res) => res.render('pages/table'))
+    
+    app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
