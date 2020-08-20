@@ -47,7 +47,7 @@ function getData() {
 }
 
 
-console.log(data);
+//console.log(data);
 
 // Add headers
 app.use(function(req, res, next) {
@@ -221,11 +221,11 @@ setInterval(function() {
 			thisVal = auth1.purchases[0].globalPurchaseNumber
         });
     });
-getData()
+
 }, 5000)
 max = 0;
 
-
+getData()
 
 
 //server
