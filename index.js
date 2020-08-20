@@ -39,7 +39,7 @@ pool.connect()
 async function getData1() {
 	try {
 		await pool.query('SELECT * FROM public.orders', (err, res) => {
-			return res.rows
+			return res
 		})
 	}
 	catch (err) {
