@@ -193,9 +193,10 @@ setInterval(function() {
             newBody = createBody(auth1.purchases[0].globalPurchaseNumber, auth1.purchases[0].products);
            // console.log(newBody.slice(9))
             postDB(auth1.purchases[0].globalPurchaseNumber, auth1.purchases[0].products);
+				io.sockets.emit('broadcast',{ description: auth1.purchases[0].globalPurchaseNumber });
         });
     });
-	io.sockets.emit('broadcast',{ description: auth1.purchases });
+
 }, 5000)
 max = 0
 
