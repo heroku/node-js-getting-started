@@ -41,8 +41,7 @@ function getData() {
 	pool.query('SELECT * FROM public.orders', (err, res) => {
 		//console.log(err, res)
 		data = res;
-		console.log(res)
-		io.sockets.emit('db',{ db: res});
+		//console.log(res)
 	})
 }
 
@@ -219,13 +218,15 @@ setInterval(function() {
 			nextVal = thisVal + 1
 			if (nextVal == auth1.purchases[0].globalPurchaseNumber) io.sockets.emit('broadcast',{ description: true});
 			thisVal = auth1.purchases[0].globalPurchaseNumber
-        });
+       		getData();
+			io.sockets.emit('db',{ db: data});
+		});
     });
 
 }, 5000)
 max = 0;
 
-getData()
+
 
 
 //server
@@ -242,6 +243,6 @@ getData()
 	app.set('view engine', 'ejs')
 
     app.get('/', myAuth, (req, res) => res.render('pages/table'))
- 	app.get('/test', (req,res) => res.send(data))
+ 	app.get('/test', (req,res) => res.send(data.rows[0]))
     //app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
 	server.listen(PORT);
