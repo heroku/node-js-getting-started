@@ -36,7 +36,7 @@ const pool = new Pool({
   port: 5432,
 })
 pool.connect()
-async function getData() {
+async function getData1() {
 	try {
 		await pool.query('SELECT * FROM public.orders', (err, res) => {
 			return res.rows
@@ -47,6 +47,11 @@ async function getData() {
 	}	
 }
 
+async function getData() {
+	var result = await getData1()
+	return result
+	
+}
 //getData();
 
 //console.log(data);
