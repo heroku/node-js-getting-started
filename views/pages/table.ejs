@@ -79,7 +79,7 @@ socket.on('broadcast',function(data) {
 socket.on('db',function(data) {
          console.log(data.db);
 		 for (var i = 0; i < (data.db).length; i++) {
-			 localStorage.setItem(data.db[i].order_id, JSON.stringify(data.db[i].order_id))
+			 localStorage.setItem(data.db[i].order_id, JSON.stringify(data.db[i].products))
 		 }
 	 });
 	 
