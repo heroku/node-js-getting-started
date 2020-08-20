@@ -36,29 +36,14 @@ const pool = new Pool({
   port: 5432,
 })
 pool.connect()
-async function getData1() {
-	try {
-		await pool.query('SELECT * FROM public.orders', (err, res) => {
-			return res
+function getData() {
+		 pool.query('SELECT * FROM public.orders', (err, res) => {
+			data = res.rows
 		})
-	}
-	catch (err) {
-		console.log(err)
-	}	
 }
 
-async function myAsyncFunction() {
-  try {
-    const result = await getData1()
-  }
 
-    console.log(result);
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-//getData();
+getData();
 
 //console.log(data);
 
@@ -233,10 +218,10 @@ setInterval(function() {
 			if (nextVal == auth1.purchases[0].globalPurchaseNumber) io.sockets.emit('broadcast',{ description: true});
 			thisVal = auth1.purchases[0].globalPurchaseNumber
        		getData();
-			io.sockets.emit('db',{ db: getData()});
+			io.sockets.emit('db',{ db: data});
 		});
     });
-
+getData()
 }, 5000)
 max = 0;
 
@@ -257,6 +242,6 @@ max = 0;
 	app.set('view engine', 'ejs')
 
     app.get('/', myAuth, (req, res) => res.render('pages/table'))
- 	app.get('/allOrders', (req,res) => res.send(getData()))
+ 	app.get('/allOrders', (req,res) => res.send(data))
     //app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
 	server.listen(PORT);
