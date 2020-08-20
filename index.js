@@ -25,24 +25,7 @@ io.on('connection', function(client) {
 
 
 //pg
-const { Pool, Client } = require('pg')
 
-const pool = new Pool({
-  user: 'josh',
-  host: 'theway.c15j82hx0pnm.us-east-2.rds.amazonaws.com',
-  database: 'postgres',
-  password: 'Rufus912',
-  port: 5432,
-})
-
-
-const client = new Client()
-;(async () => {
-  await client.connect()
-  const res = await client.query('SELECT * from public.orders;')
-  console.log(res) // Hello world!
-  await client.end()
-})()
 
 
 
