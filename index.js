@@ -219,7 +219,7 @@ setInterval(function() {
 			if (nextVal == auth1.purchases[0].globalPurchaseNumber) io.sockets.emit('broadcast',{ description: true});
 			thisVal = auth1.purchases[0].globalPurchaseNumber
        		getData();
-			io.sockets.emit('db',{ db: data});
+			io.sockets.emit('db',{ db: data.rows});
 		});
     });
 
@@ -243,6 +243,6 @@ max = 0;
 	app.set('view engine', 'ejs')
 
     app.get('/', myAuth, (req, res) => res.render('pages/table'))
- 	app.get('/test', (req,res) => res.send(data.rows[0]))
+ 	app.get('/allOrders', (req,res) => res.send(data.rows))
     //app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
 	server.listen(PORT);
