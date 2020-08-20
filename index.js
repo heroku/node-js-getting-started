@@ -44,7 +44,7 @@ function getData() {
 		//console.log(res)
 	})
 }
-
+getData();
 
 //console.log(data);
 
