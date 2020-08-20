@@ -11,8 +11,8 @@ const basicAuth = require('express-basic-auth')
 
 
 const server = require('http').createServer(app);
-const options = { /* ... */ };
-const io = require('socket.io')(server, options);
+const options3 = { /* ... */ };
+const io = require('socket.io')(server, options3);
 
 io.on('connection', socket => { /* ... */ });
 
