@@ -16,8 +16,8 @@
     "request": "^2.81.0",
     "follow-redirects": "^1.12.1",
     "socket.io": "^2.3.0",
-    "express-basic-auth": "^1.2.0"
-
+    "express-basic-auth": "^1.2.0",
+ 	"pg": "^8.3.2"
   },
   "devDependencies": {
     "got": "^11.3.0",

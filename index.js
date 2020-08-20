@@ -5,10 +5,7 @@ const PORT = process.env.PORT || 5000
 const APIKEY = process.env.API
 var app = express()
 var http = require('http')
-
 const basicAuth = require('express-basic-auth')
-
-
 
 const server = require('http').createServer(app);
 const options3 = { /* ... */ };
@@ -24,6 +21,27 @@ io.on('connection', function(client) {
 	//io.sockets.emit('broadcast',{ description: ' connec Time!'});
 });
 
+
+
+
+//pg
+
+const pool = new Pool({
+  user: 'josh',
+  host: 'theway.c15j82hx0pnm.us-east-2.rds.amazonaws.com',
+  database: 'postgres',
+  password: 'Rufus912',
+  port: 5432,
+})
+
+const { Client } = require('pg')
+const client = new Client()
+;(async () => {
+  await client.connect()
+  const res = await client.query('SELECT * from public.orders;')
+  console.log(res) // Hello world!
+  await client.end()
+})()
 
 
 
