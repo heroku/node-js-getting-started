@@ -41,7 +41,7 @@ function getData() {
 	pool.query('SELECT * FROM public.orders', (err, res) => {
 		//console.log(err, res)
 		data = res;
-		return data.rows
+		return res.rows
 		//console.log(res)
 	})
 }
