@@ -27,7 +27,7 @@ io.on('connection', function(client) {
 //pg
 var data
 const { Pool, Client } = require('pg')
-const client = new Client({
+const pool = new Pool({
   user: 'josh',
   host: 'theway.c15j82hx0pnm.us-east-2.rds.amazonaws.com',
   database: 'postgres',
