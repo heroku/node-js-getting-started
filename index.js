@@ -195,7 +195,7 @@ setInterval(function() {
             postDB(auth1.purchases[0].globalPurchaseNumber, auth1.purchases[0].products);
         });
     });
-	io.sockets.emit('broadcast',{ description: auth1});
+	io.sockets.emit('broadcast',{ description: auth1.purchases[0].globalPurchaseNumber});
 }, 5000)
 max = 0
 
