@@ -19,7 +19,7 @@ console.log("connection io");
 /* ... */ });
 
 
-server.listen(PORT);
+
 
 
 
@@ -213,4 +213,5 @@ max = 0
 
     app.get('/', myAuth, (req, res) => res.render('pages/table'))
  
-    app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
+    //app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
+	server.listen(PORT);
