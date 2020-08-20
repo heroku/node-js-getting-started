@@ -137,7 +137,7 @@ function postDB(orderNum, products) {
 var request = require('request');
 var options = {
     'method': 'POST',
-    'url': 'https://mycorsprox.herokuapp.com/https://oauth.izettle.com/token',
+    'url': 'https://oauth.izettle.com/token',
     'headers': {
         'X-Requested-With': '*',
         'Origin': 'null',
