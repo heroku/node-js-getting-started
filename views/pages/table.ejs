@@ -71,7 +71,9 @@ socket.on('connect', function(data) {
     	socket.emit('join', 'Hello World from client');
     });
 
-
+socket.on('broadcast',function(data) {
+         console.log(data.description);
+	 });
 
 
     var allOrders; 
