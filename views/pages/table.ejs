@@ -73,6 +73,7 @@ socket.on('connect', function(data) {
 
 socket.on('broadcast',function(data) {
          console.log(data.description);
+		 if(data.description == true) audio.play();
 	 });
 
 
@@ -543,7 +544,7 @@ function refresh() {
 
 
 function refresh2() {
-	if (searchOrders(newestOrder()).isnew == true) audio.play()
+	//if (searchOrders(newestOrder()).isnew == true) audio.play()
 	content = document.getElementById("content");
 	content.innerHTML = '';
 	if(option == 'table') {
