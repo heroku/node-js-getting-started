@@ -25,7 +25,7 @@ io.on('connection', function(client) {
 
 
 //pg
-data =
+var data
 const { Pool, Client } = require('pg')
 const client = new Client({
   user: 'josh',
