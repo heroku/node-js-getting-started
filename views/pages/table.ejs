@@ -67,6 +67,13 @@ initial-scale=1">
 <script>
 const socket = io();
 
+socket.on('connect', function(data) {
+    	socket.emit('join', 'Hello World from client');
+    });
+
+
+
+
     var allOrders; 
 	var option = 'table'
 	var view
