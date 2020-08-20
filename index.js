@@ -3,6 +3,7 @@ const express = require('express')
 const path = require('path')	
 const PORT = process.env.PORT || 5000	
 const APIKEY = process.env.API
+const DBKEY = process.env.DB
 var app = express()
 var http = require('http')
 const basicAuth = require('express-basic-auth')
@@ -31,7 +32,7 @@ const pool = new Pool({
   user: 'josh',
   host: 'theway.c15j82hx0pnm.us-east-2.rds.amazonaws.com',
   database: 'postgres',
-  password: 'Rufus912',
+  password: DBKEY,
   port: 5432,
 })
 
