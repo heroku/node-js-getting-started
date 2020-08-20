@@ -38,9 +38,9 @@ const client = new Client({
 function getData() {
 	client.connect()
 	client.query('SELECT * FROM public.orders', (err, res) => {
-		console.log(err, res)
+		//console.log(err, res)
 		client.end()
-		return JSON.parse(res);
+		return res;
 	})
 }
 
