@@ -165,6 +165,7 @@ function searchOrders(id){
 
 function newestOrder(){
  orders = allOrders;
+ if (orders.length == null) return newestOrder()
  id = 0
   for (var y = 0; y < orders.length; y++) {
     currentid = orders[y].order_id;

@@ -200,17 +200,13 @@ setInterval(function() {
 			thisVal = auth1.purchases[0].globalPurchaseNumber
         });
     });
-	
 }, 5000)
-max = 0
-
-
+max = 0;
 
 
 
 
 //server
-
 	myAuth = basicAuth({
 	  users: { 'admin': 'espresso',
 	           'staff': 'latte',
