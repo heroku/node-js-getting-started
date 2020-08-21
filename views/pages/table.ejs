@@ -693,7 +693,7 @@ function createOrderCardContent(responseObj) {
     else assignee = orderDetails.assignee;
 	
 	assignee2 = orderDetails.assignee2;
-	if(assignee2 == null) assignee2 = 'false';
+	if(assignee2 == null) assignee2 = 'danger';
 	if(assignee == 'true') {assignee ="danger"};
 	if(assignee == 'false') {assignee ="success" };
 	if(assignee2 == 'true') {assignee ="danger"};
