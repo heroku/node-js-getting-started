@@ -257,8 +257,11 @@ max = 0;
 	
 	app.post('/update', (req,res) => {
 		const id = req.body.id;
-		 
-		res.send('id:' +id);
+		const column = req.body.column
+		const value = req.body.column
+	
+		
+		res.send('id:' +id+column+value);
 	})
 	
 	
