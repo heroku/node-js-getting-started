@@ -158,6 +158,11 @@ return tableOrder;
 
 
 function postDB(orderNum, products) {
+	var thisQuery = "INSERT INTO public.devorders (order_id, products) VALUES ("+orderNum+", "+products+")"
+	pool.query(thisQuery, (err, res) => {
+			console.log(err);
+			console.log(res);
+		})
     reqBody = createBody(orderNum, products);
     //reqBody = reqBody.slice(9)
     //console.log("reqBody: " + reqBody)
@@ -223,6 +228,7 @@ setInterval(function() {
            // console.log(newBody.slice(9))
             postDB(auth1.purchases[0].globalPurchaseNumber, auth1.purchases[0].products);
 			
+			
 			nextVal = thisVal + 1
 			if (nextVal == auth1.purchases[0].globalPurchaseNumber) io.sockets.emit('broadcast',{ description: true});
 			thisVal = auth1.purchases[0].globalPurchaseNumber
@@ -255,6 +261,8 @@ max = 0;
 	
 	
 	
+	
+	//update db
 	app.post('/update', (req,res) => {
 		const id = req.body.id;
 		const column = req.body.column
@@ -264,7 +272,6 @@ max = 0;
 			console.log(err);
 			console.log(res);
 		})
-		
 		res.send('Order:' +id+" has been updated at the column "+ column+ " with the value: " + value);
 	})
 	
