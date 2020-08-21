@@ -117,6 +117,15 @@ var options = {
 thisVal = 0
 nextVal = 1
 
+
+setInterval(function(){
+	//send data over socket	
+    pool.query('SELECT * FROM public.devorders', (err, res) => {
+		io.sockets.emit('db',{ db: res.rows});
+	})
+}, 500)
+
+
 //every 5seconds
 setInterval(function() {
 	
@@ -156,10 +165,7 @@ setInterval(function() {
 			nextVal = thisVal + 1
 			if (nextVal == auth1.purchases[0].globalPurchaseNumber) io.sockets.emit('broadcast',{ description: true});
 			thisVal = auth1.purchases[0].globalPurchaseNumber
-		//send data over socket	
-       	pool.query('SELECT * FROM public.devorders', (err, res) => {
-			io.sockets.emit('db',{ db: res.rows});
-		})
+			
 	});
 });
 
