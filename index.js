@@ -259,7 +259,7 @@ max = 0;
 		const id = req.body.id;
 		const column = req.body.column
 		const value = req.body.value
-		var thisQuery = "UPDATE public.devorders SET "+column+" = "+value+"WHERE order_id = "+id;
+		var thisQuery = "UPDATE public.devorders SET "+column+" = "+value+" WHERE order_id = "+id;
 		pool.query(thisQuery, (err, res) => {
 			console.log(err);
 			console.log(res);
