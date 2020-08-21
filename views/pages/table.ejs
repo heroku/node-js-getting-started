@@ -697,7 +697,7 @@ function createOrderCardContent(responseObj) {
             html2 = '<button onclick="event.stopPropagation();remove(this.parentNode.parentNode.parentNode)" style="position: absolute; top: 0px; right: 1px;" type="button" class="close" aria-label="Close"><span class="fa fa-cog" aria-hidden="true"></span></button>'+ "<p>" + html2 + "<b id='a"+id+"' style='color:black;'> " + (assignee)+
             "</b><br> </p>";
 			
-			html2 = html2 + '<button id="b'+id+'" type="button" style="position: absolute; bottom: 0px; right: 1px;" class="btn btn-danger">Bar</button>' + '<button id="k'+id+'" type="button" style="position: absolute; bottom: 0px; left: 1px;" class="btn btn-'+assignee+'>Kitchen</button>'
+			html2 = html2 + '<button id="b'+id+'" type="button" style="position: absolute; bottom: 0px; right: 1px;" class="btn btn-danger">Bar</button>' + '<button id="k'+id+'" type="button" style="position: absolute; bottom: 0px; left: 1px;" class="btn btn-'+assignee+'">Kitchen</button>'
 
     //generate final order card HTML
     buildHTML = cardTop + cardMid + html2  + cardEnd;
