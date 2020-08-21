@@ -704,8 +704,14 @@ function createOrderCardContent(responseObj) {
     html2 = ""
     //console.log(buildHTML);
     //document.getElementById(id).innerHTML = buildHTML;          
-	if(assignee == 'true') {try {document.getElementById('b'+id).setAttribute('class', "btn btn-sucesss")};} catch (console.log("no element yet")) {
+	if(assignee == 'true') {
 		
+		try {
+			document.getElementById('b'+id).setAttribute('class', "btn btn-sucesss")};
+		}
+		catch {
+			(console.log("no element yet"))
+		}
 	}
     return buildHTML;
 }
