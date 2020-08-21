@@ -258,10 +258,12 @@ max = 0;
 	app.set('view engine', 'ejs')
 
     app.get('/', myAuth, (req, res) => res.render('pages/table'))
- 	app.get('/allOrders', (req,res) => res.send(data))
-	
-	
-	
+ 	
+	app.get('/allOrders', (req,res) => {
+		pool.query('SELECT * FROM public.devorders', (err, res) => {
+			res.send(res.rows)
+		})
+	})
 	
 	//update db
 	app.post('/update', (req,res) => {
