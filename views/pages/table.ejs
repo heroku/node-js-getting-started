@@ -383,9 +383,11 @@ function assignOrderModal(id,element) {
           confirmButtonText: 'Kitchen'
         }).then((result) => {
           if (result.value) {
+			updatePG(id,'assignee', false)
             assginOrder(id, "Kitchen")
-            } else {assginOrder(id,"Bar")};
-
+            } else {
+				assginOrder(id,"Bar")
+				updatePG(id,'assignee', true)};
         });
 }
 
