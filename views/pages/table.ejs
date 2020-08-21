@@ -698,7 +698,10 @@ function createOrderCardContent(responseObj) {
 	if(assignee == 'false') {assignee ="success" };
 	if(assignee2 == 'true') {assignee2 ="danger"};
 	if(assignee2 == 'false') {assignee2 ="success"};
-            html2 = '<button onclick="event.stopPropagation();remove(this.parentNode.parentNode.parentNode)" style="position: absolute; top: 0px; right: 1px;" type="button" class="close" aria-label="Close"><span class="fa fa-cog" aria-hidden="true"></span></button>'+ "<p>" + html2 + "<b id='a"+id+"' style='color:black;'> " + (assignee)+
+	result = ""
+	if(assignee2 == 'success' && assignee == 'success') result = "Done"
+	
+            html2 = '<button onclick="event.stopPropagation();remove(this.parentNode.parentNode.parentNode)" style="position: absolute; top: 0px; right: 1px;" type="button" class="close" aria-label="Close"><span class="fa fa-cog" aria-hidden="true"></span></button>'+ "<p>" + html2 + "<b id='a"+id+"' style='color:black;'> " + (result) +
             "</b><br> </p>";
 			
 			html2 = html2 + '<button id="b'+id+'" type="button" style="position: absolute; bottom: 0px; right: 1px;" class="btn btn-'+assignee2+'">Bar</button>' + '<button id="k'+id+'" type="button" style="position: absolute; bottom: 0px; left: 1px;" class="btn btn-'+assignee+'">Kitchen</button>'
