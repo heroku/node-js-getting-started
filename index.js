@@ -259,9 +259,9 @@ max = 0;
 
     app.get('/', myAuth, (req, res) => res.render('pages/table'))
  	
-	app.get('/allOrders', (req,res) => {
+	app.get('/allOrders', (req,result) => {
 		pool.query('SELECT * FROM public.devorders', (err, res) => {
-			res.send(res.rows)
+			result.send(res.rows)
 		})
 	})
 	
