@@ -277,7 +277,7 @@ function drawNth(x, table) {
 	      g.setAttribute("onclick", 'highlight(this);')
 		  
 		  //highlight for processing 
-	      if (isProcessing(divId)) highlight(g)
+	      if (isProcessing(divId)) highlight2(g)
 	    }
 }
 
@@ -344,7 +344,13 @@ function highlight(el) {
     element.setAttribute("class", 'card text-white bg-warning mb-3')
     processOrder(id)
 }
-
+function highlight2(el) {
+    var element = el;
+    id = element.getAttribute("id");
+    console.log("highlight"+id)
+    if (element.getAttribute("class") == "card text-white bg-warning mb-3") { remove2(el) };
+    element.setAttribute("class", 'card text-white bg-warning mb-3')
+}
 function remove2(el) {
 	element = el;
     id = element.getAttribute("id");
