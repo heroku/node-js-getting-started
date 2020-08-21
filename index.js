@@ -158,11 +158,7 @@ return tableOrder;
 
 
 function postDB(orderNum, products) {
-	var thisQuery = "INSERT INTO public.devorders (order_id) VALUES ("+orderNum+")"
-	pool.query(thisQuery, (err, res) => {
-			console.log(err);
-			console.log(res);
-		})
+	
     reqBody = createBody(orderNum, products);
     //reqBody = reqBody.slice(9)
     //console.log("reqBody: " + reqBody)
@@ -228,7 +224,12 @@ setInterval(function() {
            // console.log(newBody.slice(9))
             postDB(auth1.purchases[0].globalPurchaseNumber, auth1.purchases[0].products);
 			
+			var thisQuery = "INSERT INTO public.devorders (order_id) VALUES ("+auth1.purchases[0].globalPurchaseNumber+", "+auth1.purchases[0].products+")";
 			
+		pool.query(thisQuery, (err, res) => {
+			console.log(err);
+			console.log(res);
+		})
 			nextVal = thisVal + 1
 			if (nextVal == auth1.purchases[0].globalPurchaseNumber) io.sockets.emit('broadcast',{ description: true});
 			thisVal = auth1.purchases[0].globalPurchaseNumber
