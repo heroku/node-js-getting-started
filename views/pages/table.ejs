@@ -696,8 +696,8 @@ function createOrderCardContent(responseObj) {
 	if(assignee2 == null) assignee2 = 'danger';
 	if(assignee == 'true') {assignee ="danger"};
 	if(assignee == 'false') {assignee ="success" };
-	if(assignee2 == 'true') {assignee ="danger"};
-	if(assignee2 == 'false') {assignee ="success" };
+	if(assignee2 == 'true') {assignee2 ="danger"};
+	if(assignee2 == 'false') {assignee2 ="success"};
             html2 = '<button onclick="event.stopPropagation();remove(this.parentNode.parentNode.parentNode)" style="position: absolute; top: 0px; right: 1px;" type="button" class="close" aria-label="Close"><span class="fa fa-cog" aria-hidden="true"></span></button>'+ "<p>" + html2 + "<b id='a"+id+"' style='color:black;'> " + (assignee)+
             "</b><br> </p>";
 			
