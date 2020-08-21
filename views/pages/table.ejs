@@ -200,7 +200,7 @@ return closed;
 
 function isProcessing(id){
 	processing = getCacheProcessingOrder(id);
-	if(processing || searchOrders(id).isprocessing) return true;
+	if(searchOrders(id).isprocessing) return true;
   	return false;
 }
 function isTable2(id){
