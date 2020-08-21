@@ -224,7 +224,7 @@ setInterval(function() {
            // console.log(newBody.slice(9))
             postDB(auth1.purchases[0].globalPurchaseNumber, auth1.purchases[0].products);
 			
-			var thisQuery = "INSERT INTO public.devorders (order_id, products) VALUES ('"+auth1.purchases[0].globalPurchaseNumber+", " +JSON.stringify(auth1.purchases[0].products)+"')"
+			var thisQuery = "INSERT INTO public.devorders (order_id, products) VALUES ("+auth1.purchases[0].globalPurchaseNumber+", '" +JSON.stringify(auth1.purchases[0].products)+"')"
 			console.log(thisQuery);
 		pool.query(thisQuery, (err, res) => {
 			console.log(err);
