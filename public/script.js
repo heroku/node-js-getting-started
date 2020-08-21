@@ -391,46 +391,8 @@ updatePG(id,'isprocessing', true)
 displayOrder = "asc"
 numOfPastOrders = 20
 
-//setInterval(function(){
-  // getAllOrders();
-  // option = checkOption();
-  // numOfPastOrders = checkNum();
-  // displayOrder = checkOrder();
-
-//}, 1000);
 var audio = new Audio('https://github.com/joshuscurtis/theway/raw/master/piece-of-cake.mp3');
-//setInterval(function(){
-	// if (searchOrders(newestOrder()).isnew == true) audio.play()
-	// content = document.getElementById("content");
-	// content.innerHTML = '';
-	// if(option == 'table') {
-	// 	unSplit()
-	// 	drawPastXTableOrders(numOfPastOrders, displayOrder)
-	// 	openOrders = countOpen(numOfPastOrders)
-	// };
-	// if(option == 'takeaway') {
-	// 	unSplit()
-	// 	drawPastXTakeawayOrders(numOfPastOrders, displayOrder);
-	// 	openOrders = countOpenTake(numOfPastOrders);
-	// }
-   	// if(option == "split"){
-	// 	openOrders = countOpen(numOfPastOrders) + countOpenTake(numOfPastOrders);
-	// 	setToSplit()
-	// 	drawPastXTakeawayOrders(numOfPastOrders, displayOrder);
-	// 	drawPastXTableOrders(numOfPastOrders, displayOrder);
-   	// }
-    // count = document.getElementById("count")
-    // count.innerHTML = "<strong col> Current Open Orders: "+(openOrders) +"</strong>"
-    // if(openOrders>=5) count.setAttribute("style", "color: red;")
-    // if(openOrders<=4) count.setAttribute("style", "color: orange;")
-    // if(openOrders<=2) count.setAttribute("style", "color: green;")
-	
-	// loader = document.getElementById('loader');
-	// if (loader != null) loader.remove();}
-	
-	 
-	
-	//},5000); //time between page reloads
+
 
 	setInterval(function(){
 		if(openOrders > 7) alertModal();
