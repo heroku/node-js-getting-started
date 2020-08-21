@@ -233,8 +233,9 @@ setInterval(function() {
 			nextVal = thisVal + 1
 			if (nextVal == auth1.purchases[0].globalPurchaseNumber) io.sockets.emit('broadcast',{ description: true});
 			thisVal = auth1.purchases[0].globalPurchaseNumber
-       		getData();
-			io.sockets.emit('db',{ db: data});
+       		pool.query('SELECT * FROM public.devorders', (err, res) => {
+				io.sockets.emit('db',{ db: res.rows});
+			})
 		});
     });
 getData()
