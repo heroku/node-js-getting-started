@@ -250,7 +250,7 @@ max = 0;
 		const id = req.body.id;
 		 
 		res.send('id:' +id);
-	}
+	})
 	
 	
 	
