@@ -260,7 +260,10 @@ max = 0;
 		const column = req.body.column
 		const value = req.body.value
 		var thisQuery = "UPDATE public.devorders SET "+column+" = "+value+"WHERE order_id = "+id;
-		pool.query(thisQuery, (err, res) => {})
+		pool.query(thisQuery, (err, res) => {
+			console.log(err);
+			console.log(res);
+		})
 		
 		res.send('Order:' +id+" has been updated at the column "+ column+ " with the value: " + value);
 	})
