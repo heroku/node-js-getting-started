@@ -100,7 +100,7 @@ return tableOrder;
 // auth settings
 var options = {
     'method': 'POST',
-    'url': 'https://oauth.izettle.com/token',
+    'url': 'https://oauth.izettle.com/token',g
     'headers': {
         'X-Requested-With': '*',
         'Origin': 'null',
