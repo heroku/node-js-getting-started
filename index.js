@@ -258,10 +258,10 @@ max = 0;
 	app.post('/update', (req,res) => {
 		const id = req.body.id;
 		const column = req.body.column
-		const value = req.body.column
+		const value = req.body.value
 	
 		
-		res.send('id:' +id+column+value);
+		res.send('Order:' +id+" has been updated at "+ column+ " with the value: " + value);
 	})
 	
 	
