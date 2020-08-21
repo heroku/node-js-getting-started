@@ -593,22 +593,9 @@ setTimeout(refresh2, 2000);
 	
 	
 function getAllOrders() {
-
-var settings = {
-  "url": "https://mydbrestservice.herokuapp.com/orders",
-  "method": "GET",
-  "timeout": 0,
-  "headers": {
-    "Content-Type": "application/x-www-form-urlencoded"
-  },
-};
-
-$.ajax(settings).done(function (response) {
-  allOrders = response; 
-  //console.log(response);
-  table = isOrderForTable
-
-});
+	socket.on('db',function(data) {
+		 allOrders = data.db;
+	 });
 }
  //******************************************* 
 function doesOrderContainTable(orderData) {

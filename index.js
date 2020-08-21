@@ -143,7 +143,6 @@ setInterval(function() {
             if (error) throw new Error(error);
             auth1 = response.body;
             auth1 = JSON.parse(auth1);
-            newBody = createBody(auth1.purchases[0].globalPurchaseNumber, auth1.purchases[0].products);
 			
 		//send to pg
 		var thisQuery = "INSERT INTO public.devorders (order_id, products) VALUES ("+auth1.purchases[0].globalPurchaseNumber+", '" +JSON.stringify(auth1.purchases[0].products)+"')"
