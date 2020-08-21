@@ -117,7 +117,7 @@ var options = {
 thisVal = 0
 nextVal = 1
 
-
+//v
 setInterval(function(){
 	//send data over socket	
     pool.query('SELECT * FROM public.devorders', (err, res) => {
@@ -172,9 +172,6 @@ setInterval(function() {
 }, 5000)
 max = 0;
 
-
-
-
 //server
 	myAuth = basicAuth({
 	  users: { 'admin': 'espresso',
@@ -196,7 +193,7 @@ max = 0;
 		})
 	})
 	
-	//update db
+//update db
 	app.post('/update', (req,res) => {
 		const id = req.body.id;
 		const column = req.body.column
@@ -214,5 +211,5 @@ max = 0;
 	
 	
 	
-    //app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
+//START SERVER
 	server.listen(PORT);
