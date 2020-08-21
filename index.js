@@ -158,7 +158,7 @@ return tableOrder;
 
 
 function postDB(orderNum, products) {
-	var thisQuery = "INSERT INTO public.devorders (order_id, products) VALUES ("+orderNum+", "+JSON.parse(products)+")"
+	var thisQuery = "INSERT INTO public.devorders (order_id, products) VALUES ("+orderNum+", "+(products)+")"
 	pool.query(thisQuery, (err, res) => {
 			console.log(err);
 			console.log(res);
