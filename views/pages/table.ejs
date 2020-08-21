@@ -692,7 +692,7 @@ function createOrderCardContent(responseObj) {
     if (orderDetails.assignee == null) var assignee = "Not Assigned";
     else assignee = orderDetails.assignee;
 	if(assignee == 'false') {assignee ="Kitchen"};
-	if(assignee == 'true') {document.getElementById('b'+id).setAttribute('class', "btn btn-sucesss")};
+	
 	
             html2 = '<button onclick="event.stopPropagation();remove(this.parentNode.parentNode.parentNode)" style="position: absolute; top: 0px; right: 1px;" type="button" class="close" aria-label="Close"><span class="fa fa-cog" aria-hidden="true"></span></button>'+ "<p>" + html2 + "<b id='a"+id+"' style='color:black;'> " + (assignee)+
             "</b><br> </p>";
@@ -704,6 +704,7 @@ function createOrderCardContent(responseObj) {
     html2 = ""
     //console.log(buildHTML);
     //document.getElementById(id).innerHTML = buildHTML;          
+	if(assignee == 'true') {document.getElementById('b'+id).setAttribute('class', "btn btn-sucesss")};
     return buildHTML;
 }
 
