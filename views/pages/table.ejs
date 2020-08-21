@@ -690,8 +690,10 @@ function createOrderCardContent(responseObj) {
     }
 
     if (orderDetails.assignee == null) var assignee = "Not Assigned";
-	assignee2 = orderDetails.assignee2;
     else assignee = orderDetails.assignee;
+	
+	assignee2 = orderDetails.assignee2;
+	if(assignee2 == null) assignee2 = 'false';
 	if(assignee == 'true') {assignee ="danger"};
 	if(assignee == 'false') {assignee ="success" };
 	if(assignee2 == 'true') {assignee ="danger"};
