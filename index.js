@@ -243,5 +243,19 @@ max = 0;
 
     app.get('/', myAuth, (req, res) => res.render('pages/table'))
  	app.get('/allOrders', (req,res) => res.send(data))
+	
+	
+	
+	app.post('/update', (req,res) => {
+		const id = req.body.id;
+		 
+		res.send('id:' +id);
+	}
+	
+	
+	
+	
+	
+	
     //app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
 	server.listen(PORT);
