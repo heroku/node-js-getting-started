@@ -688,7 +688,7 @@ function createOrderCardContent(responseObj) {
 	if(assignee == true) {assignee ="Kitchen"};
 	if(assignee == false) {assignee = "Bar"};
 	
-            html2 = '<button onclick="event.stopPropagation();remove(this.parentNode.parentNode.parentNode)" style="position: absolute; top: 0px; right: 1px;" type="button" class="close" aria-label="Close"><span class="fa fa-cog" aria-hidden="true"></span></button>'+ "<p>" + html2 + "<b id='a"+id+"' style='color:black;'> " + (assigne)+
+            html2 = '<button onclick="event.stopPropagation();remove(this.parentNode.parentNode.parentNode)" style="position: absolute; top: 0px; right: 1px;" type="button" class="close" aria-label="Close"><span class="fa fa-cog" aria-hidden="true"></span></button>'+ "<p>" + html2 + "<b id='a"+id+"' style='color:black;'> " + (assignee)+
             "</b><br> </p>";
 
     //generate final order card HTML
