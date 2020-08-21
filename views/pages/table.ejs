@@ -77,7 +77,7 @@ socket.on('broadcast',function(data) {
 	 });
 
 socket.on('db',function(data) {
-         console.log(data.db);
+         //console.log(data.db);
 		 for (var i = 0; i < (data.db).length; i++) {
 			 sessionStorage.setItem(data.db[i].order_id, JSON.stringify(data.db[i]))
 		 }
@@ -339,7 +339,7 @@ function countOpenTake(num) {
 function highlight(el) {
     var element = el;
     id = element.getAttribute("id");
-    console.log("highlight"+id)
+    //console.log("highlight"+id)
     if (element.getAttribute("class") == "card text-white bg-warning mb-3") { remove2(el) };
     element.setAttribute("class", 'card text-white bg-warning mb-3')
     processOrder(id)
@@ -347,7 +347,7 @@ function highlight(el) {
 function highlight2(el) {
     var element = el;
     id = element.getAttribute("id");
-    console.log("highlight"+id)
+    //console.log("highlight"+id)
     if (element.getAttribute("class") == "card text-white bg-warning mb-3") { remove2(el) };
     element.setAttribute("class", 'card text-white bg-warning mb-3')
 }
