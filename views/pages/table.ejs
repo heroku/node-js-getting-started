@@ -1,12 +1,8 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@9/dist/sweetalert2.min.css" id="theme-styles">
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9/dist/sweetalert2.min.js"></script>
-<script src="script.js"></script>
 
 
+<head>
+  <% include ../partials/header.ejs %>
+</head>
 
 <meta name="viewport" content="width=device-width,
 initial-scale=1">
@@ -17,11 +13,7 @@ initial-scale=1">
     height: auto;
     width: 100%;
 ">
-<!-- <div id="help" style="margin: 5px; float: left;">
-			 <a style="" onclick="window.open('https://joshuscurtis.github.io/theway/help.html', 'https://joshuscurtis.github.io/theway/help.html'); return false;" class="btn btn-info text-white" role="button" aria-pressed="true">
-            Help
-        </a>
-	</div> -->
+
 	<div id="select" class="text-right" style="padding: 12px;">
 
 		<i class="fa fa-cog"></i>
@@ -44,14 +36,7 @@ initial-scale=1">
 			<option value="desc">Newest First</option>
 		</select>
 	</div>
-
-
-       <!-- <a style="float:right;margin-top: 5px;margin-right: 10%;" onclick="window.open('table.html', 'table.html'); return false;" class="btn btn-primary text-white" role="button" aria-pressed="true">
-            Table Orders
-        </a> -->
-		
-		
-    </div>
+</div>
     <div style="width: 90%; margin-left: 5%; ">
         <br>
         	<div>
@@ -69,6 +54,9 @@ initial-scale=1">
 				</div>
 </body>
 
+
+
+
 <style type="text/css">
 br {
     margin: 0;
@@ -77,6 +65,4 @@ br {
 h5 {
     margin: 0;
 }
-
-
 </style>
