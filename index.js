@@ -13,6 +13,15 @@ const options3 = { /* ... */ };
 const io = require('socket.io')(server, options3);
 
 
+const bodyParser = require('body-parser');
+
+
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.json());
+
+
+
+
 io.on('connection', function(client) {
     console.log('Client connected...');
     
