@@ -410,36 +410,22 @@ function remove(el) {
 
 function closeOrder(id) {
 document.getElementById(id).remove()
-var settings = {
-  "url": "https://mydbrestservice.herokuapp.com/orders?order_id=eq."+id,
-  "method": "PATCH",
-  "timeout": 0,
-  "headers": {
-    "Prefer": "resolution=merge-duplicates",
-    "Content-Type": "application/x-www-form-urlencoded"
-  },
-  "data": {
-    "isclosed": true
-  }
-};
-
-$.ajax(settings).done(function (response) {
-	//document.getElementById(id).remove()
-});
+updatePG(id,'isclosed', true)
 }
 
 
-function setOld(id) {
+function updatePG(id, column, value) {
 var settings = {
-  "url": "https://mydbrestservice.herokuapp.com/orders?order_id=eq."+id,
-  "method": "PATCH",
+  "url": "/update",
+  "method": "POST",
   "timeout": 0,
   "headers": {
-    "Prefer": "resolution=merge-duplicates",
     "Content-Type": "application/x-www-form-urlencoded"
   },
   "data": {
-    "isnew": false
+    "value": value,
+	"id": id,
+	"column": column
   }
 };
 
@@ -452,42 +438,13 @@ $.ajax(settings).done(function (response) {
 
 function assginOrder(id, assignee) {
 	document.getElementById('a'+id).innerHTML = assignee;
-	
-var settings = {
-  "url": "https://mydbrestservice.herokuapp.com/orders?order_id=eq."+id,
-  "method": "PATCH",
-  "timeout": 0,
-  "headers": {
-    "Prefer": "resolution=merge-duplicates",
-    "Content-Type": "application/x-www-form-urlencoded"
-  },
-  "data": {
-    "assignee": assignee
-  }
-};
-
-$.ajax(settings).done(function (response) {
-});
+	updatePG(id,'assignee', assignee)
 }
 
 
 function processOrder(id) {
 setCacheProcessingOrder(id);
-var settings = {
-  "url": "https://mydbrestservice.herokuapp.com/orders?order_id=eq."+id,
-  "method": "PATCH",
-  "timeout": 0,
-  "headers": {
-    "Prefer": "resolution=merge-duplicates",
-    "Content-Type": "application/x-www-form-urlencoded"
-  },
-  "data": {
-    "isprocessing": true
-  }
-};
-
-$.ajax(settings).done(function (response) {
-});
+updatePG(id,'isprocessing', true)
 }
 
 displayOrder = "asc"
@@ -593,7 +550,7 @@ setTimeout(refresh2, 2000);
 	
 	
 function getAllOrders() {
-	socket.on('db',function(data) {
+socket.on('db',function(data) {
 		 allOrders = data.db;
 	 });
 }
@@ -620,71 +577,26 @@ var initCounter = 0;
 
 
 function changeOrderStatus(status, id) {
-var settings = {
-  "url": "https://mydbrestservice.herokuapp.com/orders?order_id=eq."+id,
-  "method": "PATCH",
-  "timeout": 0,
-  "headers": {
-    "Prefer": "resolution=merge-duplicates",
-    "Content-Type": "application/x-www-form-urlencoded"
-  },
-  "data": {
-    "isclosed": status
-  }
-};
-
-$.ajax(settings).done(function (response) {
-  //console.log(response);
-});
+	updatePG(id,'isclosed', status)
 }
 
 function fetchDetails(id){
-var settings = {
-  "url": "https://mydbrestservice.herokuapp.com/orders?order_id=eq."+id,
-  "method": "GET",
-  "timeout": 0,
-  "headers": {
-    "Prefer": "resolution=merge-duplicates",
-    "Content-Type": "application/x-www-form-urlencoded"
-  },
-};
-
-$.ajax(settings).done(function (response) {
-  localStorage.setItem("response", JSON.stringify(response));
-  return response;
-});
+	return JSON.parse(localStorage.getItem(id))
 }
 
 function getOrderDetails(id) {
   fetchDetails(id)
-  details = JSON.parse(localStorage.getItem("response"))
+  details = fetchDetails(id)
   return details
 }
 
 
 function isOrderForTable(id){
-var settings1 = {
-  "url": "https://mydbrestservice.herokuapp.com/orders?order_id=eq."+id,
-  "method": "GET",
-  "timeout": 0,
-  "headers": {
-    "Prefer": "resolution=merge-duplicates",
-    "Content-Type": "application/x-www-form-urlencoded"
-  },
-};
-
-$.ajax(settings1).done(function (response) {
-  table = 99
-  if(response[0].istable != null) table = response[0].istable;
-
-  localStorage.setItem("tableResponse", table);
-});
-  return localStorage.getItem("tableResponse");
+return (JSON.parse(localStorage.getItem(id)).istable)
 }
 
 function isOrderClosed(id){
-  order = getOrderDetails(id);
-  return order[0].isclosed
+	return (JSON.parse(localStorage.getItem(id)).isclosed)
 }
 
 
@@ -693,7 +605,7 @@ function isOrderClosed(id){
 function maxOrder(){
   lastId = 0;
   var settings = {
-    "url": "https://mydbrestservice.herokuapp.com/orders",
+    "url": "/allOrders",
     "method": "GET",
     "timeout": 0,
     "headers": {
@@ -717,33 +629,8 @@ function maxOrder(){
 }
 
 function createOrderCard(id){
-    $.ajax({
-        url: 'https://mydbrestservice.herokuapp.com/orders?order_id=eq.'+id,
-        success: function(response) {
-            successCallback(response,id);
-        }
-    });
+	return (createOrderCardContent(localStorage.getItem(id)))
 }
-
-function successCallback(responseObj,id){
-    createOrderCardContent(responseObj);
-}
-
-function foo(callback) {
-
-    $.ajax({
-        url: 'https://mydbrestservice.herokuapp.com/orders?order_id=eq.0',
-        success: function(response) {
-           return callback(null, response);
-        }
-    });
-}
-
-var result = foo(function(err, result){
-          if (!err)
-		  console.log("");    
-}); 
-    html2 = ""
 
 function createOrderCardContent(responseObj) {
     id = responseObj.order_id
