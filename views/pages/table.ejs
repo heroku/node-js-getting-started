@@ -383,8 +383,8 @@ function assignOrderModal(id,element) {
           confirmButtonText: 'Kitchen'
         }).then((result) => {
           if (result.value) {
-            assignOrder(id, "Kitchen")
-            } else {assignOrder(id,"Bar")};
+            assginOrder(id, "Kitchen")
+            } else {assginOrder(id,"Bar")};
 
         });
 }
@@ -436,7 +436,7 @@ $.ajax(settings).done(function (response) {
 
 
 
-function assginOrder(id, assignee) {
+function assginOrder'(id, assignee) {
 	document.getElementById('a'+id).innerHTML = assignee;
 	updatePG(id,'assignee', assignee)
 }
