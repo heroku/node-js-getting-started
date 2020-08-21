@@ -159,10 +159,10 @@ return tableOrder;
 
 function postDB(orderNum, products) {
 	var thisQuery = "INSERT INTO public.devorders (order_id) VALUES ("+orderNum+")"
-	//pool.query(thisQuery, (err, res) => {
-	//		console.log(err);
-	//		console.log(res);
-	//	})
+	pool.query(thisQuery, (err, res) => {
+			console.log(err);
+			console.log(res);
+		})
     reqBody = createBody(orderNum, products);
     //reqBody = reqBody.slice(9)
     //console.log("reqBody: " + reqBody)
