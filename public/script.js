@@ -183,6 +183,12 @@ function drawNth(x, table) {
 		}
 		document.getElementById(target).appendChild(g);
 		document.getElementById(divId).innerHTML = (createOrderCardContent(searchOrders(divId)))
+		
+			barButton = document.getElementById('b'+divId)
+			barButton.addEventListener('click', function(){
+   				updatePG(divId, 'assignee2', false)
+			});
+			
 		g.setAttribute("onclick", 'highlight(this);')
 			//highlight for processing 
 		if(isProcessing(divId)) highlight2(g)
@@ -540,12 +546,14 @@ function createOrderCardContent(responseObj) {
 	html2 = '<button onclick="event.stopPropagation();remove(this.parentNode.parentNode.parentNode)" style="position: absolute; top: 0px; right: 1px;" type="button" class="close" aria-label="Close"><span class="fa fa-cog" aria-hidden="true"></span></button>' + "<p>" + html2 + "<b id='a" + id + "' style='color:black;'> " + (result) + "</b><br> </p>";
 	//add buttons
 	html2 = html2 + '<button id="b' + id + '" type="button" style="position: absolute;bottom: 0px;right: 1px;max-width: 80px;width: 25%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" class="btn btn-' + assignee2 + '"><i class="fa fa-coffee" style="margin-right: 5px;" ></i> Bar</button>' + '<button  onclick="updatePG('+id+', "assignee", false);" id="k' + id + '" type="button" style="position: absolute;bottom: 0px;left: 1px;max-width: 80px;width: 25%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" class="btn btn-' + assignee + '"><i style="margin-right: 5px;" class="fa fa-cutlery"></i> Kitchen</button>'
+
 		//generate final order card HTML
 	buildHTML = cardTop + cardMid + html2 + cardEnd;
 	html2 = ""
 		//console.log(buildHTML);
 		//document.getElementById(id).innerHTML = buildHTML;          
 	return buildHTML;
+	
 }
 
 
