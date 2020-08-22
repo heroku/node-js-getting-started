@@ -193,6 +193,10 @@ max = 0;
 		})
 	})
 	
+	app.get('/qty', (req,result) => {
+		result.send("qty")
+	})
+	
 //update db
 	app.post('/update', (req,res) => {
 		const id = req.body.id;
