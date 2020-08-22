@@ -186,12 +186,14 @@ function drawNth(x, table) {
 		
 			barButton = document.getElementById('b'+divId)
 			barButton.addEventListener('click', function(){
-   				updatePG(divId, 'assignee2', false)
+				event.stopPropagation();
+   				updatePG(divId, 'assignee2', false);
 			});
 			
 			kitButton = document.getElementById('k'+divId)
 			kitButton.addEventListener('click', function(){
-   				updatePG(divId, 'assignee', false)
+				event.stopPropagation();
+   				updatePG(divId, 'assignee', false);
 			});
 			
 			
