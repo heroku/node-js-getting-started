@@ -189,6 +189,12 @@ function drawNth(x, table) {
    				updatePG(divId, 'assignee2', false)
 			});
 			
+			kitButton = document.getElementById('k'+divId)
+			kitButton.addEventListener('click', function(){
+   				updatePG(divId, 'assignee', false)
+			});
+			
+			
 		g.setAttribute("onclick", 'highlight(this);')
 			//highlight for processing 
 		if(isProcessing(divId)) highlight2(g)
