@@ -593,7 +593,7 @@ function createOrderCardContent(responseObj) {
             html2 = '<button onclick="event.stopPropagation();remove(this.parentNode.parentNode.parentNode)" style="position: absolute; top: 0px; right: 1px;" type="button" class="close" aria-label="Close"><span class="fa fa-cog" aria-hidden="true"></span></button>'+ "<p>" + html2 + "<b id='a"+id+"' style='color:black;'> " + (result) +
             "</b><br> </p>";
 			
-			html2 = html2 + '<button id="b'+id+'" type="button" style="position: absolute;bottom: 0px;right: 1px;max-width: 80px;width: 25%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" class="btn btn-'+assignee2+'"><i class="fa fa-coffee"></i>Bar</button>' + '<button id="k'+id+'" type="button" style="position: absolute;bottom: 0px;left: 1px;max-width: 80px;width: 25%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" class="btn btn-'+assignee+'"><i class="fa fa-cutlery"></i>Kitchen</button>'
+			html2 = html2 + '<button id="b'+id+'" type="button" style="position: absolute;bottom: 0px;right: 1px;max-width: 80px;width: 25%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" class="btn btn-'+assignee2+'"><i class="fa fa-coffee" style="margin-right: 5px;" ></i> Bar</button>' + '<button id="k'+id+'" type="button" style="position: absolute;bottom: 0px;left: 1px;max-width: 80px;width: 25%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" class="btn btn-'+assignee+'"><i style="margin-right: 5px;" class="fa fa-cutlery"></i> Kitchen</button>'
 
     //generate final order card HTML
     buildHTML = cardTop + cardMid + html2  + cardEnd;
