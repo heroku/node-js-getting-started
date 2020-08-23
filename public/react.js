@@ -1,3 +1,6 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Button from '@material-ui/core/Button';
 
 function App() {
   return (
@@ -6,6 +9,7 @@ function App() {
     </Button>
   );
 }
+
 
 ReactDOM.render(<App />, document.querySelector('#like_button_container'));
 
