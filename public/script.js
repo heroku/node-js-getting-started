@@ -184,6 +184,9 @@ function drawNth(x, table) {
 			if(table == false) target = "content"
 		}
 		document.getElementById(target).appendChild(g);
+		
+		if(searchOrders(id).time == null) searchOrders(id).time = Date.now();
+		
 		document.getElementById(divId).innerHTML = (createOrderCardContent(searchOrders(divId)))
 		
 
@@ -558,8 +561,6 @@ function createOrderCardContent(responseObj) {
 	isclosed = orderDetails.isclosed;
 	isnew = orderDetails.isnew;
 	tableNum = 99; //TODO
-	
-	if(orderDetails.time == null) orderDetails.time = Date.now();
 	orderTime = orderDetails.time; 
 	 
 	
