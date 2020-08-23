@@ -161,8 +161,8 @@ function draw() {
 }
 var aId, barButton, kitButton;
 function drawNth(x, table) {
-	divId = searchOrders(newestOrder()).order_id - x;
-	aId = divId
+	let divId = searchOrders(newestOrder()).order_id - x;
+	let aId = divId
 	
 	if(document.getElementById(divId) != null && view != "split") document.getElementById(divId).remove();
 	if(option == "split" && isTable == false) document.getElementById(divID).remove();
@@ -204,18 +204,19 @@ function drawNth(x, table) {
 		// 	console.log('Order id: '+id+ " Kitchen");
 		// })
 		
-		barButton = document.getElementById('b'+id)
-			barButton.addEventListener('click', function(){
-				event.stopPropagation();
-   				updatePG(aId, 'assignee2', false);
-			console.log('Order id: '+id+ " Bar");
-			});
-			kitButton = document.getElementById('k'+id)
+		let barButton = document.getElementById('b'+aId)
+		barButton.addEventListener('click', function(){
+			event.stopPropagation();
+   			updatePG(aId, 'assignee2', false);
+			console.log('Order id: '+aId+ " Bar");
+		});
+		
+		let kitButton = document.getElementById('k'+aId)
 			kitButton.addEventListener('click', function(){
-				event.stopPropagation();
-   				updatePG(aId, 'assignee', false);
-			console.log('Order id: '+id+ " Kitchen");
-			});
+			event.stopPropagation();
+   			updatePG(aId, 'assignee', false);
+			console.log('Order id: '+aId+ " Kitchen");	
+		});
 		
 		SLAHighlight(divId);
 	}
