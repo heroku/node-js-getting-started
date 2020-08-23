@@ -192,6 +192,7 @@ function drawNth(x, table) {
 			
 			kitButton = document.getElementById('k'+divId)
 			kitButton.addEventListener('click', function(){
+				console.log("test")
 				event.stopPropagation();
    				updatePG(divId, 'assignee', false);
 			});
@@ -200,6 +201,7 @@ function drawNth(x, table) {
 		g.setAttribute("onclick", 'highlight(this);')
 			//highlight for processing 
 		if(isProcessing(divId)) highlight2(g)
+		SLAHighlight(divId);
 	}
 }
 
