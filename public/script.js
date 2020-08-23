@@ -525,7 +525,7 @@ function SLAHighlight(id){
 	orderTime = thisOrder.time;
 	card = document.getElementById(id);
 	
-	if (Math.round(((Date.now() - orderTime)/1000)) > 600) {
+	if (Math.round(((Date.now() - orderTime)/1000)) > 60) {
 		if(thisOrder.isprocessing) {
 			setTimeout(function() {
 				card.setAttribute("class", "card text-white bg-warning mb-3");
