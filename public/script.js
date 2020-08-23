@@ -390,7 +390,7 @@ function refresh() {
 	option = checkOption();
 	numOfPastOrders = checkNum();
 	displayOrder = checkOrder();
-	setTimeout(refresh, 1500);
+	setTimeout(refresh, 500);
 	// ...
 }
 
@@ -438,7 +438,7 @@ function refresh2() {
 	if(openOrders <= 2) count.setAttribute("style", "color: green;")
 	loader = document.getElementById('loader');
 	if(loader != null) loader.remove();
-	setTimeout(refresh2, 1500);
+	setTimeout(refresh2, 500);
 }
 setTimeout(refresh, 500);
 setTimeout(refresh2, 2000);
