@@ -116,13 +116,14 @@ var options = {
 //alert counters
 thisVal = 0
 nextVal = 1
-
+var theTime = 0
 //v
 setInterval(function(){
 	//send data over socket	
     pool.query('SELECT * FROM public.devorders', (err, res) => {
 		io.sockets.emit('db',{ db: res.rows});
 	})
+	theTime = Date.now();
 }, 500)
 
 
@@ -154,7 +155,7 @@ setInterval(function() {
             auth1 = JSON.parse(auth1);
 			
 		//send to pg
-		var thisQuery = "INSERT INTO public.devorders (order_id, products, istable, isnew, isclosed, isprocessing, time) VALUES ("+auth1.purchases[0].globalPurchaseNumber+", '" +JSON.stringify(auth1.purchases[0].products)+"',"+doesOrderContainTable(auth1.purchases[0].products)+", "+true+", "+false+", "+false+", "+Date.now()+")"
+		var thisQuery = "INSERT INTO public.devorders (order_id, products, istable, isnew, isclosed, isprocessing, time) VALUES ("+auth1.purchases[0].globalPurchaseNumber+", '" +JSON.stringify(auth1.purchases[0].products)+"',"+doesOrderContainTable(auth1.purchases[0].products)+", "+true+", "+false+", "+false+", "+theTime+")"
 		
 		pool.query(thisQuery, (err, res) => {
 			console.log(err);
