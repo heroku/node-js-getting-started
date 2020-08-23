@@ -558,8 +558,10 @@ function createOrderCardContent(responseObj) {
 	isclosed = orderDetails.isclosed;
 	isnew = orderDetails.isnew;
 	tableNum = 99; //TODO
+	
+	if(orderDetails.time == null) orderDetails.time = Date.now();
 	orderTime = orderDetails.time; 
-	if(orderTime == null) orderTime = Date.now(); 
+	 
 	
 	SLAHighlight(id);
 	for(var y = 0; y < orderData.length; y++) {
