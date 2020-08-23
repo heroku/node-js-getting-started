@@ -516,6 +516,18 @@ function createOrderCard(id) {
 	return(createOrderCardContent(localStorage.getItem(id)))
 }
 
+
+function SLAHighlight(id){
+	thisOrder = searchOrders(id)
+	orderTime = thisOrder.time;
+	
+	if (Math.round(((Date.now() - orderTime)/1000)) > 600) {
+		card = document.getElementById(id)
+		card.setAttribute("class", "card text-white bg-danger mb-3");
+	}
+}
+
+
 function createOrderCardContent(responseObj) {
 	id = responseObj.order_id
 	orderDetails = responseObj;
@@ -539,10 +551,7 @@ function createOrderCardContent(responseObj) {
 	var variantName = ""
 	var html2 = "";
 	
-	if (Math.round(((Date.now() - orderTime)/1000)) > 600) {
-		card = document.getElementById(id)
-		card.setAttribute("class", "card text-white bg-danger mb-3");
-	}
+	SLAHightlight(id);
 	
 	//loop through each item in a order
 	for(var y = 0; y < orderData.length; y++) {
