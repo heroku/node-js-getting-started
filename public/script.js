@@ -204,7 +204,7 @@ function drawNth(x, table) {
 			//highlight for processing 
 		if(isProcessing(divId)) highlight2(g)
 	}
-SLAHighlight(divId);
+
 }
 
 function drawPastXTableOrders(x, order) {
@@ -547,7 +547,7 @@ function createOrderCardContent(responseObj) {
 	isnew = orderDetails.isnew;
 	tableNum = 99; //TODO
 	orderTime = orderDetails.time; 
-	
+	SLAHighlight(id);
 	for(var y = 0; y < orderData.length; y++) {
 		if((orderData[y].name).substring(0, 5) == "Table") {
 			tableNum = (orderData[y].name).substring(6, 10)
