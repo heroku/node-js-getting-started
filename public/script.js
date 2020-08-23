@@ -532,7 +532,7 @@ function SLAHighlight(id){
 		// 	}, 1000)
 		// }
 		currentClass = card.getAttribute("class")
-		card.setAttribute("class", "flashit" +  currentClass);
+		card.setAttribute("class", "flashit " +  currentClass);
 	}
 }
 
