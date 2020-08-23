@@ -13,6 +13,15 @@
 </style>
 </head>
 <body>
+
+  <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.2/mapbox-gl-directions.js"></script>
+<link
+rel="stylesheet"
+href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.2/mapbox-gl-directions.css"
+type="text/css"
+/>
+
+
 <div id="map"></div>
 <script>
 	// TO MAKE THE MAP APPEAR YOU MUST
@@ -25,8 +34,35 @@ style: 'mapbox://styles/mapbox/streets-v11', // style URL
 center: [175.6111760, -40.3562240], // starting position [lng, lat]
 zoom: 13 // starting zoom
 });
-</script>
+
+
+var marker = new mapboxgl.Marker()
+.setLngLat([175.6111760, -40.3562240])
+.addTo(map);
+
+
  
+map.addControl(
+new MapboxDirections({
+accessToken: mapboxgl.accessToken
+}),
+'top-left'
+);
+
+// Add geolocate control to the map.
+map.addControl(
+new mapboxgl.GeolocateControl({
+positionOptions: {
+enableHighAccuracy: true
+},
+trackUserLocation: true
+})
+);
+
+</script>
+
+
+
 </body>
 </html>
 
