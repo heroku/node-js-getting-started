@@ -191,12 +191,12 @@ function drawNth(x, table) {
 			//highlight for processing 
 		if(isProcessing(divId)) highlight2(g)
 		
-		$(#'b'+id).click(function() {
+		$('#b'+id).click(function() {
 			event.stopPropagation();
 			updatePG(id, 'assignee2', false);
 		})
 			
-		$(#'k'+id).click(function() {
+		$('#k'+id).click(function() {
 			event.stopPropagation();
 			updatePG(id, 'assignee', false);
 		})
