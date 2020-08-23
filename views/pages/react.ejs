@@ -92,10 +92,28 @@ function Copyright() {
   );
 }
 
+
+function AppBar() {
+	return (
+<AppBar position="static">
+  <Toolbar>
+    <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+      <MenuIcon />
+    </IconButton>
+    <Typography variant="h6" className={classes.title}>
+      News
+    </Typography>
+    <Button color="inherit">Login</Button>
+  </Toolbar>
+</AppBar>
+	);
+}
+
 function App() {
   return (
     <Container maxWidth="sm">
       <div style={{ marginTop: 24, }}>
+		  <AppBar />
         <Typography variant="h4" component="h1" gutterBottom>
           CDN v4-beta example
         </Typography>
