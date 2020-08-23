@@ -398,6 +398,7 @@ function processOrder(id) {
 }
 displayOrder = "asc"
 numOfPastOrders = 20
+slaTime = 600;
 var audio = new Audio('https://github.com/joshuscurtis/theway/raw/master/piece-of-cake.mp3');
 setInterval(function() {
 	if(openOrders > 7) alertModal();
@@ -539,7 +540,7 @@ function SLAHighlight(id){
 	orderTime = thisOrder.time;
 	card = document.getElementById(id);
 	
-	if (Math.round(((Date.now() - orderTime)/1000)) > 60) {
+	if (Math.round(((Date.now() - orderTime)/1000)) > slaTime) {
 		// if(thisOrder.isprocessing) {
 		// 	setTimeout(function() {
 		// 		card.setAttribute("class", "card text-white bg-warning mb-3");
