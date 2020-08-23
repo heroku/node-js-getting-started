@@ -187,7 +187,8 @@ max = 0;
 	app.set('view engine', 'ejs')
 
     app.get('/', myAuth, (req, res) => res.render('pages/table'))
- 	
+ 	app.get('/react', (req, res) => res.render('pages/react'))
+	
 	app.get('/allOrders', (req,result) => {
 		pool.query('SELECT * FROM public.devorders', (err, res) => {
 			result.send(res.rows)
