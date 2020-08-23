@@ -403,7 +403,7 @@ function processOrder(id) {
 }
 displayOrder = "asc"
 numOfPastOrders = 20
-slaTime = 6000;
+slaTime = 1200;
 var audio = new Audio('https://github.com/joshuscurtis/theway/raw/master/piece-of-cake.mp3');
 setInterval(function() {
 	if(openOrders > 7) alertModal();
