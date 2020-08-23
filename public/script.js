@@ -162,7 +162,7 @@ function draw() {
 
 function drawNth(x, table) {
 	divId = searchOrders(newestOrder()).order_id - x;
-	
+	id = divId
 	
 	if(document.getElementById(divId) != null && view != "split") document.getElementById(divId).remove();
 	if(option == "split" && isTable == false) document.getElementById(divID).remove();
@@ -191,6 +191,22 @@ function drawNth(x, table) {
 		g.setAttribute("onclick", 'highlight(this);')
 			//highlight for processing 
 		if(isProcessing(divId)) highlight2(g)
+		
+		
+		
+		
+		barButton = document.getElementById('b'+id)
+			barButton.addEventListener('click', function(){
+				event.stopPropagation();
+   				updatePG(id, 'assignee2', false);
+			});
+			
+			kitButton = document.getElementById('k'+id)
+			kitButton.addEventListener('click', function(){
+				event.stopPropagation();
+   				updatePG(id, 'assignee', false);
+			});
+			
 		SLAHighlight(divId);
 	}
 
@@ -589,18 +605,7 @@ function createOrderCardContent(responseObj) {
 	html2 = html2 + '<button id="b' + id + '" type="button" style="position: absolute;bottom: 0px;right: 1px;max-width: 80px;width: 25%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" class="btn btn-' + assignee2 + '"><i class="fa fa-coffee" style="margin-right: 5px;" ></i> Bar</button>' + '<button  onclick="updatePG('+id+', "assignee", false);" id="k' + id + '" type="button" style="position: absolute;bottom: 0px;left: 1px;max-width: 80px;width: 25%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" class="btn btn-' + assignee + '"><i style="margin-right: 5px;" class="fa fa-cutlery"></i> Kitchen</button>'
 
 	
-				barButton = document.getElementById('b'+id)
-			barButton.addEventListener('click', function(){
-				event.stopPropagation();
-   				updatePG(id, 'assignee2', false);
-			});
-			
-			kitButton = document.getElementById('k'+id)
-			kitButton.addEventListener('click', function(){
-				event.stopPropagation();
-   				updatePG(id, 'assignee', false);
-			});
-			
+	
 	
 	
 	
