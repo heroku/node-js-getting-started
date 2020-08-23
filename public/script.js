@@ -538,6 +538,12 @@ function createOrderCardContent(responseObj) {
 	var cardEnd = '</div></div> ';
 	var variantName = ""
 	var html2 = "";
+	
+	if (Math.round(((Date.now() - orderTime)/1000)) > 600) {
+		card = document.getElementById(id)
+		card.setAttribute("class", "card text-white bg-danger mb-3");
+	}
+	
 	//loop through each item in a order
 	for(var y = 0; y < orderData.length; y++) {
 		if((orderData[y].name).substring(0, 5) != "Table") {
