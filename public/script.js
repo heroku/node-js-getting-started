@@ -526,12 +526,12 @@ function SLAHighlight(id){
 	card = document.getElementById(id);
 	
 	if (Math.round(((Date.now() - orderTime)/1000)) > 60) {
-		if(thisOrder.isprocessing) {
-			setTimeout(function() {
-				card.setAttribute("class", "card text-white bg-warning mb-3");
-			}, 1000)
-		}
-		card.setAttribute("class", "card text-white bg-danger mb-3");
+		// if(thisOrder.isprocessing) {
+		// 	setTimeout(function() {
+		// 		card.setAttribute("class", "card text-white bg-warning mb-3");
+		// 	}, 1000)
+		// }
+		card.setAttribute("class", " flashit card text-white bg-danger mb-3");
 	}
 }
 
