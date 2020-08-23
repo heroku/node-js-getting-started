@@ -77,8 +77,8 @@ function checkOption() {
 }
 
 function checkSla() {
-	var x = document.getElementById("sla").selectedIndex;
-	return(document.getElementsByTagName("option")[x].value);
+		var x = document.getElementById("sla")
+		return(x.options[x.selectedIndex]).value;
 }
 
 function checkNum() {
