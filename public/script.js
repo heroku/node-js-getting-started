@@ -188,39 +188,38 @@ function drawNth(x, table) {
 		if(searchOrders(id).time == null) updatePG(id, "time", Date.now())
 		
 		document.getElementById(divId).innerHTML = (createOrderCardContent(searchOrders(divId)))
-		
-
+	
 		g.setAttribute("onclick", 'highlight(this);')
 			//highlight for processing 
 		if(isProcessing(divId)) highlight2(g)
 		
-		// $('#b'+id).click(function() {
-		// 	event.stopPropagation();
-		// 	updatePG(id, 'assignee2', false);
-		// })
-			
-		// $('#k'+id).click(function() {
-		// 	event.stopPropagation();
-		// 	updatePG(id, 'assignee', false);
-		// })
-		
+		$('#b'+id).click(function() {
+			event.stopPropagation();
+			updatePG(id, 'assignee2', false);
+			console.log('Order id: '+id+ " Bar");
+		});
+		$('#k'+id).click(function() {
+			event.stopPropagation();
+			updatePG(id, 'assignee', false);
+			console.log('Order id: '+id+ " Kitchen");
+		})
 		
 		// barButton = document.getElementById('b'+id)
 		// 	barButton.addEventListener('click', function(){
 		// 		event.stopPropagation();
    		// 		updatePG(id, 'assignee2', false);
 		// 	});
-			
 		// 	kitButton = document.getElementById('k'+id)
 		// 	kitButton.addEventListener('click', function(){
 		// 		event.stopPropagation();
    		// 		updatePG(id, 'assignee', false);
 		// 	});
-			
+		
 		SLAHighlight(divId);
 	}
 
 }
+
 
 function drawPastXTableOrders(x, order) {
 	if(order == 'asc') {
@@ -410,7 +409,6 @@ function refresh() {
 	// ...
 }
 
-
 function createTime(unixdate) {
 	var date = new Date(unixdate*1);
 	// Hours part from the timestamp
@@ -424,8 +422,6 @@ function createTime(unixdate) {
 	
 	return formattedTime;
 }
-
-
 
 function refresh2() {
 	//if (searchOrders(newestOrder()).isnew == true) audio.play()
@@ -535,7 +531,6 @@ function createOrderCard(id) {
 	return(createOrderCardContent(localStorage.getItem(id)))
 }
 
-
 function SLAHighlight(id){
 	thisOrder = searchOrders(id)
 	orderTime = thisOrder.time;
@@ -551,7 +546,6 @@ function SLAHighlight(id){
 		card.setAttribute("class", "flashit " +  currentClass);
 	}
 }
-
 
 function createOrderCardContent(responseObj) {
 	id = responseObj.order_id
@@ -615,11 +609,6 @@ function createOrderCardContent(responseObj) {
 	html2 = '<button onclick="event.stopPropagation();remove(this.parentNode.parentNode.parentNode)" style="position: absolute; top: 0px; right: 1px;" type="button" class="close" aria-label="Close"><span class="fa fa-cog" aria-hidden="true"></span></button>' + "<p>" + html2 + "<b id='a" + id + "' style='color:black;'> " + (result) + "</b><br> </p>";
 	//add buttons
 	html2 = html2 + '<button id="b' + id + '" type="button" style="position: absolute;bottom: 0px;right: 1px;max-width: 80px;width: 25%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" class="btn btn-' + assignee2 + '"><i class="fa fa-coffee" style="margin-right: 5px;" ></i> Bar</button>' + '<button  onclick="updatePG('+id+', "assignee", false);" id="k' + id + '" type="button" style="position: absolute;bottom: 0px;left: 1px;max-width: 80px;width: 25%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" class="btn btn-' + assignee + '"><i style="margin-right: 5px;" class="fa fa-cutlery"></i> Kitchen</button>'
-
-	
-	
-	
-	
 	
 		//generate final order card HTML
 	buildHTML = cardTop + cardMid + html2 + createTime(Date.now() - orderTime) + cardEnd;
@@ -629,6 +618,11 @@ function createOrderCardContent(responseObj) {
 	return buildHTML;
 	
 }
+
+
+
+
+
 
 
 
