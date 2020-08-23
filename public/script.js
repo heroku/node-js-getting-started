@@ -191,15 +191,15 @@ function drawNth(x, table) {
 			//highlight for processing 
 		if(isProcessing(divId)) highlight2(g)
 		
-		$('#b'+id).click(function() {
-			event.stopPropagation();
-			updatePG(id, 'assignee2', false);
-		})
+		// $('#b'+id).click(function() {
+		// 	event.stopPropagation();
+		// 	updatePG(id, 'assignee2', false);
+		// })
 			
-		$('#k'+id).click(function() {
-			event.stopPropagation();
-			updatePG(id, 'assignee', false);
-		})
+		// $('#k'+id).click(function() {
+		// 	event.stopPropagation();
+		// 	updatePG(id, 'assignee', false);
+		// })
 		
 		
 		// barButton = document.getElementById('b'+id)
@@ -559,6 +559,8 @@ function createOrderCardContent(responseObj) {
 	isnew = orderDetails.isnew;
 	tableNum = 99; //TODO
 	orderTime = orderDetails.time; 
+	if(orderTime == null) orderTime = Date.now(); 
+	
 	SLAHighlight(id);
 	for(var y = 0; y < orderData.length; y++) {
 		if((orderData[y].name).substring(0, 5) == "Table") {
