@@ -551,7 +551,7 @@ function createOrderCardContent(responseObj) {
 	var variantName = ""
 	var html2 = "";
 	
-	SLAHightlight(id);
+	SLAHighlight(id);
 	
 	//loop through each item in a order
 	for(var y = 0; y < orderData.length; y++) {
