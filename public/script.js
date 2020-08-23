@@ -203,6 +203,7 @@ function drawNth(x, table) {
 		g.setAttribute("onclick", 'highlight(this);')
 			//highlight for processing 
 		if(isProcessing(divId)) highlight2(g)
+		SLAHighlight(divId);
 	}
 
 }
