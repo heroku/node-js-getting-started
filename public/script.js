@@ -162,7 +162,7 @@ function draw() {
 
 function drawNth(x, table) {
 	divId = searchOrders(newestOrder()).order_id - x;
-	SLAHighlight(divId);
+	
 	
 	if(document.getElementById(divId) != null && view != "split") document.getElementById(divId).remove();
 	if(option == "split" && isTable == false) document.getElementById(divID).remove();
@@ -203,9 +203,8 @@ function drawNth(x, table) {
 		g.setAttribute("onclick", 'highlight(this);')
 			//highlight for processing 
 		if(isProcessing(divId)) highlight2(g)
-		
-		
 	}
+SLAHighlight(divId);
 }
 
 function drawPastXTableOrders(x, order) {
