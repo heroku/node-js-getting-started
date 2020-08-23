@@ -159,7 +159,7 @@ function draw() {
 		g.setAttribute("onclick", 'highlight(this);')
 	}
 }
-var aId;
+var aId, barButton, kitButton;
 function drawNth(x, table) {
 	divId = searchOrders(newestOrder()).order_id - x;
 	aId = divId
@@ -193,27 +193,29 @@ function drawNth(x, table) {
 			//highlight for processing 
 		if(isProcessing(divId)) highlight2(g)
 		
-		$('#b'+aId).click(function() {
-			event.stopPropagation();
-			updatePG(id, 'assignee2', false);
-			console.log('Order id: '+id+ " Bar");
-		});
-		$('#k'+aId).click(function() {
-			event.stopPropagation();
-			updatePG(id, 'assignee', false);
-			console.log('Order id: '+id+ " Kitchen");
-		})
+		// $('#b'+aId).click(function() {
+		// 	event.stopPropagation();
+		// 	updatePG(id, 'assignee2', false);
+		// 	console.log('Order id: '+id+ " Bar");
+		// });
+		// $('#k'+aId).click(function() {
+		// 	event.stopPropagation();
+		// 	updatePG(id, 'assignee', false);
+		// 	console.log('Order id: '+id+ " Kitchen");
+		// })
 		
-		// barButton = document.getElementById('b'+id)
-		// 	barButton.addEventListener('click', function(){
-		// 		event.stopPropagation();
-   		// 		updatePG(id, 'assignee2', false);
-		// 	});
-		// 	kitButton = document.getElementById('k'+id)
-		// 	kitButton.addEventListener('click', function(){
-		// 		event.stopPropagation();
-   		// 		updatePG(id, 'assignee', false);
-		// 	});
+		barButton = document.getElementById('b'+id)
+			barButton.addEventListener('click', function(){
+				event.stopPropagation();
+   				updatePG(aId, 'assignee2', false);
+			console.log('Order id: '+id+ " Bar");
+			});
+			kitButton = document.getElementById('k'+id)
+			kitButton.addEventListener('click', function(){
+				event.stopPropagation();
+   				updatePG(aId, 'assignee', false);
+			console.log('Order id: '+id+ " Kitchen");
+			});
 		
 		SLAHighlight(divId);
 	}
