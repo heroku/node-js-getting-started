@@ -1,7 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Button from '@material-ui/core/Button';
 
-const myfirstelement = <h1>Hello React!</h1>
+function App() {
+  return (
+    <Button variant="contained" color="primary">
+      Hello World
+    </Button>
+  );
+}
 
-ReactDOM.render(myfirstelement, document.querySelector('#like_button_container'));
+ReactDOM.render(<App />, document.querySelector('#like_button_container'));
 
