@@ -162,6 +162,8 @@ function draw() {
 
 function drawNth(x, table) {
 	divId = searchOrders(newestOrder()).order_id - x;
+	SLAHighlight(divId);
+	
 	if(document.getElementById(divId) != null && view != "split") document.getElementById(divId).remove();
 	if(option == "split" && isTable == false) document.getElementById(divID).remove();
 	// setOld(newestOrder()-x);
@@ -184,13 +186,13 @@ function drawNth(x, table) {
 		document.getElementById(target).appendChild(g);
 		document.getElementById(divId).innerHTML = (createOrderCardContent(searchOrders(divId)))
 		
-			barButton = document.getElementById('b'+divId-1)
+			barButton = document.getElementById('b'+divId)
 			barButton.addEventListener('click', function(){
 				event.stopPropagation();
    				updatePG(divId, 'assignee2', false);
 			});
 			
-			kitButton = document.getElementById('k'+divId-1)
+			kitButton = document.getElementById('k'+divId)
 			kitButton.addEventListener('click', function(){
 				console.log("test")
 				event.stopPropagation();
@@ -202,7 +204,7 @@ function drawNth(x, table) {
 			//highlight for processing 
 		if(isProcessing(divId)) highlight2(g)
 		
-		SLAHighlight(divId);
+		
 	}
 }
 
