@@ -265,7 +265,7 @@ function highlight(el) {
 	var element = el;
 	id = element.getAttribute("id");
 	//console.log("highlight"+id)
-	if(element.getAttribute("class") == "card text-white bg-warning mb-3") {
+	if(searchOrders(id).isprocessing == true) {
 		remove2(el)
 	};
 	element.setAttribute("class", 'card text-white bg-warning mb-3')
