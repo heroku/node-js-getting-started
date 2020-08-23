@@ -186,26 +186,33 @@ function drawNth(x, table) {
 		document.getElementById(target).appendChild(g);
 		document.getElementById(divId).innerHTML = (createOrderCardContent(searchOrders(divId)))
 		
-		
-			
+
 		g.setAttribute("onclick", 'highlight(this);')
 			//highlight for processing 
 		if(isProcessing(divId)) highlight2(g)
 		
-		
-		
-		
-		barButton = document.getElementById('b'+id)
-			barButton.addEventListener('click', function(){
-				event.stopPropagation();
-   				updatePG(id, 'assignee2', false);
-			});
+		$(#'b'+id).click(function() {
+			event.stopPropagation();
+			updatePG(id, 'assignee2', false);
+		})
 			
-			kitButton = document.getElementById('k'+id)
-			kitButton.addEventListener('click', function(){
-				event.stopPropagation();
-   				updatePG(id, 'assignee', false);
-			});
+		$(#'k'+id).click(function() {
+			event.stopPropagation();
+			updatePG(id, 'assignee', false);
+		})
+		
+		
+		// barButton = document.getElementById('b'+id)
+		// 	barButton.addEventListener('click', function(){
+		// 		event.stopPropagation();
+   		// 		updatePG(id, 'assignee2', false);
+		// 	});
+			
+		// 	kitButton = document.getElementById('k'+id)
+		// 	kitButton.addEventListener('click', function(){
+		// 		event.stopPropagation();
+   		// 		updatePG(id, 'assignee', false);
+		// 	});
 			
 		SLAHighlight(divId);
 	}
