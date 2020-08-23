@@ -1,3 +1,5 @@
+use 'static'
+
 const LittleApp = () => {
   return (
     <div>
