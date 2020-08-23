@@ -201,7 +201,8 @@ function drawNth(x, table) {
 		g.setAttribute("onclick", 'highlight(this);')
 			//highlight for processing 
 		if(isProcessing(divId)) highlight2(g)
-		//SLAHighlight(divId);
+		
+		SLAHighlight(divId);
 	}
 }
 
@@ -522,9 +523,14 @@ function createOrderCard(id) {
 function SLAHighlight(id){
 	thisOrder = searchOrders(id)
 	orderTime = thisOrder.time;
+	card = document.getElementById(id);
 	
 	if (Math.round(((Date.now() - orderTime)/1000)) > 600) {
-		card = document.getElementById(id)
+		if(thisOrder.isprocessing) {
+			setTimeout(function() {
+				card.setAttribute("class", "card text-white bg-warning mb-3");
+			}, 1000)
+		}
 		card.setAttribute("class", "card text-white bg-danger mb-3");
 	}
 }
