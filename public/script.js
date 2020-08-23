@@ -159,10 +159,10 @@ function draw() {
 		g.setAttribute("onclick", 'highlight(this);')
 	}
 }
-
+var aId;
 function drawNth(x, table) {
 	divId = searchOrders(newestOrder()).order_id - x;
-	id = divId
+	aId = divId
 	
 	if(document.getElementById(divId) != null && view != "split") document.getElementById(divId).remove();
 	if(option == "split" && isTable == false) document.getElementById(divID).remove();
@@ -193,12 +193,12 @@ function drawNth(x, table) {
 			//highlight for processing 
 		if(isProcessing(divId)) highlight2(g)
 		
-		$('#b'+id).click(function() {
+		$('#b'+aId).click(function() {
 			event.stopPropagation();
 			updatePG(id, 'assignee2', false);
 			console.log('Order id: '+id+ " Bar");
 		});
-		$('#k'+id).click(function() {
+		$('#k'+aId).click(function() {
 			event.stopPropagation();
 			updatePG(id, 'assignee', false);
 			console.log('Order id: '+id+ " Kitchen");
