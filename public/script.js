@@ -185,7 +185,7 @@ function drawNth(x, table) {
 		}
 		document.getElementById(target).appendChild(g);
 		
-		if(searchOrders(id).time == null) searchOrders(id).time = Date.now();
+		if(searchOrders(id).time == null) updatePG(id, "time", Date.now())
 		
 		document.getElementById(divId).innerHTML = (createOrderCardContent(searchOrders(divId)))
 		
