@@ -393,7 +393,7 @@ function refresh() {
 
 
 function createTime(unixdate) {
-	var date = new Date(unixdate);
+	var date = new Date(unixdate*1000);
 	// Hours part from the timestamp
 	var hours = date.getHours();
 	// Minutes part from the timestamp
