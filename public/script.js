@@ -184,13 +184,13 @@ function drawNth(x, table) {
 		document.getElementById(target).appendChild(g);
 		document.getElementById(divId).innerHTML = (createOrderCardContent(searchOrders(divId)))
 		
-			barButton = document.getElementById('b'+divId)
+			barButton = document.getElementById('b'+divId-1)
 			barButton.addEventListener('click', function(){
 				event.stopPropagation();
    				updatePG(divId, 'assignee2', false);
 			});
 			
-			kitButton = document.getElementById('k'+divId)
+			kitButton = document.getElementById('k'+divId-1)
 			kitButton.addEventListener('click', function(){
 				console.log("test")
 				event.stopPropagation();
