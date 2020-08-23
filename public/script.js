@@ -531,7 +531,8 @@ function SLAHighlight(id){
 		// 		card.setAttribute("class", "card text-white bg-warning mb-3");
 		// 	}, 1000)
 		// }
-		card.setAttribute("class", " flashit card text-white bg-danger mb-3");
+		currentClass = card.getAttribute("class")
+		card.setAttribute("class", "flashit" +  currentClass);
 	}
 }
 
