@@ -76,6 +76,11 @@ function checkOption() {
 	return(document.getElementsByTagName("option")[x].value);
 }
 
+function checkSla() {
+	var x = document.getElementById("sla").selectedIndex;
+	return(document.getElementsByTagName("option")[x].value);
+}
+
 function checkNum() {
 	var x = document.getElementById("myNum")
 	return(x.options[x.selectedIndex]).value;
@@ -398,7 +403,7 @@ function processOrder(id) {
 }
 displayOrder = "asc"
 numOfPastOrders = 20
-slaTime = 600;
+slaTime = 6000;
 var audio = new Audio('https://github.com/joshuscurtis/theway/raw/master/piece-of-cake.mp3');
 setInterval(function() {
 	if(openOrders > 7) alertModal();
@@ -409,6 +414,7 @@ function refresh() {
 	option = checkOption();
 	numOfPastOrders = checkNum();
 	displayOrder = checkOrder();
+	slaTime = checkSla();
 	setTimeout(refresh, 500);
 	// ...
 }
