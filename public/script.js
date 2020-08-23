@@ -438,7 +438,7 @@ function refresh2() {
 	if(openOrders <= 2) count.setAttribute("style", "color: green;")
 	loader = document.getElementById('loader');
 	if(loader != null) loader.remove();
-	setTimeout(refresh2, 500);
+	setTimeout(refresh2, 1000);
 }
 setTimeout(refresh, 500);
 setTimeout(refresh2, 2000);
@@ -560,7 +560,7 @@ function createOrderCardContent(responseObj) {
 	var variantName = ""
 	var html2 = "";
 	
-	SLAHighlight(id);
+	//SLAHighlight(id);
 	
 	//loop through each item in a order
 	for(var y = 0; y < orderData.length; y++) {
