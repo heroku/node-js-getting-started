@@ -127,11 +127,11 @@ function newestOrder() {
 	}
 }
 
-function isClosed(id) {
+function isClosed2(id) {
 	return searchOrders(id).isclosed;
 }
 
-function isClosed2(id) {
+function isClosed(id) {
 	try {
 		closed = searchOrders(id).isclosed;
 	} catch(err) {
