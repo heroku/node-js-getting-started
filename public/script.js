@@ -454,7 +454,7 @@ function refresh2() {
 		drawPastXTableOrders(numOfPastOrders, displayOrder);
 	}
 	count = document.getElementById("count")
-	count.innerHTML = "<strong col> Current Open Orders: " + (openOrders) + "</strong>"
+	count.innerHTML = "<strong col>Open Orders: " + (openOrders) + "</strong>"
 	if(openOrders >= 5) count.setAttribute("style", "color: red;")
 	if(openOrders <= 4) count.setAttribute("style", "color: orange;")
 	if(openOrders <= 2) count.setAttribute("style", "color: green;")
