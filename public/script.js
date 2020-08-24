@@ -161,8 +161,8 @@ function draw() {
 }
 var aId, barButton, kitButton;
 function drawNth(x, table) {
-	divId = searchOrders(newestOrder()).order_id - x;
-	aId = divId
+	let divId = searchOrders(newestOrder()).order_id - x;
+	let aId = divId
 	if(document.getElementById(divId) != null && view != "split") document.getElementById(divId).remove();
 	if(option == "split" && isTable == false) document.getElementById(divID).remove();
 	// setOld(newestOrder()-x);
