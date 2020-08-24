@@ -155,8 +155,6 @@ function isTable(id) {
 		table = searchOrders(id).istable;
 	} catch(err) {
 		return true;
-	} finally {
-		return table;
 	}
 }
 dom = 0
