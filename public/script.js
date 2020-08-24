@@ -92,6 +92,9 @@ function checkOrder() {
 }
 
 function searchOrders(id) {
+	try {
+		
+	
 	orders = allOrders;
 	for(var y = 0; y < orders.length; y++) {
 		currentid = orders[y].order_id;
@@ -100,6 +103,10 @@ function searchOrders(id) {
 		}
 	}
 	return dummy;
+	}
+	catch (error) {
+		console.log(error)
+	}
 }
 
 function newestOrder() {
