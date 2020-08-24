@@ -444,6 +444,7 @@ function createTime(unixdate) {
 }
 
 function refresh2() {
+	try {
 	//if (searchOrders(newestOrder()).isnew == true) audio.play()
 	content = document.getElementById("content");
 	content.innerHTML = '';
@@ -470,6 +471,10 @@ function refresh2() {
 	if(openOrders <= 2) count.setAttribute("style", "color: green;")
 	loader = document.getElementById('loader');
 	if(loader != null) loader.remove();
+}
+catch (error) {
+	console.log("BIG: "+ error)
+}
 	setTimeout(refresh2, 1000);
 }
 setTimeout(refresh, 500);
