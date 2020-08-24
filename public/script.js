@@ -103,7 +103,8 @@ function searchOrders(id) {
 }
 
 function newestOrder() {
-	orders = allOrders;
+	try {
+		orders = allOrders;
 	if(orders.length == null) return newestOrder()
 	id = 0
 	for(var y = 0; y < orders.length; y++) {
@@ -113,6 +114,10 @@ function newestOrder() {
 		}
 	}
 	return id
+	}
+	catch (error) {
+		console.log(error)
+	}
 }
 
 function isClosed(id) {
