@@ -159,7 +159,7 @@ function draw() {
 		g.setAttribute("onclick", 'highlight(this);')
 	}
 }
-
+var aId, barButton, kitButton;
 function drawNth(x, table) {
 	divId = searchOrders(newestOrder()).order_id - x;
 	aId = divId
