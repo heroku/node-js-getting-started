@@ -92,6 +92,9 @@ function checkOrder() {
 }
 
 function searchOrders(id) {
+	try {
+		
+	
 	orders = allOrders;
 	for(var y = 0; y < orders.length; y++) {
 		currentid = orders[y].order_id;
@@ -100,6 +103,10 @@ function searchOrders(id) {
 		}
 	}
 	return dummy;
+	}
+	catch (error) {
+		console.log(error)
+	}
 }
 
 function newestOrder() {
@@ -120,11 +127,11 @@ function newestOrder() {
 	}
 }
 
-function isClosed(id) {
+function isClosed2(id) {
 	return searchOrders(id).isclosed;
 }
 
-function isClosed2(id) {
+function isClosed(id) {
 	try {
 		closed = searchOrders(id).isclosed;
 	} catch(err) {
@@ -148,8 +155,6 @@ function isTable(id) {
 		table = searchOrders(id).istable;
 	} catch(err) {
 		return true;
-	} finally {
-		return table;
 	}
 }
 dom = 0
@@ -466,6 +471,10 @@ function refresh2() {
 	if(openOrders <= 2) count.setAttribute("style", "color: green;")
 	loader = document.getElementById('loader');
 	if(loader != null) loader.remove();
+}
+catch (error) {
+	console.log("BIG: "+ error)
+}
 	setTimeout(refresh2, 1000);
 }
 setTimeout(refresh, 500);
