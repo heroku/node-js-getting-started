@@ -411,6 +411,7 @@ setInterval(function() {
 }, 60000)
 
 function refresh() {
+	console.log("R")
 	getAllOrders();
 	option = checkOption();
 	numOfPastOrders = checkNum();
@@ -435,6 +436,7 @@ function createTime(unixdate) {
 }
 
 function refresh2() {
+	console.log("r2")
 	//if (searchOrders(newestOrder()).isnew == true) audio.play()
 	content = document.getElementById("content");
 	content.innerHTML = '';
@@ -464,7 +466,7 @@ function refresh2() {
 	setTimeout(refresh2, 1000);
 }
 setTimeout(refresh, 500);
-setTimeout(refresh2, 2000);
+setTimeout(refresh2, 4000);
 
 function getAllOrders() {
 	socket.on('db', function(data) {
