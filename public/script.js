@@ -92,9 +92,6 @@ function checkOrder() {
 }
 
 function searchOrders(id) {
-	try {
-		
-	
 	orders = allOrders;
 	for(var y = 0; y < orders.length; y++) {
 		currentid = orders[y].order_id;
@@ -103,15 +100,10 @@ function searchOrders(id) {
 		}
 	}
 	return dummy;
-	}
-	catch (error) {
-		console.log(error)
-	}
 }
 
 function newestOrder() {
-	try {
-		orders = allOrders;
+	orders = allOrders;
 	if(orders.length == null) return newestOrder()
 	id = 0
 	for(var y = 0; y < orders.length; y++) {
@@ -121,17 +113,13 @@ function newestOrder() {
 		}
 	}
 	return id
-	}
-	catch (error) {
-		console.log(error)
-	}
-}
-
-function isClosed2(id) {
-	return searchOrders(id).isclosed;
 }
 
 function isClosed(id) {
+	return searchOrders(id).isclosed;
+}
+
+function isClosed2(id) {
 	try {
 		closed = searchOrders(id).isclosed;
 	} catch(err) {
@@ -155,6 +143,8 @@ function isTable(id) {
 		table = searchOrders(id).istable;
 	} catch(err) {
 		return true;
+	} finally {
+		return table;
 	}
 }
 dom = 0
@@ -444,7 +434,6 @@ function createTime(unixdate) {
 }
 
 function refresh2() {
-	
 	//if (searchOrders(newestOrder()).isnew == true) audio.play()
 	content = document.getElementById("content");
 	content.innerHTML = '';
@@ -471,10 +460,6 @@ function refresh2() {
 	if(openOrders <= 2) count.setAttribute("style", "color: green;")
 	loader = document.getElementById('loader');
 	if(loader != null) loader.remove();
-}
-catch (error) {
-	console.log("BIG: "+ error)
-}
 	setTimeout(refresh2, 1000);
 }
 setTimeout(refresh, 500);
