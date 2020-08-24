@@ -72,8 +72,15 @@ function unSplit() {
 }
 
 function checkOption() {
-	var x = document.getElementById("mySelect").selectedIndex;
-	return(document.getElementsByTagName("option")[x].value);
+	try {
+		var x = document.getElementById("mySelect").selectedIndex;
+		return(document.getElementsByTagName("option")[x].value);
+	}
+	catch (error) {
+		console.log(error)
+		return 0;
+	}
+
 }
 
 function checkSla() {
