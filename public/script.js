@@ -439,6 +439,7 @@ function createTime(unixdate) {
 }
 
 function refresh2() {
+	
 	//if (searchOrders(newestOrder()).isnew == true) audio.play()
 	content = document.getElementById("content");
 	content.innerHTML = '';
