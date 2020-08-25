@@ -388,7 +388,7 @@ function newUserModal() {
 		confirmButtonText: 'Continue'
 	}).then((result) => {
 		if(result.value) {
-			localStorage.setItem("newUser", "false")
+			//localStorage.setItem("newUser", "false")
 		} else {
 			window.close()
 		};
