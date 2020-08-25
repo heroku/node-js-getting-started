@@ -498,8 +498,8 @@ function refresh2() {
 	if(countOpen() == 0 ) {
 		left = document.getElementById('content')
 		left.innerHTML = content.innerHTML + '<h2>All Orders are Closed!</h2>'
-		right = document.getElementById('right')
-		right.innerHTML = content.innerHTML + '<h2>All Orders are Closed!</h2>'
+		//right = document.getElementById('right')
+		//right.innerHTML = content.innerHTML + '<h2>All Orders are Closed!</h2>'
 	}
 	setTimeout(refresh2, 1000);
 }
