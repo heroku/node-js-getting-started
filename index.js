@@ -185,7 +185,7 @@ max = 0;
 			result.send(res.rows)
 		})
 	})
-	app.get('/time', (req,res) => {
+	app.get('/time', (req,result) => {
 		pool.query('SELECT order_id, time,closetime, to_timestamp(CAST((closetime-time) as bigint)/1000) as timetoclose from devorders where closetime >1;', (err, res) => {
 			result.send(res.rows);
 		});
