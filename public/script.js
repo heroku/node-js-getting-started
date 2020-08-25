@@ -466,7 +466,7 @@ function createTime(unixdate) {
 }
 
 function refresh2() {
-	if(countOrders() == 0 ) {
+	if(countOpen() == 0 ) {
 	left = document.getElementById('content')
 	left.innerHTML = content.innerHTML + '<h2>All Orders are Closed!</h2>'
 	right = document.getElementById('right')
