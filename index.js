@@ -163,11 +163,17 @@ setInterval(function() {
 
 }, 5000)
 max = 0;
-
+basicAuth({
+  users: { 'admin': 'supersecret' },
+  
+})
 //server
 	myAuth = basicAuth({
 	  users: { 'admin': 'espresso',
 	           'staff': 'latte',
+	  },
+	  unauthorizedResponse: (req) => {
+    	return `unauthorized. ip: ${req.ip}`
 	  },
 	  challenge: true,
 	  realm: 'foo',
