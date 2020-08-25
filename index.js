@@ -173,7 +173,7 @@ basicAuth({
 	           'staff': 'latte',
 	  },
 	  unauthorizedResponse: (req) => {
-    	return render('pages/error');
+    	return '<h1>ERROR</h1>;
 	  },
 	  challenge: true,
 	  realm: 'foo',
