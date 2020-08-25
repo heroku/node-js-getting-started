@@ -397,9 +397,7 @@ function newUserModal() {
 		
 
 
-if(localStorage.getItem("newUser") == null) {
-	window.newUserModal();
-}
+
 
 
 
@@ -471,6 +469,9 @@ function createTime(unixdate) {
 }
 
 function refresh2() {
+	if(localStorage.getItem("newUser") == null) {
+	window.newUserModal();
+}
 	//console.log("r2")
 	//if (searchOrders(newestOrder()).isnew == true) audio.play()
 	content = document.getElementById("content");
