@@ -392,7 +392,6 @@ function newUserModal() {
 		title: 'New User!',
 		text: "Welcome to Orders App for The Way! If you have not used this before please speak to Rob/Steve/Sarah first.",
 		icon: 'info',
-		showCancelButton: true,
 		confirmButtonColor: '#3085d6',
 		confirmButtonText: 'I Understand'
 	}).then((result) => {
