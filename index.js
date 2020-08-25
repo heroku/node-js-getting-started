@@ -120,12 +120,7 @@ setInterval(function(){
 
 //every 5seconds
 setInterval(function() {
-if(countOrders() == 0 ) {
-	left = document.getElementById('content')
-	left.innerHTML = content.innerHTML + '<h2>All Orders are Closed!</h2>'
-	right = document.getElementById('right')
-	right.innerHTML = content.innerHTML + '<h2>All Orders are Closed!</h2>'
-}
+	
 	//request auth
     request(options, function(error, response) {
         if (error) throw new Error(error);
