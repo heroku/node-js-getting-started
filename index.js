@@ -172,8 +172,8 @@ basicAuth({
 	  users: { 'admin': 'espresso',
 	           'staff': 'latte',
 	  },
-	  unauthorizedResponse: (req) => {
-    	return `unauthorized. ip: ${req.ip}`
+	  unauthorizedResponse: (req,res) => {
+    	return res.render('pages/error');
 	  },
 	  challenge: true,
 	  realm: 'foo',
