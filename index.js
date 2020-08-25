@@ -15,12 +15,8 @@ var request = require('request');
 
 const bodyParser = require('body-parser');
 
-
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
-
-
-
 
 io.on('connection', function(client) {
     console.log('Client connected...');
@@ -28,10 +24,7 @@ io.on('connection', function(client) {
     client.on('join', function(data) {
     	console.log(data);
     });
-	//io.sockets.emit('broadcast',{ description: ' connec Time!'});
 });
-
-
 
 
 //pg
@@ -53,8 +46,6 @@ function getData() {
 
 
 getData();
-
-//console.log(data);
 
 // Add headers
 app.use(function(req, res, next) {
@@ -129,7 +120,12 @@ setInterval(function(){
 
 //every 5seconds
 setInterval(function() {
-	
+if(countOrders() == 0 ) {
+	left = document.getElementById('content')
+	left.innerHTML = content.innerHTML + '<h2>All Orders are Closed!</h2>'
+	right = document.getElementById('right')
+	right.innerHTML = content.innerHTML + '<h2>All Orders are Closed!</h2>'
+}
 	//request auth
     request(options, function(error, response) {
         if (error) throw new Error(error);
