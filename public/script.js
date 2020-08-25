@@ -379,14 +379,23 @@ function remove(el) {
 function newUserModal() {
 	Swal.fire({
 		title: 'New User',
-		text: "Welcome!",
+		text: "You are a new user!",
 		icon: 'info',
+		showCancelButton: true,
+		cancelButtonText: 'Close Tab',
 		confirmButtonColor: '#3085d6',
-		confirmButtonText: 'Ok'
+		cancelButtonColor: '#d33',
+		confirmButtonText: 'Continue'
 	}).then((result) => {
-		localStorage.setItem("newUser", "false")
+		if(result.value) {
+			localStorage.setItem("newUser", "false")
+		} else {
+			console.log("close tab")
+		};
 	});
 }
+		
+
 
 if(localStorage.getItem("newUser") == null) {newUserModal()}
 
