@@ -495,12 +495,7 @@ function refresh2() {
 	if(openOrders <= 2) count.setAttribute("style", "color: green;")
 	loader = document.getElementById('loader');
 	if(loader != null) loader.remove();
-	if(countOpen() == 0 ) {
-		left = document.getElementById('content')
-		left.innerHTML = content.innerHTML + '<h2>All Orders are Closed!</h2>'
-		//right = document.getElementById('right')
-		//right.innerHTML = content.innerHTML + '<h2>All Orders are Closed!</h2>'
-	}
+	
 	setTimeout(refresh2, 1000);
 }
 setTimeout(refresh, 1000);
