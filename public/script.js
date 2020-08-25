@@ -20,7 +20,7 @@ var view
 
 
 function checkNew() {
-	if(localStorage.getItem("newUser") == null) {
+	if(localStorage.getItem("newUser") === null) {
 		window.newUserModal();
 	}
 }
