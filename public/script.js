@@ -24,7 +24,10 @@ function checkNew() {
 		window.newUserModal();
 	}
 }
-checkNew();
+setTimeout(function() {
+	checkNew();
+}, 1000)
+
 function setCacheClosedOrder(id) {
 	orderData = searchOrders(id)
 	orderData.isclosed = true
