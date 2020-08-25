@@ -186,7 +186,7 @@ max = 0;
 		})
 	})
 	app.get('/time', (req,result) => {
-		pool.query('SELECT order_id, to_timestamp(CAST((time) as bigint)/1000) as created, to_timestamp(CAST((closetime) as bigint)/1000) as closed, to_timestamp(CAST((closetime-time) as bigint)/1000) as timetoclose from devorders where closetime >1;', (err, res) => {
+		pool.query('SELECT order_id, time as created, closetime as closed, (closetime-time) as timetoclose, to_timestamp(CAST((time) as bigint)/1000) as date from devorders where closetime >1;', (err, res) => {
 			result.send(res.rows);
 		});
 	});
