@@ -421,12 +421,11 @@ setInterval(function() {
 function refresh() {
 	//console.log("R")
 	getAllOrders();
-	option = checkOption();
-	numOfPastOrders = checkNum();
-	displayOrder = checkOrder();
-	slaTime = checkSla();
+	//option = checkOption();
+	//numOfPastOrders = checkNum();
+	//displayOrder = checkOrder();
+	//slaTime = checkSla();
 	setTimeout(refresh, 500);
-	// ...
 }
 
 function createTime(unixdate) {
@@ -473,7 +472,7 @@ function refresh2() {
 	if(loader != null) loader.remove();
 	setTimeout(refresh2, 1000);
 }
-setTimeout(refresh, 500);
+setTimeout(refresh, 1000);
 setTimeout(refresh2, 5000);
 
 function getAllOrders() {
