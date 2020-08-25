@@ -20,10 +20,10 @@ var view
 
 
 function checkNew() {
-if(localStorage.getItem("newUser") == null) {
-	window.newUserModal();
+	if(localStorage.getItem("newUser") == null) {
+		window.newUserModal();
+	}
 }
-
 checkNew();
 function setCacheClosedOrder(id) {
 	orderData = searchOrders(id)
