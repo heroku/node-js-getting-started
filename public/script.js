@@ -17,6 +17,14 @@ var allOrders;
 var option = 'table'
 var view
 
+
+
+function checkNew() {
+if(localStorage.getItem("newUser") == null) {
+	window.newUserModal();
+}
+
+checkNew();
 function setCacheClosedOrder(id) {
 	orderData = searchOrders(id)
 	orderData.isclosed = true
@@ -469,8 +477,7 @@ function createTime(unixdate) {
 }
 
 function refresh2() {
-	if(localStorage.getItem("newUser") == null) {
-	window.newUserModal();
+	
 }
 	//console.log("r2")
 	//if (searchOrders(newestOrder()).isnew == true) audio.play()
