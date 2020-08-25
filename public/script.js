@@ -382,7 +382,7 @@ function newUserModal() {
 		text: "You are a new user!",
 		icon: 'info',
 		showCancelButton: true,
-		cancelButtonText: 'Close Tab',
+		cancelButtonText: 'QUIT',
 		confirmButtonColor: '#3085d6',
 		cancelButtonColor: '#d33',
 		confirmButtonText: 'Continue'
@@ -390,7 +390,7 @@ function newUserModal() {
 		if(result.value) {
 			localStorage.setItem("newUser", "false")
 		} else {
-			console.log("close tab")
+			window.close()
 		};
 	});
 }
