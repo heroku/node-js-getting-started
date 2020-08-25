@@ -20,6 +20,7 @@ initial-scale=1">
     <div class="bg-dark p-4">
       <h5 class="text-white h4">Settings</h5>
 	  <div id="select" class="text-right">
+		
 		<div class="btn-group">
 		  <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 		    View
@@ -30,8 +31,38 @@ initial-scale=1">
 		    <a class="dropdown-item" onclick="option = 'takeaway';">Takeaway</a>
 		  </div>
 		</div>
-		  
-		  
+		
+		<div class="btn-group">
+		  <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    Order
+		  </button>
+		  <div class="dropdown-menu">
+		    <a class="dropdown-item" onclick="displayOrder = 'asc';">Oldest First</a>
+		    <a class="dropdown-item" onclick="displayOrder = 'table';">Newest First</a>
+
+		  </div>
+	  	</div>
+		<div class="btn-group">
+		  <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    Display X Orders
+		  </button>
+		  <div class="dropdown-menu">
+		    <a class="dropdown-item" onclick="numOfPastOrders = 20;">20</a>
+		    <a class="dropdown-item" onclick="numOfPastOrders = 10;">10</a>
+		    <a class="dropdown-item" onclick="numOfPastOrders = 5;">5</a>
+		  </div>
+		</div>
+		
+		<div class="btn-group">
+		  <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    Alert Time
+		  </button>
+		  <div class="dropdown-menu">
+		    <a class="dropdown-item" onclick="slaTime = 1200;">20 minutes</a>
+		    <a class="dropdown-item" onclick="slaTime = 600;">10 minutes</a>
+		    <a class="dropdown-item" onclick="slaTime = 300;">5 minutes</a>
+		  </div>
+	  </div>
 		</div>
     </div>
   </div>
