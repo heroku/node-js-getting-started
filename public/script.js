@@ -390,28 +390,15 @@ function remove(el) {
 function newUserModal() {
 	Swal.fire({
 		title: 'New User!',
-		text: "Welcome to orders app for The Way. If you have not used this before please speak to Steve/Rob/Sarah first.",
+		text: "Welcome to Orders App for The Way! If you have not used this before please speak to Rob/Steve/Sarah first.",
 		icon: 'info',
 		showCancelButton: true,
-		cancelButtonText: 'QUIT',
 		confirmButtonColor: '#3085d6',
-		cancelButtonColor: '#d33',
 		confirmButtonText: 'I Understand'
 	}).then((result) => {
-		if(result.value) {
 			localStorage.setItem("newUser", "false")
-		} else {
-			window.close()
-		};
 	});
 }
-		
-
-
-
-
-
-
 
 function closeOrder(id) {
 	document.getElementById(id).remove()
