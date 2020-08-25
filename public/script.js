@@ -376,6 +376,23 @@ function remove(el) {
 	assignOrderModal(id, element)
 }
 
+function newUserModal() {
+	Swal.fire({
+		title: 'New User',
+		text: "Welcome!",
+		icon: 'info',
+		confirmButtonColor: '#3085d6',
+		confirmButtonText: 'Ok'
+	}).then((result) => {
+		localStorage.setItem("newUser", "false")
+	});
+}
+
+if(localStorage.getItem("newUser") == null) {newUserModal()}
+
+
+
+
 function closeOrder(id) {
 	document.getElementById(id).remove()
 	updatePG(id, 'isclosed', true)
