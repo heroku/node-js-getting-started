@@ -4,7 +4,7 @@
 <script>
 	
 	
-	console.log(<%= eventData %>);
+	console.log(<%- JSON.stringify(eventData) %>);
 	var ctx = document.getElementById('myChart');
 	var myChart = new Chart(ctx, {
 	    type: 'line',
