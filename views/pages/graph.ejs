@@ -65,18 +65,19 @@ for (var i = 0; i < 5; i++) {
 	sla.innerHTML = "<div class='card bg-light mb-3'><div class='card-body'><h2>Average time to complete an order: </h2> <ul><li><strong>Today</strong>: "+Math.round(avgTimePerDay(last5Days[0]))+" minutes</li><li><strong>Yesterday</strong>: "+Math.round(avgTimePerDay(last5Days[1]))+" minutes</li><li><strong>"+last5Days[2]+"</strong> : "+Math.round(avgTimePerDay(last5Days[2]))+" minutes</li><li><strong>"+last5Days[3]+"</strong> :  "+Math.round(avgTimePerDay(last5Days[3]))+" minutes</li><li><strong>"+last5Days[4]+"</strong> : "+Math.round(avgTimePerDay(last5Days[4]))+" minutes</li></ul></div></div>";
 	
 	
-function toArrArr(array){
-	for (var i = 0; i < array.length; i++) {
-		array[i] = [array[i]]
+function createLabel(array1, array2){
+var array3 = []
+	for (var i = 0; i < array1.length; i++) {
+		array3[i] = array1[i] +" ID: "+ array2[i] 
 	}
-	return array
+	return array3
 }	
 	
 	var ctx = document.getElementById('myChart');		
 	var myChart = new Chart(ctx, {
 	    type: 'line',
 	    data: {
-	        labels: [date,ids],
+	        labels: createLabel(date,ids),
 	        datasets: [{
 	            label: 'time to close',
 	            data: timeToClose,
