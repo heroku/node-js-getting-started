@@ -19,8 +19,8 @@ function createDateTimeObj() {
 
 	for(var i=0;i<key.length;i++) {
 	    obj[key[i]] = {
-	        oldValue: date[i].substring(0, 16),
-	        newValue: timeToClose[i]
+	        date: date[i].substring(0, 16),
+	        time: timeToClose[i]
 	    }
 	}
 return obj
@@ -31,7 +31,7 @@ function avgTimePerDay() {
 var total
 	for (var i = 0; i < obj.length; i++) {
 		if (obj[i].date == "2020-08-26")
-			total = total + obj[i].timeToClose
+			total = total + obj[i].time
 	}
 return total	
 }
