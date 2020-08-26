@@ -5,21 +5,22 @@
 	var data = <%- JSON.stringify(eventData) %>;
 	var timeToClose = []
 	var date = []
-	
+	var key = []
 	for (var i = 0; i < data.length; i++) {
 		timeToClose.push((parseInt(data[i].timetoclose)/1000)/60)
 		thisDate = (data[i].date).substring(0, 16)
 		date.push(thisDate)
+		key.push(i)
 	}
 function createDateTimeObj() {
-	var dateDataObj = {};
-	var dateDataArr =[];
-	for (var i = 0; i < timeToClose.length; i++) {
-   		dateDataObj[timeToClose[i]] = (date[i].substring(0,10));
-		dateDataArr.push(dateDataObj[timeToClose[i]])	
-	}
-	return dateDataArr
-}	
+	var obj = {};
+	for(var i=0;i<key.length;i++) {
+    	obj[key[i]] = {
+        	date: oldVals[i],
+        	timeToClose: newVals[i]
+    }
+}
+	
 function avgTimePerDay(dateTimeObj) {
 	for (var i = 0; i < dateTimeObj.length; i++) {
 	}
