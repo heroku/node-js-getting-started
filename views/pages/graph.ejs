@@ -27,7 +27,7 @@ return obj
 }
 
 
-function avgTimePerDay(dateTimeObj) {
+function avgTimePerDay() {
 var total
 	for (var i = 0; i < obj.length; i++) {
 		if (obj[i].date == "2020-08-26")
@@ -35,8 +35,10 @@ var total
 	}
 return total	
 }
+createDateTimeObj()
+console.log(avgTimePerDay())
 
-		
+
 	var ctx = document.getElementById('myChart');
 	var myChart = new Chart(ctx, {
 	    type: 'line',
