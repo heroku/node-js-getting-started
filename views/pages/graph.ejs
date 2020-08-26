@@ -11,7 +11,7 @@
 	date = []
 	for (var i = 0; i < data.length; i++) {
 		timeToClose.push(parseInt(data[i].timetoclose))
-		date.push(parseInt(data[i].timetoclose))
+		date.push(data[i].timetoclose)
 	}
 
 
@@ -21,7 +21,7 @@
 	    data: {
 	        labels: date,
 	        datasets: [{
-	            label: '# of Votes',
+	            label: 'Time to close orders',
 	            data: timeToClose,
 	            backgroundColor: [
 	                'rgba(255, 99, 132, 0.2)',
