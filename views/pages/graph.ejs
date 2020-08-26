@@ -48,7 +48,7 @@ todayDate = today.getFullYear() +"-"+ (today.getMonth()+1)+"-"+today.getDate()
 console.log(avgTimePerDay(todayDate))
 
 	var sla = document.getElementById("sla");
-	sla.innerHTML = avgTimePerDay(todayDate);
+	sla.innerHTML = "Average time to complete an order: "+ avgTimePerDay(todayDate) +" minutes";
 	
 	var ctx = document.getElementById('myChart');
 	var myChart = new Chart(ctx, {
