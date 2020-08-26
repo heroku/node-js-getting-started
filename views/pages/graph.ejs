@@ -27,12 +27,12 @@ return obj
 }
 
 
-function avgTimePerDay() {
+function avgTimePerDay(data) {
 var total = 0.0
 var count = 0
 
 	for (var i = 0; i < key.length; i++) {
-		if (obj[i].date == "2020-08-26")
+		if (obj[i].date == date)
 			total = total + obj[i].time;
 			count = count + 1;
 	}
