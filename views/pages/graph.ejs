@@ -57,7 +57,7 @@ for (var i = 0; i < 5; i++) {
 
 
 	var sla = document.getElementById("sla");
-	sla.innerHTML = "<h2>Average time to complete an order: </h2> <ul><li><strong>Today</strong>: "+Math.round(avgTimePerDay(last5Days[0]))+" minutes</li><li><strong>Yesterday</strong>: "+Math.round(avgTimePerDay(last5Days[1]))+" minutes</li><li><strong>"+last5Days[2]+"</strong> : "+Math.round(avgTimePerDay(last5Days[2]))+" minutes</li><li><strong>"+last5Days[3]+"</strong> :  "+Math.round(avgTimePerDay(last5Days[3]))+" minutes</li><li><strong>"+last5Days[4]+"</strong> : "+Math.round(avgTimePerDay(last5Days[4]))+" minutes</li></ul>";
+	sla.innerHTML = "<card><h2>Average time to complete an order: </h2> <ul><li><strong>Today</strong>: "+Math.round(avgTimePerDay(last5Days[0]))+" minutes</li><li><strong>Yesterday</strong>: "+Math.round(avgTimePerDay(last5Days[1]))+" minutes</li><li><strong>"+last5Days[2]+"</strong> : "+Math.round(avgTimePerDay(last5Days[2]))+" minutes</li><li><strong>"+last5Days[3]+"</strong> :  "+Math.round(avgTimePerDay(last5Days[3]))+" minutes</li><li><strong>"+last5Days[4]+"</strong> : "+Math.round(avgTimePerDay(last5Days[4]))+" minutes</li></ul></card";
 	
 	var ctx = document.getElementById('myChart');		
 	var myChart = new Chart(ctx, {
