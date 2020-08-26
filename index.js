@@ -203,6 +203,11 @@ basicAuth({
 		result.send("qty")
 	})
 	
+	app.get('/stats', (req,result) => {
+		result.render('pages/graph')
+	})
+	
+	
 //update db
 	app.post('/update', (req,res) => {
 		const id = req.body.id;
