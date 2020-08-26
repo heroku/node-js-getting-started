@@ -2,32 +2,28 @@
 
 <canvas id="myChart" width="400" height="400"></canvas>
 <script>
-	
-	function createTime(unixdate) {
-	var date = new Date(unixdate*1);
-	// Hours part from the timestamp
-	var hours = date.getHours();
-	// Minutes part from the timestamp
-	var minutes = "0" + date.getMinutes();
-	// Seconds part from the timestamp
-	var seconds = "0" + date.getSeconds();
-	// Will display time in 10:30:23 format
-	var formattedTime = minutes.substr(-2) + ':' + seconds.substr(-2);
-	
-	return formattedTime;
-}
 	var data = <%- JSON.stringify(eventData) %>;
+	var timeToClose = []
+	var date = []
 	
-
-	timeToClose = []
-	date = []
 	for (var i = 0; i < data.length; i++) {
 		timeToClose.push((parseInt(data[i].timetoclose)/1000)/60)
 		thisDate = (data[i].date).substring(0, 16)
 		date.push(thisDate)
 	}
+function createDateTimeObj() {
+	var dateDataObj = {};
+	for (var i = 0; i < timeToClose.length; i++) {
+   		dateDataObj[timeToClose[i]] = ((date[i]).substring(0,10));
+	}
+}	
+function avgTimePerDay(dateTimeObj) {
+	for (var i = 0; i < dateTimeObj.length; i++) {
+	}
+	
+}
 
-
+		
 	var ctx = document.getElementById('myChart');
 	var myChart = new Chart(ctx, {
 	    type: 'line',
