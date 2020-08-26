@@ -190,28 +190,18 @@ basicAuth({
 	  challenge: true,
 	  realm: 'foo',
   });
-	
-	
-	
-	
 
 	app.use(express.static(path.join(__dirname, 'public')))
 	app.set('views', path.join(__dirname, 'views'))
 	app.set('view engine', 'ejs')
 
     app.get('/', myAuth, (req, res) => res.render('pages/table'))
- 	app.get('/react', (req, res) => res.render('pages/react'))
 	
-	app.get('/allOrders', (req,result) => {
+	app.get('/allOrders', adminAuth , (req,result) => {
 		pool.query('SELECT * FROM public.devorders', (err, res) => {
 			result.send(res.rows)
 		})
 	})
-	app.get('/time', (req,result) => {
-		pool.query('SELECT order_id, time as created, closetime as closed, (closetime-time) as timetoclose, to_timestamp(CAST((time) as bigint)/1000) as date from devorders where closetime >1;', (err, res) => {
-			result.send(res.rows);
-		});
-	});
 	
 	app.get('/qty', (req,result) => {
 		result.send("qty")
@@ -223,6 +213,16 @@ basicAuth({
 				result.render('pages/graph', {eventData : ev});
 		});	
 	})
+	
+	
+	
+	// app.get('/time', (req,result) => {
+	// 	pool.query('SELECT order_id, time as created, closetime as closed, (closetime-time) as timetoclose, to_timestamp(CAST((time) as bigint)/1000) as date from devorders where closetime >1;', (err, res) => {
+	// 		result.send(res.rows);
+	// 	});
+	// });
+ 	// app.get('/react', (req, res) => res.render('pages/react'))
+	
 	
 	
 //update db
