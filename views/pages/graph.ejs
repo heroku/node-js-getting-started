@@ -7,16 +7,12 @@
 	var data = <%- JSON.stringify(eventData) %>;
 	
 
-	 
-	var timetaken;
-	var dates;
+	var dataObj = {timetaken:1, dates:123};
 	for (var i = 0; i < data.length; i++) {
-		
-		timetaken[i] = data[i].timetoclose
-		dates[i] = data[i].order_id
+		dataObj[i].timetaken = data[i].timetoclose
+		dataObj[i].dates = data[i].order_id
 	}
-	console.log(dates);
-	console.log(timetaken);
+	console.log(dataObj);
 	
 	var ctx = document.getElementById('myChart');
 	var myChart = new Chart(ctx, {
