@@ -44,11 +44,18 @@ createDateTimeObj()
 
 today = new Date();
 todayDate = today.getFullYear() +"-0"+ (today.getMonth()+1)+"-"+today.getDate()
+last5Days = []
+for (var i = 0; i < 5; i++) {
+	last5Days[i] = today.getFullYear() +"-0"+ (today.getMonth()+1)+"-"+(today.getDate() -i)
+	}
+
+
+
 
 console.log(avgTimePerDay(todayDate))
 
 	var sla = document.getElementById("sla");
-	sla.innerHTML = "Average time to complete an order: "+ Math.round(avgTimePerDay(todayDate)) +" minutes";
+	sla.innerHTML = "<h2>Average time to complete an order: </h2> <ul><li>Today: "+Math.round(avgTimePerDay(last5Days[0]))+"</li><li> Yesterday: "+Math.round(avgTimePerDay(last5Days[1]))+"</li><li>"+Math.round(avgTimePerDay(last5Days[2]))+"</li><li>"+Math.round(avgTimePerDay(last5Days[3]))+"</li><li>"+Math.round(avgTimePerDay(last5Days[4]))+"</li></ul>";
 	
 	var ctx = document.getElementById('myChart');
 	var myChart = new Chart(ctx, {
