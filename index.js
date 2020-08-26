@@ -180,6 +180,20 @@ basicAuth({
 	  challenge: true,
 	  realm: 'foo',
 	});
+	
+	adminAuth = basicAuth({
+	  users: { 'admin': 'espresso',
+	  },
+	  unauthorizedResponse: (req) => {
+    	return  basicAuthError
+	  },
+	  challenge: true,
+	  realm: 'foo',
+  });
+	
+	
+	
+	
 
 	app.use(express.static(path.join(__dirname, 'public')))
 	app.set('views', path.join(__dirname, 'views'))
@@ -203,7 +217,7 @@ basicAuth({
 		result.send("qty")
 	})
 	
-	app.get('/stats', (req,result) => {
+	app.get('/stats',adminAuth, (req,result) => {
 		pool.query('SELECT order_id, time as created, closetime as closed, (closetime-time) as timetoclose, to_timestamp(CAST((time) as bigint)/1000) as date from devorders where closetime >1 order BY order_id ASC;', (err, res) => {
 				ev = res.rows;
 				result.render('pages/graph', {eventData : ev});
