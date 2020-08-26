@@ -20,7 +20,7 @@
 		key.push(i)
 		ids.push(data[i].order_id)
 	}
-ids = ids.map(String)	
+//ids = ids.map(String)	
 	
 var obj = {};
 function createDateTimeObj() {
@@ -63,14 +63,14 @@ for (var i = 0; i < 5; i++) {
 
 	var sla = document.getElementById("sla");
 	sla.innerHTML = "<div class='card bg-light mb-3'><div class='card-body'><h2>Average time to complete an order: </h2> <ul><li><strong>Today</strong>: "+Math.round(avgTimePerDay(last5Days[0]))+" minutes</li><li><strong>Yesterday</strong>: "+Math.round(avgTimePerDay(last5Days[1]))+" minutes</li><li><strong>"+last5Days[2]+"</strong> : "+Math.round(avgTimePerDay(last5Days[2]))+" minutes</li><li><strong>"+last5Days[3]+"</strong> :  "+Math.round(avgTimePerDay(last5Days[3]))+" minutes</li><li><strong>"+last5Days[4]+"</strong> : "+Math.round(avgTimePerDay(last5Days[4]))+" minutes</li></ul></div></div>";
-	
+	var arr=["Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"];
 	var ctx = document.getElementById('myChart');		
 	var myChart = new Chart(ctx, {
 	    type: 'line',
 	    data: {
 	        labels: date,
 	        datasets: [{
-	            label: ids,
+	            label: arr,
 	            data: timeToClose,
 	            backgroundColor: [
 	                'rgba(255, 99, 132, 0.2)',
