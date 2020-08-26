@@ -4,12 +4,24 @@
 <script>
 	
 	
-	console.log(<%- JSON.stringify(eventData) %>);
+	var data = <%- JSON.stringify(eventData) %>;
+	
+
+	 
+	
+	
+	for (var i = 0; i < data.length; i++) {
+		var timetaken[i] = data[i].timetoclose;
+		var dates[i] = data[i].order_id; 
+	}
+	console.log(dates);
+	console.log(timetaken);
+	
 	var ctx = document.getElementById('myChart');
 	var myChart = new Chart(ctx, {
 	    type: 'line',
 	    data: {
-	        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+	        labels: ['date1', 'date2', 'date3', 'Green', 'Purple', 'Orange'],
 	        datasets: [{
 	            label: '# of Votes',
 	            data: [12, 19, 3, 5, 2, 3],
