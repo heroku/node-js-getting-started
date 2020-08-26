@@ -22,7 +22,7 @@
 	timeToClose = []
 	date = []
 	for (var i = 0; i < data.length; i++) {
-		timeToClose.push(createTime(parseInt(data[i].timetoclose)))
+		timeToClose.push(((parseInt(data[i].timetoclose)/1000)/60)
 		date.push(data[i].date)
 	}
 
