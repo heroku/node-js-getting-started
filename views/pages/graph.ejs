@@ -2,6 +2,9 @@
 
 <canvas id="myChart" width="400" height="400"></canvas>
 <script>
+	
+	var newData = <%= eventData %>
+	console.log(newData);
 	var ctx = document.getElementById('myChart');
 	var myChart = new Chart(ctx, {
 	    type: 'line',
