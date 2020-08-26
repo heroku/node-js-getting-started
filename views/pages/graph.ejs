@@ -13,11 +13,12 @@
 	}
 function createDateTimeObj() {
 	var dateDataObj = {};
-	for (var i = 0; i < date.length; i++) {
-   		dateDataObj[(date[i].substring(0,10))] = (timeToClose[i]);
-		
+	var dateDataArr
+	for (var i = 0; i < timeToClose.length; i++) {
+   		dateDataObj[timeToClose[i]] = (date[i].substring(0,10));
+		dateDataArr.push()	
 	}
-	return dateDataObj
+	return dateDataArr
 }	
 function avgTimePerDay(dateTimeObj) {
 	for (var i = 0; i < dateTimeObj.length; i++) {
