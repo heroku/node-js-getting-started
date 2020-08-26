@@ -22,8 +22,8 @@
 	timeToClose = []
 	date = []
 	for (var i = 0; i < data.length; i++) {
-		timeToClose.push(((parseInt(data[i].timetoclose)/1000)/60))
-		date.push(data[i].date)
+		timeToClose.push(((parseInt(data[i].timetoclose)/1000)/60)
+		date.push(data[i].date).substring(0,16))
 	}
 
 
