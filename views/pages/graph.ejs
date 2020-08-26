@@ -12,19 +12,28 @@
 		date.push(thisDate)
 		key.push(i)
 	}
-function createDateTimeObj() {
-	var obj = {};
-	for(var i=0;i<key.length;i++) {
-    	obj[key[i]] = {
-        	date: oldVals[i],
-        	timeToClose: newVals[i]
-    	}
-	}
-}	
-function avgTimePerDay(dateTimeObj) {
-	for (var i = 0; i < dateTimeObj.length; i++) {
-	}
 	
+	
+var obj = {};
+function createDateTimeObj() {
+
+	for(var i=0;i<key.length;i++) {
+	    obj[key[i]] = {
+	        oldValue: date[i].substring(0, 16),
+	        newValue: timeToClose[i]
+	    }
+	}
+return obj
+}
+
+
+function avgTimePerDay(dateTimeObj) {
+var total
+	for (var i = 0; i < obj.length; i++) {
+		if (obj[i].date == "2020-08-26")
+			total = total + obj[i].timeToClose
+	}
+return total	
 }
 
 		
