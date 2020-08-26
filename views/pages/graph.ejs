@@ -1,6 +1,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous"></script>
 
 <canvas id="myChart" width="400" height="400"></canvas>
+<h1 id="sla"></h1>
 <script>
 	var data = <%- JSON.stringify(eventData) %>;
 	var timeToClose = []
@@ -40,9 +41,15 @@ var count = 0
 return total/count	
 }
 createDateTimeObj()
-console.log(avgTimePerDay("2020-08-26"))
 
+today = new Date();
+todayDate = today.getFullYear() +"-"+ today.getMonth()+"-"+today.getDate()
 
+console.log(avgTimePerDay(todayDate))
+
+	var sla = document.getElementById("sla");
+	sla.innerHTML = avgTimePerDay(todayDate);
+	
 	var ctx = document.getElementById('myChart');
 	var myChart = new Chart(ctx, {
 	    type: 'line',
