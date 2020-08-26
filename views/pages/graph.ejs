@@ -76,9 +76,9 @@ function toArrArr(array){
 	var myChart = new Chart(ctx, {
 	    type: 'line',
 	    data: {
-	        labels: date,
+	        labels: [date,ids],
 	        datasets: [{
-	            label: toArrArr(ids),
+	            label: 'time to close',
 	            data: timeToClose,
 	            backgroundColor: [
 	                'rgba(255, 99, 132, 0.2)',
