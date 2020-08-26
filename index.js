@@ -204,7 +204,7 @@ basicAuth({
 	})
 	
 	app.get('/stats', (req,result) => {
-		pool.query('SELECT order_id, time as created, closetime as closed, (closetime-time) as timetoclose, to_timestamp(CAST((time) as bigint)/1000) as date from devorders where closetime >1;', (err, res) => {
+		pool.query('SELECT order_id, time as created, closetime as closed, (closetime-time) as timetoclose, to_timestamp(CAST((time) as bigint)/1000) as date from devorders where closetime >1 order BY order_id ASC;', (err, res) => {
 				ev = res.rows;
 				result.render('pages/graph', {eventData : ev});
 		});	
