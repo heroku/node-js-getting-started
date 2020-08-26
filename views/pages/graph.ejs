@@ -51,13 +51,10 @@ for (var i = 0; i < 5; i++) {
 
 
 
-
-console.log(avgTimePerDay(todayDate))
-
 	var sla = document.getElementById("sla");
-	sla.innerHTML = "<h2>Average time to complete an order: </h2> <ul><li>Today: "+Math.round(avgTimePerDay(last5Days[0]))+"</li><li> Yesterday: "+Math.round(avgTimePerDay(last5Days[1]))+"</li><li>"+last5Days[2]+" :"+Math.round(avgTimePerDay(last5Days[2]))+"</li><li>"+last5Days[3]+" :"+Math.round(avgTimePerDay(last5Days[3]))+"</li><li>"+last5Days[4]+" :"+Math.round(avgTimePerDay(last5Days[4]))+"</li></ul>";
+	sla.innerHTML = "<h2>Average time to complete an order: </h2> <ul><li>Today: "+Math.round(avgTimePerDay(last5Days[0]))+" minutes</li><li> Yesterday: "+Math.round(avgTimePerDay(last5Days[1]))+" minutes</li><li>"+last5Days[2]+" : "+Math.round(avgTimePerDay(last5Days[2]))+" minutes</li><li>"+last5Days[3]+" :  "+Math.round(avgTimePerDay(last5Days[3]))+" minutes</li><li>"+last5Days[4]+" : "+Math.round(avgTimePerDay(last5Days[4]))+" minutes</li></ul>";
 	
-	var ctx = document.getElementById('myChart');
+	var ctx = document.getElementById('myChart');		
 	var myChart = new Chart(ctx, {
 	    type: 'line',
 	    data: {
