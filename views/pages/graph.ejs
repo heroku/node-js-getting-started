@@ -6,7 +6,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous"></script>
 
 <canvas id="myChart" width="400" height="400"></canvas>
-<h1 id="sla"></h1>
+<div id="sla"></div>
 <script>
 	var data = <%- JSON.stringify(eventData) %>;
 	var timeToClose = []
@@ -60,7 +60,7 @@ for (var i = 0; i < 5; i++) {
 	
 
 	var sla = document.getElementById("sla");
-	sla.innerHTML = "<div class='card'><div class='card-body'><h2>Average time to complete an order: </h2> <ul><li><strong>Today</strong>: "+Math.round(avgTimePerDay(last5Days[0]))+" minutes</li><li><strong>Yesterday</strong>: "+Math.round(avgTimePerDay(last5Days[1]))+" minutes</li><li><strong>"+last5Days[2]+"</strong> : "+Math.round(avgTimePerDay(last5Days[2]))+" minutes</li><li><strong>"+last5Days[3]+"</strong> :  "+Math.round(avgTimePerDay(last5Days[3]))+" minutes</li><li><strong>"+last5Days[4]+"</strong> : "+Math.round(avgTimePerDay(last5Days[4]))+" minutes</li></ul></div></div>";
+	sla.innerHTML = "<div class='card bg-light mb-3'><div class='card-body'><h2>Average time to complete an order: </h2> <ul><li><strong>Today</strong>: "+Math.round(avgTimePerDay(last5Days[0]))+" minutes</li><li><strong>Yesterday</strong>: "+Math.round(avgTimePerDay(last5Days[1]))+" minutes</li><li><strong>"+last5Days[2]+"</strong> : "+Math.round(avgTimePerDay(last5Days[2]))+" minutes</li><li><strong>"+last5Days[3]+"</strong> :  "+Math.round(avgTimePerDay(last5Days[3]))+" minutes</li><li><strong>"+last5Days[4]+"</strong> : "+Math.round(avgTimePerDay(last5Days[4]))+" minutes</li></ul></div></div>";
 	
 	var ctx = document.getElementById('myChart');		
 	var myChart = new Chart(ctx, {
