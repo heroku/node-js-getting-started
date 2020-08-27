@@ -163,12 +163,12 @@ function maxOrder() {
 	$.ajax(settings).done(function(response) {
 		day = response
 		var ctx = document.getElementById('day');		
-	var myChart = new Chart(ctx, {
+	var day = new Chart(ctx, {
 	    type: 'line',
 	    data: {
 	        labels: createLabel(date,ids),
 	        datasets: [{
-	            label: 'time to close',
+	            label: 'day',
 	            data: day,
 	            backgroundColor: [
 	                'rgba(255, 99, 132, 0.2)',
