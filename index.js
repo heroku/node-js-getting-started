@@ -243,9 +243,11 @@ basicAuth({
 		const avg = req.body.column
 		const diff = req.body.value
 		
-		var thisQuery = "INSERT INTO public.stats (date, avg, diff) VALUES ("+date+", "+avg+", "+diff+");"
+		var thisQuery = "INSERT INTO public.stats (date, avgtime, diff) VALUES ("+date+", "+avg+", "+diff+");"
+					
+		console.log(thisQuery);
 		pool.query(thisQuery, (err, res) => {
-			console.log(err);
+			console.log(thisQuery);
 			console.log(res);
 		})
 		
@@ -260,12 +262,12 @@ basicAuth({
 		
 	})
 
-app.post('/setStats', (req,res) => {
-		const date = req.body.id;
-		const avg = req.body.column
-		const diff = req.body.value
+app.post('/updateStats', (req,res) => {
+		const val = req.body.val;
+		const col = req.body.col
+		const date = req.body.date
 		
-		var thisQuery = "UPDATE public.stats SET collum = value;"
+		var thisQuery = "UPDATE public.stats SET "+col+" = "+val+";"
 		pool.query(thisQuery, (err, res) => {
 			console.log(err);
 			console.log(res);
