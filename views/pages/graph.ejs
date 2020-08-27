@@ -162,14 +162,26 @@ function maxOrder() {
 	};
 	$.ajax(settings).done(function(response) {
 		day = response
+		console.log(response);
+		
+		var dates = []
+		var diffs = []
+		var times = []
+		for (var i = 0; i < day.length; i++) {
+			dates.push(day[i].date)
+			dates.push(day[i].diff)
+			dates.push(day[i].time)
+		}
+		
+		
 		var ctx = document.getElementById('day');		
 	var day = new Chart(ctx, {
 	    type: 'line',
 	    data: {
 	        labels: createLabel(date,ids),
 	        datasets: [{
-	            label: 'day',
-	            data: day,
+	            label: dates,
+	            data: times,
 	            backgroundColor: [
 	                'rgba(255, 99, 132, 0.2)',
 	                'rgba(54, 162, 235, 0.2)',
