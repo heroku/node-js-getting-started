@@ -255,7 +255,7 @@ basicAuth({
 		
 		var thisQuery = "SELECT * FROM public.stats;"
 		pool.query(thisQuery, (err, result) => {
-			res.send(result);
+			res.send(result.rows);
 		})
 		
 	})
