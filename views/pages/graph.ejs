@@ -45,7 +45,7 @@ return obj
 function createArray() {
 	array = []
 	for (var i = 0; i < ids.length; i++) {
-		array.push([ids[i], date[i], timeToClose[i]]);
+		array.push([ids[i], date[i], Math.round(timeToClose[i])]);
 	}
 return array
 }
@@ -145,9 +145,9 @@ $(document).ready(function() {
     $('#example').DataTable( {
         data: test,
 		columns: [
-            { title: "Name" },
-            { title: "Start date" },
-            { title: "Salary" }
+            { title: "Order ID" },
+            { title: "Time" },
+            { title: "Time to Close" }
         ]
     } );
 } );
