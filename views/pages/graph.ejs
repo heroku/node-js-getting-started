@@ -149,8 +149,6 @@ var array3 = []
 	    }
 	});
 
-function maxOrder() {
-	lastId = 0;
 	var settings = {
 		"url": "/getStats",
 		"method": "GET",
@@ -160,28 +158,51 @@ function maxOrder() {
 			"Content-Type": "application/x-www-form-urlencoded"
 		}
 	};
+	
+	
 	$.ajax(settings).done(function(response) {
 		day = response
 		console.log(response);
 		
-		var dates = []
+		var datess = []
 		var diffs = []
 		var times = []
 		for (var i = 0; i < day.length; i++) {
 			dates.push(day[i].date)
-			dates.push(day[i].diff)
-			dates.push(day[i].time)
+			diffs.push(day[i].diff)
+			times.push(day[i].time)
 		}
+		console.log(times)
 		
-		
-		var ctx = document.getElementById('day');		
-	var day = new Chart(ctx, {
+		var thisone = document.getElementById('day');		
+	var day = new Chart(thisone, {
 	    type: 'line',
 	    data: {
-	        labels: createLabel(date,ids),
+	        labels: date,
 	        datasets: [{
-	            label: dates,
+	            label: "stats",
 	            data: times,
+	            backgroundColor: [
+	                'rgba(255, 99, 132, 0.2)',
+	                'rgba(54, 162, 235, 0.2)',
+	                'rgba(255, 206, 86, 0.2)',
+	                'rgba(75, 192, 192, 0.2)',
+	                'rgba(153, 102, 255, 0.2)',
+	                'rgba(255, 159, 64, 0.2)'
+	            ],
+	            borderColor: [
+	                'rgba(255, 99, 132, 1)',
+	                'rgba(54, 162, 235, 1)',
+	                'rgba(255, 206, 86, 1)',
+	                'rgba(75, 192, 192, 1)',
+	                'rgba(153, 102, 255, 1)',
+	                'rgba(255, 159, 64, 1)'
+	            ],
+	            borderWidth: 1
+	        },
+			{
+	            label: "stats",
+	            data: diffs,
 	            backgroundColor: [
 	                'rgba(255, 99, 132, 0.2)',
 	                'rgba(54, 162, 235, 0.2)',
@@ -215,7 +236,6 @@ function maxOrder() {
 		
 		
 	});
-}
 	
 	var ctx = document.getElementById('day');		
 	var myChart = new Chart(ctx, {
