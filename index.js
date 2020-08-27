@@ -237,13 +237,35 @@ basicAuth({
 		})
 		res.send('Order:' +id+" has been updated at the column "+ column+ " with the value: " + value);
 	})
-//update db
+//update stats
 	app.post('/setStats', (req,res) => {
 		const date = req.body.id;
 		const avg = req.body.column
 		const diff = req.body.value
 		
 		var thisQuery = "INSERT INTO public.stats (date, avg, diff) VALUES ("+date+", "+avg+", "+diff+");"
+		pool.query(thisQuery, (err, res) => {
+			console.log(err);
+			console.log(res);
+		})
+		
+		res.send('Date:' +date+" has been updated");
+	})
+	app.get('/getStats', (req,res) => {
+		
+		var thisQuery = "SELECT * FROM public.stats;"
+		pool.query(thisQuery, (err, result) => {
+			res.send(result.rows);
+		})
+		
+	})
+
+app.post('/setStats', (req,res) => {
+		const date = req.body.id;
+		const avg = req.body.column
+		const diff = req.body.value
+		
+		var thisQuery = "UPDATE public.stats SET collum = value;"
 		pool.query(thisQuery, (err, res) => {
 			console.log(err);
 			console.log(res);
