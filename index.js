@@ -243,7 +243,7 @@ basicAuth({
 		const avg = req.body.avgtime;
 		const diff = req.body.diff;
 		
-		var thisQuery = "INSERT INTO public.stats (date, avgtime, diff) VALUES ("+date+", "+avg+", "+diff+");"
+		var thisQuery = "INSERT INTO public.stats (date, avgtime, diff) VALUES ('"+date+"', "+avg+", "+diff+");"
 					
 		console.log(thisQuery);
 		pool.query(thisQuery, (err, res) => {
