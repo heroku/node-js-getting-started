@@ -10,7 +10,9 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
 
 <canvas id="myChart" width="400" height="400"></canvas>
+<canvas id="day" width="400" height="400"></canvas>
 <div id="sla"></div>
+
 <table id="example" class="display" width="100%"></table>
 
 
@@ -97,9 +99,6 @@ for (var i = 0; i < 5; i++) {
 
 
 
-
-	
-
 	var sla = document.getElementById("sla");
 	sla.innerHTML = "<div class='card bg-light mb-3'><div class='card-body'><h2>Average time to complete an order: </h2> <ul><li><strong>Today</strong>: "+Math.round(avgTimePerDay(last5Days[0]))+" minutes (Difficulty: "+calcDiff(last5Days[0])+")</li><li><strong>Yesterday</strong>: "+Math.round(avgTimePerDay(last5Days[1]))+" minutes (Difficulty: "+calcDiff(last5Days[1])+")</li><li><strong>"+last5Days[2]+"</strong> : "+Math.round(avgTimePerDay(last5Days[2]))+" minutes (Difficulty: "+calcDiff(last5Days[2])+")</li><li><strong>"+last5Days[3]+"</strong> :  "+Math.round(avgTimePerDay(last5Days[3]))+" minutes (Difficulty: "+calcDiff(last5Days[3])+" )</li><li><strong>"+last5Days[4]+"</strong> : "+Math.round(avgTimePerDay(last5Days[4]))+" minutes (Difficulty:  "+calcDiff(last5Days[4])+")</li></ul></div></div>";
 	
@@ -150,6 +149,102 @@ var array3 = []
 	    }
 	});
 
+function maxOrder() {
+	lastId = 0;
+	var settings = {
+		"url": "/getStats",
+		"method": "GET",
+		"timeout": 0,
+		"headers": {
+			"Prefer": "resolution=merge-duplicates",
+			"Content-Type": "application/x-www-form-urlencoded"
+		}
+	};
+	$.ajax(settings).done(function(response) {
+		day = response
+		var ctx = document.getElementById('day');		
+	var myChart = new Chart(ctx, {
+	    type: 'line',
+	    data: {
+	        labels: createLabel(date,ids),
+	        datasets: [{
+	            label: 'time to close',
+	            data: day,
+	            backgroundColor: [
+	                'rgba(255, 99, 132, 0.2)',
+	                'rgba(54, 162, 235, 0.2)',
+	                'rgba(255, 206, 86, 0.2)',
+	                'rgba(75, 192, 192, 0.2)',
+	                'rgba(153, 102, 255, 0.2)',
+	                'rgba(255, 159, 64, 0.2)'
+	            ],
+	            borderColor: [
+	                'rgba(255, 99, 132, 1)',
+	                'rgba(54, 162, 235, 1)',
+	                'rgba(255, 206, 86, 1)',
+	                'rgba(75, 192, 192, 1)',
+	                'rgba(153, 102, 255, 1)',
+	                'rgba(255, 159, 64, 1)'
+	            ],
+	            borderWidth: 1
+	        }]
+	    },
+	    options: {
+	        scales: {
+	            yAxes: [{
+	                ticks: {
+	                    beginAtZero: true
+	                }
+	            }]
+	        }
+	    }
+	});
+		
+		
+		
+	});
+}
+	
+	var ctx = document.getElementById('day');		
+	var myChart = new Chart(ctx, {
+	    type: 'line',
+	    data: {
+	        labels: createLabel(date,ids),
+	        datasets: [{
+	            label: 'time to close',
+	            data: timeToClose,
+	            backgroundColor: [
+	                'rgba(255, 99, 132, 0.2)',
+	                'rgba(54, 162, 235, 0.2)',
+	                'rgba(255, 206, 86, 0.2)',
+	                'rgba(75, 192, 192, 0.2)',
+	                'rgba(153, 102, 255, 0.2)',
+	                'rgba(255, 159, 64, 0.2)'
+	            ],
+	            borderColor: [
+	                'rgba(255, 99, 132, 1)',
+	                'rgba(54, 162, 235, 1)',
+	                'rgba(255, 206, 86, 1)',
+	                'rgba(75, 192, 192, 1)',
+	                'rgba(153, 102, 255, 1)',
+	                'rgba(255, 159, 64, 1)'
+	            ],
+	            borderWidth: 1
+	        }]
+	    },
+	    options: {
+	        scales: {
+	            yAxes: [{
+	                ticks: {
+	                    beginAtZero: true
+	                }
+	            }]
+	        }
+	    }
+	});
+	
+	
+	
 	
 
 var test = createArray()
