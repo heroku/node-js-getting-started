@@ -239,9 +239,9 @@ basicAuth({
 	})
 //update stats
 	app.post('/setStats', (req,res) => {
-		const date = req.body.id;
-		const avg = req.body.column
-		const diff = req.body.value
+		const date = req.body.date;
+		const avg = req.body.avg;
+		const diff = req.body.diff;
 		
 		var thisQuery = "INSERT INTO public.stats (date, avgtime, diff) VALUES ("+date+", "+avg+", "+diff+");"
 					
