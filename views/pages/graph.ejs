@@ -11,7 +11,22 @@
 
 <canvas id="myChart" width="400" height="400"></canvas>
 <div id="sla"></div>
-<table id="example" class="display" width="100%"></table>
+<table id="example" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Salary</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Salary</th>
+            </tr>
+        </tfoot>
+    </table>
 
 
 <script>
@@ -135,11 +150,11 @@ var myData = Object.keys(obj).map(key => {
 $(document).ready(function() {
     $('#example').DataTable( {
         data: test,
-		columns: [
-            { title: "Date" },
-            { title: "Time" },
-            { title: "Id" }
-        ]
+		  "columns": [
+            { "data": "name" },
+            { "data": "position" },
+            { "data": "salary" }
+			]
     } );
 } );
 	
