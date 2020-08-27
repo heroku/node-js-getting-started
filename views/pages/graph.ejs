@@ -50,7 +50,27 @@ function createArray() {
 return array
 }
 
+function numOfOrders(day) {
+	num = 0
+	allDays = []
+	for (var i = 0; i < date.length; i++) {
+		allDays.push(date[i].substring(0,10))		
+	}
+	
+	var count = 0;
+	for(var i = 0; i < allDays.length; ++i){
+		if(allDays[i] == day)
+    		count++;
+	}
+	return count
+}
 
+function calcDiff(day) {
+	num = numOfOrders(day);
+	mins = 480
+	diff = 1/(mins/num)*100
+	return Math.round(diff)
+}
 
 function avgTimePerDay(thisDate) {
 var total = 0.0
@@ -131,15 +151,9 @@ var array3 = []
 	});
 
 	
-var dataSet = obj;
+
 var test = createArray()
 test.data = [obj]
-
-
-var dataSet2 = Object.values(dataSet);
-var myData = Object.keys(obj).map(key => {
-    return obj[key];
-})
 
 $(document).ready(function() {
     $('#example').DataTable( {
