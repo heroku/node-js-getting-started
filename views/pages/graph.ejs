@@ -103,7 +103,9 @@ for (var i = 0; i < 5; i++) {
 	sla.innerHTML = "<div class='card bg-light mb-3'><div class='card-body'><h2>Average time to complete an order: </h2> <ul><li><strong>Today</strong>: "+Math.round(avgTimePerDay(last5Days[0]))+" minutes (Difficulty: "+calcDiff(last5Days[0])+")</li><li><strong>Yesterday</strong>: "+Math.round(avgTimePerDay(last5Days[1]))+" minutes (Difficulty: "+calcDiff(last5Days[1])+")</li><li><strong>"+last5Days[2]+"</strong> : "+Math.round(avgTimePerDay(last5Days[2]))+" minutes (Difficulty: "+calcDiff(last5Days[2])+")</li><li><strong>"+last5Days[3]+"</strong> :  "+Math.round(avgTimePerDay(last5Days[3]))+" minutes (Difficulty: "+calcDiff(last5Days[3])+" )</li><li><strong>"+last5Days[4]+"</strong> : "+Math.round(avgTimePerDay(last5Days[4]))+" minutes (Difficulty:  "+calcDiff(last5Days[4])+")</li></ul></div></div>";
 
 	
-updatePG(last5Days[0], Math.round(avgTimePerDay(last5Days[0])), calcDiff(last5Days[0]));
+setPG(last5Days[0], Math.round(avgTimePerDay(last5Days[0])), calcDiff(last5Days[0]));
+setUpdate(last5Days[0], Math.round(avgTimePerDay(last5Days[0])), calcDiff(last5Days[0]));
+
 	
 function createLabel(array1, array2){
 var array3 = []
@@ -278,7 +280,7 @@ var array3 = []
 	});
 	
 	
-function updatePG(date, avgtime, diff) {
+function setPG(date, avgtime, diff) {
 	var settings = {
 		"url": "/setStats",
 		"method": "POST",
@@ -297,6 +299,25 @@ function updatePG(date, avgtime, diff) {
 	});
 }	
 	
+function updatePG(date, avgtime, diff) {
+	var settings = {
+		"url": "/updateStats",
+		"method": "POST",
+		"timeout": 0,
+		"headers": {
+			"Content-Type": "application/x-www-form-urlencoded"
+		},
+		"data": {
+			"col": date,
+			"val": avgtime,
+			"date": date
+		}
+	};
+	$.ajax(settings).done(function(response) {}).fail(function(data) {
+		console.log("fail ")
+	});
+}
+
 
 var test = createArray()
 test.data = [obj]
