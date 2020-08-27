@@ -251,7 +251,7 @@ basicAuth({
 		
 		res.send('Date:' +date+" has been updated");
 	})
-app.post('/getStats', (req,res) => {
+	app.get('/getStats', (req,res) => {
 		
 		var thisQuery = "SELECT * FROM public.stats;"
 		pool.query(thisQuery, (err, result) => {
