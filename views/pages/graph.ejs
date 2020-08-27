@@ -40,11 +40,13 @@ var total = 0.0
 var count = 0
 
 	for (var i = 0; i < key.length; i++) {
-		if (obj[i].date == thisDate)
+		if (obj[i].date == thisDate) {
 			total = total + obj[i].time;
-			count = count + 1;
+			count = count + 1; 
+		}
 	}
-	
+	console.log(total)
+	console.log(count)
 return total/count	
 }
 createDateTimeObj()
