@@ -1,16 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Subdomain Takeover by @remonsec</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subdomain Takeover By Remonsec</title>
+    <style>
+        *{
+            color: black;
+            background-color: #191919;
+            margin-top: 7%;
+        }
+        h1{
+            color: #02BEFD;
+            text-align: center;
+            text-transform: uppercase;
+            padding: 0px;
+            margin: 0px;
+        }
+        .twitter {
+            color: #019EF3;
+            text-align: center;
+            text-transform: lowercase;
+        }
+        hr{
+            border: 5px solid #1F3050;
+        }
+        .glow {
+        font-size: 40px;
+        color: whitesmoke;
+        text-align: center;
+        -webkit-animation: glow 1s ease-in-out infinite alternate;
+        -moz-animation: glow 1s ease-in-out infinite alternate;
+        animation: glow 1s ease-in-out infinite alternate;
+        }
+        @-webkit-keyframes glow {
+  from {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #02befd, 0 0 40px #56cafb, 0 0 50px #76d3fe, 0 0 60px #a4dffd, 0 0 70px #a4dffd;
+  }
+  
+  to {
+    text-shadow: 0 0 20px #fff, 0 0 30px #191919, 0 0 40px #191919, 0 0 50px #191919, 0 0 60px #191919, 0 0 70px #191919, 0 0 80px #191919;
+  }
+}
+    </style>
 </head>
-
 <body>
-
-<div class="jumbotron text-center">
-  <div class="container">
-    <h1>Subdomain Takeover By @remonsec</h1>
-    <p>This is my Subdomain Takeover POC</p>
-  </div>
-</div>
+    <hr>
+    <h1>Subdomain Takeover By <br> <span class="twitter glow">@remonsec</span></h1>
+    <hr>
 </body>
 </html>
