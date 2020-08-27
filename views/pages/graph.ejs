@@ -11,22 +11,7 @@
 
 <canvas id="myChart" width="400" height="400"></canvas>
 <div id="sla"></div>
-<table id="example" class="display" style="width:100%">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Position</th>
-                <th>Salary</th>
-            </tr>
-        </thead>
-        <tfoot>
-            <tr>
-                <th>Name</th>
-                <th>Position</th>
-                <th>Salary</th>
-            </tr>
-        </tfoot>
-    </table>
+<table id="example" class="display" width="100%"></table>
 
 
 <script>
@@ -56,6 +41,15 @@ function createDateTimeObj() {
 	}
 return obj
 }
+
+function createArray() {
+	array = []
+	for (var i = 0; i < ids.length; i++) {
+		array.push([ids[i], date[i], timeToClose[i]]);
+	}
+return array
+}
+
 
 
 function avgTimePerDay(thisDate) {
@@ -138,7 +132,7 @@ var array3 = []
 
 	
 var dataSet = obj;
-var test = {}
+var test = createArray()
 test.data = [obj]
 
 
@@ -150,11 +144,14 @@ var myData = Object.keys(obj).map(key => {
 $(document).ready(function() {
     $('#example').DataTable( {
         data: test,
-		  "columns": [
-            { "data": "name" },
-            { "data": "position" },
-            { "data": "salary" }
-			]
+		ajax: {
+            dataSrc: ""
+        },
+		columns: 
+            { title: "Date" },
+            { title: "Time" },
+            { title: "Id" }
+        ]
     } );
 } );
 	
