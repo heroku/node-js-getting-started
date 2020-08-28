@@ -341,8 +341,17 @@ window.onload = function () {
 	});
 	
 	});
-	
+
 	var ctx = document.getElementById('day');		
+
+  //Destroy the previous chart;
+  //Rename the "bar" according to your component
+  if(window.ctx != undefined)
+  window.ctx.destroy();
+  
+  window.ctx = new Chart(ctx , {});	
+	
+
 	var myChart = new Chart(ctx, {
 	    type: 'line',
 	    data: {
