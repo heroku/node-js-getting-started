@@ -253,14 +253,6 @@ basicAuth({
 		
 		res.send('Date:' +date+" has been updated");
 	})
-	app.get('/getStats', (req,res) => {
-		
-		var thisQuery = "SELECT * FROM public.stats;"
-		pool.query(thisQuery, (err, result) => {
-			res.send(result.rows);
-		})
-		
-	})
 
 app.post('/updateStats', (req,res) => {
 		const val = req.body.val;
@@ -268,6 +260,7 @@ app.post('/updateStats', (req,res) => {
 		const date = req.body.date
 		
 		var thisQuery = "UPDATE public.stats SET "+col+" = "+val+" WHERE date="+date+";"
+		console.log(thisQuery)
 		pool.query(thisQuery, (err, res) => {
 			console.log(err);
 			console.log(res);
