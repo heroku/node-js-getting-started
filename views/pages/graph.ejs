@@ -60,7 +60,7 @@
 				<h5 class="card-header">
 					Time per Order
 				</h5>
-				<div class="card-body" style="max-height: 440px">
+				<div class="card-body">
 					<canvas id="day" width="400" height="400"></canvas>
 				</div>
 				<div class="card-footer">
@@ -302,7 +302,7 @@ window.onload = function () {
 	        }
 	    }
 	});
-	
+	day.height = 500;
 	});
 
 	var ctx = document.getElementById('day');		
