@@ -173,13 +173,13 @@ function numOfOrders(day) {
 function calcDiff(day) {
 	num = numOfOrders(day);
 	timeDate = new Date();
-	time = [time.getHours, time.getMinutes()];
+	timeNow = [timeDate.getHours, timeDate.getMinutes()];
 	//calc rolling time between 8am and 3pm
-	if(time[0]<8 || time[0]>15){
- 		time = 480;
+	if(timeNow[0]<8 || timeNow[0]>15){
+ 		timeNow = 480;
 	}
 	else {
-		mins = (time[0]*60)-8*60;
+		mins = (timeNow[0]*60)-8*60;
 	}
 	diff = 1/(mins/num)*100
 	return Math.round(diff)
