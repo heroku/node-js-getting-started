@@ -209,8 +209,8 @@ for (var i = 0; i < 5; i++) {
 
 	
 setPG(last5Days[0], Math.round(avgTimePerDay(last5Days[0])), calcDiff(last5Days[0]));
-updatePG(last5Days[0], Math.round(avgTimePerDay(last5Days[0])), calcDiff(last5Days[0]));
-
+updatePG(last5Days[0], Math.round(avgTimePerDay(last5Days[0])));
+updateDiff(last5Days[0], calcDiff(last5Days[0]));
 	
 function createLabel(array1, array2){
 var array3 = []
@@ -406,7 +406,7 @@ function setPG(date, avgtime, diff) {
 	
 function updatePG(date, avgtime) {
 	var settings = {
-		"url": "/updateStats",
+		"url": "/updateAvg",
 		"method": "POST",
 		"timeout": 0,
 		"headers": {
@@ -422,6 +422,23 @@ function updatePG(date, avgtime) {
 	});
 }
 
+function updateDiff(date, diff) {
+	var settings = {
+		"url": "/updateAvg",
+		"method": "POST",
+		"timeout": 0,
+		"headers": {
+			"Content-Type": "application/x-www-form-urlencoded"
+		},
+		"data": {
+			"date": date,
+			"val": diff
+		}
+	};
+	$.ajax(settings).done(function(response) {}).fail(function(data) {
+		console.log("fail ")
+	});
+}
 
 var test = createArray()
 test.data = [obj]
