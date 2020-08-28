@@ -172,7 +172,15 @@ function numOfOrders(day) {
 
 function calcDiff(day) {
 	num = numOfOrders(day);
-	mins = 480
+	timeDate = new Date();
+	time = [time.getHours, time.getMinutes()];
+	//calc rolling time between 8am and 3pm
+	if(time[0]<8 || time[0]>15){
+ 		time = 480;
+	}
+	else {
+		mins = (time[0]*60)-8*60;
+	}
 	diff = 1/(mins/num)*100
 	return Math.round(diff)
 }
