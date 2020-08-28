@@ -172,16 +172,9 @@ function numOfOrders(day) {
 
 function calcDiff(day) {
 	num = numOfOrders(day);
-	timeDate = new Date();
-	timeNow = [timeDate.getHours, timeDate.getMinutes()];
-	//calc rolling time between 8am and 3pm
-	if(timeNow[0]<8 || timeNow[0]>15){
- 		timeNow = 480;
-	}
-	else {
-		mins = (timeNow[0]*60)-8*60;
-	}
-	diff = 1/(mins/num)*100
+	mins = 480;
+	diff = 1/(mins/num)*100;
+	
 	return Math.round(diff)
 }
 
@@ -195,12 +188,10 @@ var count = 0
 			count = count + 1; 
 		}
 	}
-	console.log(total)
-	console.log(count)
-return total/count	
+return total/count;
 }
-createDateTimeObj()
 
+createDateTimeObj()
 today = new Date();
 todayDate = today.getFullYear() +"-0"+ (today.getMonth()+1)+"-"+today.getDate()
 last5Days = []
