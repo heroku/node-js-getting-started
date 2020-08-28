@@ -14,7 +14,7 @@
 
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-md-12" style="margin-top:50px;">
+		<div class="col-md-12" style="margin-top:60px;">
 			<nav class="navbar navbar-expand-lg navbar-light bg-light navbar-dark bg-dark fixed-top">
 				 
 				<button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -404,7 +404,7 @@ function setPG(date, avgtime, diff) {
 	});
 }	
 	
-function updatePG(date, avgtime, diff) {
+function updatePG(date, avgtime) {
 	var settings = {
 		"url": "/updateStats",
 		"method": "POST",
@@ -413,9 +413,8 @@ function updatePG(date, avgtime, diff) {
 			"Content-Type": "application/x-www-form-urlencoded"
 		},
 		"data": {
-			"col": date,
-			"val": avgtime,
-			"date": date
+			"date": date,
+			"val": avgtime
 		}
 	};
 	$.ajax(settings).done(function(response) {}).fail(function(data) {

@@ -264,10 +264,10 @@ basicAuth({
 
 app.post('/updateStats', (req,res) => {
 		const val = req.body.val;
-		const col = req.body.col
+		const col = "avgtime"
 		const date = req.body.date
 		
-		var thisQuery = "UPDATE public.stats SET "+col+" = "+val+";"
+		var thisQuery = "UPDATE public.stats SET "+col+" = "+val+" WHERE date="+date+";"
 		pool.query(thisQuery, (err, res) => {
 			console.log(err);
 			console.log(res);
