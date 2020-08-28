@@ -259,7 +259,7 @@ app.post('/updateStats', (req,res) => {
 		const col = "avgtime"
 		const date = req.body.date
 		
-		var thisQuery = "UPDATE public.stats SET "+col+" = "+val+" WHERE date="+date+";"
+		var thisQuery = "UPDATE public.stats SET "+col+" = "+val+" WHERE date='"+date+"';"
 		console.log(thisQuery)
 		pool.query(thisQuery, (err, res) => {
 			console.log(err);
