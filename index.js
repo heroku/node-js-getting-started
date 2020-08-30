@@ -295,25 +295,7 @@ app.post('/updateAvg', (req,res) => {
 
 	
 
-var weatherAPI = {
-            'url': "https://api.openweathermap.org/data/2.5/weather?q=Luton,uk&appid=ccda9d309ff5322478451b54ef0cfa38&units=metric",
-            'method': "GET",
-            'timeout': 0,
-            'headers': {
-                "content-type": "application/json"
-            }
-
-request(weatherAPI, function(error, response) {
-	console.log(response);
-	temp = response.main.temp;
-	dateObj = new Date()
-	date = dateObj.getFullYear() +"-0"+dateObj.getMonth()+1+"-"+dateObj.getDate();
-	var thisQuery = "UPDATE public.stats SET temp = "+temp+" WHERE date = '"+date+"';"
 	
-	pool.query(thisQuery, (err, result) => {
-		res.send(result.rows);
-	})
-})
 
 	
 	
