@@ -2,60 +2,122 @@
 
 <head>
   <% include ../partials/header.ejs %>
+<!-- WayOMA -->
+<script src="script.js"></script>
 </head>
 
 <meta name="viewport" content="width=device-width,
 initial-scale=1">
 
-<body class="" style="zoom: 1.5; background: lightgrey;" data-gr-c-s-loaded="true">
-    <div style="
-    background: slategrey;
-    height: auto;
-    width: 100%;
-">
 
-	<div id="select" class="text-right" style="padding: 12px;">
+<body class="mainbody" style="" data-gr-c-s-loaded="true">
+	
+	
+    <div class="row Header">
+		<div style="height:60px"></div>
+        <div class="col-12">
 
-		<i class="fa fa-cog"></i>
-		<select id="mySelect">
-			<option value="split">All Orders</option>
-			<option value="table">Table Orders</option>
-			<option value="takeaway">Takeaway Orders</option>
-		</select>
-<!-- 		<i>Max Orders:</i> -->
-		<select id="myNum">
-			<option value=20>20</option>
-			<option value=10>10</option>
-			<option value=5>5</option>
+			<div class="pos-f-t">
+  <div class="collapse" id="navbarToggleExternalContent">
+    <div class="bg-dark p-4">
+      <h5 class="text-white h4">Settings</h5>
+	 <button style="margin-top:20px;" onclick="window.open('/stats','_self')" type="button" class="btn btn-secondary">
+			    		Dashboard
+					</button>
+	  <div id="select" class="text-right" style="margin-top: 20px;">
+		<div id="top">
+		<div class="btn-group">
+		  <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    View
+		  </button>
+		  <div class="dropdown-menu">
+		    <a class="dropdown-item" onclick="option = 'split';">Both</a>
+		    <a class="dropdown-item" onclick="option = 'table';">Table</a>
+		    <a class="dropdown-item" onclick="option = 'takeaway';">Takeaway</a>
+		  </div>
+		</div>
+		
+		<div class="btn-group">
+		  <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    Display Order
+		  </button>
+		  <div class="dropdown-menu">
+		    <a class="dropdown-item" onclick="displayOrder = 'asc';">Oldest First</a>
+		    <a class="dropdown-item" onclick="displayOrder = 'desc';">Newest First</a>
 
-
-		</select>
-<!-- 		<i>Display Order:</i> -->
-		<select id="myOrder">
-			<option value="asc">Oldest First</option>
-			<option value="desc">Newest First</option>
-		</select>
+		  </div>
+	  	</div>
 	</div>
+	<div id="bottom" style="margin-top: 5px;">
+		<div class="btn-group">
+		  <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    Display x Orders
+		  </button>
+		  <div class="dropdown-menu">
+		    <a class="dropdown-item" onclick="numOfPastOrders = 20;">20</a>
+		    <a class="dropdown-item" onclick="numOfPastOrders = 10;">10</a>
+		    <a class="dropdown-item" onclick="numOfPastOrders = 5;">5</a>
+		  </div>
+		</div>
+		
+		<div class="btn-group">
+		  <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    Alert Time
+		  </button>
+		  <div class="dropdown-menu">
+			<a class="dropdown-item" onclick="slaTime = 3600;">OFF (60 mins)</a>
+		    <a class="dropdown-item" onclick="slaTime = 1200;">20 minutes</a>
+		    <a class="dropdown-item" onclick="slaTime = 600;">10 minutes</a>
+		    <a class="dropdown-item" onclick="slaTime = 300;">5 minutes</a>
+		  </div>
+	  </div>
+  </div>
+		</div>
+    </div>
+  </div>
+  <nav class="navbar fixed-top navbar-dark bg-dark">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+	<a class="navbar-brand" href="https://till.ccd.church">THE WAY</a>
+ <a class="navbar-brand" href="#">
+    <img src="/logo.png" width="30" height="30" alt="logo">
+</a>
+  </nav>
+  			<h5 class="text-center" id="count">Open Orders:</h5>
+</div>	
+		<div>
+			</div>
+        </div>
+    </div>
+	
+	
+	
+	
+<div class="container">
+	
+    <div class="row" id="toprow">
+        <div style="width:100%;" class="Take col-xs-6"> 
+			<div class="center" id="content">
+				
+				<div class="text-center">
+  <div class="spinner-border" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
 </div>
-    <div style="width: 90%; margin-left: 5%; ">
-        <br>
-        	<div>
-				<p class="text-center" id="count"></p>
-	            <div class="center" id="content">
-					
-					<div id="loader" class="text-center">
-						<div class="spinner-border" role="status">
-			    			<span class="sr-only">Loading...</span>
-	            		</div>
-	            	</div>
-	    		</div>
-				<div id="right">
-					
-				</div>
+				
+			</div>
+		<div style="width:100%;" class="Table col-xs-6">
+        	<div id="right"></div>
+    </div>
+	
+	<div style="display: none;"class="row Footer">
+	        <div class="col-xs-12">
+				<footer class="fixed-bottom"><p class="text-center">iOrders for iZettle - Josh Curtis</p></footer>
+	        </div>
+	    </div>
+	</div>
 </body>
-
-
-
 
 <style type="text/css">
 br {
@@ -65,4 +127,44 @@ br {
 h5 {
     margin: 0;
 }
+.mainbody {
+	zoom: 1.5; 
+	background: lightgrey;
+	max-width: 100%;
+	overflow-x: hidden;
+}	
+@media only screen and (max-width: 760px) {
+	.mainbody {
+		zoom:1;
+		max-width: 100%;
+		overflow-x: hidden;
+	}
+}
+
+footer {
+	background: grey;
+	height: 20px;
+}
+
+
+/* Flash class and keyframe animation */
+.flashit{
+  color:#f2f;
+	-webkit-animation: flash linear 1s infinite;
+	animation: flash linear 1s infinite;
+}
+@-webkit-keyframes flash {
+	0% { opacity: 1; } 
+	50% { opacity: .3; } 
+	100% { opacity: 1; }
+}
+@keyframes flash {
+	0% { opacity: 1; } 
+	50% { opacity: .3; } 
+	100% { opacity: 1; }
+
+	
+	
+	
+	
 </style>

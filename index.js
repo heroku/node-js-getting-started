@@ -7,6 +7,8 @@ const DBKEY = process.env.DB
 var app = express()
 var http = require('http')
 const basicAuth = require('express-basic-auth')
+var basicAuthError = '<html lang="id" dir="ltr">  <head>      <meta charset="utf-8" />      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />      <meta name="description" content="" />      <meta name="author" content="" />       <!-- Title -->      <title>Sorry, This Page Can&#39;t Be Accessed</title>      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous" /> </head>  <body class="bg-dark text-white py-5">      <div class="container py-5">           <div class="row">                <div class="col-md-2 text-center">                     <p><i class="fa fa-exclamation-triangle fa-5x"></i><br/>Status Code: 403</p>                </div>                <div class="col-md-10">                     <h3>Incorrect Credentials</h3>                     <p>Your username and or password is incorrect. Please contact Rob, Steve or Jeremy for help.<br/>If you think you have made a mistake, please try again.</p>                     <a class="btn btn-danger" href="javascript:location.reload();">Try Again</a>                </div>           </div>      </div>       </body>  </html>'
+
 
 const server = require('http').createServer(app);
 const options3 = { /* ... */ };
@@ -15,12 +17,8 @@ var request = require('request');
 
 const bodyParser = require('body-parser');
 
-
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
-
-
-
 
 io.on('connection', function(client) {
     console.log('Client connected...');
@@ -28,10 +26,7 @@ io.on('connection', function(client) {
     client.on('join', function(data) {
     	console.log(data);
     });
-	//io.sockets.emit('broadcast',{ description: ' connec Time!'});
 });
-
-
 
 
 //pg
@@ -53,8 +48,6 @@ function getData() {
 
 
 getData();
-
-//console.log(data);
 
 // Add headers
 app.use(function(req, res, next) {
@@ -116,13 +109,14 @@ var options = {
 //alert counters
 thisVal = 0
 nextVal = 1
-
+var theTime = 0
 //v
 setInterval(function(){
 	//send data over socket	
     pool.query('SELECT * FROM public.devorders', (err, res) => {
 		io.sockets.emit('db',{ db: res.rows});
 	})
+	theTime = Date.now();
 }, 500)
 
 
@@ -154,7 +148,7 @@ setInterval(function() {
             auth1 = JSON.parse(auth1);
 			
 		//send to pg
-		var thisQuery = "INSERT INTO public.devorders (order_id, products, istable, isnew, isclosed, isprocessing) VALUES ("+auth1.purchases[0].globalPurchaseNumber+", '" +JSON.stringify(auth1.purchases[0].products)+"',"+doesOrderContainTable(auth1.purchases[0].products)+", "+true+", "+false+", "+false+")"
+		var thisQuery = "INSERT INTO public.devorders (order_id, products, istable, isnew, isclosed, isprocessing, time) VALUES ("+auth1.purchases[0].globalPurchaseNumber+", '" +JSON.stringify(auth1.purchases[0].products)+"',"+doesOrderContainTable(auth1.purchases[0].products)+", "+true+", "+false+", "+false+", "+theTime+")"
 		
 		pool.query(thisQuery, (err, res) => {
 			console.log(err);
@@ -171,23 +165,39 @@ setInterval(function() {
 
 }, 5000)
 max = 0;
-
+basicAuth({
+  users: { 'admin': 'supersecret' },
+  
+})
 //server
 	myAuth = basicAuth({
 	  users: { 'admin': 'espresso',
 	           'staff': 'latte',
 	  },
+	  unauthorizedResponse: (req) => {
+    	return  basicAuthError
+	  },
 	  challenge: true,
 	  realm: 'foo',
 	});
+	
+	adminAuth = basicAuth({
+	  users: { 'admin': 'espresso',
+	  },
+	  unauthorizedResponse: (req) => {
+    	return  basicAuthError
+	  },
+	  challenge: true,
+	  realm: 'foo',
+  });
 
 	app.use(express.static(path.join(__dirname, 'public')))
 	app.set('views', path.join(__dirname, 'views'))
 	app.set('view engine', 'ejs')
 
     app.get('/', myAuth, (req, res) => res.render('pages/table'))
- 	
-	app.get('/allOrders', (req,result) => {
+	
+	app.get('/allOrders', adminAuth , (req,result) => {
 		pool.query('SELECT * FROM public.devorders', (err, res) => {
 			result.send(res.rows)
 		})
@@ -196,6 +206,24 @@ max = 0;
 	app.get('/qty', (req,result) => {
 		result.send("qty")
 	})
+	
+	app.get('/stats',adminAuth, (req,result) => {
+		pool.query('SELECT order_id, time as created, closetime as closed, (closetime-time) as timetoclose, to_timestamp(CAST((time) as bigint)/1000) as date from devorders where closetime >1 order BY order_id ASC;', (err, res) => {
+				ev = res.rows;
+				result.render('pages/graph', {eventData : ev});
+		});	
+	})
+	
+	
+	
+	// app.get('/time', (req,result) => {
+	// 	pool.query('SELECT order_id, time as created, closetime as closed, (closetime-time) as timetoclose, to_timestamp(CAST((time) as bigint)/1000) as date from devorders where closetime >1;', (err, res) => {
+	// 		result.send(res.rows);
+	// 	});
+	// });
+ 	// app.get('/react', (req, res) => res.render('pages/react'))
+	
+	
 	
 //update db
 	app.post('/update', (req,res) => {
@@ -209,8 +237,61 @@ max = 0;
 		})
 		res.send('Order:' +id+" has been updated at the column "+ column+ " with the value: " + value);
 	})
+//update stats
+	app.post('/setStats', (req,res) => {
+		const date = req.body.date;
+		const avg = req.body.avgtime;
+		const diff = req.body.diff;
+		
+		var thisQuery = "INSERT INTO public.stats (date, avgtime, diff) VALUES ('"+date+"', "+avg+", "+diff+");"
+					
+		console.log(thisQuery);
+		pool.query(thisQuery, (err, res) => {
+			console.log(thisQuery);
+			console.log(res);
+		})
+		
+		res.send('Date:' +date+" has been updated");
+	})
+
+app.post('/updateAvg', (req,res) => {
+		const val = req.body.val;
+		const col = "avgtime"
+		const date = req.body.date
+		
+		var thisQuery = "UPDATE public.stats SET "+col+" = "+val+" WHERE date='"+date+"';"
+		console.log(thisQuery)
+		pool.query(thisQuery, (err, res) => {
+			console.log(err);
+			console.log(res);
+		})
+		
+		res.send('Date:' +date+" has been updated");
+	})
 	
+	app.post('/updateDiff', (req,res) => {
+		const val = req.body.val;
+		const col = "diff"
+		const date = req.body.date
+		
+		var thisQuery = "UPDATE public.stats SET "+col+" = "+val+" WHERE date='"+date+"';"
+		console.log(thisQuery)
+		pool.query(thisQuery, (err, res) => {
+			console.log(err);
+			console.log(res);
+		})
+		
+		res.send('Date:' +date+" has been updated");
+	})
 	
+	app.get('/getStats', (req,res) => {
+		
+		var thisQuery = "SELECT * FROM public.stats order BY date;"
+		pool.query(thisQuery, (err, result) => {
+			res.send(result.rows);
+		})
+		
+	})
 	
 	
 	

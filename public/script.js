@@ -17,6 +17,17 @@ var allOrders;
 var option = 'table'
 var view
 
+
+
+function checkNew() {
+	if(localStorage.getItem("newUser") === null) {
+		window.newUserModal();
+	}
+}
+setTimeout(function() {
+	checkNew();
+}, 1000)
+
 function setCacheClosedOrder(id) {
 	orderData = searchOrders(id)
 	orderData.isclosed = true
@@ -72,8 +83,20 @@ function unSplit() {
 }
 
 function checkOption() {
-	var x = document.getElementById("mySelect").selectedIndex;
-	return(document.getElementsByTagName("option")[x].value);
+	try {
+		var x = document.getElementById("mySelect").selectedIndex;
+		return(document.getElementsByTagName("option")[x].value);
+	}
+	catch (error) {
+		console.log(error)
+		return 0;
+	}
+
+}
+
+function checkSla() {
+		var x = document.getElementById("sla")
+		return(x.options[x.selectedIndex]).value;
 }
 
 function checkNum() {
@@ -94,6 +117,7 @@ function searchOrders(id) {
 			return orders[y]
 		}
 	}
+	
 	return dummy;
 }
 
@@ -183,7 +207,6 @@ function drawNth(x, table) {
 			if(table == false) target = "content"
 		}
 		document.getElementById(target).appendChild(g);
-		document.getElementById(divId).innerHTML = (createOrderCardContent(searchOrders(divId)))
 		
 			let barButton = document.getElementById('b'+aId)
 		barButton.addEventListener('click', function(){
@@ -200,11 +223,44 @@ function drawNth(x, table) {
 		});
 			
 			
+		if(searchOrders(id).time == null) updatePG(id, "time", Date.now())
+		
+		document.getElementById(divId).innerHTML = (createOrderCardContent(searchOrders(divId)))
+	
 		g.setAttribute("onclick", 'highlight(this);')
 			//highlight for processing 
 		if(isProcessing(divId)) highlight2(g)
+		
+		// $('#b'+aId).click(function() {
+		// 	event.stopPropagation();
+		// 	updatePG(id, 'assignee2', false);
+		// 	console.log('Order id: '+id+ " Bar");
+		// });
+		// $('#k'+aId).click(function() {
+		// 	event.stopPropagation();
+		// 	updatePG(id, 'assignee', false);
+		// 	console.log('Order id: '+id+ " Kitchen");
+		// })
+		
+		let barButton = document.getElementById('b'+aId)
+		barButton.addEventListener('click', function(){
+			event.stopPropagation();
+   			updatePG(aId, 'assignee2', false);
+			console.log('Order id: '+aId+ " Bar");
+		});
+		
+		let kitButton = document.getElementById('k'+aId)
+			kitButton.addEventListener('click', function(){
+			event.stopPropagation();
+   			updatePG(aId, 'assignee', false);
+			console.log('Order id: '+aId+ " Kitchen");	
+		});
+		
+		SLAHighlight(divId);
 	}
+
 }
+
 
 function drawPastXTableOrders(x, order) {
 	if(order == 'asc') {
@@ -265,7 +321,7 @@ function highlight(el) {
 	var element = el;
 	id = element.getAttribute("id");
 	//console.log("highlight"+id)
-	if(element.getAttribute("class") == "card text-white bg-warning mb-3") {
+	if(searchOrders(id).isprocessing == true) {
 		remove2(el)
 	};
 	element.setAttribute("class", 'card text-white bg-warning mb-3')
@@ -345,6 +401,18 @@ function remove(el) {
 	assignOrderModal(id, element)
 }
 
+function newUserModal() {
+	Swal.fire({
+		title: 'New User!',
+		text: "Welcome to Orders App for The Way! If you have not used this before please speak to Rob/Steve/Sarah first.",
+		icon: 'info',
+		confirmButtonColor: '#3085d6',
+		confirmButtonText: 'I Understand'
+	}).then((result) => {
+			localStorage.setItem("newUser", "false")
+	});
+}
+
 function closeOrder(id) {
 	document.getElementById(id).remove()
 	updatePG(id, 'isclosed', true)
@@ -381,21 +449,41 @@ function processOrder(id) {
 }
 displayOrder = "asc"
 numOfPastOrders = 20
+slaTime = 3600;
+option = "split"
 var audio = new Audio('https://github.com/joshuscurtis/theway/raw/master/piece-of-cake.mp3');
 setInterval(function() {
 	if(openOrders > 7) alertModal();
 }, 60000)
 
 function refresh() {
+	//console.log("R")
 	getAllOrders();
-	option = checkOption();
-	numOfPastOrders = checkNum();
-	displayOrder = checkOrder();
-	setTimeout(refresh, 1500);
-	// ...
+	//option = checkOption();
+	//numOfPastOrders = checkNum();
+	//displayOrder = checkOrder();
+	//slaTime = checkSla();
+	setTimeout(refresh, 500);
+}
+
+function createTime(unixdate) {
+	var date = new Date(unixdate*1);
+	// Hours part from the timestamp
+	var hours = date.getHours();
+	// Minutes part from the timestamp
+	var minutes = "0" + date.getMinutes();
+	// Seconds part from the timestamp
+	var seconds = "0" + date.getSeconds();
+	// Will display time in 10:30:23 format
+	var formattedTime = minutes.substr(-2) + ':' + seconds.substr(-2);
+	
+	return formattedTime;
 }
 
 function refresh2() {
+	
+	
+	//console.log("r2")
 	//if (searchOrders(newestOrder()).isnew == true) audio.play()
 	content = document.getElementById("content");
 	content.innerHTML = '';
@@ -416,16 +504,17 @@ function refresh2() {
 		drawPastXTableOrders(numOfPastOrders, displayOrder);
 	}
 	count = document.getElementById("count")
-	count.innerHTML = "<strong col> Current Open Orders: " + (openOrders) + "</strong>"
+	count.innerHTML = "<strong col>Open Orders: " + (openOrders) + "</strong>"
 	if(openOrders >= 5) count.setAttribute("style", "color: red;")
 	if(openOrders <= 4) count.setAttribute("style", "color: orange;")
 	if(openOrders <= 2) count.setAttribute("style", "color: green;")
 	loader = document.getElementById('loader');
 	if(loader != null) loader.remove();
-	setTimeout(refresh2, 1500);
+	
+	setTimeout(refresh2, 1000);
 }
-setTimeout(refresh, 500);
-setTimeout(refresh2, 2000);
+setTimeout(refresh, 1000);
+setTimeout(refresh2, 5000);
 
 function getAllOrders() {
 	socket.on('db', function(data) {
@@ -503,6 +592,22 @@ function createOrderCard(id) {
 	return(createOrderCardContent(localStorage.getItem(id)))
 }
 
+function SLAHighlight(id){
+	thisOrder = searchOrders(id)
+	orderTime = thisOrder.time;
+	card = document.getElementById(id);
+	
+	if (Math.round(((Date.now() - orderTime)/1000)) > slaTime) {
+		// if(thisOrder.isprocessing) {
+		// 	setTimeout(function() {
+		// 		card.setAttribute("class", "card text-white bg-warning mb-3");
+		// 	}, 1000)
+		// }
+		currentClass = card.getAttribute("class")
+		card.setAttribute("class", "flashit " +  currentClass);
+	}
+}
+
 function createOrderCardContent(responseObj) {
 	id = responseObj.order_id
 	orderDetails = responseObj;
@@ -511,6 +616,10 @@ function createOrderCardContent(responseObj) {
 	isclosed = orderDetails.isclosed;
 	isnew = orderDetails.isnew;
 	tableNum = 99; //TODO
+	orderTime = orderDetails.time; 
+	 
+	
+	SLAHighlight(id);
 	for(var y = 0; y < orderData.length; y++) {
 		if((orderData[y].name).substring(0, 5) == "Table") {
 			tableNum = (orderData[y].name).substring(6, 10)
@@ -523,6 +632,9 @@ function createOrderCardContent(responseObj) {
 	var cardEnd = '</div></div> ';
 	var variantName = ""
 	var html2 = "";
+	
+	//SLAHighlight(id);
+	
 	//loop through each item in a order
 	for(var y = 0; y < orderData.length; y++) {
 		if((orderData[y].name).substring(0, 5) != "Table") {
@@ -558,15 +670,20 @@ function createOrderCardContent(responseObj) {
 	html2 = '<button onclick="event.stopPropagation();remove(this.parentNode.parentNode.parentNode)" style="position: absolute; top: 0px; right: 1px;" type="button" class="close" aria-label="Close"><span class="fa fa-cog" aria-hidden="true"></span></button>' + "<p>" + html2 + "<b id='a" + id + "' style='color:black;'> " + (result) + "</b><br> </p>";
 	//add buttons
 	html2 = html2 + '<button id="b' + id + '" type="button" style="position: absolute;bottom: 0px;right: 1px;max-width: 80px;width: 25%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" class="btn btn-' + assignee2 + '"><i class="fa fa-coffee" style="margin-right: 5px;" ></i> Bar</button>' + '<button  onclick="updatePG('+id+', "assignee", false);" id="k' + id + '" type="button" style="position: absolute;bottom: 0px;left: 1px;max-width: 80px;width: 25%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" class="btn btn-' + assignee + '"><i style="margin-right: 5px;" class="fa fa-cutlery"></i> Kitchen</button>'
-
+	
 		//generate final order card HTML
-	buildHTML = cardTop + cardMid + html2 + cardEnd;
-	html2 = ""
+	buildHTML = cardTop + cardMid + html2 + createTime(Date.now() - orderTime) + cardEnd;
+	html2 = "";
 		//console.log(buildHTML);
 		//document.getElementById(id).innerHTML = buildHTML;          
 	return buildHTML;
 	
 }
+
+
+
+
+
 
 
 
