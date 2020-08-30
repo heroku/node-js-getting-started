@@ -1,6 +1,7 @@
 
 <head>
   <% include ../partials/header.ejs %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/brain/0.6.3/brain.min.js" integrity="sha512-xP328xty9tPILO3Fn/uaxUPbKzxgkpFlfNT3zRDrr6tYEN0qVyP++TlyrP4oQer9MdvgLAIc5V/g+qar6Rt5DA==" crossorigin="anonymous"></script>
 </head>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous"></script>
@@ -83,6 +84,22 @@
 </div>
 
 <script>
+const net = new.brain.NeuralNetwork({hiddenLayers :[3]});
+Const _Data = [
+    {input : [0,0], output: [0]},
+    {input : [0,1], output: [1]},
+    {input : [1,0], output: [1]},
+    {input : [1,1], output: [0]}
+];
+net.train(_Data);
+console.log(net.run([0,0]));
+console.log(net.run([0,1]));
+console.log(net.run([1,0]));
+console.log(net.run([0,0]));
+	
+	
+	
+	
 	var data = <%- JSON.stringify(eventData) %>;
 	var timeToClose = []
 	var date = []
