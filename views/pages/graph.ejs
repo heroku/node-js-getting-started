@@ -88,40 +88,36 @@ var net = new brain.NeuralNetwork();
 
 net.train([{
     input: {
-      r: 0.03,
-      g: 0.7,
-      b: 0.5
+      t: 11,
+      r: 0.7
     },
     output: {
-      black: 1
+      ten: 1
     }
   },
   {
     input: {
-      r: 0.16,
-      g: 0.09,
-      b: 0.2
+      t: 16,
+      r: 0.5
     },
     output: {
-      white: 1
+      twenty: 1
     }
   },
   {
     input: {
-      r: 0.5,
-      g: 0.5,
-      b: 1.0
+      t: 20,
+      r: 0.1
     },
     output: {
-      white: 1
+      thirty: 1
     }
   }
   ]);
 
 	var output = net.run({
-  r: 1,
-  g: 0.4,
-  b: 0
+  t: 15,
+  r: 0.2
 }); // { white: 0.99, black: 0.002 }
 
 console.log(output)
