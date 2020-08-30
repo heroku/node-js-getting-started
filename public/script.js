@@ -627,7 +627,7 @@ function createOrderCardContent(responseObj) {
 	for(var y = 0; y < orderData.length; y++) {
 		if((orderData[y].name).substring(0, 5) != "Table") {
 			if(orderData[y].variantName == null || orderData[y].variantName == "") {
-				html2 = "<p>" + html2 + "<p>" + "<strong>" + orderData[y].name + " <br> Qty: <i>" + orderData[y].quantity + ' </strong> </i> <br>'
+				html2 = "<p>" + html2 + "<p>" + "<strong>" + orderData[y].name + "</strong> <br> Qty: <i>" + orderData[y].quantity + ' </i> <br>'
 			} else {
 				variantName = "<br>" + orderData[y].variantName + "<br>"
 				html2 = "<p>" + html2 + "<p>" + "<strong>" + orderData[y].name + "</strong><i>" + variantName + "</i> Qty: <i><strong>" + orderData[y].quantity + '</strong> </i> <br>'
