@@ -85,7 +85,7 @@
 
 <script>
 const net = new brain.NeuralNetwork({hiddenLayers :[3]});
-const ml = network.train([
+const ml = net.train([
     { input: { Num: 10 }, output: { "25": 1 } },
     { input: { Num: 15 }, output: { "40": 1 } },
     { input: { Num: 20 }, output: { "60": 1 } }
