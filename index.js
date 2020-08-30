@@ -90,7 +90,7 @@ setInterval(function () {
 	body = JSON.parse(response.body)
 	temp = body.main.temp;
 	dateObj = new Date()
-	date = dateObj.getFullYear() +"-0"+dateObj.getMonth()+1+"-"+dateObj.getDate();
+	date = dateObj.getFullYear() +"-0"+(dateObj.getMonth()+1)+"-"+dateObj.getDate();
 	var thisQuery = "UPDATE public.stats SET temp = "+temp+" WHERE date = '"+date+"';"
 	
 	console.log(thisQuery);
