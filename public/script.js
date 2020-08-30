@@ -435,7 +435,7 @@ function processOrder(id) {
 }
 displayOrder = "asc"
 numOfPastOrders = 20
-slaTime = 1200;
+slaTime = 3600;
 option = "split"
 var audio = new Audio('https://github.com/joshuscurtis/theway/raw/master/piece-of-cake.mp3');
 setInterval(function() {
