@@ -84,11 +84,11 @@ var weatherAPI = {
                 "content-type": "application/json"
             }
 		}
-
-request(weatherAPI, function(error, response) {
+setInterval(function () {
+	request(weatherAPI, function(error, response) {
 	console.log(response.body);
-	body = JSON.parse(reponse.body)
-	temp = response.main.temp;
+	body = JSON.parse(response.body)
+	temp = body.main.temp;
 	dateObj = new Date()
 	date = dateObj.getFullYear() +"-0"+dateObj.getMonth()+1+"-"+dateObj.getDate();
 	var thisQuery = "UPDATE public.stats SET temp = "+temp+" WHERE date = '"+date+"';"
@@ -96,7 +96,9 @@ request(weatherAPI, function(error, response) {
 	pool.query(thisQuery, (err, result) => {
 		result.send(result.rows);
 	})
-})
+})	
+}, 60000)
+
 
 
 
