@@ -7,14 +7,13 @@ const DBKEY = process.env.DB
 var app = express()
 var http = require('http')
 const basicAuth = require('express-basic-auth')
-var basicAuthError = '<html lang="id" dir="ltr">  <head>      <meta charset="utf-8" />      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />      <meta name="description" content="" />      <meta name="author" content="" />       <!-- Title -->      <title>Sorry, This Page Can&#39;t Be Accessed</title>      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous" /> </head>  <body class="bg-dark text-white py-5">      <div class="container py-5">           <div class="row">                <div class="col-md-2 text-center">                     <p><i class="fa fa-exclamation-triangle fa-5x"></i><br/>Status Code: 403</p>                </div>                <div class="col-md-10">                     <h3>Incorrect Credentials</h3>                     <p>Your username and or password is incorrect. Please contact Rob, Steve or Jeremy for help.<br/>If you think you have made a mistake, please try again.</p>                     <a class="btn btn-danger" href="javascript:location.reload();">Try Again</a>                </div>           </div>      </div>       </body>  </html>'
+var basicAuthError = '<html lang="id" dir="ltr">  <head>      <meta charset="utf-8" />      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />      <meta name="description" content="" />      <meta name="author" content="" /><!-- Title -->      <title>Sorry, This Page Can&#39;t Be Accessed</title>      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" /><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous" /></head><body class="bg-dark text-white py-5"><div class="container py-5"><div class="row"><div class="col-md-2 text-center"><p><i class="fa fa-exclamation-triangle fa-5x"></i><br/>Status Code: 403</p></div><div class="col-md-10"><h3>Incorrect Credentials</h3><p>Your username and or password is incorrect. Please contact Rob, Steve or Jeremy for help.<br/>If you think you have made a mistake, please try again.</p>                     <a class="btn btn-danger" href="javascript:location.reload();">Try Again</a></div></div></div></body></html>'
 
 
 const server = require('http').createServer(app);
 const options3 = { /* ... */ };
 const io = require('socket.io')(server, options3);
 var request = require('request');
-
 const bodyParser = require('body-parser');
 
 app.use(bodyParser.urlencoded({extended:false}));
@@ -28,14 +27,6 @@ io.on('connection', function(client) {
     });
 });
 
-
-
-
-
-
-
-
-
 //pg
 var data
 const { Pool, Client } = require('pg')
@@ -48,14 +39,12 @@ const pool = new Pool({
 })
 pool.connect()
 function getData() {
-		 pool.query('SELECT * FROM public.orders', (err, res) => {
+		 	pool.query('SELECT * FROM public.orders', (err, res) => {
 			data = res.rows
 		})
 }
 
-
 getData();
-
 // Add headers
 app.use(function(req, res, next) {
     // Website you wish to allow to connect
@@ -71,40 +60,8 @@ app.use(function(req, res, next) {
     next();
 });
 
-
 var auth;
 var auth1;
-
-
-var weatherAPI = {
-            'url': "https://api.openweathermap.org/data/2.5/weather?q=Luton,uk&appid=ccda9d309ff5322478451b54ef0cfa38&units=metric",
-            'method': "GET",
-            'timeout': 0,
-            'headers': {
-                "content-type": "application/json"
-            }
-		}
-setInterval(function () {
-	request(weatherAPI, function(error, response) {
-	console.log(response.body);
-	body = JSON.parse(response.body)
-	temp = body.main.temp;
-	dateObj = new Date()
-	date = dateObj.getFullYear() +"-0"+(dateObj.getMonth()+1)+"-"+dateObj.getDate();
-	var thisQuery = "UPDATE public.stats SET temp = "+temp+" WHERE date = '"+date+"';"
-	
-	console.log(thisQuery);
-	pool.query(thisQuery, (err, result) => {
-		console.log(result);
-		console.log(err)
-	})
-})	
-}, 10000)
-
-
-
-
-
 
 function doesOrderContainTable(orderData) {
 	if (orderData != null) {
@@ -125,7 +82,6 @@ function doesOrderContainTable(orderData) {
     if(tableCheck == null) {tableOrder = false}
 return tableOrder;
 }
-
 
 // auth settings
 var options = {
@@ -195,17 +151,13 @@ setInterval(function() {
 		//alert over socket
 			nextVal = thisVal + 1
 			if (nextVal == auth1.purchases[0].globalPurchaseNumber) io.sockets.emit('broadcast',{ description: true});
-			thisVal = auth1.purchases[0].globalPurchaseNumber
-			
+				thisVal = auth1.purchases[0].globalPurchaseNumber		
 	});
 });
 
 }, 5000)
 max = 0;
-basicAuth({
-  users: { 'admin': 'supersecret' },
-  
-})
+
 //server
 	myAuth = basicAuth({
 	  users: { 'admin': 'espresso',
@@ -244,24 +196,6 @@ basicAuth({
 		result.send("qty")
 	})
 	
-	app.get('/stats',adminAuth, (req,result) => {
-		pool.query('SELECT order_id, time as created, closetime as closed, (closetime-time) as timetoclose, to_timestamp(CAST((time) as bigint)/1000) as date from devorders where closetime >1 order BY order_id ASC;', (err, res) => {
-				ev = res.rows;
-				result.render('pages/graph', {eventData : ev});
-		});	
-	})
-	
-	
-	
-	// app.get('/time', (req,result) => {
-	// 	pool.query('SELECT order_id, time as created, closetime as closed, (closetime-time) as timetoclose, to_timestamp(CAST((time) as bigint)/1000) as date from devorders where closetime >1;', (err, res) => {
-	// 		result.send(res.rows);
-	// 	});
-	// });
- 	// app.get('/react', (req, res) => res.render('pages/react'))
-	
-	
-	
 //update db
 	app.post('/update', (req,res) => {
 		const id = req.body.id;
@@ -274,70 +208,84 @@ basicAuth({
 		})
 		res.send('Order:' +id+" has been updated at the column "+ column+ " with the value: " + value);
 	})
+	
+	
+	
+//STATS
+	app.get('/stats',adminAuth, (req,result) => {
+		pool.query('SELECT order_id, time as created, closetime as closed, (closetime-time) as timetoclose, to_timestamp(CAST((time) as bigint)/1000) as date from devorders where closetime >1 order BY order_id ASC;', (err, res) => {
+				ev = res.rows;
+				result.render('pages/graph', {eventData : ev});
+		});
+	})
 //update stats
 	app.post('/setStats', (req,res) => {
 		const date = req.body.date;
 		const avg = req.body.avgtime;
 		const diff = req.body.diff;
 		
-		var thisQuery = "INSERT INTO public.stats (date, avgtime, diff) VALUES ('"+date+"', "+avg+", "+diff+");"
-					
-		console.log(thisQuery);
+		var thisQuery = "INSERT INTO public.stats (date, avgtime, diff) VALUES ('"+date+"', "+avg+", "+diff+");
+
 		pool.query(thisQuery, (err, res) => {
 			console.log(thisQuery);
 			console.log(res);
 		})
-		
 		res.send('Date:' +date+" has been updated");
 	})
 
-app.post('/updateAvg', (req,res) => {
+	app.post('/updateAvg', (req,res) => {
 		const val = req.body.val;
 		const col = "avgtime"
 		const date = req.body.date
 		
 		var thisQuery = "UPDATE public.stats SET "+col+" = "+val+" WHERE date='"+date+"';"
-		console.log(thisQuery)
+
 		pool.query(thisQuery, (err, res) => {
 			console.log(err);
 			console.log(res);
 		})
-		
 		res.send('Date:' +date+" has been updated");
 	})
 	
 	app.post('/updateDiff', (req,res) => {
 		const val = req.body.val;
-		const col = "diff"
-		const date = req.body.date
+		const col = "diff";
+		const date = req.body.date;
 		
-		var thisQuery = "UPDATE public.stats SET "+col+" = "+val+" WHERE date='"+date+"';"
-		console.log(thisQuery)
+		var thisQuery = "UPDATE public.stats SET "+col+" = "+val+" WHERE date='"+date+"';";
 		pool.query(thisQuery, (err, res) => {
 			console.log(err);
 			console.log(res);
 		})
-		
 		res.send('Date:' +date+" has been updated");
 	})
 	
 	app.get('/getStats', (req,res) => {
-		
 		var thisQuery = "SELECT * FROM public.stats order BY date;"
 		pool.query(thisQuery, (err, result) => {
 			res.send(result.rows);
-		})
-		
+		})	
 	})
+	
+var weatherAPI = {
+            'url': "https://api.openweathermap.org/data/2.5/weather?q=Luton,uk&appid=ccda9d309ff5322478451b54ef0cfa38&units=metric",
+            'method': "GET",
+            'timeout': 0,
+            'headers': {
+                "content-type": "application/json"
+            }
+		}		
+setInterval(function () {
+	request(weatherAPI, function(error, response) {
+		body = JSON.parse(response.body)
+		temp = body.main.temp;
+		dateObj = new Date();
+		date = dateObj.getFullYear() +"-0"+(dateObj.getMonth()+1)+"-"+dateObj.getDate();		
+		var thisQuery = "UPDATE public.stats SET temp = "+temp+" WHERE date = '"+date+"';"		
+		pool.query(thisQuery, (err, result) => {});
+	})	
+}, 10000)
 
-	
 
-	
-
-	
-	
-	
-	
-	
 //START SERVER
 	server.listen(PORT);
