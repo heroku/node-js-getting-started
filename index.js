@@ -86,7 +86,7 @@ var weatherAPI = {
 		}
 
 request(weatherAPI, function(error, response) {
-	console.log(response.body);
+	console.log(response.body.main);
 	temp = response.body.main.temp;
 	dateObj = new Date()
 	date = dateObj.getFullYear() +"-0"+dateObj.getMonth()+1+"-"+dateObj.getDate();
