@@ -30,12 +30,6 @@ io.on('connection', function(client) {
 
 
 
-
-
-
-
-
-
 //pg
 var data
 const { Pool, Client } = require('pg')
@@ -335,13 +329,5 @@ app.post('/updateAvg', (req,res) => {
 	})
 
 	
-
-	
-
-	
-	
-	
-	
-	
 //START SERVER
-	server.listen(PORT);
+server.listen(PORT);
