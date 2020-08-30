@@ -85,20 +85,15 @@
 
 <script>
 const net = new brain.NeuralNetwork({hiddenLayers :[3]});
-const ml = [
-    {input : [0,10], output: [40]},
-    {input : [1,11], output: [44]},
-	{input : [2,11], output: [44]},
-	{input : [3,11], output: [44]},
-	{input : [4,11], output: [44]},
-    {input : [5,20], output: [72]},
-    {input : [6,22], output: [75]}
-];
+const ml = network.train([
+    { input: { Num: 10 }, output: { "25": 1 } },
+    { input: { Num: 15 }, output: { "40": 1 } },
+    { input: { Num: 20 }, output: { "60": 1 } }
+	]);
+	
 net.train(ml);
-console.log(net.run([5,20]));
-console.log(net.run([5,10]));
-console.log(net.run([6,10]));
-console.log(net.run([0,22]));
+console.log(net.run({ Num: 10 });
+
 	
 	
 	
