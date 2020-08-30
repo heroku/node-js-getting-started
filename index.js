@@ -94,7 +94,6 @@ setInterval(function () {
 	var thisQuery = "UPDATE public.stats SET temp = "+temp+" WHERE date = '"+date+"';"
 	
 	pool.query(thisQuery, (err, result) => {
-		result.send(result.rows);
 	})
 })	
 }, 10000)
