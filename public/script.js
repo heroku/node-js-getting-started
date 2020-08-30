@@ -242,19 +242,7 @@ function drawNth(x, table) {
 		// 	console.log('Order id: '+id+ " Kitchen");
 		// })
 		
-		let barButton = document.getElementById('b'+aId)
-		barButton.addEventListener('click', function(){
-			event.stopPropagation();
-   			updatePG(aId, 'assignee2', false);
-			console.log('Order id: '+aId+ " Bar");
-		});
 		
-		let kitButton = document.getElementById('k'+aId)
-			kitButton.addEventListener('click', function(){
-			event.stopPropagation();
-   			updatePG(aId, 'assignee', false);
-			console.log('Order id: '+aId+ " Kitchen");	
-		});
 		
 		SLAHighlight(divId);
 	}
