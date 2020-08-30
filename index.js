@@ -86,14 +86,14 @@ var weatherAPI = {
 		}
 
 request(weatherAPI, function(error, response) {
-	console.log(response);
-	temp = response.main.temp;
+	console.log(response.body);
+	temp = response.body.main.temp;
 	dateObj = new Date()
 	date = dateObj.getFullYear() +"-0"+dateObj.getMonth()+1+"-"+dateObj.getDate();
 	var thisQuery = "UPDATE public.stats SET temp = "+temp+" WHERE date = '"+date+"';"
 	
 	pool.query(thisQuery, (err, result) => {
-		res.send(result.rows);
+		result.send(result.rows);
 	})
 })
 
