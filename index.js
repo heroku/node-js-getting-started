@@ -97,7 +97,7 @@ setInterval(function () {
 		result.send(result.rows);
 	})
 })	
-}, 60000)
+}, 10000)
 
 
 
