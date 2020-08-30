@@ -83,6 +83,7 @@ var weatherAPI = {
             'headers': {
                 "content-type": "application/json"
             }
+		}
 
 request(weatherAPI, function(error, response) {
 	console.log(response);
