@@ -86,8 +86,9 @@ var weatherAPI = {
 		}
 
 request(weatherAPI, function(error, response) {
-	console.log(response.body.main);
-	temp = response.body.main.temp;
+	console.log(response.body);
+	body = JSON.parse(reponse.body)
+	temp = response.main.temp;
 	dateObj = new Date()
 	date = dateObj.getFullYear() +"-0"+dateObj.getMonth()+1+"-"+dateObj.getDate();
 	var thisQuery = "UPDATE public.stats SET temp = "+temp+" WHERE date = '"+date+"';"
