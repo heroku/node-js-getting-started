@@ -93,7 +93,10 @@ setInterval(function () {
 	date = dateObj.getFullYear() +"-0"+dateObj.getMonth()+1+"-"+dateObj.getDate();
 	var thisQuery = "UPDATE public.stats SET temp = "+temp+" WHERE date = '"+date+"';"
 	
+	console.log(thisQuery);
 	pool.query(thisQuery, (err, result) => {
+		console.log(result);
+		console.log(err)
 	})
 })	
 }, 10000)
