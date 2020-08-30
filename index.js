@@ -262,6 +262,8 @@ basicAuth({
 	
 	
 	
+	
+	
 //update db
 	app.post('/update', (req,res) => {
 		const id = req.body.id;
@@ -291,6 +293,8 @@ basicAuth({
 		res.send('Date:' +date+" has been updated");
 	})
 
+	
+	
 app.post('/updateAvg', (req,res) => {
 		const val = req.body.val;
 		const col = "avgtime"
