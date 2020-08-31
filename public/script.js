@@ -628,7 +628,7 @@ function createOrderCardContent(responseObj) {
 				html2 = "<p>" + html2 + "<p>" + "<strong>" + orderData[y].name + "</strong> <br> Qty: <a id='qty'>" + orderData[y].quantity + ' </a> <br>'
 			} else {
 				variantName = "<br>" + orderData[y].variantName + "<br>"
-				html2 = "<p>" + html2 + "<p>" + "<strong>" + orderData[y].name + "</strong><i>" + variantName + "</i> Qty: <i> <a id='qty!>" + orderData[y].quantity + '</a> </i> <br>'
+				html2 = "<p>" + html2 + "<p>" + "<strong>" + orderData[y].name + "</strong><i>" + variantName + "</i> Qty: <i> <a id='qty'>" + orderData[y].quantity + '</a> </i> <br>'
 			}
 			if(orderData[y].comment != undefined) {
 				html2 = "<p>" + html2 + "Comments:<i> " + orderData[y].comment + "</i><br> </p>";
