@@ -187,7 +187,6 @@ var aId, barButton, kitButton;
 function drawNth(x, table) {
 	let divId = searchOrders(newestOrder()).order_id - x;
 	let aId = divId
-	
 	if(document.getElementById(divId) != null && view != "split") document.getElementById(divId).remove();
 	if(option == "split" && isTable == false) document.getElementById(divID).remove();
 	// setOld(newestOrder()-x);
@@ -209,6 +208,21 @@ function drawNth(x, table) {
 		}
 		document.getElementById(target).appendChild(g);
 		
+			let barButton = document.getElementById('b'+aId)
+		barButton.addEventListener('click', function(){
+			event.stopPropagation();
+   			updatePG(aId, 'assignee2', false);
+			console.log('Order id: '+aId+ " Bar");
+		});
+		
+		let kitButton = document.getElementById('k'+aId)
+			kitButton.addEventListener('click', function(){
+			event.stopPropagation();
+   			updatePG(aId, 'assignee', false);
+			console.log('Order id: '+aId+ " Kitchen");	
+		});
+			
+			
 		if(searchOrders(id).time == null) updatePG(id, "time", Date.now())
 		
 		document.getElementById(divId).innerHTML = (createOrderCardContent(searchOrders(divId)))
@@ -228,19 +242,7 @@ function drawNth(x, table) {
 		// 	console.log('Order id: '+id+ " Kitchen");
 		// })
 		
-		let barButton = document.getElementById('b'+aId)
-		barButton.addEventListener('click', function(){
-			event.stopPropagation();
-   			updatePG(aId, 'assignee2', false);
-			console.log('Order id: '+aId+ " Bar");
-		});
 		
-		let kitButton = document.getElementById('k'+aId)
-			kitButton.addEventListener('click', function(){
-			event.stopPropagation();
-   			updatePG(aId, 'assignee', false);
-			console.log('Order id: '+aId+ " Kitchen");	
-		});
 		
 		SLAHighlight(divId);
 	}
