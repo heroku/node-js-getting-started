@@ -5,17 +5,19 @@
 </head>
 
 <body>
-
- <h4>Software Engineering Evidence Repository</h4> &nbsp;&nbsp;&nbsp;<a href="Register.html" target="_blank">Register</a>
-    &nbsp;&nbsp;&nbsp;<a href="Login.html" target="_blank">Sign In</a> &nbsp;&nbsp;&nbsp;<a href="https://seerback.herokuapp.com/" target="_blank">Submit</a>
-    <div>
+<div class="box">
+    <h4>Software Engineering Evidence Repository</h4> &nbsp;&nbsp;&nbsp;<a href="Register.html" target="_blank">Register</a>
+    &nbsp;&nbsp;&nbsp;<a href="Login.html" target="_blank">Sign In</a>
+    &nbsp;&nbsp;&nbsp;<a href="Login.html" target="_blank">Moderator Login</a>
+</div>
+<div>
     <input type="text" id="txt">
-    <button type="button" id="btn">search</button>
+    <button type="button" id="btn">Search</button>
     <ul id="list">
  
     </ul>
 </div>
- <script>
+<script>
     /**
      * Created by Steven on 2016-10-25.
      */
@@ -23,8 +25,27 @@
     var oBtn = document.getElementById('btn');
     var oList = document.getElementById('list');
  
-    var fruits = ["Romano, Simone and Fucci, Davide and Baldassarre"+
-                "Maria Teresa and Caivano, Danilo and Scanniello, Giuseppe"+"苹果","梨子","香蕉","香瓜","葡萄","柠檬","橘子","草莓","草莓子","草拟吗","s","ssr"];
+    var fruits = ["article{Janzen:2008fx, "+
+                "author = {{Janzen, D S} and {Saiedian, H}}, "+
+                "title = {{Does Test-Driven Development Really Improve Software Design Quality?}}"+
+                "journal = {Software, IEEE}, "+
+                "year = {2008}, "+
+                "volume = {25}, "+
+                "number = {2}, "+
+                "pages = {77--84}}","article{Aniche:er, "+
+                "author = {Aniche, M F and Testing, MA Gerosa Software, year = {2010}, "+
+                "title = {{Most common mistakes in test-driven development practice: Results from an online survey with developers}}, "+
+                "journal = {ieeexplore.ieee.org}","article{2019arXiv190712290R, "+
+                "author = {Romano, Simone and Fucci, Davide and Baldassarre, Maria Teresa and Caivano, Danilo and Scanniello, Giuseppe}, "+
+                "title = {{An Empirical Assessment on Affective Reactions of Novice Developers when Applying Test-Driven Development}}, "+
+                "journal = {arXiv.org}, "+
+                "year = {2019}, "+
+                "eprint = {1907.12290}, "+
+                "eprinttype = {arxiv}, "+
+                "eprintclass = {cs.SE}, "+
+                "pages = {arXiv:1907.12290}, "+
+                "month = jul, "+
+                "annote = {Accepted for publication at the 20th International Conference on Product-Focused Software Process Improvement (PROFES19)}}"];
     //点击事件
     oBtn.addEventListener('click', function(){
         var keyWord = oTxt.value;
