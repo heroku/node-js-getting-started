@@ -1,3 +1,6 @@
+# heroku-typegraphql
+I just wanted to have a quick way to make a free typegraphql server. There are no breaking changes in this, just simple stuff, so the instructions below should still work, tell me if it doesn't though.
+
 # node-js-getting-started
 
 A barebones Node.js app using [Express 4](http://expressjs.com/).
