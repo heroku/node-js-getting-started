@@ -1,5 +1,5 @@
 # heroku-typegraphql
-I just wanted to have a quick way to make a free typegraphql server. There are no breaking changes in this, just simple stuff, so the instructions below should still work, tell me if it doesn't though.
+I just wanted to have a quick way to make a free typegraphql server. There are no breaking changes in this, just simple stuff, so the instructions below should still work.
 
 # node-js-getting-started
 
@@ -12,7 +12,7 @@ This application supports the [Getting Started on Heroku with Node.js](https://d
 Make sure you have [Node.js](http://nodejs.org/) and the [Heroku CLI](https://cli.heroku.com/) installed.
 
 ```sh
-$ git clone https://github.com/heroku/node-js-getting-started.git # or clone your own fork
+$ git clone https://github.com/Dalekvim/heroku-typegraphql.git
 $ cd node-js-getting-started
 $ npm install
 $ npm start
