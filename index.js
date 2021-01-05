@@ -2,6 +2,7 @@ const express = require('express')
 const path = require('path')
 const PORT = process.env.PORT || 5000
 
+var passport = require('passport');
 var BasecampStrategy = require('passport-basecamp').Strategy;
 
 passport.use(new BasecampStrategy({
@@ -22,3 +23,13 @@ express()
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
+
+app.get('/auth/basecamp',
+  passport.authenticate('basecamp'));
+
+app.get('/auth/basecamp/callback',
+  passport.authenticate('basecamp', { failureRedirect: '/login' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  });
