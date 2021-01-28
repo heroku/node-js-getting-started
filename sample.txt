@@ -1,4 +1,0 @@
-hoge
-save
-:x
-
