@@ -1,0 +1,38 @@
+<footer class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="company-info col-md-6 text-center justify-content-between d-flex flex-column">
+                <h2 id="contact">CONTACT US</h2>
+                <p>One City Blvd. West, Suite 1900<br>Orange, CA 92868<br>844-347-2547</p>
+                <div class="row">
+                    <div class="col-12">
+                        <ul class="social">
+                            <li>
+                                <a href="https://www.linkedin.com/company/6651277/" title="LinkedIn">
+                                    <img style="width: 24px;" src="/images/linkedin.png">
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="fLink">
+                    <a href="/termsofuse">Terms of Use</a> | 
+                    <a href="/privacypolicy">Privacy Policy</a> <br>
+                    COPYRIGHT @<script>document.write( new Date().getFullYear() );</script> RALIS SERVICES CORP.
+                </p>
+
+            </div>
+
+            <div class="col-md-6">
+                <form id="contact-form" action="/contact/sendgenmsg" method="POST">
+                    <div class="form-group"><label for="name">First & Last Name</label><input type="text" class="form-control" id="name" aria-describedby="emailHelp"></div>
+                    <div class="form-group"><label for="emailAddress">Email Address</label><input type="email" class="form-control" id="emailAddress"></div>
+                    <div class="form-group"><label for="subject">Subject</label><input type="text" class="form-control" id="subject"></div>
+                    <div class="form-group"><label for="notes">Notes</label><textarea type="text" class="form-control" id="notes"></textarea></div>
+                    <div class="text-center"><button type="submit" class="btn bold btn-outline mt-5 col-12">Get in Contact</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</footer>
+<script src="/js/app.js"></script>
