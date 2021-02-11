@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Tyre Rebate Program</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+      form input { border: 0; padding: 10px; width: 90%; margin-right: 0.5%; }
+      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages li { padding: 5px 10px; }
+      #messages li:nth-child(odd) { background: #eee; }
+      #myTable td { text-align: center; border: 1px solid;}
+      #myTable th { text-align: center; border: 1px solid;}
+      #myTable { border: 1px solid;}
+    </style>      
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="../../public/TableToJson.min.js"></script>
+    <script type="text/javascript">            
+      $().ready(function() {      
+        $("#btnTableToJson").click(function() {                  
+          $("input[type='text']").each(function(){
+            $(this).closest('td').text($(this).val())
+          });  
+
+          var data = makeJsonFromTable('myTable');
+          data.name = $("#dealername").val();
+          data.contact = $("#dealermobile").val();
+          console.log(data);
+
+          $.ajax({
+            type: "POST",
+            url: 'createData',
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            dataType: 'json',
+            success: function() { alert("Response recorded!")}            
+          });  
+        });                         
+      });
+    </script> 
+  </head>
+  <body>
+    <div style="margin: 20px 0px 20px 0px;">
+    <% include ../partials/prod_summary.ejs %>
+    </div>
+    <div>
+    <% include ../partials/tbros.ejs %>
+    </div>
+
+    <div style="display: inline;">    
+    <tr>
+      <td height="22" align="left" valign=bottom><font size=3 color="#000000">DEALER NAME:</font></td>
+      <td><input type="text" id="dealername"></td>
+    </tr>
+    <tr>
+      <td height="22" align="left" valign=bottom><font size=3 color="#000000">DEALER CONTACT:</font></td>
+      <td><input type="text" id="dealermobile"></td>
+    </tr>
+    </div>
+    <table id="myTable">
+      <thead>      
+        <tr>        
+          <th><%= result[0].A %></th>
+          <th><%= result[0].B %></th>
+          <th><%= result[0].C %></th>
+          <th><%= result[0].D %></th>
+          <th><%= result[0].E %></th>
+          <th><%= result[0].F %></th>
+          <th><%= result[0].G %></th> 
+          <th><%= result[0].H %></th>
+          <th><%= result[0].I %></th>
+          <th><%= result[0].J %></th>           
+          <th><%= result[0].K %></th>
+        </tr>
+      </thead>
+      
+      <tbody>
+      <% for (var i = 1; i < result.length; /* I save the data in a variable 'quotation', I don't know how you named your variable  */  i++) { %>
+        <%if (Object.keys(result[i]).length == 1) { %>
+          <tr>
+      <td colspan="12" style="background-color: #68d568; padding: 5px; text-align: center;"><b><%= result[i].A %></b></td></tr>
+        <% }  else { %>
+       <tr>
+         <td><%= result[i].A %></td>
+         <td><%= result[i].B %></td>
+         <td><%= result[i].C %></td>
+         <td><%= result[i].D %></td>
+         <td><%= result[i].E %></td>
+         <td><%= result[i].F %></td>
+         <td><%= result[i].G %></td>
+         <td><input type='text' style="width: 50px;"></td>
+         <td><input type='text' style="width: 50px;"></td>
+         <td><input type='text' style="width: 50px;"></td>
+         <td><input type='text' style="width: 50px;"></td>
+       </tr>    
+       <% } %>
+      <% } %>
+      </tbody>
+      <input id="btnTableToJson" type="button" value="Submit" />
+   </table>        
+  </body>
+</html>
