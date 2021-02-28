@@ -1,5 +1,5 @@
 const express = require('express')
-const path = require('pathb')
+const path = require('path')
 const PORT = process.env.PORT || 5000
 
 express()
