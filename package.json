@@ -11,8 +11,12 @@
     "test": "node test.js"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "ejs": "^3.1.5",
-    "express": "^4.15.2"
+    "express": "^4.17.1",
+    "http": "0.0.1-security",
+    "path": "^0.12.7",
+    "socket.io": "^3.1.1"
   },
   "devDependencies": {
     "got": "^11.3.0",
