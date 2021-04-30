@@ -1,4 +1,3 @@
-const axios = require("axios");
 const express = require("express");
 const path = require("path");
 const PORT = process.env.PORT || 5000;
@@ -49,7 +48,6 @@ express()
   .listen(PORT, () => console.log(`Listening on ${PORT}`));
 
 function daveTest(req, res) {
-  let flowResponseJSON;
   console.log("Dave function called!!");
 
   var actionId = req.param("actionId");
@@ -94,8 +92,9 @@ function daveTest(req, res) {
           flowResponse.on("end", function () {
             console.log("SF Response: " + body);
             console.log("success, calling queryresponse: ");
-            flowResponseJSON = body;
-              //queryresponse(token, flowResponse, VIN);
+            if (a === b) {
+              queryresponse(token, flowResponse, VIN);
+            }
           });
         });
 
@@ -113,8 +112,7 @@ function daveTest(req, res) {
     // write data to request body
     oAuthRequest.end();
 
-  //res.render("pages/index");
-  res.send(flowResponseJSON);
+  res.render("pages/index");
 }
 
 function queryresponse(token, flowResponse, VIN) {
