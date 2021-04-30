@@ -8,35 +8,10 @@ const CLIENT_SECRET = "2B6980F88F562E5B8014CF1587DEAA6D82B4E388016BB9019324F4C61
 const USER_NAME = "dfoley@dfoley-21-spring.demo";
 const PASSWORD = "Sandbox2101!";
 
-const PATH_OAUTH = "/services/oauth2/token?grant_type=password";
-const PATH_FLOW = "/services/data/v33.0/actions/custom/flow/Headunit_Flow_API";
+const OAUTH_PATH = "/services/oauth2/token?grant_type=password";
+const OAUTH_URL = `https://login.salesforce.com${OAUTH_PATH}&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&username=${USER_NAME}&password=${PASSWORD}`;
 
-const REQ_OPTIONS_OAUTH_TOKEN = {
-  headers: { "Content-Type": "application/x-www-form-urlencoded" },
-  hostname: "login.salesforce.com",
-  method: "POST",
-  path: `${PATH_OAUTH}&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&username=${USER_NAME}&password=${PASSWORD}`,
-  port: 443,
-};
-
-const REQ_OPTIONS_FLOW = {
-  headers: { "Content-Type": "application/json" },
-  hostname: "dfoley-21-spring-demo.lightning.force.com",
-  method: "POST",
-  path: `${PATH_FLOW}`,
-  port: 443,
-};
-
-const REQ_OPTIONS_SOQL = {
-
-};
-
-const VIN = "12312312312KKLJAS879892";
-
-const http = require("https");
-let token = "FILL IN";
-let options2;
-let salesforceresponse = "";
+const FLOW_API_URL = "https://dfoley-21-spring-demo.my.salesforce.com/services/data/v50.0/actions/custom/flow/Headunit_Flow_API";
 
 express()
   .use(express.static(path.join(__dirname, "public")))
@@ -48,130 +23,59 @@ express()
   .get("/", (req, res) => res.render("pages/index"))
   .listen(PORT, () => console.log(`Listening on ${PORT}`));
 
-function daveTest(req, res) {
-  let flowResponseJSON;
-  console.log("Dave function called!!");
+async function daveTest(req, res) {
+  const VIN = "12312312312KKLJAS879892";
+  var actionId = req.query.actionId;
+  var itemId = req.query.itemId;
 
-  var actionId = req.param("actionId");
-  var itemId = req.param("itemId");
+  //
+  // Get bearer token from SFDC auth
+  //
+  let bearerToken = await postOAuth();
 
-  console.log("actionId: " + actionId);
-  console.log("itemId: " + itemId);
-  console.log("VIN: " + VIN);
+  //
+  // Get JSON response from SFDC flow execution
+  //
+  let flowResponseJSON = await postHeadUnitAPI(bearerToken, actionId, itemId, VIN);
 
-  let a = "a";
-  let b = "b";
-
-    let oAuthRequest = http.request(REQ_OPTIONS_OAUTH_TOKEN, function (res) {
-      console.log("Status: " + res.statusCode);
-
-      res.on("data", function (body) {
-        token = setOAuthToken(body);
-        var bearertoken = "Bearer " + token;
-
-        jsonpayload =
-          '{"inputs" : [ {"actionId" : "' +
-          actionId +
-          '","itemId": "' +
-          itemId +
-          '","VIN": "' +
-          VIN +
-          '"} ]}';
-
-        console.log("here is jsonpayload: " + jsonpayload);
-
-        REQ_OPTIONS_FLOW.headers.Authorization = bearertoken;
-        console.log("Using this PE: nissantosf__e");
-
-        let flowRequest = http.request(REQ_OPTIONS_FLOW, function (flowResponse) {
-          console.log("Status: " + flowResponse.statusCode);
-          var body = "";
-
-          flowResponse.on("data", function (bodychunk) {
-            body += bodychunk;
-          });
-
-          flowResponse.on("end", function () {
-            console.log("SF Response: " + body);
-            console.log("success, calling queryresponse: ");
-            flowResponseJSON = body;
-              //queryresponse(token, flowResponse, VIN);
-          });
-        });
-
-        flowRequest.on("error", (e) => console.log("problem with request: " + e.message));
-        flowRequest.write(jsonpayload);
-        flowRequest.end();
-
-      
-
-      });
-    });
-
-    oAuthRequest.on("error", (e) => console.log("problem with request: " + e.message));
-
-    // write data to request body
-    oAuthRequest.end();
-
-  //res.render("pages/index");
+  //
+  // Return response to caller
+  //
   res.send(flowResponseJSON);
 }
 
-function queryresponse(token, flowResponse, VIN) {
-  //
-  // This is a SOQL query that grabs the output from the Flow
-  //
-  var bearertoken = "Bearer " + token;
-  var pathstring =
-    "https://ecatron-20200804-demo.my.salesforce.com.my.salesforce.com/services/data/v20.0/query/?q=SELECT+Response__c+from+NissanCarResponse__c+where+VIN__c='" +
-    VIN +
-    "'";
-  nissanoptions = {
-    hostname: "ecatron-20200804-demo.my.salesforce.com",
-    port: 443,
-    path: pathstring,
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: bearertoken,
-    },
+async function postOAuth() {
+  let bearerToken = undefined;
+
+  let axiosConfig = {
+    method: "post",
+    url: OAUTH_URL,
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
   };
-  var reqnissan = http.request(nissanoptions, function (resnissan) {
-    var body = "";
-    console.log("Status: " + resnissan.statusCode);
-    //console.log('Headers: ' + JSON.stringify(resnissan.headers));
-    resnissan.on("data", function (nissanchunk) {
-      body += nissanchunk;
-      ////
-    });
-    resnissan.on("end", function () {
-      console.log("###########nissan Body: " + body);
-      var nissanobj = JSON.parse(body);
-      for (x in nissanobj) {
-        //console.log('nissan: '+x);
-        if (x == "records") {
-          console.log("Response[0]: " + nissanobj.records[0].Response__c);
-          salesforceresponse = nissanobj.records[0].Response__c;
-          console.log("salesforceresponse" + salesforceresponse);
-          flowResponse.send(salesforceresponse);
-        }
-      }
-    }); // response from nissan 'end'
-  });
-  reqnissan.on("error", function (e) {
-    console.log("problem with request: " + e.message);
-  });
-  // write data to request body
-  reqnissan.end();
-  ////END of queryresponse
+
+  await axios(axiosConfig)
+    .then((res) => bearerToken = "Bearer " + res.data.access_token)
+    .catch((error) => console.log(`OAuth Error: ${error}`));
+
+  return bearerToken;
 }
 
-function setOAuthToken(body) {
-  console.log("***********Body: " + body);
-  var obj = JSON.parse(body);
-  var keys = Object.keys(obj);
-  console.log(obj[keys[0]]);
-  token = obj[keys[0]];
-  console.log("here is the token: " + token);
-  return token;
+async function postHeadUnitAPI(bearerToken, actionId, itemId, VIN) {
+  let flowResponseJSON = undefined;
+
+  let axiosConfig = {
+    method: "post",
+    url: FLOW_API_URL,
+    headers: { "Content-Type": "application/json", Authorization: bearerToken },
+    data: { inputs: [{ actionId: actionId, itemId: itemId, VIN: VIN }] },
+  };
+
+  await axios(axiosConfig)
+    .then((response) => {
+      console.log(response.data)
+      flowResponseJSON = response.data;
+    })
+    .catch((error) => console.log(`Flow Error: ${error}`));
+
+  return flowResponseJSON;
 }
