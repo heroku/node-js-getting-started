@@ -1,4 +1,5 @@
 const axios = require("axios");
+const colors = require("colors");
 const express = require("express");
 const path = require("path");
 const PORT = process.env.PORT || 5000;
@@ -25,26 +26,17 @@ express()
 
 async function daveTest(req, res) {
   const VIN = "12312312312KKLJAS879892";
-  var actionId = req.query.actionId;
-  var itemId = req.query.itemId;
+  let actionId = req.query.actionId;
+  let itemId = req.query.itemId;
 
-  //
-  // Get bearer token from SFDC auth
-  //
   let bearerToken = await postOAuth();
-
-  //
-  // Get JSON response from SFDC flow execution
-  //
   let flowResponseJSON = await postHeadUnitAPI(bearerToken, actionId, itemId, VIN);
 
-  //
-  // Return response to caller
-  //
   res.send(flowResponseJSON);
 }
 
 async function postOAuth() {
+  console.log(`ENTER postOAuth()\n`.green);
   let bearerToken = undefined;
 
   let axiosConfig = {
@@ -57,10 +49,12 @@ async function postOAuth() {
     .then((res) => bearerToken = "Bearer " + res.data.access_token)
     .catch((error) => console.log(`OAuth Error: ${error}`));
 
+  console.log('EXIT postOAuth() => bearerToken\n'.green, bearerToken)
   return bearerToken;
 }
 
 async function postHeadUnitAPI(bearerToken, actionId, itemId, VIN) {
+  console.log(`ENTER postHeadUnitAPI(${actionId}, ${itemId}, ${VIN})\n`.cyan)
   let flowResponseJSON = undefined;
 
   let axiosConfig = {
@@ -71,11 +65,9 @@ async function postHeadUnitAPI(bearerToken, actionId, itemId, VIN) {
   };
 
   await axios(axiosConfig)
-    .then((response) => {
-      console.log(response.data)
-      flowResponseJSON = response.data;
-    })
+    .then((res) => flowResponseJSON = res.data[0].outputValues.HeadUnitResponseJSON)
     .catch((error) => console.log(`Flow Error: ${error}`));
 
+  console.log('EXIT postHeadUnitAPI() => flowResponseJSON\n'.cyan, flowResponseJSON)
   return flowResponseJSON;
 }
