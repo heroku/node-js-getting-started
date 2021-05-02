@@ -65,10 +65,23 @@ async function postHeadUnitAPI(bearerToken, actionId, itemId, VIN) {
 
   await axios(axiosConfig)
     .then((res) => {
-      let coreResponse = res.data[0].outputValues.DaveHeadUnitNotifications;
+
+      let coreResponse;
+
+      switch (actionId) {
+        case 'notifications':
+          coreResponse = res.data[0].outputValues.DaveHeadUnitNotifications;
+          break;
+        case 'offers':
+          coreResponse = res.data[0].outputValues.DaveHeadUnitOffers;
+          break;
+        case 'options':
+          coreResponse = res.data[0].outputValues.DaveHeadUnitOptions;
+          break; 
+      }
 
       flowResponseDave = {
-        notifications: coreResponse.map(src => {
+        [actionId]: coreResponse.map(src => {
           return {
             title : 'Dave71 ' + src.ShortDescription__c,
             itemId : src.producttype__c ? src.producttype__c : '',
