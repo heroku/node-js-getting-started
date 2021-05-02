@@ -1,5 +1,6 @@
 const axios = require("axios");
 const colors = require("colors");
+const { response } = require("express");
 const express = require("express");
 const path = require("path");
 const PORT = process.env.PORT || 5000;
@@ -29,10 +30,19 @@ async function daveTest(req, res) {
   let actionId = req.query.actionId;
   let itemId = req.query.itemId;
 
-  let bearerToken = await postOAuth();
-  let flowResponseJSON = await postHeadUnitAPI(bearerToken, actionId, itemId, VIN);
+  let bearerToken;
+  let responseJSON;
 
-  res.send(flowResponseJSON);
+  switch (actionId) {
+    case 'notifications':
+    case 'offers':
+    case 'options':
+      bearerToken = await postOAuth();
+      responseJSON = await postHeadUnitAPI(bearerToken, actionId, itemId, VIN);
+      break;
+  }
+
+  res.send(responseJSON);
 }
 
 async function postOAuth() {
@@ -53,8 +63,7 @@ async function postOAuth() {
 }
 
 async function postHeadUnitAPI(bearerToken, actionId, itemId, VIN) {
-  //let flowResponseJSON = undefined;
-  let flowResponseDave = undefined;
+  let flowResponse = undefined;
 
   let axiosConfig = {
     method: "post",
@@ -65,41 +74,43 @@ async function postHeadUnitAPI(bearerToken, actionId, itemId, VIN) {
 
   await axios(axiosConfig)
     .then((res) => {
-
-      let coreResponse;
-
-      switch (actionId) {
-        case 'notifications':
-          coreResponse = res.data[0].outputValues.DaveHeadUnitNotifications;
-          break;
-        case 'offers':
-          coreResponse = res.data[0].outputValues.DaveHeadUnitOffers;
-          break;
-        case 'options':
-          coreResponse = res.data[0].outputValues.DaveHeadUnitOptions;
-          break; 
-      }
-
-      flowResponseDave = {
-        [actionId]: coreResponse.map(src => {
-          return {
-            title : 'Dave71 ' + src.ShortDescription__c,
-            itemId : src.producttype__c ? src.producttype__c : '',
-            actionId : src.Type__c,
-            shortDescription : 'Dave 72 ' + src.ShortDescription__c,
-            longDescription : src.LongDescription__c,
-            imageurl : src.imageurl__c,
-            price : '',
-            buttons : src.button__c ? src.button__c : ''
-          }
-        })
-      }
-
-      //flowResponseJSON = res.data[0].outputValues.HeadUnitResponseJSON;
+      flowResponse = mapFlowResponse(actionId, res);
     })
     .catch((error) => console.log(`Flow Error: ${error}`));
 
-  console.log('EXIT postHeadUnitAPI() => flowResponseDave\n'.cyan, flowResponseDave)
-  //console.log('EXIT postHeadUnitAPI() => flowResponseJSON\n'.cyan, flowResponseJSON)
+  console.log('EXIT postHeadUnitAPI() => flowResponse\n'.cyan, flowResponse)
+  return flowResponse;
+}
+
+function mapFlowResponse(actionId, res) {
+  let coreResponse;
+
+  switch (actionId) {
+    case 'notifications':
+      coreResponse = res.data[0].outputValues.DaveHeadUnitNotifications;
+      break;
+    case 'offers':
+      coreResponse = res.data[0].outputValues.DaveHeadUnitOffers;
+      break;
+    case 'options':
+      coreResponse = res.data[0].outputValues.DaveHeadUnitOptions;
+      break;
+  }
+
+  let flowResponseDave = {
+    [actionId]: coreResponse.map(src => {
+      return {
+        title: 'Dave71 ' + src.ShortDescription__c,
+        itemId: src.producttype__c ? src.producttype__c : '',
+        actionId: src.Type__c,
+        shortDescription: 'Dave 72 ' + src.ShortDescription__c,
+        longDescription: src.LongDescription__c,
+        imageurl: src.imageurl__c,
+        price: '',
+        buttons: src.button__c ? src.button__c : ''
+      };
+    })
+  };
+
   return flowResponseDave;
 }
