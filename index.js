@@ -36,7 +36,6 @@ async function daveTest(req, res) {
 }
 
 async function postOAuth() {
-  console.log(`ENTER postOAuth()\n`.green);
   let bearerToken = undefined;
 
   let axiosConfig = {
@@ -54,8 +53,8 @@ async function postOAuth() {
 }
 
 async function postHeadUnitAPI(bearerToken, actionId, itemId, VIN) {
-  console.log(`ENTER postHeadUnitAPI(${actionId}, ${itemId}, ${VIN})\n`.cyan)
-  let flowResponseJSON = undefined;
+  //let flowResponseJSON = undefined;
+  let flowResponseDave = undefined;
 
   let axiosConfig = {
     method: "post",
@@ -65,9 +64,29 @@ async function postHeadUnitAPI(bearerToken, actionId, itemId, VIN) {
   };
 
   await axios(axiosConfig)
-    .then((res) => flowResponseJSON = res.data[0].outputValues.HeadUnitResponseJSON)
+    .then((res) => {
+      let coreResponse = res.data[0].outputValues.DaveHeadUnitNotifications;
+
+      flowResponseDave = {
+        notifications: coreResponse.map(src => {
+          return {
+            title : 'Dave71 ' + src.ShortDescription__c,
+            itemId : src.producttype__c ? src.producttype__c : '',
+            actionId : src.Type__c,
+            shortDescription : 'Dave 72 ' + src.ShortDescription__c,
+            longDescription : src.LongDescription__c,
+            imageurl : src.imageurl__c,
+            price : '',
+            buttons : src.button__c ? src.button__c : ''
+          }
+        })
+      }
+
+      //flowResponseJSON = res.data[0].outputValues.HeadUnitResponseJSON;
+    })
     .catch((error) => console.log(`Flow Error: ${error}`));
 
-  console.log('EXIT postHeadUnitAPI() => flowResponseJSON\n'.cyan, flowResponseJSON)
-  return flowResponseJSON;
+  console.log('EXIT postHeadUnitAPI() => flowResponseDave\n'.cyan, flowResponseDave)
+  //console.log('EXIT postHeadUnitAPI() => flowResponseJSON\n'.cyan, flowResponseJSON)
+  return flowResponseDave;
 }
