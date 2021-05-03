@@ -35,6 +35,7 @@ async function daveTest(req, res) {
   let responseJSON;
 
   switch (actionId) {
+    case "case":
     case "notifications":
     case "options":
     case "report":
@@ -60,10 +61,6 @@ async function daveTest(req, res) {
       break;
     case "gas":
       responseJSON = getGasNavigate();
-      console.log("ENTRY => Faked actionId/itemsId\n".cyan, `${actionId}/${itemId}`);
-      break;
-    case "roadside":
-      responseJSON = getRoadsideCase();
       console.log("ENTRY => Faked actionId/itemsId\n".cyan, `${actionId}/${itemId}`);
       break;
     case "tires":
@@ -118,6 +115,8 @@ function mapFlowResponse(actionId, itemId, res) {
   let coreResponse;
 
   switch (actionId) {
+    case "case":
+      return coreOutputValues.HeadUnitCaseResponse;
     case "notifications":
       coreResponse = coreOutputValues.DaveHeadUnitNotifications;
       break;
@@ -129,8 +128,7 @@ function mapFlowResponse(actionId, itemId, res) {
       break;
     case "report":
       return coreOutputValues.HeadUnitReportSummaryResponse;
-      break;
-  }
+    }
 
   let flowResponseDave = {
     [actionId]: coreResponse.map((src) => {
@@ -218,7 +216,5 @@ function getOffersApplication() {
 function getBuy(itemId) {}
 
 function getGasNavigate() {}
-
-function getRoadsideCase() {}
 
 function getTiresShop() {}
