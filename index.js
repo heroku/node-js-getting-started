@@ -5,10 +5,8 @@ const express = require("express");
 const path = require("path");
 const PORT = process.env.PORT || 5000;
 
-const CLIENT_ID =
-  "3MVG9cHH2bfKACZaxOl_SD58KkCHXUgFnvVjQlpp3mrVQ.uVow6vx_oCG3SFG8wQ6OCdc7uGthgSS9RPSkrRL";
-const CLIENT_SECRET =
-  "2B6980F88F562E5B8014CF1587DEAA6D82B4E388016BB9019324F4C61B3ECDC1";
+const CLIENT_ID = "3MVG9cHH2bfKACZaxOl_SD58KkCHXUgFnvVjQlpp3mrVQ.uVow6vx_oCG3SFG8wQ6OCdc7uGthgSS9RPSkrRL";
+const CLIENT_SECRET = "2B6980F88F562E5B8014CF1587DEAA6D82B4E388016BB9019324F4C61B3ECDC1";
 const USER_NAME = "dfoley@dfoley-21-spring.demo";
 const PASSWORD = "Sandbox2101!";
 
@@ -39,69 +37,45 @@ async function daveTest(req, res) {
   switch (actionId) {
     case "notifications":
     case "options":
-    case "summary":
+    case "report":
       bearerToken = await postOAuth();
       responseJSON = await postHeadUnitAPI(bearerToken, actionId, itemId, VIN);
-      console.log(
-        "ENTRY => Handled actionId/itemsId\n".green,
-        `${actionId}/${itemId}`
-      );
+      console.log("ENTRY => Handled actionId/itemsId\n".green, `${actionId}/${itemId}`);
       break;
     case "offers":
       switch (itemId) {
         case "dataplan":
           responseJSON = getOffersDataPlan();
-          console.log(
-            "ENTRY => Faked actionId/itemsId\n".cyan,
-            `${actionId}/${itemId}`
-          );
+          console.log("ENTRY => Faked actionId/itemsId\n".cyan, `${actionId}/${itemId}`);
           break;
         case "application":
           responseJSON = getOffersApplication();
-          console.log(
-            "ENTRY => Faked actionId/itemsId\n".cyan,
-            `${actionId}/${itemId}`
-          );
+          console.log("ENTRY => Faked actionId/itemsId\n".cyan, `${actionId}/${itemId}`);
           break;
       }
       break;
     case "buy":
       responseJSON = getBuy(itemId);
-      console.log(
-        "ENTRY => Faked actionId/itemsId\n".cyan,
-        `${actionId}/${itemId}`
-      );
+      console.log("ENTRY => Faked actionId/itemsId\n".cyan, `${actionId}/${itemId}`);
       break;
     case "gas":
       responseJSON = getGasNavigate();
-      console.log(
-        "ENTRY => Faked actionId/itemsId\n".cyan,
-        `${actionId}/${itemId}`
-      );
+      console.log("ENTRY => Faked actionId/itemsId\n".cyan, `${actionId}/${itemId}`);
       break;
     case "roadside":
       responseJSON = getRoadsideCase();
-      console.log(
-        "ENTRY => Faked actionId/itemsId\n".cyan,
-        `${actionId}/${itemId}`
-      );
+      console.log("ENTRY => Faked actionId/itemsId\n".cyan, `${actionId}/${itemId}`);
       break;
     case "tires":
       responseJSON = getTiresShop();
-      console.log(
-        "ENTRY => Faked actionId/itemsId\n".cyan,
-        `${actionId}/${itemId}`
-      );
+      console.log("ENTRY => Faked actionId/itemsId\n".cyan, `${actionId}/${itemId}`);
       break;
     // case 'summary':
     //   responseJSON = getSummaryReport();
     //   console.log('ENTRY => Faked actionId/itemsId\n'.cyan, `${actionId}/${itemId}`);
     //   break;
     default:
-      console.log(
-        "ENTRY => Unhandled actionId/itemsId\n".red,
-        `${actionId}/${itemId}`
-      );
+      console.log("ENTRY => Unhandled actionId/itemsId\n".red, `${actionId}/${itemId}`);
       break;
   }
 
@@ -157,7 +131,7 @@ function mapFlowResponse(actionId, itemId, res) {
     case "options":
       coreResponse = coreOutputValues.DaveHeadUnitOptions;
       break;
-    case "summary":
+    case "report":
       return coreOutputValues.HeadUnitReportSummaryResponse;
       break;
   }
