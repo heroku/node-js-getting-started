@@ -70,10 +70,6 @@ async function daveTest(req, res) {
       responseJSON = getTiresShop();
       console.log("ENTRY => Faked actionId/itemsId\n".cyan, `${actionId}/${itemId}`);
       break;
-    // case 'summary':
-    //   responseJSON = getSummaryReport();
-    //   console.log('ENTRY => Faked actionId/itemsId\n'.cyan, `${actionId}/${itemId}`);
-    //   break;
     default:
       console.log("ENTRY => Unhandled actionId/itemsId\n".red, `${actionId}/${itemId}`);
       break;
