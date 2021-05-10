@@ -59,12 +59,12 @@ async function daveTest(req, res) {
       responseJSON = getBuy(itemId);
       console.log("ENTRY => Faked actionId/itemsId\n".cyan, `${actionId}/${itemId}`);
       break;
-    case "gas":
-      responseJSON = getGasNavigate();
+    case "navigate":
+      responseJSON = getNavigateGas();
       console.log("ENTRY => Faked actionId/itemsId\n".cyan, `${actionId}/${itemId}`);
       break;
-    case "tires":
-      responseJSON = getTiresShop();
+    case "shop":
+      responseJSON = getShopTires();
       console.log("ENTRY => Faked actionId/itemsId\n".cyan, `${actionId}/${itemId}`);
       break;
     default:
@@ -215,6 +215,6 @@ function getOffersApplication() {
 
 function getBuy(itemId) {}
 
-function getGasNavigate() {}
+function getNavigateGas() {}
 
-function getTiresShop() {}
+function getShopTires() {}
