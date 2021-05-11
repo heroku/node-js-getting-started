@@ -4,6 +4,7 @@ const { response } = require("express");
 const express = require("express");
 const path = require("path");
 const PORT = process.env.PORT || 5000;
+const { commerce } = require("./modules/commerce");
 
 const CLIENT_ID = "3MVG9cHH2bfKACZaxOl_SD58KkCHXUgFnvVjQlpp3mrVQ.uVow6vx_oCG3SFG8wQ6OCdc7uGthgSS9RPSkrRL";
 const CLIENT_SECRET = "2B6980F88F562E5B8014CF1587DEAA6D82B4E388016BB9019324F4C61B3ECDC1";
@@ -13,8 +14,7 @@ const PASSWORD = "Sandbox2101!";
 const OAUTH_PATH = "/services/oauth2/token?grant_type=password";
 const OAUTH_URL = `https://login.salesforce.com${OAUTH_PATH}&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&username=${USER_NAME}&password=${PASSWORD}`;
 
-const FLOW_API_URL =
-  "https://dfoley-21-spring-demo.my.salesforce.com/services/data/v50.0/actions/custom/flow/Headunit_Flow_API";
+const FLOW_API_URL = "https://dfoley-21-spring-demo.my.salesforce.com/services/data/v50.0/actions/custom/flow/Headunit_Flow_API";
 
 express()
   .use(express.static(path.join(__dirname, "public")))
@@ -23,6 +23,7 @@ express()
   .set("views", path.join(__dirname, "views"))
   .set("view engine", "ejs")
   .get("/nissantosf", (req, res) => daveTest(req, res))
+  .get("/commerce", (req, res) => commerce(req, res))
   .get("/", (req, res) => res.render("pages/index"))
   .listen(PORT, () => console.log(`Listening on ${PORT}`));
 
