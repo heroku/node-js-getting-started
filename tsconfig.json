@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
+        "alwaysStrict": true,
+        "declaration": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "importHelpers": true,
+        "incremental": true,
+        "lib": ["ES6"],
+        "module": "commonjs",
+        "moduleResolution": "Node",
+        "noEmitOnError": true,
+        "noErrorTruncation": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "outDir": "app/dist",
+        "preserveConstEnums": true,
+        "sourceMap": true,
+        "target": "ES6",
+    },
+    "exclude": [
+        "node_modules",
+        "**/node_modules/*"
+    ]
+}
