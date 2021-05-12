@@ -56,10 +56,10 @@ async function headUnitOffers(clientConfig, itemId) {
 
   switch (itemId) {
     case "dataplan":
-      flowResponse = getOffersDataPlan();
+      flowResponse = getOffersDataPlanResponse();
       break;
     case "application":
-      flowResponse = getOffersApplication();
+      flowResponse = getOffersApplicationResponse();
       break;
   }
 
@@ -114,11 +114,17 @@ async function headUnitOffers(clientConfig, itemId) {
 
 async function headUnitBuy(clientConfig, itemId) {
   let flowResponse = undefined;
-  flowResponse = getOffersDataPlan();
+
+  flowResponse = getBuyResponse();
+
   return flowResponse;
 }
 
-function getOffersDataPlan() {
+async function headUnitCheckout() {
+
+}
+
+function getOffersDataPlanResponse() {
   return {
     offers: [
       {
@@ -155,7 +161,7 @@ function getOffersDataPlan() {
   };
 }
 
-function getOffersApplication() {
+function getOffersApplicationResponse() {
   return {
     offers: [
       {
@@ -180,6 +186,23 @@ function getOffersApplication() {
         buttons: "Reserve",
       },
     ],
+  };
+}
+
+function getBuyResponse() {
+  return {
+    "buy": [
+      {
+        "title": "Item Added",
+        "itemId": "",
+        "actionId": "checkout", // TODO: this was the product id like "DP-100"
+        "shortDescription": "Cart Updated",
+        "longDescription": "Dave says Your Product Has Been Added to the Shopping Cart",
+        "imageurl": "https://nissantosf.herokuapp.com/cart.png",
+        "price": "25.00",
+        "buttons": "Checkout"
+      }
+    ]
   };
 }
 
