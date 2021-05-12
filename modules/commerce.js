@@ -36,6 +36,24 @@ async function headUnitAction(clientConfig, actionId, itemId, VIN) {
   console.log("ENTRY => Faked actionId/itemsId\n".cyan, `${actionId}/${itemId}`);
   let flowResponse = undefined;
 
+  switch (actionId) {
+    case "buy":
+      flowResponse = await headUnitBuy(clientConfig, itemId);
+      break;
+    case "offers":
+      flowResponse = await headUnitOffers(clientConfig, itemId);
+      break;
+  }
+
+  return flowResponse;
+}
+
+async function headUnitOffers(clientConfig, itemId) {
+  let flowResponse = undefined;
+
+  const searchClient = new Search.ShopperSearch(clientConfig);
+  const productClient = new Product.ShopperProducts(clientConfig);
+
   switch (itemId) {
     case "dataplan":
       flowResponse = getOffersDataPlan();
@@ -45,41 +63,38 @@ async function headUnitAction(clientConfig, actionId, itemId, VIN) {
       break;
   }
 
-  const searchClient = new Search.ShopperSearch(clientConfig);
-  const productClient = new Product.ShopperProducts(clientConfig);
-
   try {
     const searchResults = await searchClient.productSearch({
       parameters: { refine: `cgid=${itemId}`, limit: 5 },
     });
-  
+
     if (searchResults.total) {
       try {
         const productIds = searchResults.hits
           .map(hit => hit.productId)
-          .reduce((accumulator, currentValue) => accumulator + "," + currentValue)
+          .reduce((accumulator, currentValue) => accumulator + "," + currentValue);
 
         const productResults = await productClient.getProducts({
           parameters: { ids: productIds }
         });
-      
+
         if (productResults.data.length > 0) {
           const firstResult = productResults.data[0];
-    
+
           flowResponse.offers.push({
             title: firstResult.name,
             itemId: firstResult.id,
-            actionId: "buy", //TODO get this from BM
+            actionId: "buy",
             shortDescription: firstResult.shortDescription,
             longDescription: firstResult.longDescription,
             imageurl: firstResult.imageGroups[0].images[0].link,
             price: firstResult.price.toString(),
             buttons: "Dave TODO",
-          });    
+          });
         } else {
           console.log("XXXXX No results for search");
         }
-      
+
       } catch (e) {
         console.error(e);
         console.error(await e.response.text());
@@ -88,12 +103,18 @@ async function headUnitAction(clientConfig, actionId, itemId, VIN) {
     } else {
       console.log("No results for search");
     }
-  
+
   } catch (e) {
     console.error(e);
     console.error(await e.response.text());
   }
 
+  return flowResponse;
+}
+
+async function headUnitBuy(clientConfig, itemId) {
+  let flowResponse = undefined;
+  flowResponse = getOffersDataPlan();
   return flowResponse;
 }
 
