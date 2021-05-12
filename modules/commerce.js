@@ -1,4 +1,4 @@
-const { ClientConfig, helpers, Search } = require("commerce-sdk");
+const { ClientConfig, helpers, Search, Product } = require("commerce-sdk");
 const colors = require("colors");
 
 const CLIENT_ID = "d51df44a-c1db-4f25-9946-f494a8ba9a9d";
@@ -45,18 +45,46 @@ async function headUnitAction(clientConfig, actionId, itemId, VIN) {
       break;
   }
 
-  // Create a new ShopperSearch API client
   const searchClient = new Search.ShopperSearch(clientConfig);
+  const productClient = new Product.ShopperProducts(clientConfig);
 
   try {
     const searchResults = await searchClient.productSearch({
-      parameters: { q: "dress", limit: 5 },
+      parameters: { refine: `cgid=${itemId}`, limit: 5 },
     });
   
     if (searchResults.total) {
-      const firstResult = searchResults.hits[0];
-      console.log("First search result:");
-      console.log(`${firstResult.productId} ${firstResult.productName}`);
+      try {
+        const productIds = searchResults.hits
+          .map(hit => hit.productId)
+          .reduce((accumulator, currentValue) => accumulator + "," + currentValue)
+
+        const productResults = await productClient.getProducts({
+          parameters: { ids: productIds }
+        });
+      
+        if (productResults.data.length > 0) {
+          const firstResult = productResults.data[0];
+    
+          flowResponse.offers.push({
+            title: firstResult.name,
+            itemId: firstResult.id,
+            actionId: "buy", //TODO get this from BM
+            shortDescription: firstResult.shortDescription,
+            longDescription: firstResult.longDescription,
+            imageurl: firstResult.imageGroups[0].images[0].link,
+            price: firstResult.price.toString(),
+            buttons: "Dave TODO",
+          });    
+        } else {
+          console.log("XXXXX No results for search");
+        }
+      
+      } catch (e) {
+        console.error(e);
+        console.error(await e.response.text());
+      }
+
     } else {
       console.log("No results for search");
     }
