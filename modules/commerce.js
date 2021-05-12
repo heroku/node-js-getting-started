@@ -1,4 +1,10 @@
-const { ClientConfig, helpers, Search, Product } = require("commerce-sdk");
+const {
+  ClientConfig,
+  helpers,
+  Search,
+  Product,
+  Checkout,
+} = require("commerce-sdk");
 const colors = require("colors");
 
 const CLIENT_ID = "d51df44a-c1db-4f25-9946-f494a8ba9a9d";
@@ -6,34 +12,13 @@ const ORG_ID = "f_ecom_zzsa_096";
 const SHORT_CODE = "kv7kzm78";
 const SITE_ID = "Ford";
 
-async function getClientConfig() {
-
-  let clientConfig = {
-    headers: {},
-    parameters: {
-      clientId: CLIENT_ID,
-      organizationId: ORG_ID,
-      shortCode: SHORT_CODE,
-      siteId: SITE_ID,
-    },
-  };
-
-  await helpers.getShopperToken(clientConfig, { type: "guest" })
-    .then((token) => {
-      console.log(`Token ${token.getBearerHeader()}`);
-      clientConfig.headers["authorization"] = token.getBearerHeader();
-    })
-    .catch(async (e) => {
-      clientConfig = undefined;
-      console.error(e);
-      console.error(await e.response.text());
-    });
-
-  return clientConfig;
-}
+let sessionBasketId = undefined;
 
 async function headUnitAction(clientConfig, actionId, itemId, VIN) {
-  console.log("ENTRY => Faked actionId/itemsId\n".cyan, `${actionId}/${itemId}`);
+  console.log(
+    "ENTRY => Faked actionId/itemsId\n".cyan,
+    `${actionId}/${itemId}`
+  );
   let flowResponse = undefined;
 
   switch (actionId) {
@@ -94,16 +79,13 @@ async function headUnitOffers(clientConfig, itemId) {
         } else {
           console.log("XXXXX No results for search");
         }
-
       } catch (e) {
         console.error(e);
         console.error(await e.response.text());
       }
-
     } else {
       console.log("No results for search");
     }
-
   } catch (e) {
     console.error(e);
     console.error(await e.response.text());
@@ -115,13 +97,112 @@ async function headUnitOffers(clientConfig, itemId) {
 async function headUnitBuy(clientConfig, itemId) {
   let flowResponse = undefined;
 
-  flowResponse = getBuyResponse();
+  let basket = await addProductToBasket(clientConfig, itemId);
+
+  if (basket) {
+    flowResponse = getBuyResponse();
+  } else {
+    console.log("Error adding product to basket");
+  }
 
   return flowResponse;
 }
 
-async function headUnitCheckout() {
+async function getClientConfig() {
+  let clientConfig = {
+    headers: {},
+    parameters: {
+      clientId: CLIENT_ID,
+      organizationId: ORG_ID,
+      shortCode: SHORT_CODE,
+      siteId: SITE_ID,
+    },
+  };
 
+  await helpers
+    .getShopperToken(clientConfig, { type: "guest" })
+    .then((token) => {
+      clientConfig.headers["authorization"] = token.getBearerHeader();
+    })
+    .catch(async (e) => {
+      clientConfig = undefined;
+      console.error(e);
+      console.error(await e.response.text());
+    });
+
+  return clientConfig;
+}
+
+async function getBasketClient(clientConfig) {
+  return new Checkout.ShopperBaskets(clientConfig);
+}
+
+async function getBasketId(basketClient) {
+  let basketId = sessionBasketId;
+
+  if (!basketId) {
+    let customerBasket = await basketClient.createBasket({
+      body: {
+        billingAddress: getBillingAddress(),
+        shipments: getShipments(),
+      },
+    });
+
+    sessionBasketId = customerBasket.basketId;
+    basketId = customerBasket.basketId;
+  }
+
+  return basketId;
+}
+
+function getShipments() {
+  return [
+    {
+      shippingAddress: {
+        address1: "HeadUnit Shipping Address 1",
+        address2: "HeadUnit Shipping Address 2",
+        city: "St. Petersburg",
+        countryCode: "US",
+        firstName: "HeadUnit",
+        fullName: "HeadUnit Test",
+        lastName: "Test",
+        phone: "6035311234",
+        postalCode: "33701",
+        stateCode: "FL",
+      },
+    },
+  ];
+}
+
+function getBillingAddress() {
+  return {
+    address1: "HeadUnit Billing Address 1",
+    address2: "HeadUnit Billing Address 2",
+    city: "St. Petersburg",
+    countryCode: "US",
+    firstName: "HeadUnit",
+    fullName: "HeadUnit Test",
+    lastName: "Test",
+    phone: "6035311234",
+    postalCode: "33701",
+    stateCode: "FL",
+  };
+}
+
+async function addProductToBasket(clientConfig, productId) {
+  try {
+    const basketClient = await getBasketClient(clientConfig);
+    let basketId = await getBasketId(basketClient);
+
+    let basket = await basketClient.addItemToBasket({
+      parameters: { basketId },
+      body: [{ productId, quantity: 1.0 }],
+    });
+    return basket;
+  } catch (e) {
+    console.error(e);
+    console.error(await e.response.text());
+  }
 }
 
 function getOffersDataPlanResponse() {
@@ -191,18 +272,19 @@ function getOffersApplicationResponse() {
 
 function getBuyResponse() {
   return {
-    "buy": [
+    buy: [
       {
-        "title": "Item Added",
-        "itemId": "",
-        "actionId": "checkout", // TODO: this was the product id like "DP-100"
-        "shortDescription": "Cart Updated",
-        "longDescription": "Dave says Your Product Has Been Added to the Shopping Cart",
-        "imageurl": "https://nissantosf.herokuapp.com/cart.png",
-        "price": "25.00",
-        "buttons": "Checkout"
-      }
-    ]
+        title: "Item Added",
+        itemId: "",
+        actionId: "checkout", // TODO: this was the product id like "DP-100"
+        shortDescription: "Cart Updated",
+        longDescription:
+          "Dave says Your Product Has Been Added to the Shopping Cart",
+        imageurl: "https://nissantosf.herokuapp.com/cart.png",
+        price: "25.00",
+        buttons: "Checkout",
+      },
+    ],
   };
 }
 
