@@ -9,7 +9,7 @@ const SITE_ID = "Ford";
 let sessionBasketId = undefined;
 
 async function getClientConfig() {
-  let clientConfig : CommerceSdk.ClientConfig = {
+  let clientConfig: CommerceSdk.ClientConfig = {
     headers: {},
     parameters: {
       clientId: CLIENT_ID,
@@ -40,6 +40,9 @@ function headUnitAction(clientConfig, actionId, itemId, VIN) {
     case "buy":
       flowResponse = headUnitBuy(clientConfig, itemId);
       break;
+    case "checkout":
+      flowResponse = headUnitCheckout(clientConfig);
+      break;
     case "offers":
       flowResponse = headUnitOffers(clientConfig, itemId);
       break;
@@ -48,9 +51,59 @@ function headUnitAction(clientConfig, actionId, itemId, VIN) {
   return flowResponse;
 }
 
+async function headUnitBuy(clientConfig, itemId) {
+  console.log("ENTRY commerce.headUnitBuy() => Handled actionId/itemsId\n".green, `buy/${itemId}`);
+  let flowResponse = { buy: [] };
+
+  let basket = await addProductToBasket(clientConfig, itemId);
+
+  if (basket) {
+    flowResponse.buy.push({
+      title: "Item Added",
+      itemId: "",
+      actionId: "checkout", // TODO: this was the product id like "DP-100"
+      shortDescription: "Cart Updated",
+      longDescription: "Dave says Your Product Has Been Added to the Shopping Cart",
+      imageurl: "https://nissantosf.herokuapp.com/cart.png",
+      price: basket.productItems[basket.productItems.length - 1].price.toString(),
+      buttons: "Dave Checkout TODO",
+    });
+
+  } else {
+    console.log("Error adding product to basket");
+  }
+
+  return flowResponse;
+}
+
+async function headUnitCheckout(clientConfig) {
+  console.log("ENTRY commerce.headUnitBuy() => Faked actionId\n".cyan, `checkout`);
+  let flowResponse = { checkout: [] };
+
+  let order = await createOrder(clientConfig);
+
+  if (order) {
+    flowResponse.checkout.push({
+      title: "Order Created!",
+      itemId: "",
+      actionId: "todo", // TODO: this was the product id like "DP-100"
+      shortDescription: "Order Created",
+      longDescription: "Dave says Your Product Has Been Added to the Shopping Cart",
+      imageurl: "https://nissantosf.herokuapp.com/cart.png",
+      price: order.orderTotal.toString(),
+      buttons: "TADA TODO",
+    });
+
+  } else {
+    console.log("Error adding product to basket");
+  }
+
+  return flowResponse;
+}
+
 async function headUnitOffers(clientConfig, itemId) {
   console.log("ENTRY commerce.headUnitOffers() => Handled actionId/itemsId\n".green, `offers/${itemId}`);
-  let flowResponse = {offers: []};
+  let flowResponse = { offers: [] };
 
   const searchClient = new CommerceSdk.Search.ShopperSearch(clientConfig);
   const productClient = new CommerceSdk.Product.ShopperProducts(clientConfig);
@@ -98,32 +151,6 @@ async function headUnitOffers(clientConfig, itemId) {
   return flowResponse;
 }
 
-async function headUnitBuy(clientConfig, itemId) {
-  console.log("ENTRY commerce.headUnitBuy() => Faked actionId/itemsId\n".cyan, `buy/${itemId}`);
-  let flowResponse = {buy: []};
-
-
-  let basket = await addProductToBasket(clientConfig, itemId);
-
-  if (basket) {
-    flowResponse.buy.push({
-      title: "Item Added",
-      itemId: "",
-      actionId: "checkout", // TODO: this was the product id like "DP-100"
-      shortDescription: "Cart Updated",
-      longDescription: "Dave says Your Product Has Been Added to the Shopping Cart",
-      imageurl: "https://nissantosf.herokuapp.com/cart.png",
-      price: basket.productItems[basket.productItems.length - 1].price.toString(),
-      buttons: "Dave Checkout TODO",
-  });
-
-  } else {
-    console.log("Error adding product to basket");
-  }
-
-  return flowResponse;
-}
-
 async function addProductToBasket(clientConfig, productId) {
   try {
     const basketClient = await getBasketClient(clientConfig);
@@ -141,11 +168,33 @@ async function addProductToBasket(clientConfig, productId) {
   }
 }
 
+async function createOrder(clientConfig) {
+  try {
+    const basketClient = await getBasketClient(clientConfig);
+    let basketId = await getBasketId(basketClient);
+
+    const ordersClient = await getOrdersClient(clientConfig);
+
+    let order = await ordersClient.createOrder({
+      body: { basketId: basketId }
+    });
+    return order;
+  } catch (e) {
+    console.error(e);
+    console.error(await e.response.text());
+    return undefined;
+  }
+}
+
 async function getBasketClient(clientConfig) {
   return new CommerceSdk.Checkout.ShopperBaskets(clientConfig);
 }
 
-async function getBasketId(basketClient) {
+async function getOrdersClient(clientConfig) {
+  return new CommerceSdk.Checkout.ShopperOrders(clientConfig);
+}
+
+async function getBasketId(basketClient: CommerceSdk.Checkout.ShopperBaskets) {
   let basketId = sessionBasketId;
 
   if (!basketId) {
@@ -153,6 +202,7 @@ async function getBasketId(basketClient) {
       body: {
         billingAddress: getBillingAddress(),
         shipments: getShipments(),
+        paymentInstruments: getPaymentInstruments()
       },
     });
 
@@ -193,7 +243,33 @@ function getShipments() {
         postalCode: "33701",
         stateCode: "FL",
       },
+      shippingMethod: {
+        id: "001"
+      }
     },
+  ];
+}
+
+function getPaymentInstruments() {
+  return [
+    {
+      "amount": 1000,
+      "authorizationStatus": {
+        "code": "",
+        "message": "",
+        "status": 0
+      },
+      "paymentCard": {
+        "cardType": "Visa",
+        "creditCardExpired": false,
+        "expirationMonth": 12,
+        "expirationYear": 2025,
+        "holder": "HeadUnit Cardholder",
+        "issueNumber": "4111111111111111"
+      },
+      "paymentInstrumentId": "",
+      "paymentMethodId": "CREDIT_CARD"
+    }
   ];
 }
 

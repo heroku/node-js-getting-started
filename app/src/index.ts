@@ -43,6 +43,7 @@ async function headUnitRequest(req, res) {
     // Salesforce B2C Commerce
     //
     case "buy":
+    case "checkout":
     case "offers":
       commerceClientConfig = commerceClientConfig || await commerce.getClientConfig();
       responseJSON = await commerce.headUnitAction(commerceClientConfig, actionId, itemId, VIN);
