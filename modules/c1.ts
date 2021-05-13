@@ -1,6 +1,5 @@
-//import { ClientConfig, helpers, Search, Product, Checkout } from "commerce-sdk";
 import * as CommerceSdk from "commerce-sdk";
-import * as colors from "colors";
+import colors = require("colors");
 
 const CLIENT_ID = "d51df44a-c1db-4f25-9946-f494a8ba9a9d";
 const ORG_ID = "f_ecom_zzsa_096";
@@ -9,8 +8,8 @@ const SITE_ID = "Ford";
 
 let sessionBasketId = undefined;
 
-async function headUnitAction(clientConfig, actionId:string, itemId:string, VIN:string) {
-  console.log("ENTRY => Faked actionId/itemsId\n".cyan, `${actionId}/${itemId}`);
+async function headUnitAction(clientConfig, actionId, itemId, VIN) {
+  console.log("ENTRY commerce.headUnitAction() => Faked actionId/itemsId\n".cyan, `${actionId}/${itemId}`);
   let flowResponse = undefined;
 
   switch (actionId) {
@@ -28,83 +27,79 @@ async function headUnitAction(clientConfig, actionId:string, itemId:string, VIN:
 async function headUnitOffers(clientConfig, itemId) {
   let flowResponse = undefined;
 
-  // const searchClient = new Search.ShopperSearch(clientConfig);
-  // const productClient = new Product.ShopperProducts(clientConfig);
+  const searchClient = new CommerceSdk.Search.ShopperSearch(clientConfig);
+  const productClient = new CommerceSdk.Product.ShopperProducts(clientConfig);
 
-  // switch (itemId) {
-  //   case "dataplan":
-  //     flowResponse = getOffersDataPlanResponse();
-  //     break;
-  //   case "application":
-  //     flowResponse = getOffersApplicationResponse();
-  //     break;
-  // }
+  switch (itemId) {
+    case "dataplan":
+      flowResponse = getOffersDataPlanResponse();
+      break;
+    case "application":
+      flowResponse = getOffersApplicationResponse();
+      break;
+  }
 
-  // try {
-  //   const searchResults = await searchClient.productSearch({
-  //     parameters: { refine: [`cgid=${itemId}`], limit: 5 },
-  //   });
+  try {
+    const searchResults = await searchClient.productSearch({
+      parameters: { refine: [`cgid=${itemId}`], limit: 5 },
+    });
 
-  //   if (searchResults.total) {
-  //     try {
-  //       const productIds = searchResults.hits
-  //         .map(hit => hit.productId)
-  //         .reduce((accumulator, currentValue) => accumulator + "," + currentValue);
+    if (searchResults.total) {
+      try {
+        const productIds = searchResults.hits
+          .map(hit => hit.productId)
+          .reduce((accumulator, currentValue) => accumulator + "," + currentValue);
 
-  //       const productResults = await productClient.getProducts({
-  //         parameters: { ids: productIds }
-  //       });
+        const productResults = await productClient.getProducts({
+          parameters: { ids: productIds }
+        });
 
-  //       if (productResults.data.length > 0) {
-  //         const firstResult = productResults.data[0];
+        if (productResults.data.length > 0) {
+          const firstResult = productResults.data[0];
 
-  //         flowResponse.offers.push({
-  //           title: firstResult.name,
-  //           itemId: firstResult.id,
-  //           actionId: "buy",
-  //           shortDescription: firstResult.shortDescription,
-  //           longDescription: firstResult.longDescription,
-  //           imageurl: firstResult.imageGroups[0].images[0].link,
-  //           price: firstResult.price.toString(),
-  //           buttons: "Dave TODO",
-  //         });
-  //       } else {
-  //         console.log("XXXXX No results for search");
-  //       }
-
-  //     } catch (e) {
-  //       console.error(e);
-  //       console.error(await e.response.text());
-  //     }
-
-  //   } else {
-  //     console.log("No results for search");
-  //   }
-
-  // } catch (e) {
-  //   console.error(e);
-  //   console.error(await e.response.text());
-  // }
+          flowResponse.offers.push({
+            title: firstResult.name,
+            itemId: firstResult.id,
+            actionId: "buy",
+            shortDescription: firstResult.shortDescription,
+            longDescription: firstResult.longDescription,
+            imageurl: firstResult.imageGroups[0].images[0].link,
+            price: firstResult.price.toString(),
+            buttons: "Dave TODO",
+          });
+        } else {
+          console.log("XXXXX No results for search");
+        }
+      } catch (e) {
+        console.error(e);
+        console.error(await e.response.text());
+      }
+    } else {
+      console.log("No results for search");
+    }
+  } catch (e) {
+    console.error(e);
+    console.error(await e.response.text());
+  }
 
   return flowResponse;
 }
 
 async function headUnitBuy(clientConfig, itemId) {
   let flowResponse = undefined;
-  
-  // let basket = await addProductToBasket(clientConfig, itemId);
 
-  // if (basket) {
-  //   flowResponse = getBuyResponse();
-  // } else {
-  //   console.log("Error adding product to basket");
-  // }
+  let basket = await addProductToBasket(clientConfig, itemId);
+
+  if (basket) {
+    flowResponse = getBuyResponse();
+  } else {
+    console.log("Error adding product to basket");
+  }
 
   return flowResponse;
 }
 
 async function getClientConfig() {
-
   let clientConfig = {
     headers: {},
     parameters: {
@@ -115,54 +110,91 @@ async function getClientConfig() {
     },
   };
 
-  // await helpers.getShopperToken(clientConfig, { type: "guest" })
-  //   .then((token) => {
-  //     clientConfig.headers["authorization"] = token.getBearerHeader();
-  //   })
-  //   .catch(async (e) => {
-  //     clientConfig = undefined;
-  //     console.error(e);
-  //     console.error(await e.response.text());
-  //   });
+  await CommerceSdk.helpers
+    .getShopperToken(clientConfig, { type: "guest" })
+    .then((token) => {
+      clientConfig.headers["authorization"] = token.getBearerHeader();
+    })
+    .catch(async (e) => {
+      clientConfig = undefined;
+      console.error(e);
+      console.error(await e.response.text());
+    });
 
   return clientConfig;
 }
 
 async function getBasketClient(clientConfig) {
-  //return new Checkout.ShopperBaskets(clientConfig);
+  return new CommerceSdk.Checkout.ShopperBaskets(clientConfig);
 }
 
 async function getBasketId(basketClient) {
-  // let basketId = sessionBasketId;
+  let basketId = sessionBasketId;
 
-  // if (!basketId) {
-  //   let customerBasket = await basketClient.createBasket({
-  //     body: {
-  //     }
-  //   });
-  //   sessionBasketId = customerBasket.basketId;
-  //   basketId = customerBasket.basketId;
-  // }
+  if (!basketId) {
+    let customerBasket = await basketClient.createBasket({
+      body: {
+        billingAddress: getBillingAddress(),
+        shipments: getShipments(),
+      },
+    });
 
-  // return basketId;
+    sessionBasketId = customerBasket.basketId;
+    basketId = customerBasket.basketId;
+  }
+
+  return basketId;
+}
+
+function getShipments() {
+  return [
+    {
+      shippingAddress: {
+        address1: "HeadUnit Shipping Address 1",
+        address2: "HeadUnit Shipping Address 2",
+        city: "St. Petersburg",
+        countryCode: "US",
+        firstName: "HeadUnit",
+        fullName: "HeadUnit Test",
+        lastName: "Test",
+        phone: "6035311234",
+        postalCode: "33701",
+        stateCode: "FL",
+      },
+    },
+  ];
+}
+
+function getBillingAddress() {
+  return {
+    address1: "HeadUnit Billing Address 1",
+    address2: "HeadUnit Billing Address 2",
+    city: "St. Petersburg",
+    countryCode: "US",
+    firstName: "HeadUnit",
+    fullName: "HeadUnit Test",
+    lastName: "Test",
+    phone: "6035311234",
+    postalCode: "33701",
+    stateCode: "FL",
+  };
 }
 
 async function addProductToBasket(clientConfig, productId) {
+  try {
+    const basketClient = await getBasketClient(clientConfig);
+    let basketId = await getBasketId(basketClient);
 
-  // try {
-  //   const basketClient = await getBasketClient(clientConfig);
-  //   let basketId = await getBasketId(basketClient);
-
-  //   let basket = await basketClient.addItemToBasket({
-  //     parameters: { basketId },
-  //     body: [{ productId, quantity : 1.0 }]
-  //   });    
-  //   return basket;
-  // } catch (e) {
-  //   console.error(e);
-  //   console.error(await e.response.text());
-  // }
-  
+    let basket = await basketClient.addItemToBasket({
+      parameters: { basketId },
+      body: [{ productId, quantity: 1.0 }],
+    });
+    return basket;
+  } catch (e) {
+    console.error(e);
+    console.error(await e.response.text());
+    return undefined;
+  }
 }
 
 function getOffersDataPlanResponse() {
@@ -232,18 +264,19 @@ function getOffersApplicationResponse() {
 
 function getBuyResponse() {
   return {
-    "buy": [
+    buy: [
       {
-        "title": "Item Added",
-        "itemId": "",
-        "actionId": "checkout", // TODO: this was the product id like "DP-100"
-        "shortDescription": "Cart Updated",
-        "longDescription": "Dave says Your Product Has Been Added to the Shopping Cart",
-        "imageurl": "https://nissantosf.herokuapp.com/cart.png",
-        "price": "25.00",
-        "buttons": "Checkout"
-      }
-    ]
+        title: "Item Added",
+        itemId: "",
+        actionId: "checkout", // TODO: this was the product id like "DP-100"
+        shortDescription: "Cart Updated",
+        longDescription:
+          "Dave says Your Product Has Been Added to the Shopping Cart",
+        imageurl: "https://nissantosf.herokuapp.com/cart.png",
+        price: "25.00",
+        buttons: "Checkout",
+      },
+    ],
   };
 }
 

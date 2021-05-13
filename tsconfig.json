@@ -8,7 +8,7 @@
         "importHelpers": true,
         "incremental": true,
         "lib": ["ES6"],
-        "module": "commonjs",
+        "module": "CommonJS",
         "moduleResolution": "Node",
         "noEmitOnError": true,
         "noErrorTruncation": true,
@@ -16,11 +16,15 @@
         "noImplicitThis": true,
         "outDir": "app/dist",
         "preserveConstEnums": true,
+        "skipLibCheck": true,
         "sourceMap": true,
-        "target": "ES6",
+        "target": "ES5",
     },
     "exclude": [
         "node_modules",
         "**/node_modules/*"
-    ]
+    ],
+    "include": [
+        "modules/*"
+, "index.ts"    ]
 }
