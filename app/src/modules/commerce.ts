@@ -100,7 +100,7 @@ async function headUnitBuy(clientConfig, itemId) {
 }
 
 async function getClientConfig() {
-  let clientConfig = {
+  let clientConfig : CommerceSdk.ClientConfig = {
     headers: {},
     parameters: {
       clientId: CLIENT_ID,

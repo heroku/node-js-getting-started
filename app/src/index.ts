@@ -2,13 +2,13 @@ import { response } from "express"
 import express = require("express")
 import path from "path"
 import colors = require("colors");
+import { ClientConfig } from "commerce-sdk";
+import * as commerce from "./modules/commerce"
+import * as core from "./modules/core"
 
 const PORT = process.env.PORT || 5000;
 
-import * as commerce from "./modules/c1"
-import * as core from "./modules/c0"
-
-let commerceClientConfig = undefined;
+let commerceClientConfig : ClientConfig = undefined;
 let coreBearerToken = undefined;
 
 express()

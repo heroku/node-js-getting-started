@@ -5,7 +5,7 @@
   "engines": {
     "node": "14.x"
   },
-  "main": "app/dist/index2.js",
+  "main": "app/dist/index.js",
   "scripts": {
     "start": "node app/dist/index.js",
     "test": "node test.js"
