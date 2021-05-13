@@ -9,7 +9,6 @@ const SITE_ID = "Ford";
 let sessionBasketId = undefined;
 
 async function headUnitAction(clientConfig, actionId, itemId, VIN) {
-  console.log("ENTRY commerce.headUnitAction() => Faked actionId/itemsId\n".cyan, `${actionId}/${itemId}`);
   let flowResponse = undefined;
 
   switch (actionId) {
@@ -25,19 +24,11 @@ async function headUnitAction(clientConfig, actionId, itemId, VIN) {
 }
 
 async function headUnitOffers(clientConfig, itemId) {
-  let flowResponse = undefined;
+  console.log("ENTRY commerce.headUnitOffers() => Faked actionId/itemsId\n".green, `offers/${itemId}`);
+  let flowResponse = {offers: []};
 
   const searchClient = new CommerceSdk.Search.ShopperSearch(clientConfig);
   const productClient = new CommerceSdk.Product.ShopperProducts(clientConfig);
-
-  switch (itemId) {
-    case "dataplan":
-      flowResponse = {offers: []}
-      break;
-    case "application":
-      flowResponse = getOffersApplicationResponse();
-      break;
-  }
 
   try {
     const searchResults = await searchClient.productSearch({
@@ -83,6 +74,7 @@ async function headUnitOffers(clientConfig, itemId) {
 }
 
 async function headUnitBuy(clientConfig, itemId) {
+  console.log("ENTRY commerce.headUnitBuy() => Faked actionId/itemsId\n".cyan, `buy/${itemId}`);
   let flowResponse = undefined;
 
   let basket = await addProductToBasket(clientConfig, itemId);
@@ -192,34 +184,6 @@ async function addProductToBasket(clientConfig, productId) {
     console.error(await e.response.text());
     return undefined;
   }
-}
-
-function getOffersApplicationResponse() {
-  return {
-    offers: [
-      {
-        title: "Hydrogen Fuel",
-        itemId: "AP-100",
-        actionId: "buy",
-        shortDescription: "Hydrogen Fuel",
-        longDescription: "Fill up now with totally Green Hydrogen Fuel!",
-        imageurl: "https://nissantosf.herokuapp.com/hydrogen.png",
-        price: "",
-        buttons: "Reserve",
-      },
-      {
-        title: "Wind Turbine EV Charging Station",
-        itemId: "AP-106",
-        actionId: "buy",
-        shortDescription: "Wind Turbine EV Charging Station",
-        longDescription:
-          "Reserve a spot at the Wind Turbine EV Charging Station",
-        imageurl: "https://nissantosf.herokuapp.com/Pumpkin.png",
-        price: "",
-        buttons: "Reserve",
-      },
-    ],
-  };
 }
 
 function getBuyResponse() {
