@@ -32,7 +32,7 @@ async function headUnitOffers(clientConfig, itemId) {
 
   switch (itemId) {
     case "dataplan":
-      flowResponse = getOffersDataPlanResponse();
+      flowResponse = {offers: []}
       break;
     case "application":
       flowResponse = getOffersApplicationResponse();
@@ -54,22 +54,19 @@ async function headUnitOffers(clientConfig, itemId) {
           parameters: { ids: productIds }
         });
 
-        if (productResults.data.length > 0) {
-          const firstResult = productResults.data[0];
-
+        productResults.data.forEach(product => {
           flowResponse.offers.push({
-            title: firstResult.name,
-            itemId: firstResult.id,
+            title: product.name,
+            itemId: product.id,
             actionId: "buy",
-            shortDescription: firstResult.shortDescription,
-            longDescription: firstResult.longDescription,
-            imageurl: firstResult.imageGroups[0].images[0].link,
-            price: firstResult.price.toString(),
-            buttons: "Dave TODO",
+            shortDescription: product.shortDescription,
+            longDescription: product.longDescription,
+            imageurl: product.imageGroups[0].images[0].link,
+            price: product.price.toString(),
+            buttons: "Dave Loop TODO",
           });
-        } else {
-          console.log("XXXXX No results for search");
-        }
+        })
+
       } catch (e) {
         console.error(e);
         console.error(await e.response.text());
@@ -195,43 +192,6 @@ async function addProductToBasket(clientConfig, productId) {
     console.error(await e.response.text());
     return undefined;
   }
-}
-
-function getOffersDataPlanResponse() {
-  return {
-    offers: [
-      {
-        title: "Reserve a Parking Spot",
-        itemId: "DP-100",
-        actionId: "buy",
-        shortDescription: "Reserve a Parking Spot",
-        longDescription: "You look very tired. Reserve a Parking Spot",
-        imageurl: "https://nissantosf.herokuapp.com/level3.png",
-        price: "25.00",
-        buttons: "Reserve",
-      },
-      {
-        title: "Reserve a Shower",
-        itemId: "DP-102",
-        actionId: "buy",
-        shortDescription: "You can reserve a shower here.",
-        longDescription: "You can reserve a shower here.",
-        imageurl: "https://nissantosf.herokuapp.com/level2.png",
-        price: "10.00",
-        buttons: "Reserve",
-      },
-      {
-        title: "Order at Subway",
-        itemId: "DP-104",
-        actionId: "buy",
-        shortDescription: "Order at Subway",
-        longDescription: "Our sandwiches are delicious.",
-        imageurl: "https://nissantosf.herokuapp.com/level1.png",
-        price: "5.00",
-        buttons: "Order",
-      },
-    ],
-  };
 }
 
 function getOffersApplicationResponse() {
