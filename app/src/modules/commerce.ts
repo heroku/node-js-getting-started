@@ -8,15 +8,15 @@ const SITE_ID = "Ford";
 
 let sessionBasketId = undefined;
 
-async function headUnitAction(clientConfig, actionId, itemId, VIN) {
+function headUnitAction(clientConfig, actionId, itemId, VIN) {
   let flowResponse = undefined;
 
   switch (actionId) {
     case "buy":
-      flowResponse = await headUnitBuy(clientConfig, itemId);
+      flowResponse = headUnitBuy(clientConfig, itemId);
       break;
     case "offers":
-      flowResponse = await headUnitOffers(clientConfig, itemId);
+      flowResponse = headUnitOffers(clientConfig, itemId);
       break;
   }
 

@@ -69,10 +69,10 @@ function mapFlowResponse(actionId, itemId, res) {
   let flowResponseDave = {
     [actionId]: coreResponse.map((src) => {
       return {
-        title: "Dave71 " + src.ShortDescription__c,
+        title: src.ShortDescription__c,
         itemId: src.producttype__c ? src.producttype__c : "",
         actionId: src.Type__c,
-        shortDescription: "Dave 72 " + src.ShortDescription__c,
+        shortDescription: src.ShortDescription__c,
         longDescription: src.LongDescription__c,
         imageurl: src.imageurl__c,
         price: "",
