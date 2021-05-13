@@ -1,7 +1,7 @@
 import * as CommerceSdk from "commerce-sdk";
 import colors = require("colors");
 
-const CLIENT_ID = "d51df44a-c1db-4f25-9946-f494a8ba9a9d";
+const CLIENT_ID = "b615fee3-e306-4318-bcc1-bf49c13358f4";
 const ORG_ID = "f_ecom_zzsa_096";
 const SHORT_CODE = "kv7kzm78";
 const SITE_ID = "Ford";
