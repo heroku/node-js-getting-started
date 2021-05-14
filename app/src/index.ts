@@ -48,7 +48,7 @@ async function headUnitRequest(req, res) {
     case "offers":
       sfccAdminClientConfig = sfccAdminClientConfig || await commerce.getAdminClientConfig();
       sfccShopperClientConfig = sfccShopperClientConfig || await commerce.getShopperClientConfig();
-      responseJSON = await commerce.headUnitAction(sfccShopperClientConfig, actionId, itemId, VIN);
+      responseJSON = await commerce.headUnitAction(sfccAdminClientConfig, sfccShopperClientConfig, actionId, itemId, VIN);
       break;
     //
     // Unhandled

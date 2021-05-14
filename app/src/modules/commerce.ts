@@ -8,6 +8,7 @@ const CLIENT_SECRET = "Sandbox2101!";
 const ORG_ID = "f_ecom_zzsa_096";
 const SHORT_CODE = "kv7kzm78";
 const SITE_ID = "Ford";
+const TENANT_SCOPE = "SALESFORCE_COMMERCE_API:zzsa_096";
 
 const OAUTH_URL = "https://account.demandware.com/dwsso/oauth2/access_token";
 
@@ -34,7 +35,8 @@ async function getAdminClientConfig() {
       "Authorization": "Basic " + Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64'),
     },
     data: qs.stringify({
-      'grant_type': 'client_credentials'
+      'grant_type': 'client_credentials',
+      'scope': TENANT_SCOPE
     })
   };
 
@@ -44,6 +46,8 @@ async function getAdminClientConfig() {
       adminClientConfig.headers["authorization"] = bearerToken;
       console.log(`Account Manager OAuth YAY!:\n`);
       console.log(adminClientConfig);
+      console.log(`Account Manager Scopes:\n`);
+      console.log(res.data.scope);
     })
     .catch((error) => {
       console.log(`Account Manager OAuth Error: ${error}`);
@@ -76,10 +80,11 @@ async function getShopperClientConfig() {
       console.error(await e.response.text());
     });
 
-  return clientConfig;
+  //console.log(shopperClientConfig);
+  return shopperClientConfig;
 }
 
-function headUnitAction(clientConfig, actionId, itemId, VIN) {
+function headUnitAction(adminClientConfig, clientConfig, actionId, itemId, VIN) {
   let flowResponse = undefined;
 
   switch (actionId) {
@@ -87,7 +92,7 @@ function headUnitAction(clientConfig, actionId, itemId, VIN) {
       flowResponse = headUnitBuy(clientConfig, itemId);
       break;
     case "checkout":
-      flowResponse = headUnitCheckout(clientConfig);
+      flowResponse = headUnitCheckout(adminClientConfig, clientConfig);
       break;
     case "offers":
       flowResponse = headUnitOffers(clientConfig, itemId);
@@ -122,11 +127,11 @@ async function headUnitBuy(clientConfig, itemId) {
   return flowResponse;
 }
 
-async function headUnitCheckout(clientConfig) {
+async function headUnitCheckout(adminClientConfig, clientConfig) {
   console.log("ENTRY commerce.headUnitBuy() => Faked actionId\n".cyan, `checkout`);
   let flowResponse = { checkout: [] };
 
-  let order = await createOrder(clientConfig);
+  let order = await createOrder(adminClientConfig, clientConfig);
 
   if (order) {
     flowResponse.checkout.push({
@@ -214,16 +219,34 @@ async function addProductToBasket(clientConfig, productId) {
   }
 }
 
-async function createOrder(clientConfig) {
+async function createOrder(adminClientConfig, clientConfig) {
   try {
     const basketClient = await getBasketClient(clientConfig);
     let basketId = await getBasketId(basketClient);
 
-    const ordersClient = await getOrdersClient(clientConfig);
+    const shopperOrdersClient = await getShopperOrdersClient(clientConfig);
 
-    let order = await ordersClient.createOrder({
+    let order = await shopperOrdersClient.createOrder({
       body: { basketId: basketId }
     });
+
+    const ordersClient = await getOrdersClient(adminClientConfig);
+
+    await ordersClient.updateOrderConfirmationStatus({
+      parameters: { orderNo: order.orderNo },
+      body: { status: "confirmed" }
+    });
+
+    await ordersClient.updateOrderStatus({
+      parameters: { orderNo: order.orderNo },
+      body: { status: "new" }
+    });
+
+    await ordersClient.updateOrderExportStatus({
+      parameters: { orderNo: order.orderNo },
+      body: { status: "ready" }
+    });
+
     return order;
   } catch (e) {
     console.error(e);
@@ -238,6 +261,10 @@ async function getBasketClient(clientConfig) {
 
 async function getShopperOrdersClient(clientConfig) {
   return new CommerceSdk.Checkout.ShopperOrders(clientConfig);
+}
+
+async function getOrdersClient(accountManagerClientConfig) {
+  return new CommerceSdk.Checkout.Orders(accountManagerClientConfig);
 }
 
 async function getBasketId(basketClient: CommerceSdk.Checkout.ShopperBaskets) {
