@@ -7,13 +7,14 @@
   },
   "main": "app/dist/index.js",
   "scripts": {
-    "start": "node app/dist/index.js",
+    "start": "node --require dotenv/config app/dist/index.js",
     "test": "node test.js"
   },
   "dependencies": {
     "axios": "^0.21.1",
     "colors": "^1.4.0",
     "commerce-sdk": "^2.3.0",
+    "dotenv": "^9.0.2",
     "ejs": "^3.1.5",
     "express": "^4.15.2"
   },

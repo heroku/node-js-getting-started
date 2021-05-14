@@ -3,14 +3,17 @@ import * as CommerceSdk from "commerce-sdk";
 import colors = require("colors");
 import qs = require("querystring");
 
-const CLIENT_ID = "b615fee3-e306-4318-bcc1-bf49c13358f4";
-const CLIENT_SECRET = "Sandbox2101!";
-const ORG_ID = "f_ecom_zzsa_096";
-const SHORT_CODE = "kv7kzm78";
-const SITE_ID = "Ford";
-const TENANT_SCOPE = "SALESFORCE_COMMERCE_API:zzsa_096";
+//
+// Load constants from .env Environment Variables
+//
+const CLIENT_ID = process.env.SFCC_CLIENT_ID;
+const CLIENT_SECRET = process.env.SFCC_CLIENT_SECRET;
+const ORG_ID = process.env.SFCC_ORG_ID;
+const SHORT_CODE = process.env.SFCC_SHORT_CODE;
+const SITE_ID = process.env.SFCC_SITE_ID;
+const TENANT_SCOPE = process.env.SFCC_TENANT_SCOPE;
 
-const OAUTH_URL = "https://account.demandware.com/dwsso/oauth2/access_token";
+const OAUTH_URL = process.env.SFCC_OAUTH_URL;
 
 let sessionBasketId = undefined;
 

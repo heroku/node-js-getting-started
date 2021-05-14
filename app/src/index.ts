@@ -7,6 +7,7 @@ import * as commerce from "./modules/commerce"
 import * as core from "./modules/core"
 
 const PORT = process.env.PORT || 5000;
+const VIN = process.env.VIN;
 
 let sfccAdminClientConfig : ClientConfig = undefined;
 let sfccShopperClientConfig : ClientConfig = undefined;
@@ -23,7 +24,6 @@ express()
   .listen(PORT, () => console.log(colors.yellow(`Listening on ${PORT}`)));
 
 async function headUnitRequest(req, res) {
-  const VIN = "12312312312KKLJAS879892";
   let actionId = req.query.actionId;
   let itemId = req.query.itemId;
 
