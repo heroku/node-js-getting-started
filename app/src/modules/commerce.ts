@@ -1,15 +1,61 @@
+import axios, { AxiosRequestConfig } from "axios";
 import * as CommerceSdk from "commerce-sdk";
 import colors = require("colors");
+import qs = require("querystring");
 
 const CLIENT_ID = "b615fee3-e306-4318-bcc1-bf49c13358f4";
+const CLIENT_SECRET = "Sandbox2101!";
 const ORG_ID = "f_ecom_zzsa_096";
 const SHORT_CODE = "kv7kzm78";
 const SITE_ID = "Ford";
 
+const OAUTH_URL = "https://account.demandware.com/dwsso/oauth2/access_token";
+
 let sessionBasketId = undefined;
 
-async function getClientConfig() {
-  let clientConfig: CommerceSdk.ClientConfig = {
+async function getAdminClientConfig() {
+  let adminClientConfig: CommerceSdk.ClientConfig = {
+    headers: {},
+    parameters: {
+      clientId: CLIENT_ID,
+      organizationId: ORG_ID,
+      shortCode: SHORT_CODE,
+      siteId: SITE_ID,
+    },
+  };
+
+  let bearerToken = undefined;
+
+  const axiosConfig : AxiosRequestConfig = {
+    method: "POST",
+    url: OAUTH_URL,
+    headers: { 
+      "Content-Type": "application/x-www-form-urlencoded",
+      "Authorization": "Basic " + Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64'),
+    },
+    data: qs.stringify({
+      'grant_type': 'client_credentials'
+    })
+  };
+
+  await axios(axiosConfig)
+    .then((res) => {
+      bearerToken = "Bearer " + res.data.access_token;
+      adminClientConfig.headers["authorization"] = bearerToken;
+      console.log(`Account Manager OAuth YAY!:\n`);
+      console.log(adminClientConfig);
+    })
+    .catch((error) => {
+      console.log(`Account Manager OAuth Error: ${error}`);
+      console.log(`Axios Configuration:\n`);
+      console.log(axiosConfig);
+    });
+
+  return adminClientConfig;
+}
+
+async function getShopperClientConfig() {
+  let shopperClientConfig: CommerceSdk.ClientConfig = {
     headers: {},
     parameters: {
       clientId: CLIENT_ID,
@@ -20,12 +66,12 @@ async function getClientConfig() {
   };
 
   await CommerceSdk.helpers
-    .getShopperToken(clientConfig, { type: "guest" })
+    .getShopperToken(shopperClientConfig, { type: "guest" })
     .then((token) => {
-      clientConfig.headers["authorization"] = token.getBearerHeader();
+      shopperClientConfig.headers["authorization"] = token.getBearerHeader();
     })
     .catch(async (e) => {
-      clientConfig = undefined;
+      shopperClientConfig = undefined;
       console.error(e);
       console.error(await e.response.text());
     });
@@ -190,7 +236,7 @@ async function getBasketClient(clientConfig) {
   return new CommerceSdk.Checkout.ShopperBaskets(clientConfig);
 }
 
-async function getOrdersClient(clientConfig) {
+async function getShopperOrdersClient(clientConfig) {
   return new CommerceSdk.Checkout.ShopperOrders(clientConfig);
 }
 
@@ -273,4 +319,4 @@ function getPaymentInstruments() {
   ];
 }
 
-export { getClientConfig, headUnitAction };
+export { getAdminClientConfig, getShopperClientConfig, headUnitAction };

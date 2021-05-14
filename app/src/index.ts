@@ -8,7 +8,8 @@ import * as core from "./modules/core"
 
 const PORT = process.env.PORT || 5000;
 
-let commerceClientConfig : ClientConfig = undefined;
+let sfccAdminClientConfig : ClientConfig = undefined;
+let sfccShopperClientConfig : ClientConfig = undefined;
 let coreBearerToken = undefined;
 
 express()
@@ -45,8 +46,9 @@ async function headUnitRequest(req, res) {
     case "buy":
     case "checkout":
     case "offers":
-      commerceClientConfig = commerceClientConfig || await commerce.getClientConfig();
-      responseJSON = await commerce.headUnitAction(commerceClientConfig, actionId, itemId, VIN);
+      sfccAdminClientConfig = sfccAdminClientConfig || await commerce.getAdminClientConfig();
+      sfccShopperClientConfig = sfccShopperClientConfig || await commerce.getShopperClientConfig();
+      responseJSON = await commerce.headUnitAction(sfccShopperClientConfig, actionId, itemId, VIN);
       break;
     //
     // Unhandled
