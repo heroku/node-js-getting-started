@@ -275,7 +275,10 @@ async function getBasketId(basketClient: CommerceSdk.Checkout.ShopperBaskets) {
       body: {
         billingAddress: getBillingAddress(),
         shipments: getShipments(),
-        paymentInstruments: getPaymentInstruments()
+        paymentInstruments: getPaymentInstruments(),
+        customerInfo: {
+          email: "dfoley@salesforce.com"
+        }
       },
     });
 
