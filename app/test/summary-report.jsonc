@@ -1,0 +1,14 @@
+{
+  "report": [
+    {
+      "title": "Sent Summary Report",
+      "itemId": "summary",
+      "actionId": "report",
+      "shortDescription": "Report Sent",
+      "longDescription": "Your Daily Summay Report has been sent via email. Please check it when you are stopped.",
+      "imageurl": "https://nissantosf.herokuapp.com/reportMail.png",
+      "price": "",
+      "buttons": ""
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "options": [
+    {
+      "title": "Find a gas station",
+      "itemId": "gas",
+      "actionId": "navigate",
+      "shortDescription": "Find a gas station",
+      "longDescription": "Find a gas station",
+      "imageurl": "https://nissantosf.herokuapp.com/location.png",
+      "price": "",
+      "buttons": "Navigate"
+    },
+    {
+      "title": "Roadside Assistance",
+      "itemId": "roadside",
+      "actionId": "case",
+      "shortDescription": "Roadside Assistance",
+      "longDescription": "Roadside Assistance",
+      "imageurl": "https://nissantosf.herokuapp.com/helpFlag.png",
+      "price": "",
+      "buttons": "Help!"
+    },
+    {
+      "title": "Shop for Tires",
+      "itemId": "tires",
+      "actionId": "shop",
+      "shortDescription": "Shop for Tires",
+      "longDescription": "Shop for Tires",
+      "imageurl": "https://nissantosf.herokuapp.com/cart.png",
+      "price": "",
+      "buttons": "Shop"
+    },
+    {
+      "title": "Daily Summary Report",
+      "itemId": "summary",
+      "actionId": "report",
+      "shortDescription": "Daily Summary Report",
+      "longDescription": "Daily Summary Report",
+      "imageurl": "https://nissantosf.herokuapp.com/reportMail.png",
+      "price": "",
+      "buttons": "Email Report"
+    },
+    {
+      "title": "Find Fast Food",
+      "itemId": "fastfood",
+      "actionId": "navigate",
+      "shortDescription": "Find Fast Food",
+      "longDescription": "Find Fast Food",
+      "imageurl": "https://nissantosf.herokuapp.com/fastfood.png",
+      "price": "",
+      "buttons": "Navigate"
+    },
+    {
+      "title": "Find nearest Account",
+      "itemId": "account",
+      "actionId": "navigate",
+      "shortDescription": "Find nearest Account",
+      "longDescription": "Find Account",
+      "imageurl": "https://nissantosf.herokuapp.com/salesforce.png",
+      "price": "",
+      "buttons": "Navigate"
+    },
+    {
+      "title": "Make a Service Appointment",
+      "itemId": "appointment",
+      "actionId": "service",
+      "shortDescription": "Make a Service Appointment",
+      "longDescription": "Make a Service Appointment",
+      "imageurl": "https://nissantosf.herokuapp.com/location.png",
+      "price": "",
+      "buttons": "Book Appointment"
+    },
+    {
+      "title": "Find a Dealer",
+      "itemId": "dealer",
+      "actionId": "navigate",
+      "shortDescription": "Find a Dealer",
+      "longDescription": "Find a Dealer",
+      "imageurl": "https://nissantosf.herokuapp.com/gasstation.png",
+      "price": "",
+      "buttons": "Find a Dealer"
+    }
+  ]
+}
