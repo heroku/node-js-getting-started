@@ -117,10 +117,10 @@ async function headUnitBuy(clientConfig, itemId) {
       itemId: "",
       actionId: "checkout", // TODO: this was the product id like "DP-100"
       shortDescription: "Cart Updated",
-      longDescription: "Dave says Your Product Has Been Added to the Shopping Cart",
+      longDescription: "Your Product Has Been Added to the Shopping Cart",
       imageurl: "https://nissantosf.herokuapp.com/cart.png",
       price: basket.productItems[basket.productItems.length - 1].price.toString(),
-      buttons: "Dave Checkout TODO",
+      buttons: "Complete Order",
     });
 
   } else {
@@ -140,12 +140,12 @@ async function headUnitCheckout(adminClientConfig, clientConfig) {
     flowResponse.checkout.push({
       title: "Order Created!",
       itemId: "",
-      actionId: "todo", // TODO: this was the product id like "DP-100"
+      actionId: "notifications", // TODO: this was the product id like "DP-100"
       shortDescription: "Order Created",
-      longDescription: "Dave says Your Product Has Been Added to the Shopping Cart",
+      longDescription: "Your Order is submitted and will be ready for pick-up in 15 minutes",
       imageurl: "https://nissantosf.herokuapp.com/cart.png",
       price: order.orderTotal.toString(),
-      buttons: "TADA TODO",
+      buttons: "Back",
     });
 
   } else {
@@ -186,7 +186,7 @@ async function headUnitOffers(clientConfig, itemId) {
             longDescription: product.longDescription,
             imageurl: product.imageGroups[0].images[0].disBaseLink,
             price: product.price.toString(),
-            buttons: "Dave Loop TODO",
+            buttons: "Add To Cart",
           });
         })
 
