@@ -1,0 +1,263 @@
+commit 21f476588c5deedbfef87073d3860b78abed3991 (HEAD, tag: release-1.36.0, origin/master, origin/HEAD, master)
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2021-08-21
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2021-08-21
+
+    Fix sphinx build error
+
+commit da3b2ff457a4faa2c04120d6202741d8f8528729
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2021-08-21
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2021-08-21
+
+    Update sphinx_rtd_theme
+
+commit 337ed0561f448e7a751d2f425921547e57f4a907
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2021-08-21
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2021-08-21
+
+    Bump version to 1.36.0
+
+commit b6e7ac59f1fd3744b23ba4d8c0111b8a11a4fd10
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2021-08-21
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2021-08-21
+
+    Update AUTHORS
+
+commit 3330817246c317db8a8e6454367a5a8385caa23f
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2021-08-21
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2021-08-21
+
+    Update NEWS
+
+commit 490aa4a3d616d2ebb37f26fdf6a6737829d44c96
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2021-08-13
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2021-08-13
+
+    Update doc
+
+commit ca4179e76c819142259e6515e540d3fec25e7083
+Merge: 63f6ed72 5d77701b
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2021-08-13
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2021-08-13
+
+    Merge pull request #1672 from sleepymac/python3-bash-completion
+    
+    Updates the make_bash_completion script to Python3.
+
+commit 63f6ed726eec62d97ab6dfbafaebd1485703793f
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2021-08-12
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2021-08-13
+
+    Update wslay
+
+commit a151b5bcefd8beee262b8be544e5384766c30624
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2021-08-12
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2021-08-13
+
+    Bump win build dependencies
+
+commit e088857a2c195ec20b1ca47f2dd3247440499b8b
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2021-08-12
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2021-08-12
+
+    Replace the deprecated std::ptr_fun with std::function
+
+commit 9f2f78b96abb538b0709d5bc5022d8dbb5c50353
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2021-08-12
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2021-08-12
+
+    Bump android build dependencies
+
+commit faa6955c8d7bb7b6541e0b7fbb84f7d213f761ab
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2020-12-28
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2020-12-28
+
+    Add GitHub Actions workflow build
+
+commit f292bbba857fe559d79de80ca1fc180739b7b22f
+Merge: 15cad965 2d0171e9
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2020-12-28
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2020-12-28
+
+    Merge branch 'ncopa-fix-time64' into master
+
+commit 2d0171e95636eead0c7d26d8bef99f451ab3e20d
+Author:     Natanael Copa <ncopa@alpinelinux.org>
+AuthorDate: 2020-08-07
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2020-12-28
+
+    Fix segfault when time_t is 64bit on 32bit arch (#1666)
+    
+    On some platforms, like with musl libc, time_t may be 64 bit even on
+    32bit platforms. Fix segfault by convert time_t to 64 bit and use 64bit
+    format modifier instead of assume time_t is %ld
+
+commit 5d77701bc12c539e226232dbe86789ed30687329
+Author:     sleepymac <sleepymac@protonmail.com>
+AuthorDate: 2020-08-15
+Commit:     sleepymac <sleepymac@protonmail.com>
+CommitDate: 2020-08-15
+
+    Updates the make_bash_completion script to Python3.
+
+commit 15cad965eb75c8b7f11bc2fc94354d1873bf6261
+Merge: 9d0a48ac 01969fc5
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2020-06-25
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2020-06-25
+
+    Merge pull request #1644 from aliemjay/sync-caches
+    
+    prevent corrupt downloads after app and/or system crash
+
+commit 01969fc5304a738718c00b6153d672ce4f085747
+Author:     Ali MJ Al-Nasrawy <alimjalnasrawy@gmail.com>
+AuthorDate: 2020-06-17
+Commit:     Ali MJ Al-Nasrawy <alimjalnasrawy@gmail.com>
+CommitDate: 2020-06-17
+
+    flush OS write buffers before saving control file
+    
+    This ensures that pieces are physically written to disk before
+    marking them as finished in the control file.
+    
+    This should prevent data loss and corruption when resuming downloads
+    after a system crash.
+    
+    Signed-off-by: Ali MJ Al-Nasrawy <alimjalnasrawy@gmail.com>
+
+commit 870e2a6014462c55cc252140f5e215374881c6e9
+Author:     Ali MJ Al-Nasrawy <alimjalnasrawy@gmail.com>
+AuthorDate: 2020-06-17
+Commit:     Ali MJ Al-Nasrawy <alimjalnasrawy@gmail.com>
+CommitDate: 2020-06-17
+
+    flush internal buffers before auto-saving control file
+    
+    Otherwise, some pieces may be marked as finished in the control file
+    though they have not yet been written to the storage file.
+    
+    This should prevent data loss and corruption when resuming downloads
+    after an app crash.
+    
+    Signed-off-by: Ali MJ Al-Nasrawy <alimjalnasrawy@gmail.com>
+
+commit 9d0a48ac8147c5e56402706d5c17efa8bf6340f2
+Merge: 902f86f5 6ebdddb9
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2019-10-12
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2019-10-12
+
+    Merge pull request #1487 from aria2/reset-download-upload-length
+    
+    Reset sessionDownloadLength and sessionUploadLength on download start
+
+commit 902f86f5745857eccab81cb17dd2c27169b1906c
+Merge: 53b3169a 3e0134fe
+Author:     Tatsuhiro Tsujikawa <404610+tatsuhiro-t@users.noreply.github.com>
+AuthorDate: 2019-10-12
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2019-10-12
+
+    Merge pull request #1477 from ITriskTI/patch-1
+    
+    Update aria2c.rst
+
+commit 6ebdddb9f159e87923736f25900897b3602305f9 (origin/reset-download-upload-length)
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2019-10-12
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2019-10-12
+
+    Reset sessionDownloadLength and sessionUploadLength on download start
+    
+    This commit resets sessionDownloadLength and sessionUploadLength when
+    a download restarted (including unpause RPC method).
+    
+    Fixes #1486
+
+commit 3e0134fef975137ab995d24eb13e1743412acd8b
+Author:     ITriskTI <ITriskTI@gmail.com>
+AuthorDate: 2019-10-06
+Commit:     ITriskTI <ITriskTI@gmail.com>
+CommitDate: 2019-10-06
+
+    Update aria2c.rst
+
+commit 53b3169a22fd60f07ea0f1ef5b284cb6944b5d31
+Author:     Nils Maier <maierman@web.de>
+AuthorDate: 2019-10-06
+Commit:     Nils Maier <maierman@web.de>
+CommitDate: 2019-10-06
+
+    AppleTLS: even more correctly define kTLSProtocol13
+    
+    Yes, again
+
+commit a184ceb9e2d129e5d20bfd7d3dc5f1ea49d27592
+Author:     Nils Maier <maierman@web.de>
+AuthorDate: 2019-10-06
+Commit:     Nils Maier <maierman@web.de>
+CommitDate: 2019-10-06
+
+    AppleTLS: correctly define kTLSProtocol13
+
+commit 1677aba1b2554d0ef0af81e0a9cb7dca44e0f4c7
+Author:     Nils Maier <maierman@web.de>
+AuthorDate: 2019-10-06
+Commit:     Nils Maier <maierman@web.de>
+CommitDate: 2019-10-06
+
+    Update macOS dependencies
+
+commit 40e01dbb4cbc4fbd9d4c454e609a02a2406ae802
+Author:     Nils Maier <maierman@web.de>
+AuthorDate: 2019-10-06
+Commit:     Nils Maier <maierman@web.de>
+CommitDate: 2019-10-06
+
+    AppleTLS: update cipher suites
+
+commit a6671aec37cc408335657b11c8013f8be18bbad9
+Author:     Nils Maier <maierman@web.de>
+AuthorDate: 2019-10-06
+Commit:     Nils Maier <maierman@web.de>
+CommitDate: 2019-10-06
+
+    AppleTLS: TLSv3
+
+commit 6b362244537e7c815b89ba6763ca4c56f0e7eb1e
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2019-10-06
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2019-10-06
+
+    Fix make dist
