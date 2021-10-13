@@ -1,0 +1,228 @@
+<html>
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet" />
+<style>
+  form {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+
+  form input {
+    width: 90%;
+  }
+
+  #submitButton {
+    width: 9%;
+  }
+
+  .time {
+    color: red;
+    font-family: "Ubuntu";
+    text-align: right;
+  }
+
+  .message {
+    display: inline;
+  }
+
+  #messages {
+    list-style-type: none;
+  }
+
+  .me {
+    font-family: sans-serif, "Courier New", Courier, monospace;
+    text-align: right;
+  }
+
+  .you {
+    font-family: sans-serif, "Courier New", Courier, monospace;
+    text-align: left;
+
+  }
+
+  .yourDiv {
+    position: relative;
+    right: 10;
+    width: 50%;
+    background-color: blue;
+    color: white;
+  }
+
+  .myDiv {
+    position: relative;
+    left: 40%;
+    width: 50%;
+    background-color: violet;
+  }
+
+  *{
+    margin: 0%;
+    padding: 0%;
+}
+
+body{
+    height: 100vh;
+    /* background-image: linear-gradient(rgb(255, 255, 255), rgb(109, 39, 239)); */
+    /* background-color:rgb(242, 242, 242); */
+}
+
+h1{
+    font-size: 5vw;
+    text-align: center; 
+    padding: 1vw;
+}
+#container{
+    max-width:99vw;
+    margin: auto;
+    height: 75vh;
+    overflow-y:auto;
+    /* background-color:rgb(242, 242, 242); */
+}
+.main-container{
+    max-width:99vw;
+    border: 2px solid black;
+    border-radius: 13px;
+    margin: auto;
+    height: 80vh;
+    /* overflow-y: auto; */
+    background-color:rgb(242, 242, 242);
+}
+
+.message{
+    background-color: rgb(211, 204, 204);
+    width: 24%;
+    padding: 10px;
+    margin: 17px 12px;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+.left{
+    float: left;
+    clear:both;
+}
+
+.right{
+    float: right;
+    clear:both;
+}
+
+#send-container{
+    display:block;
+    margin: 0%;
+    text-align: center;
+    max-width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#m{
+    width:88%;
+    border: 2px solid black;
+    border-radius: 6px;
+    height: 34px;
+    font-size: 22px;
+    outline: none;
+}
+
+#submitButton{
+    margin: 0 5px;
+    width: 9%;
+    cursor: pointer;
+    border: 2px solid black;
+    border-radius: 6px;
+    height: 34px;
+}
+</style>
+
+<body>
+
+  <nav>
+    <h1>Let's Talk</h1>
+    <!-- <h1>Welcome To Talkers</h1>  -->
+  </nav>
+  <div class="main-container">
+    <div id="container"></div>
+    <div class="send">
+      <form id="send-container">
+        <input type="text" id="m">
+        <input type="submit" id="submitButton" value="submit" />
+      </form>
+    </div>
+  </div>
+
+  <!-- <ul id="messages"></ul> -->
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+  crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment.min.js"></script>
+<script>
+  let userName = prompt("whats your name");
+  let room = prompt("password");
+  let ID = "";
+  var socket = io();
+  //send event that user has joined room
+  socket.emit("join room", { username: userName, roomName: room });
+
+  //receive data from server.
+  socket.on('send data', (data) => {
+    ID = data.id; //ID will be used later
+    console.log(" my ID:" + ID);
+  })
+  $("#m").focus();
+  //when form is submitted, capture the input value and then send it to server
+  document
+    .getElementsByTagName("form")[0]
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+      socket.emit("chat message", {
+        value: document.getElementById("m").value,
+        user: userName,
+
+      });
+
+      document.getElementById("m").value = "";
+    });
+  socket.on("chat message", (data) => {
+    console.log(data.data.user + ": " + data.id);
+    displayMessage(data);
+  });
+
+  function displayMessage(data) {
+    let authorClass = "";
+    let divClass = ""
+    //verify that the user ID and the message sent ID is similar 
+    if (data.id === ID) {
+      console.log("This person has sent a message")
+      authorClass = "You";
+      divClass = "right";
+    } else {
+      authorClass = data.data.user;
+      divClass = "left";
+    }
+    const div = document.createElement("div");
+    div.className = divClass;
+    // const li = document.createElement("li");
+    // const p = document.createElement("p");
+    // p.className = "time";
+    div.innerText = authorClass + ":" + data.data.value;
+    div.classList.add('message');
+    // div.innerHTML =
+      // '<p class="' +
+      // authorClass +
+      // '">' +
+      // data.data.user +
+      // "</p>" +
+      // '<p class="message"> ' +
+      // data.data.value +
+      // "</p>";
+    // div.appendChild(p);
+    // li.appendChild(div);
+
+    document.getElementById("container").appendChild(div);
+    //scroll to the bottom
+    document.getElementById("container").scrollTo(0,document.getElementById("container").scrollHeight);
+  }
+</script>
+
+</html>
