@@ -1,59 +1,6 @@
 <html>
 <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet" />
 <style>
-  form {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-  }
-
-  form input {
-    width: 90%;
-  }
-
-  #submitButton {
-    width: 9%;
-  }
-
-  .time {
-    color: red;
-    font-family: "Ubuntu";
-    text-align: right;
-  }
-
-  .message {
-    display: inline;
-  }
-
-  #messages {
-    list-style-type: none;
-  }
-
-  .me {
-    font-family: sans-serif, "Courier New", Courier, monospace;
-    text-align: right;
-  }
-
-  .you {
-    font-family: sans-serif, "Courier New", Courier, monospace;
-    text-align: left;
-
-  }
-
-  .yourDiv {
-    position: relative;
-    right: 10;
-    width: 50%;
-    background-color: blue;
-    color: white;
-  }
-
-  .myDiv {
-    position: relative;
-    left: 40%;
-    width: 50%;
-    background-color: violet;
-  }
 
   *{
     margin: 0%;
@@ -67,14 +14,14 @@ body{
 }
 
 h1{
-    font-size: 5vw;
+    font-size: 10vw;
     text-align: center; 
-    padding: 1vw;
+    padding: 1%;
 }
 #container{
-    max-width:99vw;
+    width:99vw;
     margin: auto;
-    height: 75vh;
+    height: 80vh;
     overflow-y:auto;
     /* background-color:rgb(242, 242, 242); */
 }
@@ -83,18 +30,19 @@ h1{
     border: 2px solid black;
     border-radius: 13px;
     margin: auto;
-    height: 80vh;
+    height: 88vh;
     /* overflow-y: auto; */
     background-color:rgb(242, 242, 242);
 }
 
 .message{
     background-color: rgb(211, 204, 204);
-    width: 24%;
+    /* width: 24%; */
     padding: 10px;
     margin: 17px 12px;
     border: 2px solid black;
     border-radius: 10px;
+    font-size: 3vw;
 }
 .left{
     float: left;
@@ -108,41 +56,39 @@ h1{
 
 #send-container{
     display:block;
-    margin: 0%;
     text-align: center;
-    max-width: 100vw;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 1%;
 }
 #m{
     width:88%;
     border: 2px solid black;
     border-radius: 6px;
-    height: 34px;
+    height: 6vh;
     font-size: 22px;
     outline: none;
 }
 
 #submitButton{
-    margin: 0 5px;
-    width: 9%;
+    margin: 0 1%;
+    width: 10vw;
     cursor: pointer;
     border: 2px solid black;
     border-radius: 6px;
-    height: 34px;
+    height: 6vh;
 }
 </style>
 
 <body>
-
-  <nav>
+  <div id="container1">
     <h1>Let's Talk</h1>
-    <!-- <h1>Welcome To Talkers</h1>  -->
-  </nav>
-  <div class="main-container">
-    <div id="container"></div>
-    <div class="send">
+    <div class="main-container">
+      <div id="container" >
+        <div class="right message">You:dffgsdfgdskjgsdfjksdfgsdfgsdfgs</div>
+      </div>
       <form id="send-container">
         <input type="text" id="m">
         <input type="submit" id="submitButton" value="submit" />
@@ -157,8 +103,15 @@ h1{
   crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment.min.js"></script>
 <script>
-  let userName = prompt("whats your name");
-  let room = prompt("password");
+  let userName = "";
+  let room = "";
+
+  while(userName == "" || userName == null){
+    userName = prompt("whats your name");
+  }
+  while(room == "" || room == null){
+    room = prompt("password");
+  }
   let ID = "";
   var socket = io();
   //send event that user has joined room
