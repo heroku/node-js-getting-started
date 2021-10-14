@@ -111,10 +111,16 @@ h1{
   while(room == "" || room == null){
     room = prompt("password");
   }
+
   let ID = "";
   var socket = io();
   //send event that user has joined room
   socket.emit("join room", { username: userName, roomName: room });
+  socket.emit("new user", {
+        value: document.getElementById("m").value,
+        user: userName,
+
+      });
 
   //receive data from server.
   socket.on('send data', (data) => {
@@ -138,6 +144,9 @@ h1{
   socket.on("chat message", (data) => {
     console.log(data.data.user + ": " + data.id);
     displayMessage(data);
+  });
+  socket.on("new user", (data) => {
+    broadcast(data);
   });
 
   function displayMessage(data) {
@@ -175,6 +184,20 @@ h1{
     //scroll to the bottom
     document.getElementById("container").scrollTo(0,document.getElementById("container").scrollHeight);
   }
+
+  function broadcast(data){
+    if(data.data.user != userName){
+
+      const div = document.createElement("div");
+      div.className = "left";
+      div.innerText = data.data.user + " has joined the chat.";
+      div.classList.add('message');
+      
+      document.getElementById("container").appendChild(div);
+      //scroll to the bottom
+      document.getElementById("container").scrollTo(0,document.getElementById("container").scrollHeight);
+    }
+}
 </script>
 
 </html>
