@@ -2,113 +2,221 @@
 <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet" />
 <style>
 
-  *{
+@import url('https://fonts.googleapis.com/css2?family=Festive&family=Rampart+One&display=swap');
+
+  * {
     margin: 0%;
     padding: 0%;
-}
+  }
 
-body{
-    height: 100vh;
-    /* background-image: linear-gradient(rgb(255, 255, 255), rgb(109, 39, 239)); */
-    /* background-color:rgb(242, 242, 242); */
-}
+  body{
+    background-color: rgb(223, 249, 255);
+    /* background-color: rgb(255, 255, 255); */
+  }
+  
+  button{
+    cursor: pointer;
+  }
 
-h1{
-    font-size: 10vw;
-    text-align: center; 
+  .active{
+    color: rgb(0, 0, 120);
+  }
+  #talkeractive{
+    color: rgb(200, 0, 0);
+  }
+
+  #Logo {
+    font-size: 4.5vw;
+    text-align: center;
     padding: 1%;
-}
-#container{
-    width:99vw;
-    margin: auto;
-    height: 80vh;
-    overflow-y:auto;
-    /* background-color:rgb(242, 242, 242); */
-}
-.main-container{
-    max-width:99vw;
-    border: 2px solid black;
-    border-radius: 13px;
-    margin: auto;
-    height: 88vh;
-    /* overflow-y: auto; */
-    background-color:rgb(242, 242, 242);
-}
+    /* font-family: 'ZCOOL KuaiLe', cursive; */
+    color: rgb(120, 0, 0);
+  }
+  #Logo:hover{
+    color: rgb(200, 0, 0);
+  }
 
-.message{
-    background-color: rgb(211, 204, 204);
-    /* width: 24%; */
+  #container {
+    width: 99vw;
+    margin: auto;
+    height: 100%;
+    overflow-y: auto;
+    /* background-color:rgb(242, 242, 242); */
+  }
+
+  .main-container {
+    max-width: 99vw;
+    /* border: 2px solid black; */
+    /* border-radius: 13px; */
+    margin: auto;
+    height: 100%;
+    /* overflow-y: auto; */
+    /* background-color: rgb(242, 242, 242); */
+    display: flex;
+    flex-direction: column;
+  }
+
+  .message {
+    /* background-color: rgb(211, 204, 204); */
+    max-width: 80%;
     padding: 10px;
-    margin: 17px 12px;
+    margin: 2% 5%;
     border: 2px solid black;
     border-radius: 10px;
-    font-size: 3vw;
-}
-.left{
+    font-size: 4vw;
+    word-wrap: break-word;
+  }
+
+  .left {
     float: left;
-    clear:both;
-}
+    clear: both;
+  }
 
-.right{
+  .right {
     float: right;
-    clear:both;
-}
+    clear: both;
+  }
 
-#send-container{
-    display:block;
+  #send-container {
+    display: block;
     text-align: center;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 1%;
-}
-#m{
-    width:88%;
+  }
+
+  #m {
+    width: 90vw;
     border: 2px solid black;
     border-radius: 6px;
-    height: 6vh;
-    font-size: 22px;
+    height: 8vw;
+    font-size: 5vw;
     outline: none;
-}
+  }
 
-#submitButton{
+  #submitButton {
     margin: 0 1%;
-    width: 10vw;
+    width: 8vw;
     cursor: pointer;
     border: 2px solid black;
+    font-size: 5vw;
     border-radius: 6px;
-    height: 6vh;
-}
+    height: 8vw;
+    text-align: center;
+  }
+
+  nav{
+    display: flex;
+    justify-content:space-between;
+    align-items:center;
+    background:none;
+  }
+
+  nav button{
+    height: 10vw;
+    width: 20vw;
+    font-size: 2.5vw;
+    border-style: none;
+    background:none;
+    font-family: 'Rampart One', cursive;
+    color: rgb(0, 0, 0);
+  }
+
+  nav button:hover{
+    color: rgb(0, 0, 120);
+    /* color: rgb(200, 200, 200); */
+  }
+
+  .msg-box-1{
+    display: flex;
+    height: 10vw;
+    text-align: center;
+    font-size: 2vw;
+    align-items: center;
+    border: 1px solid black;
+    /* border-radius: 10px; */
+    background-color: rgb(186, 229, 232);
+    /* color: rgb(63, 63, 63); */
+  }
+
+  .msg-box-1 img{
+    width: 10vw;
+  }
+
+  #back{
+    font-size: 4vw;
+    background:none;
+    border-style: none;
+    height: 8vw;
+    padding-left: 1%;
+    color: rgb(63, 63, 63);
+    font-family: 'Festive', cursive;
+  }
+
+  .info{
+    display: flex;
+    flex-direction: column;
+    width: 80vw;
+  }
+
+  .status{
+    width: 15vw;
+    text-align: center;
+  }
+
+  .name{
+    text-align: start;
+    padding: 0 1%;
+  }
+
 </style>
 
 <body>
   <div id="container1">
-    <h1>Let's Talk</h1>
+    <nav>
+      <button><h1 class="active">Chats</h1></button>
+      <button><h1>Calls</h1></button>
+      <button><h1 id="Logo">Talkers</h1></button>
+      <!-- <button><img src="" alt="img"></button> -->
+      <button><h1>Play</h1></button>
+      <button><h1>Search</h1></button>
+    </nav>
+    <!-- <hr> -->
     <div class="main-container">
-      <div id="container" >
+      <div class="msg-box-1">
+          <button id="back">&lt;</button>
+          <!-- <button><img src="" alt="img"></button> -->
+          <div class="info">
+              <h1 class="name">ROBO</h1>
+          </div>
+          <!-- <h1 class="status">Seen</h1> -->
+      </div>
+      <!-- <hr> -->
+      <div id="container">
       </div>
       <form id="send-container">
         <input type="text" id="m">
-        <input type="submit" id="submitButton" value="submit" />
+        <input type="submit" id="submitButton" value="&gt;" />
       </form>
     </div>
   </div>
-
-  <!-- <ul id="messages"></ul> -->
 </body>
+
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
   crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment.min.js"></script>
+
 <script>
   let userName = "";
-  let room = "";
+  let room = "1";
 
-  while(userName == "" || userName == null){
+  while (userName == "" || userName == null) {
     userName = prompt("whats your name");
   }
-  while(room == "" || room == null){
+  while (room == "" || room == null) {
     room = prompt("password");
   }
 
@@ -117,10 +225,10 @@ h1{
   //send event that user has joined room
   socket.emit("join room", { username: userName, roomName: room });
   socket.emit("new user", {
-        value: document.getElementById("m").value,
-        user: userName,
+    value: document.getElementById("m").value,
+    user: userName,
 
-      });
+  });
 
   //receive data from server.
   socket.on('send data', (data) => {
@@ -142,8 +250,10 @@ h1{
       document.getElementById("m").value = "";
     });
   socket.on("chat message", (data) => {
-    console.log(data.data.user + ": " + data.id);
-    displayMessage(data);
+    if(data.data.value != ""){
+      console.log(data.data.user + ": " + data.id);
+      displayMessage(data);
+    }
   });
   socket.on("new user", (data) => {
     broadcast(data);
@@ -169,35 +279,35 @@ h1{
     div.innerText = authorClass + ":" + data.data.value;
     div.classList.add('message');
     // div.innerHTML =
-      // '<p class="' +
-      // authorClass +
-      // '">' +
-      // data.data.user +
-      // "</p>" +
-      // '<p class="message"> ' +
-      // data.data.value +
-      // "</p>";
+    // '<p class="' +
+    // authorClass +
+    // '">' +
+    // data.data.user +
+    // "</p>" +
+    // '<p class="message"> ' +
+    // data.data.value +
+    // "</p>";
     // div.appendChild(p);
     // li.appendChild(div);
 
     document.getElementById("container").appendChild(div);
     //scroll to the bottom
-    document.getElementById("container").scrollTo(0,document.getElementById("container").scrollHeight);
+    document.getElementById("container").scrollTo(0, document.getElementById("container").scrollHeight);
   }
 
-  function broadcast(data){
-    if(data.data.user != userName){
+  function broadcast(data) {
+    if (data.data.user != userName) {
 
       const div = document.createElement("div");
       div.className = "left";
       div.innerText = data.data.user + " has joined the chat.";
       div.classList.add('message');
-      
+
       document.getElementById("container").appendChild(div);
       //scroll to the bottom
-      document.getElementById("container").scrollTo(0,document.getElementById("container").scrollHeight);
+      document.getElementById("container").scrollTo(0, document.getElementById("container").scrollHeight);
     }
-}
+  }
 </script>
 
 </html>
