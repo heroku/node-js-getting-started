@@ -1,5 +1,5 @@
 import './App.css';
-import Signin from '/Users/rajusuthar/node-js-getting-started/src/Signin'
+import Signin from '/src/Signin'
 
 
 function App() {
