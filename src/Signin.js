@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Signin() {
   return (
@@ -43,7 +44,7 @@ export default function Signin() {
           <button className="w-100 btn btn-lg btn-primary" type="submit">
             Sign in
           </button>
-          <p className="mt-4 mb-3 text-muted">New To Talkers? <a href="/">Sign Up</a></p>
+          <p className="mt-4 mb-3 text-muted">New To Talkers? <Link to="/users">Sign Up</Link></p>
           <p className="mt-3 mb-3 text-muted">© 2017–2021</p>
         </form>
       </main>
