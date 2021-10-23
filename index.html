@@ -1,28 +1,40 @@
 <html>
 <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet" />
 <style>
-
-@import url('https://fonts.googleapis.com/css2?family=Festive&family=Rampart+One&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Festive&family=Rampart+One&display=swap');
 
   * {
     margin: 0%;
     padding: 0%;
   }
 
-  body{
+  body {
     background-color: rgb(223, 249, 255);
     /* background-color: rgb(255, 255, 255); */
   }
-  
-  button{
+
+  #container2 {
+    display: none;
+  }
+
+  button {
     cursor: pointer;
   }
 
-  .active{
+  .active {
     color: rgb(0, 0, 120);
   }
-  #talkeractive{
+
+  #talkeractive {
     color: rgb(200, 0, 0);
+  }
+
+  #signing-page #Logo {
+    font-size: 10vw;
+    text-align: center;
+    padding: 1%;
+    /* font-family: 'ZCOOL KuaiLe', cursive; */
+    color: rgb(120, 0, 0);
   }
 
   #Logo {
@@ -32,7 +44,8 @@
     /* font-family: 'ZCOOL KuaiLe', cursive; */
     color: rgb(120, 0, 0);
   }
-  #Logo:hover{
+
+  #Logo:hover {
     color: rgb(200, 0, 0);
   }
 
@@ -108,29 +121,29 @@
     text-align: center;
   }
 
-  nav{
+  nav {
     display: flex;
-    justify-content:space-between;
-    align-items:center;
-    background:none;
+    justify-content: space-between;
+    align-items: center;
+    background: none;
   }
 
-  nav button{
+  nav button {
     height: 10vw;
     width: 20vw;
     font-size: 2.5vw;
     border-style: none;
-    background:none;
+    background: none;
     font-family: 'Rampart One', cursive;
     color: rgb(0, 0, 0);
   }
 
-  nav button:hover{
+  nav button:hover {
     color: rgb(0, 0, 120);
     /* color: rgb(200, 200, 200); */
   }
 
-  .msg-box-1{
+  .msg-box-1 {
     display: flex;
     height: 10vw;
     text-align: center;
@@ -142,13 +155,13 @@
     /* color: rgb(63, 63, 63); */
   }
 
-  .msg-box-1 img{
+  .msg-box-1 img {
     width: 10vw;
   }
 
-  #back{
+  #back {
     font-size: 4vw;
-    background:none;
+    background: none;
     border-style: none;
     height: 8vw;
     padding-left: 1%;
@@ -156,53 +169,82 @@
     font-family: 'Festive', cursive;
   }
 
-  .info{
+  .info {
     display: flex;
     flex-direction: column;
     width: 80vw;
   }
 
-  .status{
+  .status {
     width: 15vw;
     text-align: center;
   }
 
-  .name{
+  .name {
     text-align: start;
     padding: 0 1%;
   }
 
+  .info1 {
+    width: 100vw;
+  }
+
+  #main-page {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #main-page button {
+    margin: 5px 1px;
+  }
 </style>
 
 <body>
+  <!-- <div id="container1">
+    <h1 id="Logo">
+      Talkers
+    </h1>
+    <form id="sign-up">
+      <input id="username" type="username" placeholder="Enter your username">
+      <input id="password" type="password" placeholder="Enter your password">
+      <input id="password2" type="password" placeholder="Confirm your password">
+      <input type="submit" value="Sign Up" />
+    </form>
+  </div> -->
   <div id="container1">
+    <h1 id="Logo">
+      Talkers
+    </h1>
+    <form id="sign-in">
+      <input id="username" type="username" placeholder="Enter your username">
+      <input id="password" type="password" placeholder="Enter your password">
+      <input type="submit" value="Sign In" />
+      <h4>New to talkers?</h4>
+      <button onclick="signup()">Sign up</button>
+    </form>
+  </div>
+
+  <!-- <div id="container1">
     <nav>
-      <button><h1 class="active">Chats</h1></button>
+      <button onclick="back()" ><h1 >Chats</h1></button>
       <button><h1>Calls</h1></button>
       <button><h1 id="Logo">Talkers</h1></button>
-      <!-- <button><img src="" alt="img"></button> -->
       <button><h1>Play</h1></button>
-      <button><h1>Search</h1></button>
+      <button onclick="search()" ><h1 class="active">Search</h1></button>
     </nav>
-    <!-- <hr> -->
+
     <div class="main-container">
-      <div class="msg-box-1">
-          <button id="back">&lt;</button>
-          <!-- <button><img src="" alt="img"></button> -->
-          <div class="info">
-              <h1 class="name">ROBO</h1>
-          </div>
-          <!-- <h1 class="status">Seen</h1> -->
-      </div>
-      <!-- <hr> -->
-      <div id="container">
-      </div>
-      <form id="send-container">
-        <input type="text" id="m">
-        <input type="submit" id="submitButton" value="&gt;" />
+      <form id="search">
+        <input type="text" id="finduser" placeholder="Enter Username To Search">
+        <input type="submit" value="Search">
       </form>
+      <div id="main-page">
+          <button class="msg-box-1" class="info1" onclick="showchat('id1')">
+              <h1 class="name">ROBO</h1>
+          </button>
+      </div>
     </div>
-  </div>
+  </div> -->
 </body>
 
 <script src="/socket.io/socket.io.js"></script>
@@ -211,33 +253,41 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment.min.js"></script>
 
 <script>
-  let userName = "";
-  let room = "1";
 
-  while (userName == "" || userName == null) {
-    userName = prompt("whats your name");
-  }
-  while (room == "" || room == null) {
-    room = prompt("password");
-  }
+  let userName = "";
+  let room = "main";
 
   let ID = "";
   var socket = io();
   //send event that user has joined room
   socket.emit("join room", { username: userName, roomName: room });
-  socket.emit("new user", {
-    value: document.getElementById("m").value,
-    user: userName,
 
-  });
-
-  //receive data from server.
-  socket.on('send data', (data) => {
-    ID = data.id; //ID will be used later
-    console.log(" my ID:" + ID);
-  })
   $("#m").focus();
   //when form is submitted, capture the input value and then send it to server
+
+  document
+    .getElementById("sign-in")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+      socket.emit("check password", {
+        username: document.getElementById("username").value,
+        password: document.getElementById("password").value,
+      });
+    });
+
+
+
+
+
+  // document
+  //   .getElementById("search")
+  //   .addEventListener("submit", function (event) {
+  //     event.preventDefault();
+  //     socket.emit("search username", {
+  //       username: document.getElementById("finduser").value,
+  //     });
+  //   });
+
   document
     .getElementsByTagName("form")[0]
     .addEventListener("submit", function (event) {
@@ -245,13 +295,12 @@
       socket.emit("chat message", {
         value: document.getElementById("m").value,
         user: userName,
-
       });
 
       document.getElementById("m").value = "";
     });
   socket.on("chat message", (data) => {
-    if(data.data.value != ""){
+    if (data.data.value != "") {
       console.log(data.data.user + ": " + data.id);
       displayMessage(data);
     }
@@ -259,6 +308,148 @@
   socket.on("new user", (data) => {
     broadcast(data);
   });
+  socket.on("chat", (data) => {
+    document.getElementById("container1").innerHTML = `  <div id="container1">
+    <nav>
+      <button onclick="back()" ><h1 class="active">Chats</h1></button>
+      <button><h1>Calls</h1></button>
+      <button><h1 id="Logo">Talkers</h1></button>
+      <button><h1>Play</h1></button>
+      <button onclick="search()"><h1>Search</h1></button>
+    </nav>
+
+    <div class="main-container">
+      <div id="main-page">
+          <button class="msg-box-1" class="info1" onclick="showchat()">
+              <h1 class="name">ROBO</h1>
+          </button>
+          <button class="msg-box-1" class="info1">
+              <h1 class="name">ROBO</h1>
+          </button>
+          <button class="msg-box-1" class="info1">
+              <h1 class="name">ROBO</h1>
+          </button>
+          <button class="msg-box-1" class="info1">
+              <h1 class="name">ROBO</h1>
+          </button>
+      </div>
+    </div>
+  </div>`;
+  });
+
+  function signup(){
+    document.getElementById("container1").innerHTML = `  <div id="container1">
+    <h1 id="Logo">
+      Talkers
+    </h1>
+    <form id="sign-up">
+      <input id="username" type="username" placeholder="Enter your username">
+      <input id="password" type="password" placeholder="Enter your password">
+      <input id="password2" type="password" placeholder="Confirm your password">
+      <input type="submit" value="Sign Up" />
+    </form>
+  </div>`;
+
+  document
+    .getElementById("sign-up")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+      socket.emit("sign up", {
+        username: document.getElementById("username").value,
+        password: document.getElementById("password").value,
+        password2: document.getElementById("password2").value,
+      });
+    });
+  }
+
+  function back(){
+    document.getElementById("container1").innerHTML = `  <div id="container1">
+    <nav>
+      <button onclick="back()" ><h1 class="active">Chats</h1></button>
+      <button><h1>Calls</h1></button>
+      <button><h1 id="Logo">Talkers</h1></button>
+      <button><h1>Play</h1></button>
+      <button onclick="search()" ><h1>Search</h1></button>
+    </nav>
+
+    <div class="main-container">
+      <div id="main-page">
+          <button class="msg-box-1" class="info1" onclick="showchat()">
+              <h1 class="name">ROBO</h1>
+          </button>
+          <button class="msg-box-1" class="info1">
+              <h1 class="name">ROBO</h1>
+          </button>
+          <button class="msg-box-1" class="info1">
+              <h1 class="name">ROBO</h1>
+          </button>
+          <button class="msg-box-1" class="info1">
+              <h1 class="name">ROBO</h1>
+          </button>
+      </div>
+    </div>
+  </div>`;
+  }
+
+  function search() {
+    document.getElementById("container1").innerHTML = `<div id="container1">
+    <nav>
+      <button><h1 >Chats</h1></button>
+      <button><h1>Calls</h1></button>
+      <button><h1 id="Logo">Talkers</h1></button>
+      <button><h1>Play</h1></button>
+      <button onclick="search()" ><h1 class="active">Search</h1></button>
+    </nav>
+
+    <div class="main-container">
+      <form id="search">
+        <input type="text" id="finduser" placeholder="Enter Username To Search">
+        <input type="submit" value="Search">
+      </form>
+      <div id="main-page">
+      </div>
+    </div>
+  </div>`;
+  }
+
+
+  function showchat() {
+    document.getElementById("container1").innerHTML = `  <div id="container1">
+    <nav>
+      <button>
+        <h1 class="active">Chats</h1>
+      </button>
+      <button>
+        <h1>Calls</h1>
+      </button>
+      <button>
+        <h1 id="Logo">Talkers</h1>
+      </button>
+      <button>
+        <h1>Play</h1>
+      </button>
+      <button>
+        <h1>Search</h1>
+      </button>
+    </nav>
+
+    <div class="main-container">
+      <div class="msg-box-1">
+        <button id="back" onclick="back()">&lt;</button>
+        <div class="info">
+          <h1 class="name">ROBO</h1>
+        </div>
+        <h1 class="status">Seen</h1>
+      </div>
+      <div id="container">
+      </div>
+      <form id="send-container">
+        <input type="text" id="m">
+        <input type="submit" id="submitButton" value="&gt;" />
+      </form>
+    </div>
+  </div>`;
+  }
 
   function displayMessage(data) {
     let authorClass = "";
@@ -280,19 +471,19 @@
     // div.innerText = authorClass + ":" + data.data.value;
     div.innerText = data.data.value;
     div.classList.add('message');
-    // div.innerHTML =
-    // '<p class="' +
-    // authorClass +
-    // '">' +
-    // data.data.user +
-    // "</p>" +
-    // '<p class="message"> ' +
-    // data.data.value +
-    // "</p>";
-    // div.appendChild(p);
-    // li.appendChild(div);
+    div.innerHTML =
+      // '<p class="' +
+      // authorClass +
+      // '">' +
+      // data.data.user +
+      // "</p>" +
+      // '<p class="message"> ' +
+      // data.data.value +
+      // "</p>";
+      // div.appendChild(p);
+      // li.appendChild(div);
 
-    document.getElementById("container").appendChild(div);
+      document.getElementById("container").appendChild(div);
     //scroll to the bottom
     document.getElementById("container").scrollTo(0, document.getElementById("container").scrollHeight);
   }

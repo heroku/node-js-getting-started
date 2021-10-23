@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/talkers/static/css/main.a617e044.chunk.css",
+    "main.js": "/talkers/static/js/main.56d3071a.chunk.js",
+    "main.js.map": "/talkers/static/js/main.56d3071a.chunk.js.map",
+    "runtime-main.js": "/talkers/static/js/runtime-main.dc4abc7f.js",
+    "runtime-main.js.map": "/talkers/static/js/runtime-main.dc4abc7f.js.map",
+    "static/js/2.c7b87813.chunk.js": "/talkers/static/js/2.c7b87813.chunk.js",
+    "static/js/2.c7b87813.chunk.js.map": "/talkers/static/js/2.c7b87813.chunk.js.map",
+    "static/js/3.7005fc62.chunk.js": "/talkers/static/js/3.7005fc62.chunk.js",
+    "static/js/3.7005fc62.chunk.js.map": "/talkers/static/js/3.7005fc62.chunk.js.map",
+    "index.html": "/talkers/index.html",
+    "static/css/main.a617e044.chunk.css.map": "/talkers/static/css/main.a617e044.chunk.css.map",
+    "static/js/2.c7b87813.chunk.js.LICENSE.txt": "/talkers/static/js/2.c7b87813.chunk.js.LICENSE.txt",
+    "static/media/logo.6ce24c58.svg": "/talkers/static/media/logo.6ce24c58.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.dc4abc7f.js",
+    "static/js/2.c7b87813.chunk.js",
+    "static/css/main.a617e044.chunk.css",
+    "static/js/main.56d3071a.chunk.js"
+  ]
+}
