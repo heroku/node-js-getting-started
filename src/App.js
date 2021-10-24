@@ -1,25 +1,25 @@
-import './App.css';
 import Signin from './Signin';
+import Signup from './Signup';
+import Navbar from './Navbar';
 import React from "react";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  // Link
 } from "react-router-dom";
-
 
 function App() {
   return (
     <Router>
       <Switch>
-        <Route path="/users">
-          <div>
-            <h1>Nooooooooooooooooooooo</h1>
-            <Link to="/">Sign Up</Link>
-          </div>
+        <Route exact path="/Signup">
+          <Signup/>
         </Route>
-        <Route path="/">
+        <Route exact path="/main-page">
+          <Navbar/>
+        </Route>
+        <Route exact path="/">
           <Signin/>
         </Route>
       </Switch>
