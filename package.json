@@ -1,18 +1,24 @@
 {
-  "name": "node-js-getting-started",
-  "version": "0.3.0",
-  "description": "A sample Node.js app using Express 4",
+  "name": "octa-hacks-4.0",
+  "version": "1.0.0",
+  "description": "First Hackthon project",
   "engines": {
-    "node": "14.x"
+    "node": "14.16.0"
   },
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "node test.js"
+    "start": "node app.js",
   },
   "dependencies": {
-    "ejs": "^3.1.5",
-    "express": "^4.15.2"
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "handlebars": "^4.7.7",
+    "hbs": "^4.1.2",
+    "mongodb": "^4.1.4",
+    "mongoose": "^6.0.12",
+    "nodemon": "^2.0.15",
+    "path": "^0.12.7"
   },
   "devDependencies": {
     "got": "^11.3.0",
@@ -20,12 +26,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/heroku/node-js-getting-started"
+    "url": "git+https://github.com/J0SAL/Octa-Hacks-4.0.git"
   },
   "keywords": [
     "node",
     "heroku",
     "express"
   ],
-  "license": "MIT"
+  "license": "ISC"
 }
