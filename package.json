@@ -3,7 +3,7 @@
   "version": "0.3.0",
   "description": "A sample Node.js app using Express 4",
   "engines": {
-    "node": "14.x"
+    "node": "16.x"
   },
   "main": "index.js",
   "scripts": {
@@ -11,6 +11,7 @@
     "test": "node test.js"
   },
   "dependencies": {
+    "all": "^0.0.0",
     "ejs": "^3.1.5",
     "express": "^4.15.2"
   },
