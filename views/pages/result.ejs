@@ -4,23 +4,7 @@
     <%- include ("../partials/header.ejs") %>
   </head>
 
-
-    <script>
-
-
-      var Number = 4;
-      
-      
-      function AddActivity() {
-      
-        Number += 1;
-      
-      
-        document.querySelector("table").innerHTML += '<tr>    <td> <input class="textbox" size="4" id="Name' + Number + '"</td> <td> <input class="textbox" size="4" id="Width' + Number + '"</td> <td> <input class="textbox" size="4" id="Height' + Number + '"</td>  <td> <input class="textbox" size="4" id="Colour' + Number + '"> </td> </tr>';
-        
-      }
-      
-        </script>
+  <body>
 
     <style>
     body{
@@ -64,7 +48,7 @@ table{
       padding: 10px 0px 10px 10px;
       font-size: 100%;
       border: 1px solid #cbcdcd; 
-    }  */
+    }  
 
 
 .textbox {
@@ -74,50 +58,62 @@ table{
   margin: 10px 0px 10px 5px;
 }
 
-.button1 {
-  position: relative;
-  background-color: #b51119;
-  border: 1px;
-  border-color: #e8c3c6;
-  color: white;
-  padding: 15px 10px;
-  text-align: center;
-  text-decoration: none;
-  font-size: 125%;
-  font-family: 'Roboto', sans serif;
-  margin: 4px 0px;
-  cursor: pointer;
-  top: 300px;
-  left: 27px;
-  border-radius: 8px;
-  resize: none;
-}
-
 
     </style>
 
-    <body>
+<div style="background-color: red;
+position: absolute;
+height: 40px;
+width: 60px;
+top: 350px;
+left: 73px;
+padding: 10px 0px 0px 0px;
+color: white;
+text-align: center; ">Bob</div>
+
+<div style="background-color: black;
+position: absolute;
+height: 40px;
+width: 100px;
+top: 350px;
+left: 170px;
+padding: 10px 0px 0px 0px;
+color: white;
+text-align: center; ">Boxie</div>
+
+<div style="background-color: blue;
+position: absolute;
+height: 70px;
+width: 50px;
+top: 350px;
+left: 310px;
+padding: 22px 0px 0px 0px;
+color: white;
+text-align: center; ">Rex</div>
+
+
+
+
 
     <%- include ("../partials/nav.ejs") %>
     <div class="container">
-      <h2>Database</h2>
+      <h2>Database Results</h2>
       <table>
           <th>Name</th>
-          <th>Colour</th>
-          <th>Width</th> 
-          <th>Height</th>
+          <th>Width</th>
+          <th>Height</th>  
+          <th>Color</th> 
       </table>
-      <% rows.forEach(function(r) { %>
+      <% res.forEach(function(r) { %>
        <table>
         <tr>
-          <th><a href="/results"><%= r.name %></a></th>
+          <th><%= r.name %></th>
+          <th><%= r.width %></th>
+          <th><%= r.height %></th>
           <th><%= r.colour %></th>
       </tr> 
       </thead>
     </table>
-      <% }); %>
-
-      <button type="button" class="button1" onclick="AddActivity()" style="margin: 0 2px 0 2px" >Add Rectangle</button>
-  
+    <% }); %>
   </body>
 </html>
