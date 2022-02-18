@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <title> Grade Calculator</title>
+
+    <link href="/stylesheets/calculator.css" rel="stylesheet" type="text/css" />
+    <link rel="icon" href="favicon.ico?v=2">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <script src="calculator.js"></script>
+  </head>
+
+  <style>
+    body{
+      background-color: #a6192d;
+      margin: 0px;
+      position: relative;
+    } 
+  </style>  
+
+
+  <body>
+
+  
+  <div class="all">
+
+    <div class="d">
+		</div>
+
+    <div class="b">
+		</div>
+
+    <div class="c">
+		</div>
+
+    <div  class = "a" >
+
+
+    <p1> Activities </p1>
+    <p2> Give grades to the numeric activities: </p2> 
+
+    <table>
+      <tr>
+        <th> Name </th>
+        <th> Short Name </th>
+        <th> Weight </th>
+        <th> Grade</th>
+        <th> Percent </th>
+      </tr>
+      <tr>
+        <td> Activity 1 </td>
+        <td> A1 </td>
+        <td> <input type="text" class="textbox" size="2" id="Weight1">   </td>
+        <td> <input type="text" class="textbox" size="2" id="Top1" onkeyup="getInputValue()" >
+        <p3> / </p3> 
+        <input type="text" class="textbox" size="2" id="Bottom1" onkeyup="getInputValue()" >       </td>
+        <td> <p6 id="P1"> </p6> </td>
+      </tr>
+      <tr>
+        <td> Activity 2 </td>
+        <td> A2 </td>
+        <td> <input type="text" class="textbox" size="2" id="Weight2">   </td>
+        <td> <input type="text" class="textbox" size="2" id="Top2" onkeyup="getInputValue()">
+        <p3> / </p3> 
+        <input type="text" class="textbox" size="2" id="Bottom2" onkeyup="getInputValue()">    </td>
+        <td> <p6 id="P2"> </p6> </td>
+      </tr>
+      <tr>
+        <td> Activity 3 </td>
+        <td> A3 </td>
+        <td> <input type="text" class="textbox" size="2" id="Weight3">      </td>
+        <td> <input type="text" class="textbox" size="2" id="Top3" onkeyup="getInputValue()">    
+        <p3> / </p3> 
+        <input type="text" class="textbox" size="2" id="Bottom3" onkeyup="getInputValue()">     </td>
+        <td> <p6 id="P3"> </p6> </td>
+      </tr>
+      <tr>
+        <td> Activity 4 </td>
+        <td> A4 </td>
+        <td> <input type="text" class="textbox" size="2" id="Weight4">      </td>
+        <td> <input type="text" class="textbox" size="2" id="Top4" onkeyup="getInputValue()">     
+        <p3> / </p3> 
+        <input type="text" class="textbox" size="2" id="Bottom4" onkeyup="getInputValue()">    </td>
+        <td> <p6 id="P4"> </p6> </td>
+      </tr>
+      <tr>
+        
+      </tr>
+    </table>
+
+    
+  
+    <button type="button" class="button1" onclick="AddActivity()" style="margin: 0 2px 0 2px" >ADD ACTIVITY</button>
+  
+    <button type="button" class="button2" onclick="TotalWeight()">WEIGHTED</button>
+    
+    <button type="button" class="button3" onclick="TotalMean()">MEAN</button>
+
+    
+
+    <p5> Result </p5>
+
+    <p7 id="Print"> </p7>
+
+    </div>
+
+    <h1> Grade Calculator </h1>
+    
+  </body>
+</html>
