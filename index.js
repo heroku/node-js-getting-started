@@ -2,11 +2,20 @@ const express = require('express')
 const path = require('path')
 const PORT = process.env.PORT || 5000
 
+// const { Pool } = require('pg');
+// var pool;
+// pool = new Pool({
+//   connectionString: process.env.DATABASE_URL
+
+// })
+
 const { Pool } = require('pg');
 var pool;
 pool = new Pool({
   connectionString: 'postgres://postgres:123456789@localhost/rectangle'
 })
+
+
 
 var app = express();
 app.use(express.json());
@@ -36,16 +45,6 @@ app.get('/results', (req,res) => {
   })
 
 });
-// app.post('/adduser', (req,res)=>{
-//   var uname = req.body.uname;
-//   var age = req.body.age;
-//   res.send('username: ${uname}, age: ${age}');
-// });
-// app.get('/users/:id', (req,res)=>{
-//   var uid = req.params.id;
-//   console.log(req.params.id);
-//   //search the database using the uid
-//   res.send("got it!");
-// });
+
 
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
