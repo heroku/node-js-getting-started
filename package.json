@@ -1,7 +1,7 @@
 {
-  "name": "node-js-getting-started",
+  "name": "smart-ras",
   "version": "0.3.0",
-  "description": "A sample Node.js app using Express 4",
+  "description": "A Node.js app for smart RAS work at Radmantis",
   "engines": {
     "node": "14.x"
   },
