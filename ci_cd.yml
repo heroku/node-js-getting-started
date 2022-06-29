@@ -5,4 +5,4 @@ ci:
     - npm test
 cd:
   provider: github-actions
-  workflow_file_name: mai.yml
+  workflow_file_name: main.yml
