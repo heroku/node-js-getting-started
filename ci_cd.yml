@@ -1,8 +1,6 @@
 ci:
-  language: node
-  steps:
-    - npm install
-    - npm test
+  provider: github-actions
+  workflow_file_name: node.js.yml
 cd:
   provider: github-actions
   workflow_file_name: cd.yml
