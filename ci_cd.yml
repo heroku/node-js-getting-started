@@ -1,0 +1,8 @@
+ci:
+  provider: github-actions
+  workflow_file_name: node.js.yml
+cd:
+  merge: auto
+  branch: main
+  provider: github-actions
+  workflow_file_name: cd.yml
