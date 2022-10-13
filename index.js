@@ -15,7 +15,7 @@ app.get('/loginSenior', async (req, res) => {
   console.log(req.query)
   const browser = await puppeteer.launch({
     executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
-    headless: true,
+    headless: false,
     ignoreHTTPSErrors: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   })
@@ -43,14 +43,18 @@ app.get('/loginSenior', async (req, res) => {
 
   await navigationPromise
 
-  await page.waitForSelector('.app-side-menu > .no-scroll-child-container > #menu-item-2 > #menu-item-Favoritos > .menu-item')
-  await page.click('.app-side-menu > .no-scroll-child-container > #menu-item-2 > #menu-item-Favoritos > .menu-item')
+  await page.waitForSelector('.profile-side-menu > #menu-item-profile > app-menu-item > #menu-item-Dados\\ do\\ usu\\E1rio > .menu-item')
+  await page.click('.profile-side-menu > #menu-item-profile > app-menu-item > #menu-item-Dados\\ do\\ usu\\E1rio > .menu-item')
+
+  await page.waitForSelector('.no-scroll-child-container > #menu-item-3 > #menu-item-Gest\\E3o\\ de\\ Pessoas\\ \\|\\ HCM > .menu-item > .fa')
+  await page.click('.no-scroll-child-container > #menu-item-3 > #menu-item-Gest\\E3o\\ de\\ Pessoas\\ \\|\\ HCM > .menu-item > .fa')
 
   await page.waitForSelector('.menu-apps > #menu-apps-list-items > #apps-menu-item-0 > span > .pull-left')
   await page.click('.menu-apps > #menu-apps-list-items > #apps-menu-item-0 > span > .pull-left')
 
-  await page.waitForSelector('.menu-apps > #menu-apps-list-items > #apps-menu-item-0 > span > .pull-left')
-  await page.click('.menu-apps > #menu-apps-list-items > #apps-menu-item-0 > span > .pull-left')
+  await page.waitForSelector('.menu-apps > #menu-apps-list-items > #apps-menu-item-1 > span > .pull-left')
+  await page.click('.menu-apps > #menu-apps-list-items > #apps-menu-item-1 > span > .pull-left')
+
   const cookies = await page.cookies()
 
   const token = cookies.find((cookie) => cookie.name === 'com.senior.token')
@@ -64,6 +68,6 @@ app.get('/loginSenior', async (req, res) => {
   }
 })
 
-app.listen(process.env.PORT, () => {
-  console.log('Express server listening on port   ' + process.env.PORT, app.settings.env)
+app.listen(PORT, () => {
+  console.log('Express server listening on port   ' + PORT, app.settings.env)
 })
