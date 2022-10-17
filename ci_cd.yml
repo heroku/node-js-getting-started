@@ -1,8 +1,0 @@
-ci:
-  provider: github-actions
-  workflow_file_name: node.js.yml
-cd:
-  branch: ci-cd
-  heroku_encrypted_api_key: HEROKU_API_KEY
-  heroku_mail: legralisandro@gmail.com
-  heroku_app: cubalatino-ci-cd-testing
