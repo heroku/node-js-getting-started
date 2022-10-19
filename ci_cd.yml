@@ -1,0 +1,12 @@
+ci:
+  language: node:16-slim
+  steps:
+    - npm install
+    - npm run build --if-present
+    - npm test
+  on: push
+cd:
+  heroku_app: cubalatino-ci-cd-testing
+  heroku_mail: legralisandro@gmail.com
+
+  branch: main
