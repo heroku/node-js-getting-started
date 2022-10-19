@@ -1,9 +1,0 @@
-ci:
-  provider: github-actions
-  workflow_file_name: node.js.yml
-  on: push
-cd:
-  provider: github-actions
-  workflow_file_name: cd.yml
-
-  branch: main
