@@ -23,6 +23,3 @@ jobs:
           package: ./
           # If set to true, the version will be tagged and committed. Same behaviour as git-tag-version
           git-tag-version: false
-          
-      - name: Retrieve tags
-        run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
