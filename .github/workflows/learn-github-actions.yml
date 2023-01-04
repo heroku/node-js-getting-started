@@ -10,3 +10,13 @@ jobs:
           node-version: '14'
       - run: npm install -g bats
       - run: bats -v
+
+      - name: NPM-Version
+        uses: Reedyuk/NPM-Version@1.1.1
+        with:
+          # This will be the version you want to set in the package.json file
+          version: '0.3.1'
+          # The location of the package.json file, defaults to current directory.
+          package: ./
+          # If set to true, the version will be tagged and committed. Same behaviour as git-tag-version
+          git-tag-version: true
