@@ -1,25 +1,25 @@
 name: learn-github-actions
 on: [push]
 jobs:
-  check-bats-version:
+  build:
     runs-on: ubuntu-latest
-    outputs:
-      head_tag: ${{ steps.check.outputs.head_tag }}
-      foreign_pr: ${{ steps.check.outputs.foreign_pr }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@master
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+          
       - uses: actions/setup-node@v3
         with:
           node-version: '14'
+          
       - run: npm install -g bats
       - run: bats -v
       
       - name: NPM-Version
         uses: Reedyuk/NPM-Version@1.1.1
         with:
-          # This will be the version you want to set in the package.json file
           version: '0.3.1'
-          # The location of the package.json file, defaults to current directory.
           package: ./
-          # If set to true, the version will be tagged and committed. Same behaviour as git-tag-version
-          git-tag-version: false
+          git-tag-version: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
