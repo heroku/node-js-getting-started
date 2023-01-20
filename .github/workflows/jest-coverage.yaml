@@ -1,0 +1,26 @@
+name: "coverage"
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  coverage:
+    permissions:
+      checks: write
+      pull-requests: write
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: build
+        run: npm install
+      - name: test
+        run: npx jest --ci --json --coverage --testLocationInResults --outputFile=report.json
+      - name: Run Code Coverage
+        # https://github.com/marketplace/actions/jest-coverage-report
+        uses: ArtiomTr/jest-coverage-report-action@9f733792c44d05327cb371766bf78a5261e43936
+        with:
+          output: comment, report-markdown
+          coverage-file: ./report.json
+          base-coverage-file: ./report.json
+          threshold: 0
