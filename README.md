@@ -14,6 +14,7 @@ $ cd node-js-getting-started
 $ npm install
 $ npm start
 ```
+Change .env.example to .env and check the variable values.
 
 Your app should now be running on [localhost:5000](http://localhost:5000/).
 
