@@ -1,0 +1,90 @@
+@for $i from 1 through 50 {
+  // 网格布局
+  .grid-cols-#{$i}{
+    grid-template-columns: repeat(#{$i}, minmax(0, 1fr))
+  }
+
+  // 列间隔
+  .gap-x-#{$i}{
+    column-gap: #{$i}px;
+  }
+
+  // 行间隔
+  .gap-y-#{$i}{
+    row-gap: #{$i}px;
+  }
+
+  // 跨列
+  .col-span-#{$i}{
+    grid-column: span #{$i} / span #{$i};
+  }
+
+  .col-start-#{$i}{
+    grid-column-start: #{$i};
+  }
+
+  .col-end-#{$i}{
+    grid-column-end: #{$i};
+  }
+
+  // 跨行
+  .row-span-#{$i}{
+    grid-row: span #{$i} / span #{$i};
+  }
+
+  .row-start-#{$i}{
+    grid-row-start: #{$i};
+  }
+
+  .row-end-#{$i}{
+    grid-row-end: #{$i};
+  }
+
+  .grid-rows-#{$i}{
+    grid-template-rows: repeat(#{$i}, minmax(0, 1fr));
+  }
+}
+
+// 网格布局
+.grid {display: grid;}
+.gap-0{gap: 0px;}
+.col-auto{grid-column: auto}
+.col-span-full{grid-column: 1 / -1;}
+.col-start-auto{grid-column-start: auto;}
+.col-end-auto{grid-column-end: auto}
+.row-start-auto{grid-row-start: auto;}
+.row-end-auto{grid-row-end: auto}
+
+.grid-flow-row{grid-auto-flow: row;}
+.grid-flow-col{grid-auto-flow: column;}
+.grid-flow-row-dense{grid-auto-flow: row dense;}
+.grid-flow-col-dense{grid-auto-flow: column dense;}
+
+.auto-cols-auto{grid-auto-columns: auto;}
+.auto-cols-min{grid-auto-columns: min-content;}
+.auto-cols-max{grid-auto-columns: max-content;}
+.auto-cols-fr{grid-auto-columns: minmax(0, 1fr);}
+
+.auto-rows-auto	{grid-auto-rows: auto;}
+.auto-rows-min{grid-auto-rows: min-content;}
+.auto-rows-max{grid-auto-rows: max-content;}
+.auto-rows-fr{grid-auto-rows: minmax(0, 1fr);}
+
+.place-content-center{place-content: center;}
+.place-content-start{place-content: start;}
+.place-content-end{place-content: end;}
+.place-content-betwee{place-content: space-between;}
+.place-content-around{place-content: space-around;}
+.place-content-evenly{place-content: space-evenly;}
+.place-content-stretch{place-content: stretch;}
+
+.place-items-start{place-items: start;}
+.place-items-end{place-items: end;}
+.place-items-center	{place-items: center;}
+.place-items-stretch{place-items: stretch;}
+
+.place-self-auto{place-self: auto;}
+.place-self-start{place-self: start;}
+.place-self-end	{place-self: end;}
+.place-self-center{place-self: center;}
+.place-self-stretch{place-self: stretch;}

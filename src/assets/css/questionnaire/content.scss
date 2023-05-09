@@ -1,0 +1,79 @@
+$selectedColor: #f6f7ff;
+$lighterBlue: #409EFF;
+
+.quest-content {
+  padding: 10px;
+  border-left: 1px solid #f1e8e8;
+  border-right: 1px solid #f1e8e8;
+  box-sizing: border-box;
+}
+
+.center-scrollbar {
+  box-sizing: border-box;
+}
+
+.center-board-row {
+  display: block;
+  padding: 12px 12px 15px 12px;
+  box-sizing: border-box;
+  & > .el-form {
+    // 69 = 12+15+42
+    height: calc(100vh - 69px);
+  }
+}
+.empty-info{
+  position: absolute;
+  top: 46%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 18px;
+  color: #ccb1ea;
+  letter-spacing: 4px;
+}
+
+
+.drawing-board {
+  height: 100%;
+  position: relative;
+  .components-body {
+    padding: 0;
+    margin: 0;
+    font-size: 0;
+  }
+  .sortable-ghost {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    &::before {
+      content: " ";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 3px;
+      background: rgb(89, 89, 223);
+      z-index: 2;
+    }
+  }
+  .components-item.sortable-ghost {
+    width: 100%;
+    height: 60px;
+    background-color: $selectedColor;
+  }
+  .active-from-item {
+    & > .el-form-item{
+      background: $selectedColor;
+      border-radius: 6px;
+    }
+    & > .drawing-item-copy, & > .drawing-item-delete{
+      display: initial;
+    }
+    & > .component-name{
+      color: $lighterBlue;
+    }
+  }
+  .el-form-item{
+    margin-bottom: 15px;
+  }
+}

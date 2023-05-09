@@ -1,0 +1,289 @@
+@import "./grid.scss";
+@import "./flex.scss";
+// https://fontawesome.dashgame.com/
+@import "./fontAwesome/css/font-awesome.css";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: none !important;
+}
+
+:root {
+  --app-color-white: #ffffff;
+  --app-bg-main-color: #ffffff;
+  --app-bg-color: #f5f5ff;
+  --app-border-color-light: #f1f2f3;
+  --app-color-primary-lighter: #ecf5ff;
+  --app-color-success-lighter: #f0f9eb;
+  --app-color-warning-lighter: #fdf6ec;
+  --app-color-danger-lighter: #fef0f0;
+  --app-color-dark-hover: #0000001a;
+  --app-color-menu-hover: rgba(0, 0, 0, 0.2);
+  --app-color-user-hover: rgba(0, 0, 0, 0.04);
+}
+
+html,
+body,
+#app {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimSun, sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  background-color: var(--app-bg-main-color);
+  font-size: 14px;
+  overflow: hidden;
+  position: relative;
+}
+
+.w100 {
+  width: 100% !important;
+}
+
+.h100 {
+  height: 100% !important;
+}
+
+.vh100 {
+  height: 100vh !important;
+}
+
+.vw100 {
+  height: 100vw !important;
+}
+
+.max100vh {
+  max-height: 100vh !important;
+}
+
+.min100vh {
+  min-height: 100vh !important;
+}
+
+/* layout
+------------------------------- */
+.layout-container {
+  margin-left: 5px;
+  width: 100%;
+  height: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  width: 6px;
+  //background: var(--app-bg-color);
+  -webkit-border-radius: 2em;
+  -moz-border-radius: 2em;
+  border-radius: 2em;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--app-color-dark-hover);
+  background-clip: padding-box;
+  min-height: 28px;
+  -webkit-border-radius: 2em;
+  -moz-border-radius: 2em;
+  border-radius: 2em;
+  transition: background-color .3s;
+  cursor: pointer;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--app-color-menu-hover)
+}
+
+.fwb {
+  font-weight: bold;
+}
+
+.fwn {
+  font-weight: normal;
+}
+
+.btn {
+  transition: .2s;
+}
+
+.btn_a {
+  transform: scale(1);
+}
+
+.btn_a:active {
+  // opacity: 0.8;
+  transform: scale(1.02);
+}
+
+.p-br {
+  padding: 20px;
+  border-radius: 24px;
+}
+
+.f-c {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.f-ac {
+  display: flex;
+  align-items: center;
+}
+
+.f-s0 {
+  flex-shrink: 0;
+}
+
+.f-je {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.f-jc {
+  display: flex;
+  justify-content: center;
+}
+
+.f-col-c {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.f1 {
+  flex: 1;
+}
+
+.f-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.f-js {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.f-jsa {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.text-cut {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.mr {
+  border-radius: 18px;
+}
+
+.red {
+  color: #f64138
+}
+
+
+.arrow-right {
+  width: 50px;
+  height: 50px
+}
+
+.mbs {
+  box-shadow: 0 0px 30px 0 rgba(0, 0, 0, 0.05);
+}
+
+.c_000 {
+  color: #000
+}
+
+.c_333 {
+  color: #333
+}
+
+.c_333 {
+  color: #333
+}
+
+.c_666 {
+  color: #666
+}
+
+.c_999 {
+  color: #999
+}
+
+.c_fff {
+  color: #fff;
+}
+
+@for $i from 1 through 50 {
+  .mt#{$i} {
+    margin-top: #{$i}px !important;
+  }
+
+  .mb#{$i} {
+    margin-bottom: #{$i}px !important;
+  }
+
+  .mr#{$i} {
+    margin-right: #{$i}px !important;
+  }
+
+  .ml#{$i} {
+    margin-left: #{$i}px !important;
+  }
+
+  .font#{$i} {
+    font-size: #{$i}px !important;
+  }
+
+  // 原切角
+  .yqj-t#{$i} {
+    background-size: 50% 50% !important;
+    background: radial-gradient(circle at top left, transparent #{$i}px, #FFFFFF 0) radial-gradient(circle at top right, transparent #{$i}px, #FFFFFF 0) radial-gradient(circle at bottom right, transparent 0px, #FFFFFF 0) radial-gradient(circle at bottom left, transparent 0px, #FFFFFF 0) no-repeat top left top right bottom right bottom left !important;
+  }
+
+  .yqj-b#{$i} {
+    background-size: 50% 50% !important;
+    background: radial-gradient(circle at top left, transparent 0px, #FFFFFF 0) radial-gradient(circle at top right, transparent 0px, #FFFFFF 0) radial-gradient(circle at bottom right, transparent #{$i}px, #FFFFFF 0) radial-gradient(circle at bottom left, transparent #{$i}px, #FFFFFF 0) no-repeat top left top right bottom right bottom left !important;
+  }
+
+  .yqj-all#{$i} {
+    background-size: 50% 50% !important;
+    background: radial-gradient(circle at top left, transparent #{$i}px, #FFFFFF 0) radial-gradient(circle at top right, transparent #{$i}px, #FFFFFF 0) radial-gradient(circle at bottom right, transparent #{$i}px, #FFFFFF 0) radial-gradient(circle at bottom left, transparent #{$i}px, #FFFFFF 0) no-repeat top left top right bottom right bottom left !important;
+  }
+
+  .w#{$i} {
+    width: calc(#{$i} * 1%)
+  }
+
+  .pt#{$i} {
+    padding-top: #{$i}px !important;
+  }
+  .pr#{$i} {
+    padding-right: #{$i}px !important;
+  }
+  .pb#{$i} {
+    padding-bottom: #{$i}px !important;
+  }
+  .pl#{$i} {
+    padding-left: #{$i}px !important;
+  }
+
+  // 圆角
+  .mbr#{$i} {
+    border-radius: #{$i}px !important;
+  }
+}
