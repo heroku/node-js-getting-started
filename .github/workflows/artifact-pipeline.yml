@@ -5,11 +5,11 @@ on: [push]
 jobs:
   job_1:
     name: Add 3 and 7
-    runs-on: [self-hosted, Windows, X64]
+    runs-on: ubuntu-latest
     steps:
       - shell: bash
         run: |
-          3 + 7 > math-homework.txt
+          expr 3 + 7 > math-homework.txt
       - name: Upload math result for job 1
         uses: actions/upload-artifact@v3
         with:
