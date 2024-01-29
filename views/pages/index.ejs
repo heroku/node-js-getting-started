@@ -5,7 +5,28 @@
     </head>
     <!-- https://aqueous-forest-88485-65ac117f1c24.herokuapp.com/ -->
     <!--Test MIAW Northwell Health Dev-->
-    <script type="text/javascript">
+
+    <script type='text/javascript'>
+      function initEmbeddedMessaging() {
+        try {
+          embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
+    
+          embeddedservice_bootstrap.init(
+            '00D4C000000LPq8',
+            'NW_edu_Web_Deployment_English',
+            'https://formativ--devint.sandbox.my.site.com/ESWNWeduWebDeployment1706023343860',
+            {
+              scrt2URL: 'https://formativ--devint.sandbox.my.salesforce-scrt.com'
+            }
+          );
+        } catch (err) {
+          console.error('Error loading Embedded Messaging: ', err);
+        }
+      };
+    </script>
+    <script type='text/javascript' src='https://formativ--devint.sandbox.my.site.com/ESWNWeduWebDeployment1706023343860/assets/js/bootstrap.min.js' onload='initEmbeddedMessaging()'></script>
+
+    <!--<script type="text/javascript">
         function initEmbeddedMessaging() {
             try {
                 embeddedservice_bootstrap.settings.language = "en_US"; // For example, enter 'en' or 'en-US'
@@ -13,9 +34,9 @@
                 embeddedservice_bootstrap.init(
                     "00D7c000006tgG8",
                     "NW_edu_Deployment",
-                    "https://formativ--dev.sandbox.my.site.com/ESWNWeduDeployment1705074359880",
+                    "https://formativ-/-dev.sandbox.my.site.com/ESWNWeduDeployment1705074359880",
                     {
-                        scrt2URL: "https://formativ--dev.sandbox.my.salesforce-scrt.com",
+                        scrt2URL: "https://formativ-/-dev.sandbox.my.salesforce-scrt.com",
                     }
                 );
             } catch (err) {
@@ -25,9 +46,9 @@
     </script>
     <script
         type="text/javascript"
-        src="https://formativ--dev.sandbox.my.site.com/ESWNWeduDeployment1705074359880/assets/js/bootstrap.min.js"
+        src="https://formativ-/-dev.sandbox.my.site.com/ESWNWeduDeployment1705074359880/assets/js/bootstrap.min.js"
         onload="initEmbeddedMessaging()"
-    ></script>
+    ></script>-->
     <!--Test MIAW Northwell Health Dev-->
 
     <body>
