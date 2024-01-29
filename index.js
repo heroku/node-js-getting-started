@@ -12,6 +12,7 @@ express()
 
   function initEmbeddedMessaging() {
     try {
+      console.log("here in index.js");
       embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
 
       embeddedservice_bootstrap.init(
