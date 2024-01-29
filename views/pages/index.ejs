@@ -3,28 +3,76 @@
     <head>
         <%- include ("../partials/header.ejs") %>
     </head>
+    
     <!-- https://aqueous-forest-88485-65ac117f1c24.herokuapp.com/ -->
     <!--Test MIAW Northwell Health Dev-->
  
-    <script type='text/javascript'>
-      function initEmbeddedMessaging() {
-        try {
-          embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
-    
-          embeddedservice_bootstrap.init(
-            '00D4C000000LPq8',
-            'NW_edu_Web_Deployment_English',
-            'https://formativ--devint.sandbox.my.site.com/ESWNWeduWebDeployment1706023343860',
-            {
-              scrt2URL: 'https://formativ--devint.sandbox.my.salesforce-scrt.com'
-            }
-          );
-        } catch (err) {
-          console.error('Error loading Embedded Messaging: ', err);
+    <script>
+        let url_params = new URLSearchParams(window.location.search);
+        let user_selected_language = "en_US";
+        if (url_params.has("locale")) {
+            user_selected_language = url_params.get("locale");
         }
-      };
-    </script>
-    <script type='text/javascript' src='https://formativ--devint.sandbox.my.site.com/ESWNWeduWebDeployment1706023343860/assets/js/bootstrap.min.js' onload='initEmbeddedMessaging()'></script>
+    
+        const script = document.createElement("script");
+        script.type = "text/javascript";
+        switch (user_selected_language) {
+            case "es":
+                script.src = "https://formativ--dev.sandbox.my.site.com/ESWNWeduDeploymentSpan1705554477853/assets/js/bootstrap.min.js";
+                break;
+    
+            default:
+                script.src = "https://formativ--dev.sandbox.my.site.com/ESWNWeduDeployment1705074359880/assets/js/bootstrap.min.js";
+                break;
+        }
+    
+        script.onload = () => {
+            try {
+                //Language Setting
+                embeddedservice_bootstrap.settings.language = user_selected_language;
+                window.addEventListener("onEmbeddedMessagingReady", () => {
+                    embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({ LanguageCode: user_selected_language });
+                });
+    
+                //Deployment Setting
+                let deploymentId = "00D7c000006tgG8"; //should contain the environment Id (Salesforce Org Id)
+                let deploymentSCRT = "https://formativ--dev.sandbox.my.salesforce-scrt.com"; //should have the environment specific scrt url (subdomain will change)
+    
+                let deploymentName; //name of the Embedded service deployment
+                let deploymentSite; //LWR site URL for the Embedded service deployment
+                
+                switch (user_selected_language) {
+                    case "es":
+                        deploymentName = "NW_edu_Deployment_Spanish";
+                        deploymentSite = "https://formativ--dev.sandbox.my.site.com/ESWNWeduDeploymentSpan1705554477853";
+                        break;
+    
+                    default:
+                        deploymentName = "NW_edu_Deployment";
+                        deploymentSite = "https://formativ--dev.sandbox.my.site.com/ESWNWeduDeployment1705074359880";
+                        break;
+                }
+    
+                console.log("user_selected_language: ", user_selected_language);
+                console.log("deploymentId: ", deploymentId);
+                console.log("deploymentName: ", deploymentName);
+                console.log("deploymentSite: ", deploymentSite);
+                console.log("deploymentSCRT: ", deploymentSCRT);
+                
+                embeddedservice_bootstrap.init(deploymentId, deploymentName, deploymentSite, {
+                    scrt2URL: deploymentSCRT,
+                });
+            } catch (err) {
+                console.error("Error loading Embedded Messaging: ", err);
+            }
+        };
+    
+        script.onerror = () => {
+            console.log("Error occurred while loading script");
+        };
+    
+        document.body.appendChild(script);
+    </script>    
     
     <!--Test MIAW Northwell Health Dev-->
 
