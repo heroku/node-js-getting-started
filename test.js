@@ -1,9 +1,10 @@
 const { spawn } = require('child_process');
-const got = require('got');
+const { request } = require('http')
+const { URL } = require('url')
 const test = require('tape');
 
 // Start the app
-const env = Object.assign({}, process.env, {PORT: 5000});
+const env = Object.assign({}, process.env, {PORT: 5001});
 const child = spawn('node', ['index.js'], {env});
 
 test('responds to requests', (t) => {
@@ -13,7 +14,7 @@ test('responds to requests', (t) => {
   child.stdout.on('data', _ => {
     // Make a request to our app
     (async () => {
-      const response = await got('http://127.0.0.1:5000');
+      const response = await get('http://127.0.0.1:5001')
       // stop the server
       child.kill();
       // No error
@@ -26,3 +27,22 @@ test('responds to requests', (t) => {
     })();
   });
 });
+
+async function get(url) {
+  return new Promise((resolve, reject) => {
+    const req = request(url, {method: 'GET'}, (res) => {
+      let body = ''
+      res.setEncoding('utf-8')
+      res.on('data', (data) => body += data)
+      res.on('end', () => {
+        resolve({
+          error: false,
+          statusCode: res.statusCode,
+          body: body
+        })
+      })
+    })
+    req.on('error', reject)
+    req.end()
+  })
+}
