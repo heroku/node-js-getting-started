@@ -4,6 +4,7 @@ on: [push]
 
 jobs:
   job_1:
+    environment: 'DEV'
     name: Add 3 and 7
     runs-on: ubuntu-latest
     steps:
@@ -17,6 +18,7 @@ jobs:
           path: math-homework.txt
 
   job_2:
+    environment: 'HOM'
     name: Multiply by 9
     needs: job_1
     runs-on: [self-hosted, Windows, X64]
@@ -36,9 +38,10 @@ jobs:
           path: math-homework.txt
 
   job_3:
+    environment: 'PRD'
     name: Display results
     needs: job_2
-    runs-on: macOS-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Download math result for job 2
         uses: actions/download-artifact@v3
