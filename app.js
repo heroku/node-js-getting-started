@@ -1,15 +1,15 @@
-// app.js
-const app = require('express')()
+const http = require('http');
 
-let port = process.env.PORT || 3000 // Wallarm is not configured, listen on $PORT
-if(process.env.WALLARM_API_TOKEN) port = '/tmp/nginx.socket' // Wallarm is configured
+const server = http.createServer((req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.end('It worked');
+});
 
-app.listen(port, (err) => {
-    if (err) throw err
-    console.log(`> App is listening on ${port}`)
-})
+const port = 3000;
+const hostname = '127.0.0.1';
 
-app.get('/', (req, res) => {
-    res.send('This app is protected by Wallarm')
-})
+server.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
+});
 
