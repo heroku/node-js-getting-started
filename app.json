@@ -1,8 +1,18 @@
 {
   "name": "Start on Heroku: Node.js",
   "description": "A barebones Node.js app using Express 4",
-  "repository": "https://github.com/heroku/node-js-getting-started",
+  "repository": "https://github.com/jason-salesforce/node-js-getting-started",
   "logo": "https://cdn.rawgit.com/heroku/node-js-getting-started/main/public/node.svg",
   "keywords": ["node", "express", "heroku"],
-  "image": "heroku/nodejs"
+  "image": "heroku/nodejs",
+  "scripts": {
+    "postdeploy": "bin/postdeploy-review"
+  },
+  "environments": {
+    "review": {
+      "scripts": {
+        "postdeploy": "bin/postdeploy"
+      }
+    }
+  }
 }
