@@ -27,5 +27,5 @@
     "express"
   ],
   "license": "MIT",
-  "publishConfig":{"registry":"https://nagarjunaartifact.jfrog.io/artifactory/api/npm/mynpmrepo-npm-local/"}
+  "publishConfig":{"registry":"https://nagarjunaartifact.jfrog.io/artifactory/api/npm/mynpmrepo-npm-local/:always-auth=true"}
 }
