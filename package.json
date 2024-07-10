@@ -26,5 +26,6 @@
     "heroku",
     "express"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "publishConfig":{"registry":"https://saimohan123.jfrog.io/artifactory/api/npm/mynpmrepo-npm-local/"}
 }
