@@ -26,6 +26,6 @@
     "heroku",
     "express"
   ],
-  "license": "MIT",
-  "publishConfig":{"registry":"https://nagarjunaartifact.jfrog.io/artifactory/api/npm/mynpmrepo-npm-local/"}
+  "license": "MIT"
+  
 }
