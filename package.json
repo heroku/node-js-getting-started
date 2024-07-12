@@ -26,5 +26,6 @@
     "heroku",
     "express"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "publishConfig":{"registry":"https://saimohan.jfrog.io/artifactory/api/npm/sainpm-npm-local/"}
 }
