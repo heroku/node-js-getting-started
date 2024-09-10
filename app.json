@@ -5,13 +5,10 @@
   "logo": "https://cdn.rawgit.com/heroku/node-js-getting-started/main/public/node.svg",
   "keywords": ["node", "express", "heroku"],
   "image": "heroku/nodejs",
-  "scripts": {
-    "postdeploy": "bin/postdeploy-review"
-  },
   "environments": {
     "review": {
-      "scripts": {
-        "postdeploy": "bin/postdeploy"
+      "env": {
+        "APP_SETUPS_TEST": "test-secret"
       }
     }
   }
