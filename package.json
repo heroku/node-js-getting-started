@@ -3,19 +3,19 @@
   "version": "0.3.0",
   "description": "A sample Node.js app using Express 4",
   "engines": {
-    "node": "22.x"
+    "node": "18.x || 20.x || 22.x"
   },
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "node test.js"
+    "test": "jest"
   },
   "dependencies": {
-    "ejs": "^3.1.9",
-    "express": "^4.15.2"
+    "ejs": "^3.1.10",
+    "express": "^5.0.1"
   },
   "devDependencies": {
-    "tape": "^5.7.4"
+    "jest": "^29.7.0"
   },
   "repository": {
     "type": "git",

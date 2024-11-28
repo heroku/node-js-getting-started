@@ -1,32 +1,39 @@
-const { spawn } = require('child_process');
+const { spawn } = require('child_process')
 const { request } = require('http')
-const { URL } = require('url')
-const test = require('tape');
 
-// Start the app
-const env = Object.assign({}, process.env, {PORT: 5001});
-const child = spawn('node', ['index.js'], {env});
+const PORT = process.env.PORT || 5006
 
-test('responds to requests', (t) => {
-  t.plan(4);
+describe('getting started guide', () => {
+  let app
 
-  // Wait until the server is ready
-  child.stdout.on('data', _ => {
-    // Make a request to our app
-    (async () => {
-      const response = await get('http://127.0.0.1:5001')
-      // stop the server
-      child.kill();
-      // No error
-      t.false(response.error);
-      // Successful response
-      t.equal(response.statusCode, 200);
-      // Assert content checks
-      t.notEqual(response.body.indexOf("<title>Node.js Getting Started on Heroku</title>"), -1);
-      t.notEqual(response.body.indexOf("Getting Started on Heroku with Node.js"), -1);
-    })();
-  });
-});
+  beforeEach(async () => {
+    app = spawn('node', ['index.js'])
+    app.stdout.on('data', (data) => console.log(data.toString()))
+    // give the server a short time to start up
+    return new Promise(resolve => setTimeout(resolve, 500))
+  })
+
+  afterEach(() => {
+    if (app) {
+      app.stdout.removeAllListeners()
+      app.kill('SIGTERM')
+    }
+  })
+
+  it('should bind to IPv4 and respond to GET /', async () => {
+    const response = await get(`http://127.0.0.1:${PORT}`)
+    expect(response.statusCode).toBe(200)
+    expect(response.body).toMatch("<title>Node.js Getting Started on Heroku</title>")
+    expect(response.body).toMatch("Getting Started on Heroku with Node.js")
+  })
+
+  it('should bind to IPv6 and respond to GET /', async () => {
+    const response = await get(`http://[::1]:${PORT}`)
+    expect(response.statusCode).toBe(200)
+    expect(response.body).toMatch("<title>Node.js Getting Started on Heroku</title>")
+    expect(response.body).toMatch("Getting Started on Heroku with Node.js")
+  })
+})
 
 async function get(url) {
   return new Promise((resolve, reject) => {
@@ -36,11 +43,11 @@ async function get(url) {
       res.on('data', (data) => body += data)
       res.on('end', () => {
         resolve({
-          error: false,
           statusCode: res.statusCode,
           body: body
         })
       })
+      res.on('error', reject)
     })
     req.on('error', reject)
     req.end()
