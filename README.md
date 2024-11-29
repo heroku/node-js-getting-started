@@ -1,6 +1,6 @@
 # node-js-getting-started
 
-A barebones Node.js app using [Express](http://expressjs.com/).
+A barebones Node.js app using [Express](https://expressjs.com/).
 
 This application supports the [Getting Started on Heroku with Node.js](https://devcenter.heroku.com/articles/getting-started-with-nodejs) article - check it out.
 
