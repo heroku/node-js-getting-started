@@ -37,10 +37,6 @@ $ git push heroku main
 $ heroku open
 ```
 
-or
-
-[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
-
 ### Deploy on [Fir](https://devcenter.heroku.com/articles/generations#fir)
 
 By default, apps on [Fir][fir] use 1X-Classic dynos. To create an app on [Fir][fir] you'll need to 
