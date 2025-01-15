@@ -1,28 +1,55 @@
-const { spawn } = require('child_process');
-const request = require('request');
-const test = require('tape');
+const { spawn } = require('child_process')
+const { request } = require('http')
 
-// Start the app
-const env = Object.assign({}, process.env, {PORT: 5000});
-const child = spawn('node', ['index.js'], {env});
+const PORT = process.env.PORT || 5006
 
-test('responds to requests', (t) => {
-  t.plan(4);
+describe('getting started guide', () => {
+  let app
 
-  // Wait until the server is ready
-  child.stdout.on('data', _ => {
-    // Make a request to our app
-    request('http://127.0.0.1:5000', (error, response, body) => {
-      // stop the server
-      child.kill();
+  beforeEach(async () => {
+    app = spawn('node', ['index.js'])
+    app.stdout.on('data', (data) => console.log(data.toString()))
+    // give the server a short time to start up
+    return new Promise(resolve => setTimeout(resolve, 500))
+  })
 
-      // No error
-      t.false(error);
-      // Successful response
-      t.equal(response.statusCode, 200);
-      // Assert content checks
-      t.notEqual(body.indexOf("<title>Node.js Getting Started on Heroku</title>"), -1);
-      t.notEqual(body.indexOf("Getting Started with Node on Heroku"), -1);
-    });
-  });
-});
+  afterEach(() => {
+    if (app) {
+      app.stdout.removeAllListeners()
+      app.kill('SIGTERM')
+    }
+  })
+
+  it('should bind to IPv4 and respond to GET /', async () => {
+    const response = await get(`http://127.0.0.1:${PORT}`)
+    expect(response.statusCode).toBe(200)
+    expect(response.body).toMatch("<title>Node.js Getting Started on Heroku</title>")
+    expect(response.body).toMatch("Getting Started on Heroku with Node.js")
+  })
+
+  it('should bind to IPv6 and respond to GET /', async () => {
+    const response = await get(`http://[::1]:${PORT}`)
+    expect(response.statusCode).toBe(200)
+    expect(response.body).toMatch("<title>Node.js Getting Started on Heroku</title>")
+    expect(response.body).toMatch("Getting Started on Heroku with Node.js")
+  })
+})
+
+async function get(url) {
+  return new Promise((resolve, reject) => {
+    const req = request(url, {method: 'GET'}, (res) => {
+      let body = ''
+      res.setEncoding('utf-8')
+      res.on('data', (data) => body += data)
+      res.on('end', () => {
+        resolve({
+          statusCode: res.statusCode,
+          body: body
+        })
+      })
+      res.on('error', reject)
+    })
+    req.on('error', reject)
+    req.end()
+  })
+}
