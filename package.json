@@ -8,7 +8,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "jest"
+
+    "test": "jest",
+    "build": "run"
   },
   "dependencies": {
     "ejs": "^3.1.10",
