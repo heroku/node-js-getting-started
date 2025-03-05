@@ -10,7 +10,7 @@
     "start": "node index.js",
 
     "test": "jest",
-    "build": "run"
+    "build": "echo 'No build step defined'"
   },
   "dependencies": {
     "ejs": "^3.1.10",
