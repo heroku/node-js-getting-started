@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         NODE_HOME = tool name: 'NodeJS', type: 'NodeJSInstallation'
-        PATH = "${NODE_HOME}/bin:${env.PATH}"
+        env.PATH="${env.NODEJS_HOME};${env.PATH}"
     }
     stages {
         stage('Install Dependencies') {
