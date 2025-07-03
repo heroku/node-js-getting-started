@@ -7,5 +7,5 @@
 
 # However, request review from the Heroku language owners for files that are updated
 # by Dependabot, to reduce team review request noise.
-package.json @joshwlewis @colincasey
-package-lock.json @joshwlewis @colincasey
+package.json @colincasey
+package-lock.json @colincasey
